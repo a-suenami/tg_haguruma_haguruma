@@ -1,8 +1,46 @@
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-sorbet
+  - rubocop-factory_bot
+
 # Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+
+AllCops:
+  TargetRubyVersion: 3.4
+  Exclude:
+    - bin/**/*
+    - sorbet/**/*
+    - db/schema.rb
+    - vendor/**/*
+    - tmp/**/*
+
+# Sorbet
+# it's too hard to write type annotation for helpers/controllers
+Sorbet/FalseSigil:
+  Exclude:
+    - 'app/helpers/**/*'
+    - 'config/**/*'
+    - 'db/**/*'
+    - spec/factories/**/*
+    - spec/helpers/**/*
+Sorbet/EmptyLineAfterSig:
+  Enabled: false
+
+# Allow longer lines for better readability
+Layout/LineLength:
+  Max: 200
+  Exclude:
+    - db/seeds.rb
+    - spec/requests/**/*
+
+# RSpec configuration
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false

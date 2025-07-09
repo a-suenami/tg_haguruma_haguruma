@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+ruby "3.4.4"
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
@@ -16,6 +18,41 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+
+# Schema management
+gem "ridgepole", "~> 2.0.0"
+
+# Background processing
+gem "sidekiq", "~> 7.2.4"
+gem "sidekiq-status", "~> 3.0.3"
+
+# Request storage
+gem "request_store", "~> 1.5.1"
+gem "request_store-sidekiq", "~> 0.1.0"
+
+# Authorization
+gem "pundit", "~> 2.3.1"
+
+# Bulk insert
+gem "activerecord-import", "~> 1.5.0"
+
+# Template engine
+gem "liquid", "~> 5.4.0"
+
+# Connection pooling
+gem "connection_pool", "~> 2.4.1"
+
+# Redis
+gem "redis", "~> 5.0.7"
+gem "redis-client", "~> 0.19.0"
+
+# Error monitoring
+gem "sentry-rails", "~> 5.13.0"
+gem "sentry-ruby", "~> 5.13.0"
+
+# Typing
+gem "sorbet-runtime", "~> 0.5.11048"
+gem "mangrove", "~> 0.29.0"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -47,8 +84,30 @@ group :development, :test do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
+  # Code style checking
+  gem "rubocop", "~> 1.57.0"
+  gem "rubocop-rails", "~> 2.22.0"
+  gem "rubocop-rspec", "~> 2.25.0"
+  gem "rubocop-sorbet", "~> 0.7.4", require: false
+
+  # Typing tools
+  gem "sorbet", "~> 0.5.11048"
+  gem "tapioca", git: "https://github.com/twogate/tapioca", ref: "d0a8227"
+  gem "spoom", "~> 1.2.4", require: false
+
+  # Testing framework
+  gem "rspec-rails", "~> 6.0.3"
+  gem "rspec-sorbet", "~> 1.9.2"
+  gem "factory_bot_rails", "~> 6.2.0"
+  gem "database_cleaner", "~> 2.0.2"
+  gem "simplecov", "~> 0.22.0", require: false
+  gem "bullet", "~> 7.1.6"
+  gem "webmock", "~> 3.19.1"
+
+  # Development tools
+  gem "pry-rails", "~> 0.3.9"
+  gem "pry-byebug", "~> 3.10.1"
+  gem "annotate", "~> 3.2.0"
 end
 
 group :development do
