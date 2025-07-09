@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rails:*)",
+      "Bash(bin/dev)",
+      "Bash(bin/setup)",
+      "Bash(bin/rubocop*)",
+      "Bash(bin/brakeman*)",
+      "Bash(bin/kamal*)",
+      "Bash(bundle*)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(ls*)",
+      "Bash(pwd)",
+      "Bash(ruby -v)",
+      "Bash(node -v)",
+      "Write(.claude/tmp/*)",
+      "Edit(.claude/tmp/*)",
+      "MultiEdit(.claude/tmp/*)"
+    ],
+    "deny": []
+  }
+}
