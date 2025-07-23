@@ -78,7 +78,7 @@ gem 'thor', '~> 1.3.0'
 gem 'reserved_subdomain', '~> 0.0.4'
 gem 'datadog', '~> 2.18.0'
 gem 'phonelib', '~> 0.10.6'
-gem 'ruby-jq', '~> 0.2.1'
+# gem 'ruby-jq', '~> 0.2.1' # Complex build dependencies, optional gem
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
