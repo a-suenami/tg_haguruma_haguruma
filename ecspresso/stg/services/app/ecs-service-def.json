@@ -1,0 +1,50 @@
+{
+  "capacityProviderStrategy": [
+    {
+      "base": 1,
+      "capacityProvider": "FARGATE",
+      "weight": 1
+    }
+  ],
+  "deploymentConfiguration": {
+    "deploymentCircuitBreaker": {
+      "enable": false,
+      "rollback": false
+    },
+    "maximumPercent": 200,
+    "minimumHealthyPercent": 100
+  },
+  "deploymentController": {
+    "type": "ECS"
+  },
+  "enableECSManagedTags": true,
+  "enableExecuteCommand": false,
+  "healthCheckGracePeriodSeconds": 0,
+  "loadBalancers": [
+    {
+      "containerName": "nginx",
+      "containerPort": 80,
+      "targetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:218794653131:targetgroup/triple-ecs-default-v2-stg/0aa4879e29d8c93d"
+    }
+  ],
+  "networkConfiguration": {
+    "awsvpcConfiguration": {
+      "assignPublicIp": "DISABLED",
+      "securityGroups": [
+        "sg-0e7a4b3fa9231df8e"
+      ],
+      "subnets": [
+        "subnet-05ce5534f86485701",
+        "subnet-039e28ef77840e0d3",
+        "subnet-0bead6e006e555f50"
+      ]
+    }
+  },
+  "placementConstraints": [],
+  "placementStrategy": [],
+  "platformFamily": "Linux",
+  "platformVersion": "LATEST",
+  "schedulingStrategy": "REPLICA",
+  "serviceRegistries": [],
+  "tags": []
+}

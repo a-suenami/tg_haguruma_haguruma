@@ -1,0 +1,509 @@
+variables:
+  RUBY_IMAGE: containers.l.twogate.net/docker/ruby-slim-for-rails:ruby3.3-jemalloc-node18
+  REDIS_IMAGE: containers.l.twogate.net/docker/redis:7.0
+  POSTGRES_IMAGE: 'postgres:15-alpine'
+  TRANSFER_METER_FREQUENCY: '2s'
+  FF_USE_FASTZIP: 1
+  GIT_STRATEGY: clone
+  RUBYJQ_USE_SYSTEM_LIBRARIES: 1
+
+cache: &cache
+  key:
+    files:
+      - Gemfile.lock
+  paths:
+    - vendor/bundle
+    - public/vite
+    - tmp/cache/vite
+    - tmp/rubocop_cache
+
+stages:
+  - prepare
+  - test
+  # - post-test
+  - build
+  - pre-deploy
+  - deploy
+  - post-deploy
+
+create-deploy-merge-request:
+  image: ${RUBY_IMAGE}
+  stage: prepare
+  cache: {}
+  only:
+    - master
+  except:
+    - schedules
+  variables:
+    GITLAB_API_ENDPOINT: https://git.l.twogate.net/api/v4
+    GITLAB_API_PRIVATE_TOKEN: $GITLAB_API_PRIVATE_TOKEN
+  script:
+    - gem install gitlab
+    - >
+      gitlab create_merge_request $CI_PROJECT_ID "" '{
+        "title": "Build staging",
+        "source_branch": "master",
+        "target_branch": "deploy-staging"
+      }' || true
+    - >
+      gitlab create_merge_request $CI_PROJECT_ID "" '{
+        "title": "Draft: Build production",
+        "source_branch": "master",
+        "target_branch": "deploy-production"
+      }' || true
+
+bundle-package:
+  image: ${RUBY_IMAGE}
+  stage: prepare
+  cache:
+    <<: *cache
+  script:
+    - apt-get update && apt-get install -y libjq-dev
+    - bundle config set deployment 'true' && bundle install --jobs=`nproc`
+    - bundle clean
+  except:
+    - /^deploy-.*$/
+    - schedules
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+sast:
+  stage: test
+semgrep-sast:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+
+rubocop:
+  image: ${RUBY_IMAGE}
+  stage: test
+  cache:
+    <<: *cache
+    policy: pull-push
+    when: always
+  variables:
+    RAILS_ENV: test
+    ALLOW_ORIGINS: '[]'
+    RUBOCOP_CACHE_ROOT: 'tmp/rubocop_cache'
+  before_script:
+    - /bin/sh docker/scripts/bundle_install.sh
+  script:
+    - bundle exec rubocop -DESP --cache true
+  except:
+    - /^deploy-.*$/
+    - schedules
+
+rspec:
+  parallel: 4
+  tags:
+    - x86_64-linux
+    - r1.2xlarge
+  image: ${RUBY_IMAGE}
+  stage: test
+  cache:
+    <<: *cache
+    policy: pull
+  variables:
+    CHECKPOINT_JWT_SECRET: 'a_very_long_secret_of_at_least_64_bytes_to_meet_the_requirement_1234'
+    RAILS_ENV: test
+    RAILS_MAX_THREADS: 20
+    POSTGRES_TEST_HOST: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    REDIS_URL: redis://redis:6379/0
+    REDIS_FOR_WORKER_URL: redis://redis:6379/0
+    SECRET_KEY_BASE: d5a4673d2c4b02366ae8cc60e2bac02234866f11722cc8ba096a7f05841ef2c849cc58cc956c4a128acaa6d105b40159bc6c48f02450b7b885d62cb33961b3d8
+    ALLOW_ORIGINS: '[]'
+    PARALLEL_SPLIT_TEST: 'true'
+    KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC: $KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC
+    KNAPSACK_PRO_FIXED_QUEUE_SPLIT: 'true'
+    KNAPSACK_PRO_RSPEC_SPLIT_BY_TEST_EXAMPLES: 'true'
+    KNAPSACK_PRO_LOG_LEVEL: 'info'
+    ACTIVE_RECORD_PRIMARY_KEY: 'dummy'
+    ACTIVE_RECORD_KEY_DERIVATION_SALT: 'dummy'
+    ACTIVE_RECORD_DETERMINISTIC_KEY: 'dummy'
+    GOD_AREA_ENABLED: 'true'
+    GOD_AREA_PASSWORD: 'god'
+  services:
+    - ${POSTGRES_IMAGE}
+    - name: containers.l.twogate.net/docker/redis:7.0
+      alias: redis
+    - name: amazon/dynamodb-local:1.22.0
+      alias: dynamodb
+  before_script:
+    # - touch log/bullet.log
+    - apt-get update && apt-get install -y libjq-dev
+    - /bin/sh docker/scripts/bundle_install.sh
+    - bundle exec rake parallel:setup
+    - bundle exec thor dynamodb:migrate
+  # after_script:
+  #   - cat log/bullet.log
+  script:
+    - export PARALLEL_TESTS_CONCURRENCY=$(nproc)
+    - export KNAPSACK_PRO_CI_NODE_TOTAL=$CI_NODE_TOTAL
+    - export KNAPSACK_PRO_CI_NODE_INDEX=$(expr $CI_NODE_INDEX - 1)
+    - bundle exec parallel_rspec -n $PARALLEL_TESTS_CONCURRENCY -e './bin/parallel_tests'
+  except:
+    - /^deploy-.*$/
+    - schedules
+
+sorbet:
+  image: ${RUBY_IMAGE}
+  stage: test
+  services:
+    - ${POSTGRES_IMAGE}
+  variables:
+    RAILS_ENV: test
+    DATABASE_URL: 'postgres://postgres:postgres@postgres:5432/triple_development'
+    POSTGRES_HOST: postgres
+    POSTGRES_TEST_HOST: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    GOD_AREA_ENABLED: 'true'
+  before_script:
+    - mv vendor/bundle /usr/local/ || true
+    - apt-get update && apt-get install -y libjq-dev
+    - RAILS_ENV=development /bin/sh docker/scripts/bundle_install.sh
+    - bundle exec rake db:create db:schema:load
+  script:
+    - bundle exec tapioca gems -w `nproc` --verify --environment=development
+    - bundle exec tapioca dsl -w `nproc` --verify --environment=development
+    - bundle exec srb tc
+    - mv /usr/local/bundle vendor/
+  except:
+    - /^deploy-.*$/
+    - schedules
+  cache:
+    <<: *cache
+    key: ${CI_JOB_IMAGE}-test
+    policy: pull-push
+
+check-shims:
+  tags:
+    - x86_64-linux
+    - r1.2xlarge
+  image: ${RUBY_IMAGE}
+  stage: test
+  services:
+    - ${POSTGRES_IMAGE}
+  variables:
+    RAILS_ENV: test
+    DATABASE_URL: 'postgres://postgres:postgres@postgres:5432/triple_development'
+    POSTGRES_HOST: postgres
+    POSTGRES_TEST_HOST: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+  before_script:
+    - apt-get update && apt-get install -y libjq-dev
+    - mv vendor/bundle /usr/local/ || true
+    - RAILS_ENV=development /bin/sh docker/scripts/bundle_install.sh
+  script:
+    - bundle exec tapioca check-shims -w `nproc`
+    - mv /usr/local/bundle vendor/
+  only:
+    - master
+  cache:
+    <<: *cache
+    key: ${CI_JOB_IMAGE}-test
+    policy: pull-push
+
+assets:precompile:
+  image: ${RUBY_IMAGE}
+  stage: test
+  cache:
+    <<: *cache
+  variables:
+    RAILS_ENV: production
+    SECRET_KEY_BASE: 784a47d74a21582374648c380d4d2445514133912f2a075d47d1bba5391487c12e78e5e746e838bf227a7855388003748bd20abf5fd151710d15dab58736d35e
+    AWS_S3_MEDIA_BUCKET: dummy
+    AWS_S3_PRIVATE_BUCKET: dummy
+  script:
+    - apt-get update && apt-get install -y libjq-dev
+    - /bin/sh docker/scripts/bundle_install.sh
+    - echo -e "@twogate-npm:registry=https://git.l.twogate.net/api/v4/projects/1268/packages/npm/\n//git.l.twogate.net/api/v4/projects/1268/packages/npm/:_authToken=\${CI_JOB_TOKEN}" > .npmrc
+    - yarn install
+    - bundle exec rails assets:precompile --trace
+  artifacts:
+    expire_in: 1d
+    paths:
+      - public/vite
+  only:
+    - /^deploy-.*$/
+  except:
+    - schedules
+
+build:app:staging:
+  image: containers.l.twogate.net/docker/docker-awscli:master
+  stage: build
+  cache:
+    <<: *cache
+    policy: pull
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    BUNDLE_GIT__L__TWOGATE__NET: $BUNDLE_GIT__L__TWOGATE__NET
+    DOCKER_TLS_CERTDIR: ''
+  script:
+    - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 218794653131.dkr.ecr.ap-northeast-1.amazonaws.com
+    - echo $CI_COMMIT_SHA > REVISION
+    - docker build . -f docker/Dockerfile -t rails_app:latest --build-arg BUNDLE_GIT__L__TWOGATE__NET
+    - docker tag rails_app:latest 218794653131.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-stg:latest
+    - docker tag rails_app:latest 218794653131.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-stg:$CI_COMMIT_SHA
+    - docker push 218794653131.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-stg:latest
+    - docker push 218794653131.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-stg:$CI_COMMIT_SHA
+  tags:
+    - docker
+    - x86_64-linux
+  only:
+    - deploy-staging
+  except:
+    - schedules
+
+build:app:production:
+  image: containers.l.twogate.net/docker/docker-awscli:master
+  stage: build
+  cache:
+    <<: *cache
+    policy: pull
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    BUNDLE_GIT__L__TWOGATE__NET: $BUNDLE_GIT__L__TWOGATE__NET
+    DOCKER_TLS_CERTDIR: ''
+  script:
+    - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 430013787765.dkr.ecr.ap-northeast-1.amazonaws.com
+    - echo $CI_COMMIT_SHA > REVISION
+    - docker build . -f docker/Dockerfile -t rails_app:latest --build-arg BUNDLE_GIT__L__TWOGATE__NET
+    - docker tag rails_app:latest 430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-prod:latest
+    - docker tag rails_app:latest 430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-prod:$CI_COMMIT_SHA
+    - docker push 430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-prod:latest
+    - docker push 430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-prod:$CI_COMMIT_SHA
+  tags:
+    - docker
+    - x86_64-linux
+  only:
+    - deploy-production
+  except:
+    - schedules
+
+# ------------------------------------------------------------------------------
+# Deploy Staging jobs
+# ------------------------------------------------------------------------------
+.deploy:staging:base: &deploy-staging-base
+  image: containers.l.twogate.net/docker/ecspresso:master
+  cache: {}
+  variables:
+    AWS_ASSUME_ROLE_ARN: arn:aws:iam::218794653131:role/ecspresso-ecs-role
+  before_script:
+    - STS=`aws sts assume-role --role-arn $AWS_ASSUME_ROLE_ARN --role-session-name ecspresso-$CI_PROJECT_ID-$CI_JOB_ID`;export AWS_ACCESS_KEY_ID=`echo "${STS}" | jq -r '.Credentials.AccessKeyId'`;export AWS_SECRET_ACCESS_KEY=`echo "${STS}" | jq -r '.Credentials.SecretAccessKey'`;export AWS_SESSION_TOKEN=`echo "${STS}" | jq -r '.Credentials.SessionToken'`
+  only:
+    - deploy-staging
+  except:
+    - schedules
+
+🔍 pre-deploy:diff:app:staging:
+  <<: *deploy-staging-base
+  stage: pre-deploy
+  script:
+    - ecspresso diff --color --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/app/config.yaml
+
+👍 pre-deploy:approval:staging:
+  <<: *deploy-staging-base
+  stage: pre-deploy
+  script:
+    - ecspresso deploy --dry-run --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/app/config.yaml
+  when: manual
+
+🔧 deploy:migration:staging:
+  <<: *deploy-staging-base
+  stage: deploy
+  script:
+    - ecspresso run --watch-container app --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/tasks/config.yaml --task-def ecspresso/stg/tasks/oneshot-task-def.jsonnet --overrides '{"containerOverrides":[{"name":"app","command":["bundle","exec","rails","ridgepole:apply"]}]}'
+  needs:
+    - job: 👍 pre-deploy:approval:staging
+      artifacts: false
+
+🔧 deploy:migration:qa:
+  <<: *deploy-staging-base
+  stage: deploy
+  script:
+    - ecspresso run --watch-container app --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/qa/tasks/config.yaml --task-def ecspresso/qa/tasks/oneshot-task-def.jsonnet --overrides '{"containerOverrides":[{"name":"app","command":["bundle","exec","rails","ridgepole:apply"]}]}'
+  needs:
+    - job: 👍 pre-deploy:approval:staging
+      artifacts: false
+
+🚀 deploy:app:staging:
+  <<: *deploy-staging-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/app/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:staging
+      artifacts: false
+    - job: 🔧 deploy:migration:staging
+      artifacts: false
+
+🚀 deploy:worker:staging:
+  <<: *deploy-staging-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/worker/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:staging
+      artifacts: false
+    - job: 🔧 deploy:migration:staging
+      artifacts: false
+
+🚀 deploy:poller:staging:
+  <<: *deploy-staging-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/eventbridge_poller/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:staging
+      artifacts: false
+    - job: 🔧 deploy:migration:staging
+      artifacts: false
+
+🚀 deploy:app:qa:
+  <<: *deploy-staging-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/qa/services/app/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:staging
+      artifacts: false
+    - job: 🔧 deploy:migration:qa
+      artifacts: false
+
+🚀 deploy:worker:qa:
+  <<: *deploy-staging-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/qa/services/worker/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:staging
+      artifacts: false
+    - job: 🔧 deploy:migration:qa
+      artifacts: false
+
+# ------------------------------------------------------------------------------
+# Deploy Production jobs
+# ------------------------------------------------------------------------------
+.deploy:production:base: &deploy-production-base
+  image: containers.l.twogate.net/docker/ecspresso:master
+  cache: {}
+  variables:
+    AWS_ASSUME_ROLE_ARN: arn:aws:iam::430013787765:role/ecspresso-ecs-role
+  before_script:
+    - STS=`aws sts assume-role --role-arn $AWS_ASSUME_ROLE_ARN --role-session-name ecspresso-$CI_PROJECT_ID-$CI_JOB_ID`;export AWS_ACCESS_KEY_ID=`echo "${STS}" | jq -r '.Credentials.AccessKeyId'`;export AWS_SECRET_ACCESS_KEY=`echo "${STS}" | jq -r '.Credentials.SecretAccessKey'`;export AWS_SESSION_TOKEN=`echo "${STS}" | jq -r '.Credentials.SessionToken'`
+  only:
+    - deploy-production
+  except:
+    - schedules
+
+🔍 pre-deploy:diff:app:production:
+  <<: *deploy-production-base
+  stage: pre-deploy
+  script:
+    - ecspresso diff --color --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/services/app/config.yaml
+
+👍 pre-deploy:approval:production:
+  <<: *deploy-production-base
+  stage: pre-deploy
+  script:
+    - ecspresso deploy --dry-run --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/services/app/config.yaml
+  when: manual
+
+🔧 deploy:migration:production:
+  <<: *deploy-production-base
+  stage: deploy
+  script:
+    - ecspresso run --watch-container app --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/tasks/config.yaml --task-def ecspresso/prod/tasks/oneshot-task-def.jsonnet --overrides '{"containerOverrides":[{"name":"app","command":["bundle","exec","rails","ridgepole:apply"]}]}'
+  needs:
+    - job: 👍 pre-deploy:approval:production
+      artifacts: false
+
+🚀 deploy:app:production:
+  <<: *deploy-production-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/services/app/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:production
+      artifacts: false
+    - job: 🔧 deploy:migration:production
+      artifacts: false
+
+🚀 deploy:worker:production:
+  <<: *deploy-production-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/services/worker/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:production
+      artifacts: false
+    - job: 🔧 deploy:migration:production
+      artifacts: false
+
+🚀 deploy:poller:production:
+  <<: *deploy-production-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/services/eventbridge_poller/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:production
+      artifacts: false
+    - job: 🔧 deploy:migration:production
+      artifacts: false
+
+# ------------------------------------------------------------------------------
+# Post deploy jobs
+# ------------------------------------------------------------------------------
+.autify-test-base: &autify-test-base
+  stage: post-deploy
+  image: ubuntu:latest
+  before_script:
+    - apt-get update && apt-get install -y curl
+    - curl https://autify-cli-assets.s3.amazonaws.com/autify-cli/channels/stable/install-standalone.sh | sh
+
+🐝 autify-test:staging:
+  <<: *autify-test-base
+  needs:
+    - job: 🚀 deploy:app:staging
+      artifacts: false
+    - job: 🚀 deploy:worker:staging
+      artifacts: false
+    - job: 🚀 deploy:poller:staging
+      artifacts: false
+  script:
+    # autify用テナントでの検証
+    - autify web test run https://app.autify.com/projects/580/test_plans/664137
+    # 各種IDPとの連携検証
+    - autify web test run https://app.autify.com/projects/580/test_plans/658394
+    # Admin画面の検証
+    - autify web test run https://app.autify.com/projects/580/test_plans/623632
+  only:
+    - deploy-staging
+  except:
+    - schedules
+
+# ------------------------------------------------------------------------------
+# Scheduled jobs
+# ------------------------------------------------------------------------------
+bundle-audit:
+  image: ${RUBY_IMAGE}
+  cache:
+    <<: *cache
+    policy: pull
+  variables:
+    RAILS_ENV: test
+  before_script:
+    - /bin/sh docker/scripts/bundle_install.sh
+  script:
+    - bundle exec bundle-audit check --update
+  only:
+    - schedules

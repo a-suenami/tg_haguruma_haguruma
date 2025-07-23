@@ -1,0 +1,18 @@
+development:
+  :verbose: true
+  :concurrency: 4
+test:
+  :verbose: true
+  :concurrency: 4
+qa:
+  :concurrency: <%= ENV.fetch('RAILS_MAX_THREADS', 5).to_i * ENV.fetch('RAILS_WORKERS', 1).to_i %>
+staging:
+  :concurrency: <%= ENV.fetch('RAILS_MAX_THREADS', 5).to_i * ENV.fetch('RAILS_WORKERS', 1).to_i %>
+production:
+  :concurrency: <%= ENV.fetch('RAILS_MAX_THREADS', 5).to_i * ENV.fetch('RAILS_WORKERS', 1).to_i %>
+:queues: # queues are named by priority
+  - [realtime_priority, 8]
+  - [high_priority, 4]
+  - [default, 2]
+  - [low_priority, 1]
+  # don't use other queue names
