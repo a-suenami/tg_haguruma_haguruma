@@ -6,8 +6,8 @@ ruby "3.4.4"
 gem "rails", "~> 8.0.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
-# Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 2.1"
+# Use PostgreSQL as the database for Active Record
+gem 'pg', '~> 1.5.4'
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -18,6 +18,9 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+
+# CORS support
+gem 'rack-cors', '~> 2.0.1'
 
 # Schema management
 gem "ridgepole", "~> 2.0.0"
@@ -45,14 +48,37 @@ gem "connection_pool", "~> 2.4.1"
 # Redis
 gem "redis", "~> 5.0.7"
 gem "redis-client", "~> 0.19.0"
+gem 'redlock', '~> 2.0.4'
 
 # Error monitoring
 gem "sentry-rails", "~> 5.13.0"
 gem "sentry-ruby", "~> 5.13.0"
+gem 'sentry-sidekiq', '~> 5.13.0'
 
 # Typing
 gem "sorbet-runtime", "~> 0.5.11048"
 gem "mangrove", "~> 0.29.0"
+
+# Utilities
+gem 'pry', '~> 0.14.2'
+gem 'config', '~> 5.0.0'
+gem 'seed-fu', '~> 2.3.9'
+gem 'ffaker', '~> 2.23.0'
+gem 'jwt', '~> 2.7.1'
+gem 'rbnacl', '~> 7.1', '>= 7.1.1'
+gem 'rails-i18n', '~> 7.0.8'
+gem 'enumerize', '~> 2.7.0'
+gem 'yaml_vault', '~> 1.3.2'
+gem 'faraday', '~> 2.7.11'
+gem 'faraday-retry', '~> 2.2.0'
+gem 'faraday-follow_redirects', '~> 0.3.0'
+gem 'lograge', '~> 0.14.0'
+gem 'jp_prefecture', '~> 1.1.1'
+gem 'thor', '~> 1.3.0'
+gem 'reserved_subdomain', '~> 0.0.4'
+gem 'ddtrace', '~> 1.16.0'
+gem 'phonelib', '~> 0.10.6'
+gem 'ruby-jq', '~> 0.2.1'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -108,11 +134,27 @@ group :development, :test do
   gem "pry-rails", "~> 0.3.9"
   gem "pry-byebug", "~> 3.10.1"
   gem "annotate", "~> 3.2.0"
+
+  # Additional testing tools
+  gem 'spring-commands-rspec', '~> 1.0.4'
+  gem 'rspec-request_describer', '~> 0.4.0'
+  gem 'parallel_split_test', '~> 0.10.0'
+  gem 'parallel_tests', '~> 4.3.0'
+  gem 'bundler-audit', '~> 0.9.1'
+  gem 'knapsack_pro', '~> 5.7.0'
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # Spring speeds up development by keeping your application running in the background
+  gem 'spring', '~> 4.1.1'
+  gem 'spring-watcher-listen', '~> 2.1.0'
+
+  # Development tools
+  gem 'rails-erd', '~> 1.7.2'
+  gem 'ruby-lsp', '~> 0.23.20'
 end
 
 group :test do
