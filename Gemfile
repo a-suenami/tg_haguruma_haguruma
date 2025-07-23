@@ -66,7 +66,7 @@ gem 'seed-fu', '~> 2.3.9'
 gem 'ffaker', '~> 2.23.0'
 gem 'jwt', '~> 2.7.1'
 gem 'rbnacl', '~> 7.1', '>= 7.1.1'
-gem 'rails-i18n', '~> 7.0.8'
+gem 'rails-i18n', '~> 8.0.0'
 gem 'enumerize', '~> 2.7.0'
 gem 'yaml_vault', '~> 1.3.2'
 gem 'faraday', '~> 2.7.11'
@@ -134,6 +134,7 @@ group :development, :test do
   gem "pry-rails", "~> 0.3.9"
   gem "pry-byebug", "~> 3.10.1"
   # gem "annotate", "~> 3.2.0" # Not compatible with Rails 8.0 yet
+  # Alternative: gem "annotaterb" # Rails 8 compatible fork
 
   # Additional testing tools
   gem 'spring-commands-rspec', '~> 1.0.4'
