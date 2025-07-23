@@ -23,7 +23,7 @@ gem "jbuilder"
 gem 'rack-cors', '~> 2.0.1'
 
 # Schema management
-gem "ridgepole", "~> 2.0.0"
+gem "ridgepole", "~> 3.0.3"
 
 # Background processing
 gem "sidekiq", "~> 7.2.4"
