@@ -14,7 +14,12 @@ RUN apk add --no-cache \
     bash \
     curl \
     less \
-    vim
+    vim \
+    autoconf \
+    automake \
+    libtool \
+    jq \
+    jq-dev
 
 WORKDIR /rails_app
 
