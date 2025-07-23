@@ -31,13 +31,21 @@ RUN gem install bundler
 COPY Gemfile Gemfile.lock ./
 
 # Bundle install
-RUN bundle install
+RUN bundle config set force_ruby_platform true && \
+    bundle install --jobs 4 --retry 3
 
 # Copy the rest of the application
 COPY . .
 
+# Add entrypoint script
+COPY docker/entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+
 # Expose port
 EXPOSE 3000
+
+# Set entrypoint
+ENTRYPOINT ["entrypoint.sh"]
 
 # Start the server
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
