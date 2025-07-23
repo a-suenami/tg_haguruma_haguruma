@@ -19,7 +19,8 @@ RUN apk add --no-cache \
     automake \
     libtool \
     jq \
-    jq-dev
+    jq-dev \
+    yaml-dev
 
 WORKDIR /rails_app
 
