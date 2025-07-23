@@ -1,5 +1,5 @@
 variables:
-  RUBY_IMAGE: containers.l.twogate.net/docker/ruby-slim-for-rails:ruby3.4-jemalloc-node18
+  RUBY_IMAGE: containers.l.twogate.net/docker/ruby-slim-for-rails:ruby3.3-jemalloc-node18
   REDIS_IMAGE: containers.l.twogate.net/docker/redis:7.0
   POSTGRES_IMAGE: 'postgres:15-alpine'
   TRANSFER_METER_FREQUENCY: '2s'
