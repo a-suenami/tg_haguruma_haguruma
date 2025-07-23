@@ -76,7 +76,7 @@ gem 'lograge', '~> 0.14.0'
 gem 'jp_prefecture', '~> 1.1.1'
 gem 'thor', '~> 1.3.0'
 gem 'reserved_subdomain', '~> 0.0.4'
-gem 'ddtrace', '~> 1.16.0'
+gem 'datadog', '~> 2.18.0'
 gem 'phonelib', '~> 0.10.6'
 gem 'ruby-jq', '~> 0.2.1'
 
