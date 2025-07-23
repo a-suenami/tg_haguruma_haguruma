@@ -115,6 +115,7 @@ group :development, :test do
   gem "rubocop-rails", "~> 2.22.0"
   gem "rubocop-rspec", "~> 2.25.0"
   gem "rubocop-sorbet", "~> 0.7.4", require: false
+  gem "rubocop-factory_bot", "~> 2.24.0"
 
   # Typing tools
   gem "sorbet", "~> 0.5.11048"
@@ -125,9 +126,10 @@ group :development, :test do
   gem "rspec-rails", "~> 6.0.3"
   gem "rspec-sorbet", "~> 1.9.2"
   gem "factory_bot_rails", "~> 6.2.0"
+  gem "observer", "~> 0.1.2"
   gem "database_cleaner", "~> 2.0.2"
   gem "simplecov", "~> 0.22.0", require: false
-  gem "bullet", "~> 7.1.6"
+  gem "bullet", "~> 8.0.0"
   gem "webmock", "~> 3.19.1"
 
   # Development tools

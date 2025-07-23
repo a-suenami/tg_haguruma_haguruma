@@ -20,7 +20,8 @@ RUN apk add --no-cache \
     libtool \
     jq \
     jq-dev \
-    yaml-dev
+    yaml-dev \
+    libsodium-dev
 
 WORKDIR /rails_app
 
@@ -31,8 +32,7 @@ RUN gem install bundler
 COPY Gemfile Gemfile.lock ./
 
 # Bundle install
-RUN bundle config set force_ruby_platform true && \
-    bundle install --jobs 4 --retry 3
+RUN bundle install --jobs 4 --retry 3
 
 # Copy the rest of the application
 COPY . .
