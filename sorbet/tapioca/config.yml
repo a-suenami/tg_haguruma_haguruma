@@ -1,12 +1,13 @@
 gem:
-  # Exclude gems that might cause issues during initialization
-  exclude:
-    - sorbet
-    - sorbet-runtime
-    - tapioca
-  workers: 1
+  # Add your `gem` command parameters here:
+  #
+  # exclude:
+  # - gem_name
+  # doc: true
+  # workers: 5
 dsl:
-  # Start with minimal DSL generation
-  only:
-    - ActiveRecordRelations
-  workers: 1
+  # Add your `dsl` command parameters here:
+  #
+  # exclude:
+  # - SomeGeneratorName
+  # workers: 5
