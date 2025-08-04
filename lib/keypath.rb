@@ -38,6 +38,6 @@ module Keypath
     # Set the value in the parent object
     current[last_key] = value
 
-    obj  # 変更したオブジェクトを返す
+    obj # 変更したオブジェクトを返す
   end
 end
