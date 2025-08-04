@@ -44,15 +44,6 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean_with(:truncation)
 
-    unless ENV['PARALLEL_SPLIT_TEST']
-      # CI などで並列実行する際は事前に `bundle exec thor dynamodb:migrate` を実行する
-      # Execute `bundle exec thor dynamodb:migrate` before parallel execution for CI etc.
-
-      DynamoDBHelper.delete_dynamodb_table
-      DynamoDBHelper.migrate_dynamodb
-    end
-
-    DynamoDBHelper.seed_dynamodb(:kenshiyonezu)
 
     RedisClient.define_singleton_method(:pool) do
       # 並列にテストを走らせたときにそれぞれ異なる db を利用する（+ 3 は適当）
