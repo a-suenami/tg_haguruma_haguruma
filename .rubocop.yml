@@ -680,10 +680,6 @@ Lint/UselessRuby2Keywords: # new in 1.23
   Enabled: true
 Lint/DuplicateMatchPattern: # new in 1.50
   Enabled: true
-Lint/BinaryOperatorWithIdenticalOperands:
-  Enabled: true
-  Exclude:
-    - 'spec/**/*'
 
 
 # ------------------------------------------------------------------------------
