@@ -55,6 +55,9 @@ gem 'sentry-rails', '~> 5.13.0'
 gem 'sentry-ruby', '~> 5.13.0'
 gem 'sentry-sidekiq', '~> 5.13.0'
 
+# AWS SDK
+gem 'aws-sdk-s3', '~> 1.136.0'
+
 # Typing
 gem 'sorbet-runtime', '~> 0.5.11048'
 gem 'mangrove', '~> 0.29.0'
