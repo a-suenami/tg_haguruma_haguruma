@@ -2,7 +2,7 @@
 
 # https://qiita.com/minamijoyo/items/7237efa140013dd53870
 # https://github.com/roidrage/lograge/issues/255
-class JSONLogFormatter < Logger::Formatter
+class JsonLogFormatter < Logger::Formatter
   def call(severity, _time, _progname, msg)
     log = {
       time: _time.iso8601(6),

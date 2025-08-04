@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# typed: false
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'parallel_tests'
+
+# Run RSpec tests in parallel
+exit ParallelTests::CLI.new.run(ARGV)
