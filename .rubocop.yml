@@ -544,6 +544,7 @@ Metrics/BlockLength:
     - spec/**/*.rb
     - config/environments/*.rb
     - config/routes/**/*.rb
+    - db/*_schema.rb
 Metrics/AbcSize:
   Max: 100
   Exclude:
