@@ -11,4 +11,5 @@ runner = ParallelTests::RSpec::Runner
 cli = ParallelTests::CLI.new
 cli.instance_variable_set(:@runner, runner)
 
-exit cli.run(ARGV)
+result = cli.run(ARGV)
+exit(result || 0)
