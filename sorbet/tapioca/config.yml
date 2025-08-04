@@ -9,9 +9,6 @@ dsl:
   # Add your `dsl` command parameters here:
   #
   exclude:
-  - ActionMailer
-  - ActionMailer::Base
   - ActionMailer::Preview
-  - ActionMailer::Railtie
   # workers: 5
   halt_upon_load_error: false
