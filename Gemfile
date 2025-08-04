@@ -119,7 +119,7 @@ group :development, :test do
 
   # Typing tools
   gem 'sorbet', '~> 0.5.11048'
-  gem 'tapioca', git: 'https://github.com/twogate/tapioca', ref: 'd0a8227'
+  gem 'tapioca', '~> 0.16.0'
   gem 'spoom', '~> 1.2.4', require: false
 
   # Testing framework
