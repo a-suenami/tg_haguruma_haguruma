@@ -3,8 +3,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Smoke test' do
-  it 'passes' do
-    expect(true).to be true
+RSpec.describe ApplicationController, type: :controller do
+  it 'loads without errors' do
+    expect(described_class).to be < ActionController::Base
   end
 end
