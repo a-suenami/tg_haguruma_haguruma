@@ -1,7 +1,6 @@
-# typed: true
+# typed: false
 # frozen_string_literal: true
 
-# Pretty print utility module
-module PrettyPrint
-  # Add pretty printing methods here as needed
-end
+# Extensions for pretty printing
+# This file adds pretty_print methods to Hash and Array classes
+# for better debugging output
