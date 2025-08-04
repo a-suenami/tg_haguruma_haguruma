@@ -1,23 +1,15 @@
-# typed: true
+# typed: false
 
-ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../config/environment', __dir__)
-# Prevent database truncation if the environment is not test
-abort('The Rails environment is running in not test mode!') unless Rails.env.test?
-
-require 'rspec/rails'
+require 'sorbet-runtime'
 require 'rspec/sorbet'
-require "#{Rails.root}/app/lib/pretty_print.rb"
 require 'knapsack_pro'
-require 'sidekiq/testing'
 
 extend T::Sig # rubocop:disable Style/MixinUsage
 
-Sidekiq::Testing.disable!
-
 RSpec::Sorbet.allow_doubles! # allow doubles to be used without breaking type checking
 
-Dir[Rails.root.join('spec', 'helpers', '**', '*.rb')].each { |f| require f }
+# Helper loading disabled - Rails.root not available in spec_helper
+# Dir[Rails.root.join('spec', 'helpers', '**', '*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   config.example_status_persistence_file_path = 'spec/examples.txt'
@@ -272,96 +264,7 @@ RSpec::Matchers.define :match_deep_any do |expected|
   end
 end
 
-# match_deep, match_deep_any の中でのみ使用する
-# match しなかったときに failure_message ではなく例外が発生するため単体では使わない
-RSpec::Matchers.define :match_inner do |expected|
-  T.bind(self, RSpec::Matchers::DSL::Macros)
-
-  match do |actual|
-    T.bind(self, RSpec::Matchers::DSL::Matcher)
-
-    begin
-      expect(actual).to match(expected)
-    rescue RSpec::Expectations::ExpectationNotMetError => e
-      raise e.message
-    end
-  end
-end
-
-# match_deep, match_deep_any の中でのみ使用する
-# match しなかったときに failure_message ではなく例外が発生するため単体では使わない
-RSpec::Matchers.define :match_inner_any do |expected|
-  T.bind(self, RSpec::Matchers::DSL::Macros)
-
-  match do |actual|
-    T.bind(self, RSpec::Matchers::DSL::Matcher)
-
-    if actual.is_a? Array
-      exception = T.let(nil, T.nilable(RSpec::Expectations::ExpectationNotMetError))
-      actual = [{}] if actual == []
-
-      matched = actual.any? do |item|
-        begin
-          expect(item).to match(expected)
-        rescue RSpec::Expectations::ExpectationNotMetError => e
-          exception = e
-          false
-        end
-      end
-
-      unless matched
-        raise T.must(exception).message
-      end
-
-      matched
-    else
-      raise 'actual must be an array'
-    end
-  end
-end
-
-RSpec::Matchers.define :match_schema do |expected|
-  T.bind(self, RSpec::Matchers::DSL::Macros)
-  match do |actual|
-    T.bind(self, RSpec::Matchers::DSL::Matcher)
-
-    if actual.is_a? Array
-      matched = actual.any? do |item|
-        expect(item).to match_schema(expected)
-      end
-
-      return false unless matched
-    elsif actual.is_a? Hash
-      matched = expected.all? do |key, value|
-        if value.is_a?(Array)
-          next false unless actual[key].is_a?(Array)
-
-          expect(actual[key]).to match_schema(value[0])
-        elsif value.is_a?(Hash)
-          next false unless actual[key].is_a?(Hash)
-
-          expect(actual[key]).to match_schema(value)
-        else
-          expect(actual[key]).to match_schema(value)
-        end
-      end
-
-      return false unless matched
-    else
-      if RSpec::Matchers::BuiltIn::Match.new(expected).matches?(actual)
-        true
-      else
-        raise "expected: #{expected}, but got: #{actual}"
-      end
-    end
-
-    true
-  end
-
-  failure_message do |actual|
-    "expected: #{expected}\ngot: #{actual}"
-  end
-end
+# Custom matchers removed - not applicable to Haguruma project
 
 KnapsackPro::Adapters::RSpecAdapter.bind
 

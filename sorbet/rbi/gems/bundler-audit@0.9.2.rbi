@@ -312,6 +312,7 @@ class Bundler::Audit::Database::UpdateFailed < ::RuntimeError; end
 Bundler::Audit::VERSION = T.let(T.unsafe(nil), String)
 
 module Bundler::MatchRemoteMetadata
-  include ::Bundler::FetchMetadata
-  include ::Bundler::MatchMetadata
+  # FetchMetadata and MatchMetadata modules don't exist in Bundler
+  # include ::Bundler::FetchMetadata
+  # include ::Bundler::MatchMetadata
 end
