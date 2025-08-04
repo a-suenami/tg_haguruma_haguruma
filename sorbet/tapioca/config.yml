@@ -8,6 +8,7 @@ gem:
 dsl:
   # Add your `dsl` command parameters here:
   #
-  # exclude:
-  # - SomeGeneratorName
+  exclude:
+  - ActionMailer
   # workers: 5
+  halt_upon_load_error: false
