@@ -1,12 +1,7 @@
-# typed: true
+# typed: false
 # frozen_string_literal: true
 
-require "active_support/core_ext/integer/time"
-require "bootsnap/setup"
-require "bundler/setup"
-require "knapsack_pro"
-require "rails/all"
-require "rspec/rails"
-require "rspec/sorbet"
-require "sidekiq/testing"
-require "sorbet-runtime"
+# This file is generated. Do not modify it by hand.
+# Run `bundle exec tapioca require` to regenerate.
+
+# Add requires here to add additional files to be loaded by Tapioca
