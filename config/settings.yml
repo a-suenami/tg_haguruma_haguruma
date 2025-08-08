@@ -1,0 +1,114 @@
+# Environment key should concatinate keypath with `_`
+# ex) redis.url => REDIS_URL
+# !! SORT ALPHABETICAL ORDER !!
+
+active_record:
+  deterministic_key: <%= ENV['ACTIVE_RECORD_DETERMINISTIC_KEY'] %>
+  key_derivation_salt: <%= ENV['ACTIVE_RECORD_KEY_DERIVATION_SALT'] %>
+  primary_key: <%= ENV['ACTIVE_RECORD_PRIMARY_KEY'] %>
+auth0:
+  admin:
+    client_id: <%= ENV['AUTH0_ADMIN_CLIENT_ID'] %>
+    client_secret: <%= ENV['AUTH0_ADMIN_CLIENT_SECRET'] %>
+    domain: <%= ENV['AUTH0_ADMIN_DOMAIN'] %>
+  dashboard:
+    client_id: <%= ENV['AUTH0_DASHBOARD_CLIENT_ID'] %>
+    client_secret: <%= ENV['AUTH0_DASHBOARD_CLIENT_SECRET'] %>
+    domain: <%= ENV['AUTH0_DASHBOARD_DOMAIN'] %>
+  ruler:
+    client_id: <%= ENV['AUTH0_RULER_CLIENT_ID'] %>
+    client_secret: <%= ENV['AUTH0_RULER_CLIENT_SECRET'] %>
+    domain: <%= ENV['AUTH0_RULER_DOMAIN'] %>
+  m2m:
+    client_id: <%= ENV['AUTH0_M2M_CLIENT_ID'] %>
+    client_secret: <%= ENV['AUTH0_M2M_CLIENT_SECRET'] %>
+    domain: <%= ENV['AUTH0_M2M_DOMAIN'] %>
+aws:
+  cloudfront:
+    media:
+      host: <%= ENV['AWS_CLOUDFRONT_MEDIA_HOST'] %>
+      key_pair:
+        private:
+          public_key_id: <%= ENV['AWS_CLOUDFRONT_MEDIA_KEY_PAIR_PRIVATE_PUBLIC_KEY_ID'] %>
+          # private_key: 定義しない
+  dynamodb:
+    access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+    app_constant:
+      table_name: <%= ENV['DYNAMODB_APP_CONSTANT_TABLE_NAME'] %>
+    region: ap-northeast-1
+    secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+    use_ecs_credentials: <%= ENV['USE_ECS_CREDENTIALS'] %>
+  s3:
+    media:
+      access_key_id: <%= ENV['AWS_S3_MEDIA_ACCESS_KEY_ID'] %>
+      bucket_name: <%= ENV['AWS_S3_MEDIA_BUCKET'] %>
+      region: ap-northeast-1
+      secret_access_key: <%= ENV['AWS_S3_MEDIA_SECRET_ACCESS_KEY'] %>
+      use_ecs_credentials: <%= ENV['USE_ECS_CREDENTIALS'] %>
+    private:
+      access_key_id: <%= ENV['AWS_S3_PRIVATE_ACCESS_KEY_ID'] %>
+      bucket_name: <%= ENV['AWS_S3_PRIVATE_BUCKET'] %>
+      region: ap-northeast-1
+      secret_access_key: <%= ENV['AWS_S3_PRIVATE_SECRET_ACCESS_KEY'] %>
+      use_ecs_credentials: <%= ENV['USE_ECS_CREDENTIALS'] %>
+  sqs:
+    event_queue_name: <%= ENV['AWS_SQS_EVENT_QUEUE_NAME'] %>
+    region: ap-northeast-1
+  eventbridge:
+    access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+    default_source: <%= ENV['AWS_EVENTBRIDGE_DEFAULT_SOURCE'] %>
+    default_bus_name: <%= ENV['AWS_EVENTBRIDGE_DEFAULT_BUS_NAME'] %>
+    region: ap-northeast-1
+    secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+blastengine:
+  api_key: <%= ENV['BLASTENGINE_API_KEY'] %>
+  user_id: <%= ENV['BLASTENGINE_USER_ID'] %>
+  rate_limit: <%= ENV['BLASTENGINE_RATE_LIMIT'] %>
+checkpoint:
+  jwt_secret: <%= ENV['CHECKPOINT_JWT_SECRET'] %>
+datadog:
+  enabled: <%= ENV['DATADOG_ENABLED'] %>
+domains:
+  admin: <%= ENV['ADMIN_DOMAIN'] %>
+  ruler: <%= ENV['RULER_DOMAIN'] %>
+  document_area: <%= ENV['DOCUMENT_AREA_DOMAIN'] %> # local で動かす用。本番はとりあえず hard coding する。
+gmo_payment:
+  credit_card_api_concurrency: <%= ENV['GMO_PAYMENT_CREDIT_CARD_API_CONCURRENCY'] %>
+gmo_remittance:
+  base_url: <%= ENV['GMO_REMITTANCE_BASE_URL'] %>
+komoju:
+  rate_limit: <%= ENV['KOMOJU_RATE_LIMIT'] %>
+metabase:
+  base_url: <%= ENV['METABASE_BASEURL'] %>
+  secret_key: <%= ENV['METABASE_SECRET_KEY'] %>
+moala_ticket:
+  api:
+    base_url: <%= ENV['MOALA_TICKET_API_BASE_URL'] %>
+    version: '20220613'
+models:
+  tenant:
+    manually_allow_ids:
+      - sample
+      - bz
+qkeys:
+  base_url: <%= ENV['QKEYS_BASE_URL'] %>
+  customer_id: <%= ENV['QKEYS_CUSTOMER_ID'] %>
+redis:
+  url: <%= ENV['REDIS_URL'] %>
+  for_worker_url: <%= ENV['REDIS_FOR_WORKER_URL'] %>
+super_mode: <%= !!ActiveRecord::Type::Boolean.new.cast(ENV['SUPER_MODE']) %>
+god_area:
+  enabled: <%= !!ActiveRecord::Type::Boolean.new.cast(ENV['GOD_AREA_ENABLED']) %>
+  password: <%= ENV['GOD_AREA_PASSWORD'] %>
+read_only_mode: <%= !!ActiveRecord::Type::Boolean.new.cast(ENV['READ_ONLY_MODE']) %>
+sms_link:
+  api:
+    token: <%= ENV['SMS_LINK_API_TOKEN'] %>
+    base_url: <%= ENV['SMS_LINK_BASE_URL'] %>
+twilio:
+  account_sid: <%= ENV['TWILIO_ACCOUNT_SID'] %>
+  api_key_sid: <%= ENV['TWILIO_API_KEY_SID'] %>
+  api_key_secret: <%= ENV['TWILIO_API_KEY_SECRET'] %>
+  edge: 'tokyo'
+  verify:
+    service_sid: <%= ENV['TWILIO_VERIFY_SERVICE_SID'] %>
