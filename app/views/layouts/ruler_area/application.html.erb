@@ -28,7 +28,7 @@
             <%= image_tag 'ruler_area/haguruma-logo.svg', alt: 'Haguruma', width: '120' %>
           </a>
           <ul class="uk-navbar-nav">
-            <li class="<%= 'uk-active' if controller_name == 'tenants' %>">
+            <li class="<%= 'uk-active' if controller_name == 'tenants' && action_name == 'index' %>">
               <%= link_to 'テナント', ruler_area_tenants_path %>
             </li>
             <li><a href="#">SIDEKIQ</a></li>
@@ -44,10 +44,54 @@
       </div>
     </nav>
     
-    <main class="ruler-main">
-      <div class="main-container">
-        <%= yield %>
+    <% if @tenant&.persisted? %>
+      <div class="rl-body">
+        <div class="rl-sidebar-left uk-visible@m">
+          <div class="rl-current-tenant uk-margin-bottom">
+            <div class="rl-tenant-title-container">
+              <div class="rl-tenant-title" title="<%= @tenant.name %>">
+                <%= link_to @tenant.name, ruler_area_tenant_path(@tenant), class: 'uk-link-reset' %>
+              </div>
+            </div>
+          </div>
+          
+          <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
+            <li class="uk-nav-header">基本設定</li>
+            <li class="uk-nav-divider"></li>
+            <li class="<%= 'uk-active' if controller_name == 'admins' %>">
+              <%= link_to '管理者', ruler_area_tenant_admins_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'oauth_providers' %>">
+              <%= link_to '認証プロバイダ', ruler_area_tenant_oauth_providers_path(@tenant) %>
+            </li>
+          </ul>
+          
+          <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
+            <li class="uk-nav-header">外部ページ</li>
+            <li class="uk-nav-divider"></li>
+            <% if @tenant.user_page_domain.present? %>
+              <li>
+                <%= link_to 'ユーザーサイト', @tenant.user_page_path, target: '_blank' %>
+              </li>
+            <% end %>
+            <li>
+              <%= link_to '管理画面', admin_area_ruler_area_tenant_path(@tenant.id), target: '_blank' %>
+            </li>
+          </ul>
+        </div>
+        
+        <main class="rl-main uk-section uk-section-default">
+          <div class="uk-container uk-container-expand">
+            <%= yield %>
+          </div>
+        </main>
       </div>
-    </main>
+    <% else %>
+      <main class="ruler-main">
+        <div class="main-container">
+          <%= yield %>
+        </div>
+      </main>
+    <% end %>
   </body>
 </html>

@@ -25,7 +25,7 @@ module RulerArea
       @tenant = Tenant.new(tenant_params)
 
       if @tenant.save
-        redirect_to ruler_area_tenants_path, notice: t('helpers.messages.created')
+        redirect_to ruler_area_tenant_path(@tenant), notice: t('helpers.messages.created')
       else
         render :new, status: :unprocessable_entity
       end
@@ -36,7 +36,7 @@ module RulerArea
       # @tenant = RulerArea::Tenants::UpdateService.new(tenant_params).execute(@tenant)
 
       if @tenant.update(tenant_params)
-        redirect_to ruler_area_tenants_path, notice: t('helpers.messages.updated')
+        redirect_to ruler_area_tenant_path(@tenant), notice: t('helpers.messages.updated')
       else
         render :edit, status: :unprocessable_entity
       end

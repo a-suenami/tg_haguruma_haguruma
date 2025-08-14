@@ -1,9 +1,3 @@
-en:
-  helpers:
-    messages:
-      created: 登録しました
-      updated: 更新しました
-
 ja:
   activerecord:
     models:
@@ -11,8 +5,8 @@ ja:
     attributes:
       tenant:
         id: ID
-        name: 名前
-        user_page_domain: ユーザ画面ドメイン
+        name: テナント名
+        user_page_domain: ユーザー画面ドメイン
         created_at: 作成日時
         updated_at: 更新日時
     errors:
@@ -23,7 +17,7 @@ ja:
               reserved_id_error: このIDは予約されているため使用できません
   helpers:
     messages:
-      created: 作成しました
+      created: 登録しました
       updated: 更新しました
     action:
       new: 作成
@@ -31,8 +25,11 @@ ja:
       delete: 削除
       back: 戻る
     submit:
-      create: 登録する
-      update: 更新する
+      create: 登録
+      update: 更新
+      tenant:
+        create: テナントを登録
+        update: テナントを更新
   time:
     formats:
       default: "%Y/%m/%d %H:%M"

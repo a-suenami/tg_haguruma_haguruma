@@ -4,7 +4,7 @@
 module RulerArea
   class ApplicationController < ActionController::Base
     layout 'ruler_area/application'
-    
+
     # TODO: Add Pagy when available
     # include Pagy::Backend
 

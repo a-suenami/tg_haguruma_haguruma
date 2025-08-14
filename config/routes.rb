@@ -20,6 +20,20 @@ Rails.application.routes.draw do
       member do
         get :admin_area
       end
+
+      # Sidebar navigation routes (placeholder controllers)
+      resources :admins, only: [:index]
+      resources :oauth_providers, only: [:index]
     end
   end
+
+  # External link route for admin area
+  get '/ruler/tenants/:id/admin_area', to: redirect { |params, request|
+    tenant = Tenant.find(params[:id])
+    if Rails.env.development?
+      "http://#{tenant.id}.#{request.host}:#{request.port}/admin"
+    else
+      "https://#{tenant.id}.admin.haguruma.com/admin"
+    end
+  }, as: :admin_area_ruler_area_tenant
 end
