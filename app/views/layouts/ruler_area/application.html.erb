@@ -71,11 +71,17 @@
             <li class="uk-nav-divider"></li>
             <% if @tenant.user_page_domain.present? %>
               <li>
-                <%= link_to 'ユーザーサイト', @tenant.user_page_path, target: '_blank' %>
+                <%= link_to @tenant.user_page_path, target: '_blank', class: 'uk-flex uk-flex-middle' do %>
+                  ユーザーサイト
+                  <span uk-icon="icon: users; ratio: 0.8" class="uk-margin-small-left"></span>
+                <% end %>
               </li>
             <% end %>
             <li>
-              <%= link_to '管理画面', admin_area_ruler_area_tenant_path(@tenant.id), target: '_blank' %>
+              <%= link_to admin_area_ruler_area_tenant_path(@tenant.id), target: '_blank', class: 'uk-flex uk-flex-middle' do %>
+                管理画面
+                <span uk-icon="icon: cog; ratio: 0.8" class="uk-margin-small-left"></span>
+              <% end %>
             </li>
           </ul>
         </div>
