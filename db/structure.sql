@@ -48,12 +48,7 @@ SET default_table_access_method = heap;
 CREATE TABLE public.tenants (
     id character varying NOT NULL,
     name character varying,
-    available_payment_method_names character varying[] DEFAULT '{}'::character varying[],
-    available_ticket_reception_method_names character varying[] DEFAULT '{}'::character varying[],
-    available_refund_method_names character varying[] DEFAULT '{}'::character varying[],
     user_page_domain character varying,
-    mail_header text,
-    mail_footer text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
