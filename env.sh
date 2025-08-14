@@ -2,7 +2,7 @@
 # env
 # ==============================================================================
 # Usage: `source env.sh`
-project_name='haguruma-api'
+project_name='haguruma'
 
 if [ -n "$ZSH_VERSION" ]; then
   autoload -Uz colors
