@@ -22,17 +22,26 @@ if command -v docker &> /dev/null; then
   alias app="rm -f tmp/pids/server.pid && up app"
   alias rails="bundle exec rails"
   alias rake="bundle exec rake"
-  alias rspec="docker-compose run -e RAILS_ENV=test --rm app rspec"
-  alias rspec_parallel="docker-compose run -e RAILS_ENV=test --rm app bash -c 'CORES=${PARALLEL_JOBS:-$( (command -v nproc >/dev/null && nproc) || getconf _NPROCESSORS_ONLN || sysctl -n hw.ncpu || echo 4 )}; bundle exec rake parallel:create parallel:prepare && bundle exec parallel_test --type rspec -n $CORES'"
+  alias rspec="docker-compose-run -e RAILS_ENV=test --rm app rspec"
+  alias rspec_parallel="docker-compose-run -e RAILS_ENV=test --rm app bash -c 'CORES=${PARALLEL_JOBS:-$( (command -v nproc >/dev/null && nproc) || getconf _NPROCESSORS_ONLN || sysctl -n hw.ncpu || echo 4 )}; bundle exec rake parallel:create parallel:prepare && bundle exec parallel_test --type rspec -n $CORES'"
   alias rubocop="bundle exec rubocop -DES --cache true"
   alias lint="bundle exec rubocop -a"
   alias rubocop_show_class="bundle exec rubocop -D"
   alias guard="docker-compose run -e RAILS_ENV=test --rm app bundle exec guard"
-  alias tapioca="docker-compose run -e RAILS_ENV=test --rm app bin/tapioca"
-  alias annotate="docker-compose run --rm app bundle exec annotate"
+  alias tapioca="docker-compose-run -e RAILS_ENV=test app bin/tapioca"
+  alias annotate="docker-compose-run app bundle exec annotate"
+
+  # Helper function to use exec if container is running, otherwise use run
+  docker-compose-run() {
+    if docker compose -p $project_name ps app 2>/dev/null | grep -q "Up\|running"; then
+      docker compose -p $project_name exec "$@"
+    else
+      docker compose -p $project_name run --rm "$@"
+    fi
+  }
 
   bundle() {
-    docker compose -p $project_name run -e RAILS_ENV=${RAILS_ENV:=development} --rm app bundle $*
+    docker-compose-run -e RAILS_ENV=${RAILS_ENV:=development} app bundle "$@"
   }
 fi
 

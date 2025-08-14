@@ -21,7 +21,9 @@ RUN apk add --no-cache \
     jq \
     jq-dev \
     yaml-dev \
-    libsodium-dev
+    libsodium-dev \
+    gcompat \
+    libstdc++
 
 WORKDIR /rails_app
 
