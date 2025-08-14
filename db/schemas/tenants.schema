@@ -1,6 +1,5 @@
 create_table :tenants, force: :cascade, id: :string do |t|
   t.string :name
-  t.string :mode # single booth or multi booths
 
   t.string :available_payment_method_names, array: true, default: []
   t.string :available_ticket_reception_method_names, array: true, default: []

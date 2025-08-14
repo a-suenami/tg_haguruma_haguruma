@@ -1,0 +1,43 @@
+<div class="am-page-header">
+  <h3>テナント一覧</h3>
+  <div>
+    <%= link_to '作成', new_ruler_area_tenant_path, class: 'uk-button uk-button-primary' %>
+  </div>
+</div>
+
+<table class="uk-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>テナント名</th>
+      <th>テナント番号</th>
+      <th>作成日時</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tenants.each do |tenant| %>
+      <tr>
+        <td><%= tenant.id %></td>
+        <td><%= tenant.name %></td>
+        <td><%= tenant.tenant_number %></td>
+        <td><%= l tenant.created_at, format: :long %></td>
+        <td>
+          <div class="table-actions">
+            <% if tenant.user_page_domain.present? %>
+              <%= link_to 'ユーザ画面', tenant.user_page_path, target: '_blank' %>
+            <% else %>
+              <button disabled>ユーザ画面</button>
+            <% end %>
+            <%= link_to '管理画面', '#' %>
+            <%= link_to '設定', ruler_area_tenant_path(tenant.id) %>
+            <%= link_to '編集', edit_ruler_area_tenant_path(tenant) %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%# TODO: Add pagy navigation when available %>
+<%# pagy_app_nav(@pagy) %>

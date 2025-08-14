@@ -11,4 +11,13 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # Ruler Area routes
+  namespace :ruler_area do
+    resources :tenants do
+      member do
+        get :admin_area
+      end
+    end
+  end
 end

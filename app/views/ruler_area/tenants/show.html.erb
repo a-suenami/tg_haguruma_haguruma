@@ -1,0 +1,44 @@
+<ul class="uk-breadcrumb">
+  <li>
+    <%= link_to 'テナント', ruler_area_tenants_path %>
+  </li>
+  <li>
+    <span><%= @tenant.name %></span>
+  </li>
+</ul>
+
+<div class="uk-flex uk-flex-middle uk-flex-between am-page-header">
+  <h3>テナント詳細</h3>
+  <div>
+    <%= link_to '編集', edit_ruler_area_tenant_path(@tenant), class: 'uk-button uk-button uk-button-primary' %>
+  </div>
+</div>
+
+<hr>
+
+<dl class="uk-description-list uk-description-list-divider">
+  <dt><%= Tenant.human_attribute_name(:id) %></dt>
+  <dd><%= @tenant.id %></dd>
+  
+  <dt><%= Tenant.human_attribute_name(:name) %></dt>
+  <dd><%= @tenant.name %></dd>
+  
+  <dt><%= Tenant.human_attribute_name(:tenant_number) %></dt>
+  <dd><%= @tenant.tenant_number %></dd>
+  
+  <dt><%= Tenant.human_attribute_name(:user_page_domain) %></dt>
+  <dd><%= @tenant.user_page_domain %></dd>
+  
+  <dt><%= Tenant.human_attribute_name(:mail_header) %></dt>
+  <dd>
+    <pre><%= @tenant.mail_header %></pre>
+  </dd>
+  
+  <dt><%= Tenant.human_attribute_name(:mail_footer) %></dt>
+  <dd>
+    <pre><%= @tenant.mail_footer %></pre>
+  </dd>
+  
+  <dt><%= Tenant.human_attribute_name(:created_at) %></dt>
+  <dd><%= l @tenant.created_at %></dd>
+</dl>
