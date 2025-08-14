@@ -1,0 +1,31 @@
+<ul class="uk-breadcrumb">
+  <li>
+    <%= link_to 'テナント', ruler_area_tenants_path %>
+  </li>
+  <li>
+    <span><%= @tenant.name %></span>
+  </li>
+</ul>
+
+<div class="am-page-header">
+  <h3>テナント詳細</h3>
+  <div>
+    <%= link_to '編集', edit_ruler_area_tenant_path(@tenant), class: 'uk-button uk-button-primary' %>
+  </div>
+</div>
+
+<hr>
+
+<dl class="uk-description-list uk-description-list-divider">
+  <dt>ID</dt>
+  <dd><%= @tenant.id %></dd>
+  
+  <dt>テナント名</dt>
+  <dd><%= @tenant.name %></dd>
+  
+  <dt>ユーザ画面ドメイン</dt>
+  <dd><%= @tenant.user_page_domain || '-' %></dd>
+  
+  <dt>作成日時</dt>
+  <dd><%= @tenant.created_at.strftime('%Y/%m/%d %H:%M') %></dd>
+</dl>

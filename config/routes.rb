@@ -11,4 +11,19 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # Ruler Area routes
+  namespace :ruler_area, path: :ruler do
+    root to: 'tenants#index', as: :root
+
+    resources :tenants do
+      member do
+        get :admin_area
+      end
+
+      # Sidebar navigation routes (placeholder controllers)
+      resources :admins, only: [:index]
+      resources :oauth_providers, only: [:index]
+    end
+  end
 end

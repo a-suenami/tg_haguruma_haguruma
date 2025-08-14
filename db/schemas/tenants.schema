@@ -1,18 +1,6 @@
 create_table :tenants, force: :cascade, id: :string do |t|
   t.string :name
-  t.string :mode # single booth or multi booths
-
-  t.string :available_payment_method_names, array: true, default: []
-  t.string :available_ticket_reception_method_names, array: true, default: []
-  t.string :available_refund_method_names, array: true, default: []
   t.string :user_page_domain
-  t.string :tenant_number, comment: '発券番号に使用するテナント番号。数字2桁。'
-
-  # メール関係
-  t.text :mail_header
-  t.text :mail_footer
 
   t.timestamps null: false
-
-  t.index [:tenant_number], name: :idx_tenants__tenant_number__uniq, using: :btree, unique: true
 end

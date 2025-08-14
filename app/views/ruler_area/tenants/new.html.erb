@@ -1,0 +1,7 @@
+<div class="am-page-header">
+  <h3>テナント新規作成</h3>
+</div>
+
+<%= form_with model: @tenant, url: ruler_area_tenants_path, local: true do |f| %>
+  <%= render 'form', f: f %>
+<% end %>

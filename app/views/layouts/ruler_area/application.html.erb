@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Haguruma Ruler Area</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%# UIKit CSS %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/css/uikit.min.css" />
+    
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "ruler_area/application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    
+    <%# UIKit JS %>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/js/uikit-icons.min.js"></script>
+  </head>
+
+  <body class="ruler-body">
+    <%= render 'layouts/ruler_area/flash' %>
+    
+    <nav class="ruler-navbar" uk-navbar>
+      <div class="navbar-inner">
+        <div class="uk-navbar-left">
+          <a href="<%= ruler_area_tenants_path %>" class="uk-navbar-item uk-logo">
+            <%= image_tag 'ruler_area/haguruma-logo.svg', alt: 'Haguruma', width: '120' %>
+          </a>
+          <ul class="uk-navbar-nav">
+            <li class="<%= 'uk-active' if controller_name == 'tenants' && action_name == 'index' %>">
+              <%= link_to 'テナント', ruler_area_tenants_path %>
+            </li>
+            <li><a href="#">SIDEKIQ</a></li>
+            <li><a href="#">マスタ</a></li>
+          </ul>
+        </div>
+        <div class="uk-navbar-right">
+          <ul class="uk-navbar-nav">
+            <li><a href="#">管理</a></li>
+            <li><a href="#">アカウント</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <% if @tenant&.persisted? %>
+      <div class="rl-body">
+        <div class="rl-sidebar-left uk-visible@m">
+          <div class="rl-current-tenant uk-margin-bottom">
+            <div class="rl-tenant-title-container">
+              <div class="rl-tenant-title" title="<%= @tenant.name %>">
+                <%= link_to @tenant.name, ruler_area_tenant_path(@tenant), class: 'uk-link-reset' %>
+              </div>
+            </div>
+          </div>
+          
+          <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
+            <li class="uk-nav-header">基本設定</li>
+            <li class="uk-nav-divider"></li>
+            <li class="<%= 'uk-active' if controller_name == 'admins' %>">
+              <%= link_to '管理者', ruler_area_tenant_admins_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'oauth_providers' %>">
+              <%= link_to '認証プロバイダ', ruler_area_tenant_oauth_providers_path(@tenant) %>
+            </li>
+          </ul>
+          
+          <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
+            <li class="uk-nav-header">外部ページ</li>
+            <li class="uk-nav-divider"></li>
+            <% if @tenant.user_page_domain.present? %>
+              <li>
+                <%= link_to @tenant.user_page_path, target: '_blank', class: 'uk-flex uk-flex-middle' do %>
+                  ユーザーサイト
+                  <span uk-icon="icon: users; ratio: 0.8" class="uk-margin-small-left"></span>
+                <% end %>
+              </li>
+            <% end %>
+            <li>
+              <%= link_to admin_area_ruler_area_tenant_path(@tenant), target: '_blank', class: 'uk-flex uk-flex-middle' do %>
+                管理画面
+                <span uk-icon="icon: cog; ratio: 0.8" class="uk-margin-small-left"></span>
+              <% end %>
+            </li>
+          </ul>
+        </div>
+        
+        <main class="rl-main uk-section uk-section-default">
+          <div class="uk-container uk-container-expand">
+            <%= yield %>
+          </div>
+        </main>
+      </div>
+    <% else %>
+      <main class="ruler-main">
+        <div class="main-container">
+          <%= yield %>
+        </div>
+      </main>
+    <% end %>
+  </body>
+</html>
