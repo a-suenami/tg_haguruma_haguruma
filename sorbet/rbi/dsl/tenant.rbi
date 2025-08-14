@@ -479,141 +479,6 @@ class Tenant
   end
 
   module GeneratedAttributeMethods
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_payment_method_names; end
-
-    sig { params(value: T.nilable(T::Array[::String])).returns(T.nilable(T::Array[::String])) }
-    def available_payment_method_names=(value); end
-
-    sig { returns(T::Boolean) }
-    def available_payment_method_names?; end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_payment_method_names_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def available_payment_method_names_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def available_payment_method_names_came_from_user?; end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def available_payment_method_names_change; end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def available_payment_method_names_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def available_payment_method_names_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_payment_method_names_in_database; end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def available_payment_method_names_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def available_payment_method_names_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_payment_method_names_previously_was; end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_payment_method_names_was; end
-
-    sig { void }
-    def available_payment_method_names_will_change!; end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_refund_method_names; end
-
-    sig { params(value: T.nilable(T::Array[::String])).returns(T.nilable(T::Array[::String])) }
-    def available_refund_method_names=(value); end
-
-    sig { returns(T::Boolean) }
-    def available_refund_method_names?; end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_refund_method_names_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def available_refund_method_names_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def available_refund_method_names_came_from_user?; end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def available_refund_method_names_change; end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def available_refund_method_names_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def available_refund_method_names_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_refund_method_names_in_database; end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def available_refund_method_names_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def available_refund_method_names_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_refund_method_names_previously_was; end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_refund_method_names_was; end
-
-    sig { void }
-    def available_refund_method_names_will_change!; end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_ticket_reception_method_names; end
-
-    sig { params(value: T.nilable(T::Array[::String])).returns(T.nilable(T::Array[::String])) }
-    def available_ticket_reception_method_names=(value); end
-
-    sig { returns(T::Boolean) }
-    def available_ticket_reception_method_names?; end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_ticket_reception_method_names_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def available_ticket_reception_method_names_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def available_ticket_reception_method_names_came_from_user?; end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def available_ticket_reception_method_names_change; end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def available_ticket_reception_method_names_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def available_ticket_reception_method_names_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_ticket_reception_method_names_in_database; end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def available_ticket_reception_method_names_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def available_ticket_reception_method_names_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_ticket_reception_method_names_previously_was; end
-
-    sig { returns(T.nilable(T::Array[::String])) }
-    def available_ticket_reception_method_names_was; end
-
-    sig { void }
-    def available_ticket_reception_method_names_will_change!; end
-
     sig { returns(::ActiveSupport::TimeWithZone) }
     def created_at; end
 
@@ -750,96 +615,6 @@ class Tenant
     def id_will_change!; end
 
     sig { returns(T.nilable(::String)) }
-    def mail_footer; end
-
-    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def mail_footer=(value); end
-
-    sig { returns(T::Boolean) }
-    def mail_footer?; end
-
-    sig { returns(T.nilable(::String)) }
-    def mail_footer_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def mail_footer_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def mail_footer_came_from_user?; end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def mail_footer_change; end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def mail_footer_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def mail_footer_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def mail_footer_in_database; end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def mail_footer_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def mail_footer_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def mail_footer_previously_was; end
-
-    sig { returns(T.nilable(::String)) }
-    def mail_footer_was; end
-
-    sig { void }
-    def mail_footer_will_change!; end
-
-    sig { returns(T.nilable(::String)) }
-    def mail_header; end
-
-    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def mail_header=(value); end
-
-    sig { returns(T::Boolean) }
-    def mail_header?; end
-
-    sig { returns(T.nilable(::String)) }
-    def mail_header_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def mail_header_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def mail_header_came_from_user?; end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def mail_header_change; end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def mail_header_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def mail_header_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def mail_header_in_database; end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def mail_header_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def mail_header_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def mail_header_previously_was; end
-
-    sig { returns(T.nilable(::String)) }
-    def mail_header_was; end
-
-    sig { void }
-    def mail_header_will_change!; end
-
-    sig { returns(T.nilable(::String)) }
     def name; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
@@ -885,15 +660,6 @@ class Tenant
     def name_will_change!; end
 
     sig { void }
-    def restore_available_payment_method_names!; end
-
-    sig { void }
-    def restore_available_refund_method_names!; end
-
-    sig { void }
-    def restore_available_ticket_reception_method_names!; end
-
-    sig { void }
     def restore_created_at!; end
 
     sig { void }
@@ -903,12 +669,6 @@ class Tenant
     def restore_id_value!; end
 
     sig { void }
-    def restore_mail_footer!; end
-
-    sig { void }
-    def restore_mail_header!; end
-
-    sig { void }
     def restore_name!; end
 
     sig { void }
@@ -916,24 +676,6 @@ class Tenant
 
     sig { void }
     def restore_user_page_domain!; end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def saved_change_to_available_payment_method_names; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_available_payment_method_names?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def saved_change_to_available_refund_method_names; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_available_refund_method_names?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([T.nilable(T::Array[::String]), T.nilable(T::Array[::String])])) }
-    def saved_change_to_available_ticket_reception_method_names; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_available_ticket_reception_method_names?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
     def saved_change_to_created_at; end
@@ -952,18 +694,6 @@ class Tenant
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_mail_footer; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_mail_footer?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_mail_header; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_mail_header?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def saved_change_to_name; end
@@ -1074,15 +804,6 @@ class Tenant
     def user_page_domain_will_change!; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_available_payment_method_names?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_available_refund_method_names?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_available_ticket_reception_method_names?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -1090,12 +811,6 @@ class Tenant
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_mail_footer?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_mail_header?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_name?(from: T.unsafe(nil), to: T.unsafe(nil)); end
