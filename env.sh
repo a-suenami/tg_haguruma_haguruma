@@ -28,11 +28,20 @@ if command -v docker &> /dev/null; then
   alias lint="bundle exec rubocop -a"
   alias rubocop_show_class="bundle exec rubocop -D"
   alias guard="docker-compose run -e RAILS_ENV=test --rm app bundle exec guard"
-  alias tapioca="docker-compose run -e RAILS_ENV=test --rm app bin/tapioca"
-  alias annotate="docker-compose run --rm app bundle exec annotate"
+  alias tapioca="docker-compose-run -e RAILS_ENV=test app bin/tapioca"
+  alias annotate="docker-compose-run app bundle exec annotate"
+
+  # Helper function to use exec if container is running, otherwise use run
+  docker-compose-run() {
+    if docker compose -p $project_name ps app 2>/dev/null | grep -q "Up\|running"; then
+      docker-compose exec "$@"
+    else
+      docker-compose run --rm "$@"
+    fi
+  }
 
   bundle() {
-    docker compose -p $project_name run -e RAILS_ENV=${RAILS_ENV:=development} --rm app bundle $*
+    docker-compose-run -e RAILS_ENV=${RAILS_ENV:=development} app bundle "$@"
   }
 fi
 
