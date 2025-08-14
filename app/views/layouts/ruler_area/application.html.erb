@@ -24,7 +24,9 @@
     <nav class="ruler-navbar" uk-navbar>
       <div class="navbar-inner">
         <div class="uk-navbar-left">
-          <a href="<%= ruler_area_tenants_path %>" class="uk-navbar-item uk-logo">TRIPLE</a>
+          <a href="<%= ruler_area_tenants_path %>" class="uk-navbar-item uk-logo">
+            <%= image_tag 'ruler_area/haguruma-logo.svg', alt: 'Haguruma', width: '120' %>
+          </a>
           <ul class="uk-navbar-nav">
             <li class="<%= 'uk-active' if controller_name == 'tenants' %>">
               <%= link_to 'テナント', ruler_area_tenants_path %>
