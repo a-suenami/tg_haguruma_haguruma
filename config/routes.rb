@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   # Ruler Area routes
-  namespace :ruler_area do
+  namespace :ruler_area, path: :ruler do
+    root to: 'tenants#index', as: :root
+
     resources :tenants do
       member do
         get :admin_area
