@@ -273,5 +273,6 @@ module Process
   extend ::RedisClient::PIDCache::CoreExt
   extend ::FFI::ModernForkTracking
   extend ::ActiveSupport::ForkTracker::CoreExt
-  extend ::Bundler::ConnectionPool::ForkTracker
+  # Bundler::ConnectionPool doesn't exist - should be ::ConnectionPool
+  # extend ::Bundler::ConnectionPool::ForkTracker
 end

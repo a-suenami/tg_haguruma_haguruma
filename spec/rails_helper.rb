@@ -63,4 +63,22 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Include modules
+  config.include FactoryBot::Syntax::Methods
 end
+
+# Additional requires
+require 'sorbet-runtime'
+require 'rspec/sorbet'
+require 'knapsack_pro'
+
+extend T::Sig # rubocop:disable Style/MixinUsage
+
+RSpec::Sorbet.allow_doubles! # allow doubles to be used without breaking type checking
+
+# Load support files
+Dir[Rails.root.join('spec', 'helpers', '**', '*.rb')].each { |f| require f }
+
+# Configure KnapsackPro
+KnapsackPro::Adapters::RSpecAdapter.bind if defined?(KnapsackPro)

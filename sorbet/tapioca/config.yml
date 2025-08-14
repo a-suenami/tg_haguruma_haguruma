@@ -8,6 +8,6 @@ gem:
 dsl:
   # Add your `dsl` command parameters here:
   #
-  # exclude:
-  # - SomeGeneratorName
+  exclude:
+  - ActionMailer::Preview
   # workers: 5

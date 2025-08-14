@@ -6,6 +6,15 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Fix for Rails 8.0 ActionMailer API change - apply after gems are loaded
+if Rails.version.start_with?('8.') && defined?(ActionMailer::Base)
+  ActionMailer::Base.class_eval do
+    def self.preview_path=(path)
+      self.preview_paths = [path] if path
+    end
+  end
+end
+
 module HagurumaApi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
