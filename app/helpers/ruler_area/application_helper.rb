@@ -7,7 +7,8 @@ module RulerArea
 
     sig { returns(T::Array[[String, String]]) }
     def uikit_flash
-      controller.flash.map do |key, message|
+      # Using T.unsafe to handle Rails controller helper method
+      T.unsafe(self).controller.flash.map do |key, message|
         [class_of(key), message]
       end
     end

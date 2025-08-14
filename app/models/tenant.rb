@@ -22,12 +22,12 @@ class Tenant < ApplicationRecord
 
       # cache がない場合
       if RequestStore.store[:current_tenant_object].blank?
-        RequestStore.store[:current_tenant_object] = self.find(self.current_id)
+        RequestStore.store[:current_tenant_object] = self.find(T.must(self.current_id))
       end
 
       # cache と current_id が違う場合は取得し直す
       if RequestStore.store[:current_tenant_object].id != self.current_id
-        RequestStore.store[:current_tenant_object] = self.find(self.current_id)
+        RequestStore.store[:current_tenant_object] = self.find(T.must(self.current_id))
       end
 
       RequestStore.store[:current_tenant_object]
@@ -46,7 +46,7 @@ class Tenant < ApplicationRecord
 
   sig { void }
   def validate_id
-    if ReservedSubdomain.new(id&.downcase).reserved? && Array(Settings.models.tenant.manually_allow_ids).exclude?(id&.downcase)
+    if ReservedSubdomain.new(id.downcase).reserved? && Array(Settings.models.tenant.manually_allow_ids).exclude?(id.downcase)
       errors.add(:base, :reserved_id_error)
     end
   end
