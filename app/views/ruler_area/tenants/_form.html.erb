@@ -16,30 +16,9 @@
 </div>
 
 <div class="uk-margin">
-  <%= f.label :tenant_number, class: 'uk-form-label' %>
-  <div class="uk-form-controls">
-    <%= f.text_field :tenant_number, placeholder: '01', required: true, class: 'form-stacked-text uk-input', pattern: '\d{2}' %>
-  </div>
-</div>
-
-<div class="uk-margin">
   <%= f.label :user_page_domain, class: 'uk-form-label' %>
   <div class="uk-form-controls">
-    <%= f.text_field :user_page_domain, placeholder: 'ticket.t-riple.com', required: false, class: 'form-stacked-text uk-input' %>
-  </div>
-</div>
-
-<div class="uk-margin">
-  <%= f.label :mail_header, class: 'uk-form-label' %>
-  <div class="uk-form-controls">
-    <%= f.text_area :mail_header, placeholder: 'INFORMATION FROM TRIPLE TICKET', class: 'form-stacked-text uk-textarea' %>
-  </div>
-</div>
-
-<div class="uk-margin">
-  <%= f.label :mail_footer, class: 'uk-form-label' %>
-  <div class="uk-form-controls">
-    <%= f.text_area :mail_footer, placeholder: "---------------------\nTRIPLE TICKET\nhttps://ticket.t-riple.com/\nマイページ\nhttps://ticket.t-riple.com/mypage\nFAQ(よくあるお問い合わせ)\nhttps://ticket.t-riple.com/pages/faq", rows: 10, class: 'form-stacked-text uk-textarea' %>
+    <%= f.text_field :user_page_domain, placeholder: 'example.haguruma.com', required: false, class: 'form-stacked-text uk-input' %>
   </div>
 </div>
 

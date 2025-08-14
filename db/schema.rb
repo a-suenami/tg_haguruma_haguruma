@@ -16,4 +16,15 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
 
+  create_table "tenants", id: :string, force: :cascade do |t|
+    t.string "name"
+    t.string "available_payment_method_names", default: [], array: true
+    t.string "available_ticket_reception_method_names", default: [], array: true
+    t.string "available_refund_method_names", default: [], array: true
+    t.string "user_page_domain"
+    t.text "mail_header"
+    t.text "mail_footer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 end

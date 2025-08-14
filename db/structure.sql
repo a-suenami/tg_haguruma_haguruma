@@ -48,12 +48,10 @@ SET default_table_access_method = heap;
 CREATE TABLE public.tenants (
     id character varying NOT NULL,
     name character varying,
-    mode character varying,
     available_payment_method_names character varying[] DEFAULT '{}'::character varying[],
     available_ticket_reception_method_names character varying[] DEFAULT '{}'::character varying[],
     available_refund_method_names character varying[] DEFAULT '{}'::character varying[],
     user_page_domain character varying,
-    tenant_number character varying,
     mail_header text,
     mail_footer text,
     created_at timestamp(6) without time zone NOT NULL,
@@ -62,25 +60,11 @@ CREATE TABLE public.tenants (
 
 
 --
--- Name: COLUMN tenants.tenant_number; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.tenants.tenant_number IS '発券番号に使用するテナント番号。数字2桁。';
-
-
---
 -- Name: tenants tenants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tenants
     ADD CONSTRAINT tenants_pkey PRIMARY KEY (id);
-
-
---
--- Name: idx_tenants__tenant_number__uniq; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX idx_tenants__tenant_number__uniq ON public.tenants USING btree (tenant_number);
 
 
 --

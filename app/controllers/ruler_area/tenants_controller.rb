@@ -65,10 +65,7 @@ module RulerArea
       T.cast(params.require(:tenant), ActionController::Parameters).permit(
         :id,
         :name,
-        :tenant_number,
         :user_page_domain,
-        :mail_header,
-        :mail_footer,
         # TODO: Add config_attributes when Tenant::Config is available
         # config_attributes: [
         #   :id,
