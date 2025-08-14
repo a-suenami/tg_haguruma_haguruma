@@ -24,7 +24,6 @@
 /* Base styles */
 html,
 body {
-  font-size: 14px;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -50,18 +49,18 @@ a:hover {
   border-bottom: 1px solid var(--color-border);
   box-shadow: none;
   padding: 0;
-  min-height: 50px;
+  min-height: 80px;
   display: flex;
   align-items: center;
 }
 
 .navbar-inner {
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
+  max-width: 100%;
+  padding: 0 30px;
   display: flex;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
 .ruler-navbar .uk-navbar-left,
@@ -84,9 +83,8 @@ a:hover {
 .ruler-navbar .uk-navbar-nav > li > a {
   color: var(--color-navbar-text);
   font-weight: normal;
-  font-size: 14px;
   padding: 0 15px;
-  min-height: 50px;
+  min-height: 80px;
   text-transform: none;
   display: flex;
   align-items: center;
@@ -105,20 +103,21 @@ a:hover {
   padding: 0 20px 0 0;
   display: flex;
   align-items: center;
-  min-height: 50px;
+  min-height: 80px;
 }
 
 /* Main content area */
 .ruler-main {
   padding: 30px 0;
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - 80px);
   background-color: white;
 }
 
 .main-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 30px;
+  box-sizing: border-box;
 }
 
 /* Page header */
@@ -140,7 +139,6 @@ a:hover {
 
 /* Table styles */
 .uk-table {
-  font-size: 14px;
   background: white;
   margin-top: 0;
   width: 100%;
@@ -175,7 +173,6 @@ a:hover {
 
 /* Button styles */
 .uk-button {
-  font-size: 14px;
   padding: 8px 20px;
   border-radius: 4px;
   text-transform: none;
@@ -205,7 +202,6 @@ a:hover {
   background: none;
   border: none;
   padding: 0;
-  font-size: 14px;
   cursor: pointer;
   min-height: auto;
   line-height: 1;
@@ -224,7 +220,6 @@ a:hover {
 /* Form styles */
 .uk-form-label {
   color: var(--color-text);
-  font-size: 14px;
   font-weight: normal;
   margin-bottom: 5px;
 }
@@ -232,7 +227,6 @@ a:hover {
 .uk-input,
 .uk-select,
 .uk-textarea {
-  font-size: 14px;
   padding: 8px 10px;
   border: 1px solid var(--color-border);
   border-radius: 4px;
