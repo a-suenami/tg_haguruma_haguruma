@@ -1,3 +1,9 @@
+en:
+  helpers:
+    messages:
+      created: 登録しました
+      updated: 更新しました
+
 ja:
   activerecord:
     models:
@@ -27,3 +33,14 @@ ja:
       edit: 編集
       delete: 削除
       back: 戻る
+    submit:
+      create: 登録する
+      update: 更新する
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M"
+      long: "%Y/%m/%d %H:%M"
+      short: "%m/%d %H:%M"
+  date:
+    formats:
+      default: "%Y/%m/%d"

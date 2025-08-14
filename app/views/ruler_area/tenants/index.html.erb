@@ -21,17 +21,17 @@
         <td><%= tenant.id %></td>
         <td><%= tenant.name %></td>
         <td><%= tenant.tenant_number %></td>
-        <td><%= l tenant.created_at, format: :long %></td>
+        <td><%= tenant.created_at.strftime('%Y/%m/%d %H:%M') %></td>
         <td>
-          <div class="table-actions">
+          <div class="uk-align-right">
             <% if tenant.user_page_domain.present? %>
-              <%= link_to 'ユーザ画面', tenant.user_page_path, target: '_blank' %>
+              <%= link_to 'ユーザ画面', tenant.user_page_path, class: 'uk-button uk-button-small uk-button-default uk-margin-small-right', target: '_blank' %>
             <% else %>
-              <button disabled>ユーザ画面</button>
+              <button class="uk-button uk-button-small uk-button-default uk-margin-small-right" disabled>ユーザ画面</button>
             <% end %>
-            <%= link_to '管理画面', '#' %>
-            <%= link_to '設定', ruler_area_tenant_path(tenant.id) %>
-            <%= link_to '編集', edit_ruler_area_tenant_path(tenant) %>
+            <%= link_to '管理画面', '#', class: 'uk-button uk-button-small uk-button-default uk-margin-small-right', target: '_blank' %>
+            <%= link_to '設定', ruler_area_tenant_path(tenant.id), class: 'uk-button uk-button-small uk-button-default uk-margin-small-right' %>
+            <%= link_to '編集', edit_ruler_area_tenant_path(tenant), class: 'uk-button uk-button-small uk-button-default uk-margin-small-right' %>
           </div>
         </td>
       </tr>

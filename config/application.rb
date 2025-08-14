@@ -23,5 +23,13 @@ module HagurumaApi
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Locale configuration
+    config.i18n.default_locale = :ja
+    config.i18n.available_locales = [:ja, :en]
+
+    # Timezone configuration
+    config.time_zone = 'Asia/Tokyo'
+    config.active_record.time_zone_aware_types = %i[datetime time]
   end
 end
