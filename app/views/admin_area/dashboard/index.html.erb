@@ -1,0 +1,250 @@
+<% content_for :title, 'ダッシュボード' %>
+<% content_for :head do %>
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card h3 {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .stat-change {
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-change.positive {
+            color: var(--success-color);
+        }
+
+        .stat-change.negative {
+            color: var(--danger-color);
+        }
+
+        .stat-change::before {
+            content: '↑';
+            font-size: 16px;
+        }
+
+        .stat-change.negative::before {
+            content: '↓';
+        }
+
+        .recent-section {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .recent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .recent-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .recent-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+
+        .recent-item:hover {
+            background-color: #f8fafc;
+            margin: 0 -30px;
+            padding: 15px 30px;
+        }
+
+        .recent-item:last-child {
+            border-bottom: none;
+        }
+
+        .recent-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+
+        .recent-content {
+            flex: 1;
+        }
+
+        .recent-title {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 5px;
+        }
+
+        .recent-meta {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .action-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .action-card-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .action-card-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+    </style>
+<% end %>
+
+<main class="main">
+    <header class="main-header">
+        <h2>ダッシュボード</h2>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span style="color: #64748b;">こんにちは、管理者さん</span>
+            <button class="btn btn-primary">新規作成</button>
+        </div>
+    </header>
+
+    <div class="dashboard-grid">
+        <div class="stat-card">
+            <h3>総コンテンツ数</h3>
+            <div class="stat-value">1,248</div>
+            <div class="stat-change positive">12% 前月比</div>
+        </div>
+
+        <div class="stat-card">
+            <h3>月間ビュー数</h3>
+            <div class="stat-value">48.5K</div>
+            <div class="stat-change positive">8% 前月比</div>
+        </div>
+
+        <div class="stat-card">
+            <h3>公開中の記事</h3>
+            <div class="stat-value">892</div>
+            <div class="stat-change negative">2% 前月比</div>
+        </div>
+
+        <div class="stat-card">
+            <h3>下書き</h3>
+            <div class="stat-value">356</div>
+            <div class="stat-change positive">28% 前月比</div>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <%= link_to edit_admin_area_content_entry_path(1), class: 'action-card' do %>
+            <div class="action-card-icon">📝</div>
+            <div class="action-card-title">新規記事作成</div>
+        <% end %>
+        <%= link_to admin_area_media_path, class: 'action-card' do %>
+            <div class="action-card-icon">📷</div>
+            <div class="action-card-title">メディアアップロード</div>
+        <% end %>
+        <a href="#" class="action-card">
+            <div class="action-card-icon">📊</div>
+            <div class="action-card-title">アナリティクス</div>
+        </a>
+        <%= link_to admin_area_setting_path, class: 'action-card' do %>
+            <div class="action-card-icon">⚙️</div>
+            <div class="action-card-title">設定</div>
+        <% end %>
+    </div>
+
+    <div class="recent-section">
+        <div class="recent-header">
+            <h3>最近の更新</h3>
+            <%= link_to 'すべて表示 →', admin_area_content_entries_path, class: 'link' %>
+        </div>
+
+        <div class="recent-item">
+            <div class="recent-icon">A</div>
+            <div class="recent-content">
+                <div class="recent-title">2024年の技術トレンド予測</div>
+                <div class="recent-meta">ブログ • 5分前に更新</div>
+            </div>
+        </div>
+
+        <div class="recent-item">
+            <div class="recent-icon">S</div>
+            <div class="recent-content">
+                <div class="recent-title">新商品のご紹介：革新的なAIツール</div>
+                <div class="recent-meta">プレスリリース • 2時間前に更新</div>
+            </div>
+        </div>
+
+        <div class="recent-item">
+            <div class="recent-icon">B</div>
+            <div class="recent-content">
+                <div class="recent-title">効率的なコンテンツマーケティング戦略</div>
+                <div class="recent-meta">ブログ • 昨日更新</div>
+            </div>
+        </div>
+    </div>
+</main>

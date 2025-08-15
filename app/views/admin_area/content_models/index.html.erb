@@ -1,0 +1,149 @@
+<% content_for :title, 'コンテンツモデル' %>
+<% content_for :head do %>
+    <style>
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .model-card {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .model-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .model-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .model-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .model-description {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .model-stats {
+            display: flex;
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .model-stat {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .model-stat strong {
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .add-model-card {
+            border: 2px dashed #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+        }
+
+        .add-model-card:hover {
+            border-color: #6366f1;
+            background: white;
+        }
+
+        .add-model-icon {
+            font-size: 48px;
+            color: #cbd5e1;
+            margin-bottom: 10px;
+        }
+
+        .add-model-card:hover .add-model-icon {
+            color: #6366f1;
+        }
+    </style>
+<% end %>
+
+<main class="main">
+    <header class="main-header">
+        <h2>コンテンツモデル</h2>
+        <%= link_to '新規作成', new_admin_area_content_model_path, class: 'btn btn-primary' %>
+    </header>
+
+    <div class="models-grid">
+        <%= link_to edit_admin_area_content_model_path(1), class: 'model-card' do %>
+            <div class="model-icon">📝</div>
+            <h3 class="model-name">記事</h3>
+            <p class="model-description">ブログ記事、ニュース、プレスリリースなどのテキストコンテンツ。</p>
+            <div class="model-stats">
+                <span class="model-stat"><strong>892</strong> 件</span>
+                <span class="model-stat"><strong>8</strong> フィールド</span>
+            </div>
+        <% end %>
+
+        <%= link_to edit_admin_area_content_model_path(2), class: 'model-card' do %>
+            <div class="model-icon">📢</div>
+            <h3 class="model-name">お知らせ</h3>
+            <p class="model-description">重要なお知らせや更新情報を配信するためのコンテンツタイプ。</p>
+            <div class="model-stats">
+                <span class="model-stat"><strong>145</strong> 件</span>
+                <span class="model-stat"><strong>5</strong> フィールド</span>
+            </div>
+        <% end %>
+
+        <%= link_to edit_admin_area_content_model_path(3), class: 'model-card' do %>
+            <div class="model-icon">🛍️</div>
+            <h3 class="model-name">商品</h3>
+            <p class="model-description">ECサイトの商品情報。価格、在庫、商品画像、説明文などを管理。</p>
+            <div class="model-stats">
+                <span class="model-stat"><strong>2,341</strong> 件</span>
+                <span class="model-stat"><strong>12</strong> フィールド</span>
+            </div>
+        <% end %>
+
+        <%= link_to edit_admin_area_content_model_path(4), class: 'model-card' do %>
+            <div class="model-icon">👤</div>
+            <h3 class="model-name">プロフィール</h3>
+            <p class="model-description">スタッフやメンバーのプロフィール情報を管理するコンテンツタイプ。</p>
+            <div class="model-stats">
+                <span class="model-stat"><strong>48</strong> 件</span>
+                <span class="model-stat"><strong>7</strong> フィールド</span>
+            </div>
+        <% end %>
+
+        <%= link_to edit_admin_area_content_model_path(5), class: 'model-card' do %>
+            <div class="model-icon">📸</div>
+            <h3 class="model-name">ギャラリー</h3>
+            <p class="model-description">画像コレクションやフォトギャラリーを作成するためのコンテンツタイプ。</p>
+            <div class="model-stats">
+                <span class="model-stat"><strong>76</strong> 件</span>
+                <span class="model-stat"><strong>4</strong> フィールド</span>
+            </div>
+        <% end %>
+
+        <%= link_to new_admin_area_content_model_path, class: 'model-card add-model-card' do %>
+            <div class="add-model-icon">+</div>
+            <p>新規コンテンツモデル</p>
+        <% end %>
+    </div>
+</main>

@@ -26,4 +26,17 @@ Rails.application.routes.draw do
       resources :oauth_providers, only: [:index]
     end
   end
+
+  # Admin Area routes
+  namespace :admin_area, path: :admin do
+    root to: 'dashboard#index'
+    get 'dashboard', to: 'dashboard#index'
+
+    resources :content_entries, only: [:index, :new, :create, :edit, :update]
+    resources :content_models, only: [:index, :new, :edit]
+
+    resources :media, only: [:index]
+    resources :categories, only: [:index]
+    get 'setting', to: 'setting#index'
+  end
 end
