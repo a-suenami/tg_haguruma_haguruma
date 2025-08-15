@@ -12,7 +12,6 @@
     "@hotwired/turbo": "^7.3.0",
     "@hotwired/turbo-rails": "^7.3.0",
     "@rails/request.js": "^0.0.9",
-    "@twogate-npm/toolbox-angular": "^1.8.2",
     "@types/node": "^20.8.8",
     "@types/quill": "^2.0.13",
     "@vitejs/plugin-vue": "^4.4.0",
