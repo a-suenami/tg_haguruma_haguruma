@@ -28,6 +28,7 @@ if command -v docker &> /dev/null; then
   alias lint="bundle exec rubocop -a"
   alias rubocop_show_class="bundle exec rubocop -D"
   alias guard="docker-compose run -e RAILS_ENV=test --rm app bundle exec guard"
+  alias yarn="docker-compose-run app yarn"
   alias tapioca="docker-compose-run -e RAILS_ENV=test app bin/tapioca"
   alias annotate="docker-compose-run app bundle exec annotate"
 

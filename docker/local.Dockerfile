@@ -8,6 +8,7 @@ RUN apk add --no-cache \
     postgresql-dev \
     postgresql-client \
     nodejs \
+    npm \
     yarn \
     tzdata \
     git \
