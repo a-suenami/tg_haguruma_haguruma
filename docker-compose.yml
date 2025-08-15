@@ -27,11 +27,27 @@ services:
       REDIS_URL: redis://redis:6379/0
       RUBYOPT: '-W:no-deprecated -W:no-experimental'
       RUBOCOP_CACHE_ROOT: 'tmp/rubocop_cache'
+      VITE_RUBY_HOST: vite-dev-server
     volumes:
       - .:/rails_app
       - bundle-data:/usr/local/bundle
     stdin_open: true
     tty: true
+
+  # ----------------------------------------------------------------------------
+  vite-dev-server:
+    # ----------------------------------------------------------------------------
+    <<: *haguruma-app-base
+    build:
+      context: .
+      dockerfile: docker/local.Dockerfile
+      args:
+        RAILS_ENV: development
+    command: ./bin/vite dev
+    environment:
+      VITE_RUBY_HOST: '0.0.0.0'
+    ports:
+      - '3036:3036'
 
   # ----------------------------------------------------------------------------
   worker:

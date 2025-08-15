@@ -1,0 +1,64 @@
+<% content_for :title, 'コンテンツ編集' %>
+
+<main class="main">
+    <header class="main-header">
+        <h2>コンテンツ編集</h2>
+        <div>
+            <%= link_to 'キャンセル', admin_area_content_entries_path, class: 'btn btn-secondary' %>
+            <button class="btn btn-primary">保存</button>
+        </div>
+    </header>
+
+    <div class="editor-container">
+        <form>
+            <div class="form-group">
+                <label class="form-label">タイトル</label>
+                <input type="text" class="form-input" value="サンプル記事1" placeholder="タイトルを入力">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">スラッグ</label>
+                <input type="text" class="form-input" value="sample-article-1" placeholder="URLスラッグ">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">本文</label>
+                <div class="editor-toolbar">
+                    <button type="button" class="toolbar-btn">太字</button>
+                    <button type="button" class="toolbar-btn">斜体</button>
+                    <button type="button" class="toolbar-btn">リンク</button>
+                    <button type="button" class="toolbar-btn">画像</button>
+                    <button type="button" class="toolbar-btn">見出し</button>
+                </div>
+                <textarea class="form-textarea" placeholder="本文を入力...">これはサンプル記事の本文です。
+
+CMSのUIモックアップとして作成されました。実際のエディタでは、リッチテキストエディタが実装される予定です。
+
+マークダウン記法やWYSIWYGエディタなど、様々な実装方法が考えられます。</textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">カテゴリー</label>
+                <select class="form-input">
+                    <option>お知らせ</option>
+                    <option selected>ブログ</option>
+                    <option>プレスリリース</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">公開状態</label>
+                <select class="form-input">
+                    <option>下書き</option>
+                    <option selected>公開</option>
+                    <option>予約投稿</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary">プレビュー</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+</main>

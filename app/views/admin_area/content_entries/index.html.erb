@@ -1,0 +1,50 @@
+<% content_for :title, 'コンテンツ一覧' %>
+
+<main class="main">
+    <header class="main-header">
+        <h2>コンテンツ一覧</h2>
+        <button class="btn btn-primary">新規作成</button>
+    </header>
+
+    <div class="content-filters">
+        <input type="search" placeholder="検索..." class="search-input">
+        <select class="filter-select">
+            <option>すべて</option>
+            <option>公開中</option>
+            <option>下書き</option>
+        </select>
+    </div>
+
+    <div class="content-list">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>タイトル</th>
+                    <th>ステータス</th>
+                    <th>更新日時</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>サンプル記事1</td>
+                    <td><span class="status status-published">公開中</span></td>
+                    <td>2024-01-16 10:30</td>
+                    <td>
+                        <%= link_to '編集', edit_admin_area_content_entry_path(1), class: 'link' %>
+                        <a href="#" class="link">プレビュー</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>サンプル記事2</td>
+                    <td><span class="status status-draft">下書き</span></td>
+                    <td>2024-01-15 15:45</td>
+                    <td>
+                        <%= link_to '編集', edit_admin_area_content_entry_path(2), class: 'link' %>
+                        <a href="#" class="link">プレビュー</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>

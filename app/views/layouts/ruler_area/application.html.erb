@@ -8,11 +8,13 @@
 
     <%# UIKit CSS %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/css/uikit.min.css" />
-    
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "ruler_area/application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-    
+    <%= vite_client_tag %>
+    <%= vite_typescript_tag 'entrypoints/ruler_area/application' %>
+    <%= vite_stylesheet_tag 'entrypoints/ruler_area/application', skip_preload_tags: true %>
+
     <%# UIKit JS %>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/js/uikit-icons.min.js"></script>
@@ -20,7 +22,7 @@
 
   <body class="ruler-body">
     <%= render 'layouts/ruler_area/flash' %>
-    
+
     <nav class="ruler-navbar" uk-navbar>
       <div class="navbar-inner">
         <div class="uk-navbar-left">
@@ -43,7 +45,7 @@
         </div>
       </div>
     </nav>
-    
+
     <% if @tenant&.persisted? %>
       <div class="rl-body">
         <div class="rl-sidebar-left uk-visible@m">
@@ -54,7 +56,7 @@
               </div>
             </div>
           </div>
-          
+
           <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
             <li class="uk-nav-header">基本設定</li>
             <li class="uk-nav-divider"></li>
@@ -65,7 +67,7 @@
               <%= link_to '認証プロバイダ', ruler_area_tenant_oauth_providers_path(@tenant) %>
             </li>
           </ul>
-          
+
           <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
             <li class="uk-nav-header">外部ページ</li>
             <li class="uk-nav-divider"></li>
@@ -85,7 +87,7 @@
             </li>
           </ul>
         </div>
-        
+
         <main class="rl-main uk-section uk-section-default">
           <div class="uk-container uk-container-expand">
             <%= yield %>

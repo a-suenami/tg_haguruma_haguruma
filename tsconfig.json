@@ -5,6 +5,15 @@
       "@app/*": ["app/frontend/*"]
     },
     "lib": ["es2018", "dom", "dom.iterable"],
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "target": "es2018",
+    "module": "esnext",
+    "types": ["vite/client", "node"]
   },
+  "include": ["app/frontend/**/*"],
+  "exclude": ["node_modules", "public", "storage"]
 }

@@ -10,10 +10,46 @@ module GeneratedPathHelpersModule
   include ::ActionDispatch::Routing::PolymorphicRoutes
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_categories_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_entries_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_entry_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_models_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_dashboard_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_media_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_root_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_ruler_area_tenant_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_setting_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_content_entry_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_content_model_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_admin_area_content_entry_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_admin_area_content_model_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_rails_conductor_inbound_email_path(*args); end

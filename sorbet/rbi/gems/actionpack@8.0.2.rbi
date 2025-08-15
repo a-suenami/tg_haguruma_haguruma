@@ -719,9 +719,6 @@ module AbstractController::Collector
   def ttf(*_arg0, **_arg1, &_arg2); end
 
   # source://actionpack//lib/abstract_controller/collector.rb#11
-  def turbo_stream(*_arg0, **_arg1, &_arg2); end
-
-  # source://actionpack//lib/abstract_controller/collector.rb#11
   def url_encoded_form(*_arg0, **_arg1, &_arg2); end
 
   # source://actionpack//lib/abstract_controller/collector.rb#11
@@ -2016,7 +2013,6 @@ class ActionController::Base < ::ActionController::Metal
   extend ::ActiveSupport::Rescuable::ClassMethods
   extend ::ActionController::Instrumentation::ClassMethods
   extend ::ActionController::ParamsWrapper::ClassMethods
-  extend ::Importmap::Freshness
 
   # source://actionpack//lib/action_controller/base.rb#291
   def __callbacks; end
@@ -2657,7 +2653,6 @@ end
 module ActionController::Base::HelperMethods
   include ::ActionText::ContentHelper
   include ::ActionText::TagHelper
-  include ::Importmap::ImportmapTagsHelper
   include ::Turbo::DriveHelper
   include ::Turbo::FramesHelper
   include ::Turbo::IncludesHelper
@@ -2666,6 +2661,7 @@ module ActionController::Base::HelperMethods
   include ::ActionView::Helpers::OutputSafetyHelper
   include ::ActionView::Helpers::TagHelper
   include ::Turbo::Streams::ActionHelper
+  include ::ViteRails::TagHelpers
 
   # source://actionpack//lib/action_controller/base.rb#289
   def alert(*_arg0, **_arg1, &_arg2); end

@@ -19,13 +19,13 @@
 <dl class="uk-description-list uk-description-list-divider">
   <dt>ID</dt>
   <dd><%= @tenant.id %></dd>
-  
+
   <dt>テナント名</dt>
   <dd><%= @tenant.name %></dd>
-  
+
   <dt>ユーザ画面ドメイン</dt>
   <dd><%= @tenant.user_page_domain || '-' %></dd>
-  
+
   <dt>作成日時</dt>
   <dd><%= @tenant.created_at.strftime('%Y/%m/%d %H:%M') %></dd>
 </dl>

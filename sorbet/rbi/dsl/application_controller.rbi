@@ -23,7 +23,7 @@ class ApplicationController
     include ::Turbo::Streams::ActionHelper
     include ::ActionText::ContentHelper
     include ::ActionText::TagHelper
-    include ::Importmap::ImportmapTagsHelper
+    include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
     include ::ApplicationHelper
     include ::RulerArea::ApplicationHelper
