@@ -19,7 +19,7 @@ class AdminArea {
     this.sidebar = document.querySelector(this.config.sidebarSelector);
     this.overlay = document.querySelector(this.config.overlaySelector);
     this.mobileMenuToggle = document.querySelector(this.config.mobileMenuToggleSelector);
-    
+
     this.init();
   }
 
@@ -60,7 +60,7 @@ class AdminArea {
   private setupNavigationHighlight(): void {
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll('.sidebar-nav a');
-    
+
     navLinks.forEach((link) => {
       const href = link.getAttribute('href');
       if (href && currentPath.includes(href)) {
@@ -98,7 +98,7 @@ declare global {
 window.toggleMobileMenu = function() {
   const sidebar = document.querySelector('.sidebar');
   const overlay = document.querySelector('.sidebar-overlay');
-  
+
   sidebar?.classList.toggle('active');
   overlay?.classList.toggle('active');
 };

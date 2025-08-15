@@ -19,7 +19,7 @@ class RulerArea {
     this.tables = document.querySelectorAll(this.config.tableSelector);
     this.searchInputs = document.querySelectorAll(this.config.searchInputSelector);
     this.filterSelects = document.querySelectorAll(this.config.filterSelectSelector);
-    
+
     this.init();
   }
 
@@ -64,7 +64,7 @@ class RulerArea {
   private setupSearch(): void {
     this.searchInputs.forEach((input) => {
       let debounceTimer: NodeJS.Timeout;
-      
+
       input.addEventListener('input', (e) => {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {

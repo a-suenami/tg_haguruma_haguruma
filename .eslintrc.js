@@ -8,6 +8,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   ignorePatterns: ['.eslintrc.js'],
   parser: '@typescript-eslint/parser',
@@ -38,6 +39,8 @@ module.exports = {
       'error',
       { code: 128, ignorePattern: '^import .*' },
     ],
+    'no-trailing-spaces': 'error',
+    'eol-last': ['error', 'always'],
   },
   settings: {
     'import/resolver': {
