@@ -1,6 +1,6 @@
 // Admin Area TypeScript Entry Point
 import '@hotwired/turbo-rails';
-import '../styles/admin_area.scss';
+import './application.scss';
 
 interface AdminAreaConfig {
   sidebarSelector: string;

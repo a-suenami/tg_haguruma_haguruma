@@ -1,6 +1,6 @@
 // Ruler Area TypeScript Entry Point
 import '@hotwired/turbo-rails';
-import '../styles/ruler_area.scss';
+import './application.scss';
 
 interface RulerAreaConfig {
   tableSelector: string;
