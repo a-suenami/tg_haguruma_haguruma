@@ -6,6 +6,7 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
   plugins: [RubyPlugin(), vue()],
   server: {
+    allowedHosts: ['vite-dev-server', '.localhost'],
     hmr: {
       host: process.env.VITE_SERVER_HMR_HOST,
       clientPort: Number(process.env.VITE_SERVER_HMR_PORT),
