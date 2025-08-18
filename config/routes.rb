@@ -32,11 +32,7 @@ Rails.application.routes.draw do
     root to: 'dashboard#index'
     get 'dashboard', to: 'dashboard#index'
 
-    resources :content_entries, only: [:index, :new, :create, :edit, :update] do
-      collection do
-        get :proposal2_sidebar_tree
-      end
-    end
+    resources :content_entries, only: [:index, :new, :create, :edit, :update]
     resources :content_models, only: [:index, :new, :edit]
 
     resources :media, only: [:index]

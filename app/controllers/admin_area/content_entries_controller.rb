@@ -11,8 +11,4 @@ class AdminArea::ContentEntriesController < AdminArea::ApplicationController
   sig { void }
   def edit
   end
-
-  sig { void }
-  def proposal2_sidebar_tree
-  end
 end
