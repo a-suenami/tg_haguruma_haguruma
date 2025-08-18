@@ -1,5 +1,13 @@
 <% content_for :title, 'コンテンツ管理' %>
 
+<!-- モバイル用ハンバーガーメニューボタン -->
+<button class="mobile-menu-toggle" id="mobile-menu-toggle">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- モバイル用オーバーレイ -->
+<div class="mobile-overlay" id="mobile-overlay"></div>
+
 <div class="custom-container">
     <!-- カスタムサイドバー -->
     <aside class="custom-sidebar">
@@ -554,5 +562,32 @@
             // コレクションコンテンツの一覧更新処理
             console.log('Loading collection content for:', model);
         }
+
+        // モバイルメニューの制御
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        const customSidebar = document.querySelector('.custom-sidebar');
+
+        // ハンバーガーメニューボタンのクリック
+        mobileMenuToggle.addEventListener('click', function() {
+            customSidebar.classList.toggle('mobile-open');
+            mobileOverlay.classList.toggle('active');
+        });
+
+        // オーバーレイクリックでメニューを閉じる
+        mobileOverlay.addEventListener('click', function() {
+            customSidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('active');
+        });
+
+        // サイドバーメニューをクリックしたときもメニューを閉じる（モバイル時）
+        document.querySelectorAll('.tree-item-header').forEach(header => {
+            header.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    customSidebar.classList.remove('mobile-open');
+                    mobileOverlay.classList.remove('active');
+                }
+            });
+        });
     });
 </script>
