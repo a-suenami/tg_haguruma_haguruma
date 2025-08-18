@@ -261,22 +261,6 @@
             padding-top: 10px;
         }
 
-        /* Singleタイプのバッジ */
-        .tree-badge {
-            background: #ddd6fe;
-            color: #7c3aed;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-left: 8px;
-        }
-
-        .tree-badge.single {
-            background: #fef3c7;
-            color: #92400e;
-        }
 
         /* セクション区切り */
         .tree-section-divider {
@@ -325,21 +309,7 @@
             display: none;
         }
 
-        /* コンテンツタイプテキスト */
-        .content-type-text {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
 
-        .type-article { background: #e0f2fe; color: #0369a1; }
-        .type-announcement { background: #fef3c7; color: #d97706; }
-        .type-product { background: #d1fae5; color: #047857; }
-        .type-profile { background: #ede9fe; color: #7c3aed; }
-        .type-gallery { background: #fce7f3; color: #be185d; }
 
         /* ボタンスタイル */
         .btn {
@@ -517,108 +487,7 @@
             margin-left: 8px;
         }
 
-        /* テーブル操作列のスタイル */
-        .table-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            min-width: 180px;
-        }
 
-        .action-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-        }
-
-        .action-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            min-width: 35px;
-            flex-shrink: 0;
-        }
-
-        .action-content {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-            flex-wrap: nowrap;
-        }
-
-        /* リッチリンクスタイル */
-        .rich-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            padding: 4px 8px;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            color: #6366f1;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            white-space: nowrap;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .rich-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s;
-        }
-
-        .rich-link:hover::before {
-            left: 100%;
-        }
-
-        .rich-link:hover {
-            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-            border-color: #a855f7;
-            color: #7c3aed;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
-        }
-
-        .rich-link:active {
-            transform: translateY(0px);
-            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
-        }
-
-        .rich-link-icon {
-            font-size: 10px;
-            transition: transform 0.2s;
-        }
-
-        .rich-link:hover .rich-link-icon {
-            transform: translateX(1px) translateY(-1px);
-        }
-
-        /* 外部リンク用の特別スタイル */
-        .rich-link-external {
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-            border-color: #a7f3d0;
-            color: #059669;
-        }
-
-        .rich-link-external:hover {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            border-color: #10b981;
-            color: #047857;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
-        }
 
         /* ステータスタグ */
         .status-tags {
