@@ -103,7 +103,6 @@ rspec:
     <<: *cache
     policy: pull
   variables:
-    CHECKPOINT_JWT_SECRET: 'a_very_long_secret_of_at_least_64_bytes_to_meet_the_requirement_1234'
     RAILS_ENV: test
     RAILS_MAX_THREADS: 20
     POSTGRES_TEST_HOST: postgres
@@ -153,7 +152,7 @@ sorbet:
     - ${POSTGRES_IMAGE}
   variables:
     RAILS_ENV: test
-    DATABASE_URL: 'postgres://postgres:postgres@postgres:5432/triple_development'
+    DATABASE_URL: 'postgres://postgres:postgres@postgres:5432/haguruma_development'
     POSTGRES_HOST: postgres
     POSTGRES_TEST_HOST: postgres
     POSTGRES_USER: postgres
@@ -187,7 +186,7 @@ check-shims:
     - ${POSTGRES_IMAGE}
   variables:
     RAILS_ENV: test
-    DATABASE_URL: 'postgres://postgres:postgres@postgres:5432/triple_development'
+    DATABASE_URL: 'postgres://postgres:postgres@postgres:5432/haguruma_development'
     POSTGRES_HOST: postgres
     POSTGRES_TEST_HOST: postgres
     POSTGRES_USER: postgres
@@ -245,13 +244,13 @@ build:app:staging:
     BUNDLE_GIT__L__TWOGATE__NET: $BUNDLE_GIT__L__TWOGATE__NET
     DOCKER_TLS_CERTDIR: ''
   script:
-    - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 218794653131.dkr.ecr.ap-northeast-1.amazonaws.com
+    - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 287511440462.dkr.ecr.ap-northeast-1.amazonaws.com
     - echo $CI_COMMIT_SHA > REVISION
     - docker build . -f docker/Dockerfile -t rails_app:latest --build-arg BUNDLE_GIT__L__TWOGATE__NET
-    - docker tag rails_app:latest 218794653131.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-stg:latest
-    - docker tag rails_app:latest 218794653131.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-stg:$CI_COMMIT_SHA
-    - docker push 218794653131.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-stg:latest
-    - docker push 218794653131.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-stg:$CI_COMMIT_SHA
+    - docker tag rails_app:latest 287511440462.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-stg:latest
+    - docker tag rails_app:latest 287511440462.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-stg:$CI_COMMIT_SHA
+    - docker push 287511440462.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-stg:latest
+    - docker push 287511440462.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-stg:$CI_COMMIT_SHA
   tags:
     - docker
     - x86_64-linux
@@ -274,13 +273,13 @@ build:app:production:
     BUNDLE_GIT__L__TWOGATE__NET: $BUNDLE_GIT__L__TWOGATE__NET
     DOCKER_TLS_CERTDIR: ''
   script:
-    - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 430013787765.dkr.ecr.ap-northeast-1.amazonaws.com
+    - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 843188904699.dkr.ecr.ap-northeast-1.amazonaws.com
     - echo $CI_COMMIT_SHA > REVISION
     - docker build . -f docker/Dockerfile -t rails_app:latest --build-arg BUNDLE_GIT__L__TWOGATE__NET
-    - docker tag rails_app:latest 430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-prod:latest
-    - docker tag rails_app:latest 430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-prod:$CI_COMMIT_SHA
-    - docker push 430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-prod:latest
-    - docker push 430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-prod:$CI_COMMIT_SHA
+    - docker tag rails_app:latest 843188904699.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-prod:latest
+    - docker tag rails_app:latest 843188904699.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-prod:$CI_COMMIT_SHA
+    - docker push 843188904699.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-prod:latest
+    - docker push 843188904699.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-prod:$CI_COMMIT_SHA
   tags:
     - docker
     - x86_64-linux
@@ -296,7 +295,7 @@ build:app:production:
   image: containers.l.twogate.net/docker/ecspresso:master
   cache: {}
   variables:
-    AWS_ASSUME_ROLE_ARN: arn:aws:iam::218794653131:role/ecspresso-ecs-role
+    AWS_ASSUME_ROLE_ARN: arn:aws:iam::287511440462:role/ecspresso-ecs-role
   before_script:
     - STS=`aws sts assume-role --role-arn $AWS_ASSUME_ROLE_ARN --role-session-name ecspresso-$CI_PROJECT_ID-$CI_JOB_ID`;export AWS_ACCESS_KEY_ID=`echo "${STS}" | jq -r '.Credentials.AccessKeyId'`;export AWS_SECRET_ACCESS_KEY=`echo "${STS}" | jq -r '.Credentials.SecretAccessKey'`;export AWS_SESSION_TOKEN=`echo "${STS}" | jq -r '.Credentials.SessionToken'`
   only:
@@ -326,15 +325,6 @@ build:app:production:
     - job: 👍 pre-deploy:approval:staging
       artifacts: false
 
-🔧 deploy:migration:qa:
-  <<: *deploy-staging-base
-  stage: deploy
-  script:
-    - ecspresso run --watch-container app --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/qa/tasks/config.yaml --task-def ecspresso/qa/tasks/oneshot-task-def.jsonnet --overrides '{"containerOverrides":[{"name":"app","command":["bundle","exec","rails","ridgepole:apply"]}]}'
-  needs:
-    - job: 👍 pre-deploy:approval:staging
-      artifacts: false
-
 🚀 deploy:app:staging:
   <<: *deploy-staging-base
   stage: deploy
@@ -357,39 +347,6 @@ build:app:production:
     - job: 🔧 deploy:migration:staging
       artifacts: false
 
-🚀 deploy:poller:staging:
-  <<: *deploy-staging-base
-  stage: deploy
-  script:
-    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/eventbridge_poller/config.yaml
-  needs:
-    - job: 👍 pre-deploy:approval:staging
-      artifacts: false
-    - job: 🔧 deploy:migration:staging
-      artifacts: false
-
-🚀 deploy:app:qa:
-  <<: *deploy-staging-base
-  stage: deploy
-  script:
-    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/qa/services/app/config.yaml
-  needs:
-    - job: 👍 pre-deploy:approval:staging
-      artifacts: false
-    - job: 🔧 deploy:migration:qa
-      artifacts: false
-
-🚀 deploy:worker:qa:
-  <<: *deploy-staging-base
-  stage: deploy
-  script:
-    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/qa/services/worker/config.yaml
-  needs:
-    - job: 👍 pre-deploy:approval:staging
-      artifacts: false
-    - job: 🔧 deploy:migration:qa
-      artifacts: false
-
 # ------------------------------------------------------------------------------
 # Deploy Production jobs
 # ------------------------------------------------------------------------------
@@ -397,7 +354,7 @@ build:app:production:
   image: containers.l.twogate.net/docker/ecspresso:master
   cache: {}
   variables:
-    AWS_ASSUME_ROLE_ARN: arn:aws:iam::430013787765:role/ecspresso-ecs-role
+    AWS_ASSUME_ROLE_ARN: arn:aws:iam::843188904699:role/ecspresso-ecs-role
   before_script:
     - STS=`aws sts assume-role --role-arn $AWS_ASSUME_ROLE_ARN --role-session-name ecspresso-$CI_PROJECT_ID-$CI_JOB_ID`;export AWS_ACCESS_KEY_ID=`echo "${STS}" | jq -r '.Credentials.AccessKeyId'`;export AWS_SECRET_ACCESS_KEY=`echo "${STS}" | jq -r '.Credentials.SecretAccessKey'`;export AWS_SESSION_TOKEN=`echo "${STS}" | jq -r '.Credentials.SessionToken'`
   only:
@@ -448,48 +405,6 @@ build:app:production:
       artifacts: false
     - job: 🔧 deploy:migration:production
       artifacts: false
-
-🚀 deploy:poller:production:
-  <<: *deploy-production-base
-  stage: deploy
-  script:
-    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/services/eventbridge_poller/config.yaml
-  needs:
-    - job: 👍 pre-deploy:approval:production
-      artifacts: false
-    - job: 🔧 deploy:migration:production
-      artifacts: false
-
-# ------------------------------------------------------------------------------
-# Post deploy jobs
-# ------------------------------------------------------------------------------
-.autify-test-base: &autify-test-base
-  stage: post-deploy
-  image: ubuntu:latest
-  before_script:
-    - apt-get update && apt-get install -y curl
-    - curl https://autify-cli-assets.s3.amazonaws.com/autify-cli/channels/stable/install-standalone.sh | sh
-
-🐝 autify-test:staging:
-  <<: *autify-test-base
-  needs:
-    - job: 🚀 deploy:app:staging
-      artifacts: false
-    - job: 🚀 deploy:worker:staging
-      artifacts: false
-    - job: 🚀 deploy:poller:staging
-      artifacts: false
-  script:
-    # autify用テナントでの検証
-    - autify web test run https://app.autify.com/projects/580/test_plans/664137
-    # 各種IDPとの連携検証
-    - autify web test run https://app.autify.com/projects/580/test_plans/658394
-    # Admin画面の検証
-    - autify web test run https://app.autify.com/projects/580/test_plans/623632
-  only:
-    - deploy-staging
-  except:
-    - schedules
 
 # ------------------------------------------------------------------------------
 # Scheduled jobs
