@@ -189,8 +189,6 @@ class ActiveJob::Base
   include ::ActiveJob::Logging
   include ::ActiveJob::Timezones
   include ::ActiveJob::Translation
-  include ::Sidekiq::Job::Options
-  include ::ActiveJob::ConcurrencyControls
   include ::ActiveJob::TestHelper::TestQueueAdapter
   extend ::ActiveJob::Core::ClassMethods
   extend ::ActiveJob::QueueAdapter::ClassMethods
@@ -203,8 +201,6 @@ class ActiveJob::Base
   extend ::ActiveSupport::DescendantsTracker
   extend ::ActiveJob::Callbacks::ClassMethods
   extend ::ActiveJob::Exceptions::ClassMethods
-  extend ::Sidekiq::Job::Options::ClassMethods
-  extend ::ActiveJob::ConcurrencyControls::ClassMethods
   extend ::ActiveJob::TestHelper::TestQueueAdapter::ClassMethods
 
   # source://activejob//lib/active_job/base.rb#70
@@ -230,24 +226,6 @@ class ActiveJob::Base
 
   # source://activejob//lib/active_job/base.rb#71
   def after_discard_procs?; end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def concurrency_duration; end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def concurrency_duration=(_arg0); end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def concurrency_duration?; end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def concurrency_limit; end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def concurrency_limit=(_arg0); end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def concurrency_limit?; end
 
   # source://activejob//lib/active_job/base.rb#73
   def logger; end
@@ -275,24 +253,6 @@ class ActiveJob::Base
 
   # source://activejob//lib/active_job/base.rb#69
   def rescue_handlers?; end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def sidekiq_options_hash; end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def sidekiq_options_hash=(_arg0); end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def sidekiq_retries_exhausted_block; end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def sidekiq_retries_exhausted_block=(_arg0); end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def sidekiq_retry_in_block; end
-
-  # source://activejob//lib/active_job/base.rb#77
-  def sidekiq_retry_in_block=(_arg0); end
 
   class << self
     # source://activejob//lib/active_job/base.rb#70
@@ -339,42 +299,6 @@ class ActiveJob::Base
 
     # source://activejob//lib/active_job/base.rb#71
     def after_discard_procs?; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_duration; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_duration=(value); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_duration?; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_group; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_group=(value); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_group?; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_key; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_key=(value); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_key?; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_limit; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_limit=(value); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def concurrency_limit?; end
 
     # source://activejob//lib/active_job/base.rb#68
     def enqueue_after_transaction_commit; end
@@ -448,24 +372,6 @@ class ActiveJob::Base
     # source://activejob//lib/active_job/base.rb#71
     def retry_jitter=(value); end
 
-    # source://activejob//lib/active_job/base.rb#77
-    def sidekiq_options_hash; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def sidekiq_options_hash=(val); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def sidekiq_retries_exhausted_block; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def sidekiq_retries_exhausted_block=(val); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def sidekiq_retry_in_block; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def sidekiq_retry_in_block=(val); end
-
     private
 
     # source://activejob//lib/active_job/base.rb#70
@@ -497,30 +403,6 @@ class ActiveJob::Base
 
     # source://activejob//lib/active_job/base.rb#71
     def __class_attr_after_discard_procs=(new_value); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __class_attr_concurrency_duration; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __class_attr_concurrency_duration=(new_value); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __class_attr_concurrency_group; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __class_attr_concurrency_group=(new_value); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __class_attr_concurrency_key; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __class_attr_concurrency_key=(new_value); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __class_attr_concurrency_limit; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __class_attr_concurrency_limit=(new_value); end
 
     # source://activejob//lib/active_job/base.rb#68
     def __class_attr_enqueue_after_transaction_commit; end
@@ -569,15 +451,6 @@ class ActiveJob::Base
 
     # source://activejob//lib/active_job/base.rb#71
     def __class_attr_retry_jitter=(new_value); end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __synchronized_sidekiq_options_hash; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __synchronized_sidekiq_retries_exhausted_block; end
-
-    # source://activejob//lib/active_job/base.rb#77
-    def __synchronized_sidekiq_retry_in_block; end
   end
 end
 
