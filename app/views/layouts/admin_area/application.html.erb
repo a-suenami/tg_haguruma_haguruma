@@ -9,7 +9,7 @@
 
     <%= vite_client_tag %>
     <%= vite_typescript_tag 'entrypoints/admin_area/application' %>
-    <%= vite_stylesheet_tag 'entrypoints/admin_area/application', skip_preload_tags: true %>
+    <%= vite_stylesheet_tag 'entrypoints/admin_area/application.scss', skip_preload_tags: true %>
     <%= yield(:head) %>
 </head>
 <body>
