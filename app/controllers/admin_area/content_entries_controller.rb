@@ -11,4 +11,8 @@ class AdminArea::ContentEntriesController < AdminArea::ApplicationController
   sig { void }
   def edit
   end
+
+  sig { void }
+  def content_types
+  end
 end

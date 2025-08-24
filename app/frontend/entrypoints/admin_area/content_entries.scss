@@ -1,5 +1,8 @@
 /* Content Entries - Card Layout Styles */
 
+// Font Awesome のインポート
+@import '@fortawesome/fontawesome-free/css/all.css';
+
 /* カスタムレイアウト */
 .custom-container {
     display: flex;
@@ -545,8 +548,144 @@
     font-size: 12px;
 }
 
+/* コンテンツタイプ選択ページ */
+.content-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.content-type-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f1f5f9;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+    display: block;
+}
+
+.content-type-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    border-color: #6366f1;
+}
+
+.content-type-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.content-type-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 15px;
+}
+
+.content-type-stats {
+    margin-bottom: 10px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: #6366f1;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.stat-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stat-detail {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* シングルコンテンツタイプ */
+.content-type-single .content-type-stats {
+    display: none;
+}
+
+.content-type-status {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+/* 区切り線 */
+.content-types-divider {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+}
+
+.content-types-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e2e8f0;
+    z-index: 1;
+}
+
+.content-types-divider span {
+    background: #f8fafc;
+    padding: 0 15px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+    position: relative;
+    z-index: 2;
+}
+
 /* レスポンシブデザイン */
 @media (max-width: 768px) {
+    /* コンテンツタイプ選択ページのモバイル最適化 */
+    .content-types-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .content-type-card {
+        padding: 15px;
+    }
+
+    .content-type-icon {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .content-type-name {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .stat-number {
+        font-size: 20px;
+    }
+
     /* モバイルレイアウト */
     .custom-container {
         flex-direction: column;

@@ -32,7 +32,11 @@ Rails.application.routes.draw do
     root to: 'dashboard#index'
     get 'dashboard', to: 'dashboard#index'
 
-    resources :content_entries, only: [:index, :new, :create, :edit, :update]
+    resources :content_entries, only: [:index, :new, :create, :edit, :update] do
+      collection do
+        get :content_types
+      end
+    end
     resources :content_models, only: [:index, :new, :edit]
 
     resources :media, only: [:index]
