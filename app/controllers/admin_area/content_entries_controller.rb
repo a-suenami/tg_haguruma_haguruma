@@ -13,6 +13,11 @@ class AdminArea::ContentEntriesController < AdminArea::ApplicationController
   end
 
   sig { void }
+  def show
+    @is_single = params[:single] == 'true'
+  end
+
+  sig { void }
   def edit
   end
 

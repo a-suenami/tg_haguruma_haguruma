@@ -17,11 +17,11 @@
                 <ul class="tree-nav">
                     <!-- すべて表示 -->
                     <li class="tree-item">
-                        <div class="tree-item-header" data-model="all">
+                        <%= link_to admin_area_content_entries_path, class: 'tree-item-header' do %>
                             <span class="tree-toggle" style="visibility: hidden;"></span>
                             <span class="tree-label">すべて表示</span>
                             <span class="tree-count">3,502</span>
-                        </div>
+                        <% end %>
                     </li>
 
                     <!-- 区切り線 -->
@@ -36,7 +36,11 @@
                             <span class="tree-count">892</span>
                         </div>
                         <ul class="tree-submenu expanded">
-                            <li class="tree-submenu-item">すべての記事</li>
+                            <li class="tree-submenu-item">
+                                <%= link_to admin_area_content_entries_path, class: 'submenu-link' do %>
+                                    すべての記事
+                                <% end %>
+                            </li>
                             <li class="tree-submenu-item">公開中 (687)</li>
                             <li class="tree-submenu-item">下書き (205)</li>
                             <li class="tree-submenu-item">+ 新規作成</li>
@@ -110,65 +114,44 @@
                     <!-- 区切り線 -->
                     <div class="tree-section-divider"></div>
 
-                    <!-- 会社概要 (single) - b1: 編集中のみ -->
+                    <!-- 会社概要 (single) -->
                     <li class="tree-item">
-                        <div class="tree-item-header" data-model="about" data-type="single" data-state="draft-only">
-                            <span class="tree-toggle">▶</span>
+                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'about'), class: 'tree-item-header' do %>
                             <span class="tree-icon">📄</span>
                             <span class="tree-label">会社概要</span>
-                        </div>
-                        <ul class="tree-submenu">
-                            <li class="tree-submenu-item" data-action="draft">下書き</li>
-                        </ul>
+                        <% end %>
                     </li>
 
-                    <!-- プライバシーポリシー (single) - b2: 公開中のみ -->
+                    <!-- プライバシーポリシー (single) -->
                     <li class="tree-item">
-                        <div class="tree-item-header" data-model="privacy" data-type="single" data-state="published-only">
-                            <span class="tree-toggle">▶</span>
+                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'privacy'), class: 'tree-item-header' do %>
                             <span class="tree-icon">🔒</span>
                             <span class="tree-label">プライバシーポリシー</span>
-                        </div>
-                        <ul class="tree-submenu">
-                            <li class="tree-submenu-item" data-action="published">公開中</li>
-                        </ul>
+                        <% end %>
                     </li>
 
-                    <!-- 利用規約 (single) - b3: 公開中＋編集中 -->
+                    <!-- 利用規約 (single) -->
                     <li class="tree-item">
-                        <div class="tree-item-header" data-model="terms" data-type="single" data-state="both">
-                            <span class="tree-toggle">▶</span>
+                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'terms'), class: 'tree-item-header' do %>
                             <span class="tree-icon">📋</span>
                             <span class="tree-label">利用規約</span>
-                        </div>
-                        <ul class="tree-submenu">
-                            <li class="tree-submenu-item" data-action="published">公開中</li>
-                            <li class="tree-submenu-item" data-action="draft">下書き</li>
-                        </ul>
+                        <% end %>
                     </li>
 
-                    <!-- お問い合わせページ (single) - 例: b1状態 -->
+                    <!-- お問い合わせページ (single) -->
                     <li class="tree-item">
-                        <div class="tree-item-header" data-model="contact" data-type="single" data-state="draft-only">
-                            <span class="tree-toggle">▶</span>
+                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'contact'), class: 'tree-item-header' do %>
                             <span class="tree-icon">📮</span>
                             <span class="tree-label">お問い合わせ</span>
-                        </div>
-                        <ul class="tree-submenu">
-                            <li class="tree-submenu-item" data-action="draft">下書き</li>
-                        </ul>
+                        <% end %>
                     </li>
 
-                    <!-- サイト設定 (single) - 例: b2状態 -->
+                    <!-- サイト設定 (single) -->
                     <li class="tree-item">
-                        <div class="tree-item-header" data-model="settings" data-type="single" data-state="published-only">
-                            <span class="tree-toggle">▶</span>
+                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'settings'), class: 'tree-item-header' do %>
                             <span class="tree-icon">⚙️</span>
                             <span class="tree-label">サイト設定</span>
-                        </div>
-                        <ul class="tree-submenu">
-                            <li class="tree-submenu-item" data-action="published">公開中</li>
-                        </ul>
+                        <% end %>
                     </li>
 
                 </ul>
@@ -197,100 +180,108 @@
         <!-- コレクション用カードリスト -->
         <div class="content-list" id="collection-content">
             <!-- a1: 編集中のみ -->
-            <div class="content-card">
-                <div class="card-header">
-                    <div class="card-header-top">
-                        <span class="card-content-type">記事</span>
-                        <div class="status-tags">
-                            <span class="status-tag status-tag-draft">編集中</span>
+            <%= link_to admin_area_content_entry_path(1), class: 'content-card-link' do %>
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-header-top">
+                            <span class="card-content-type">記事</span>
+                            <div class="status-tags">
+                                <span class="status-tag status-tag-draft">編集中</span>
+                            </div>
                         </div>
+                        <h3 class="card-title">2024年の技術トレンド予測</h3>
                     </div>
-                    <h3 class="card-title">2024年の技術トレンド予測</h3>
-                </div>
-                <div class="card-meta">
-                    <div class="card-meta-left">
-                        <div class="card-action-buttons">
-                            <%=link_to edit_admin_area_content_entry_path(1), class: 'btn btn-xs btn-edit' do%><i class="fas fa-edit icon-prefix"></i>編集<%end%>
-                            <%=link_to '#', class: 'btn btn-xs btn-preview', target: '_blank' do%><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i><%end%>
+                    <div class="card-meta">
+                        <div class="card-meta-left">
+                            <div class="card-action-buttons">
+                                <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>編集</span>
+                                <span class="btn btn-xs btn-preview"><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                            </div>
                         </div>
+                        <span class="card-updated">2024-01-16 10:30</span>
                     </div>
-                    <span class="card-updated">2024-01-16 10:30</span>
                 </div>
-            </div>
+            <% end %>
 
             <!-- a2: 公開中のみ -->
-            <div class="content-card">
-                <div class="card-header">
-                    <div class="card-header-top">
-                        <span class="card-content-type">記事</span>
-                        <div class="status-tags">
-                            <span class="status-tag status-tag-published">公開中</span>
-                        </div>
-                    </div>
-                    <h3 class="card-title">AIと創造性の未来</h3>
-                </div>
-                <div class="card-meta">
-                    <div class="card-meta-left">
-                        <div class="card-actions-area">
-                            <div class="card-action-group">
-                                <%= link_to '#', class: 'btn btn-xs btn-external', target: '_blank' do %><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i><% end %>
-                                <button class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>新しいバージョンを作成して編集</button>
+            <%= link_to admin_area_content_entry_path(2), class: 'content-card-link' do %>
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-header-top">
+                            <span class="card-content-type">記事</span>
+                            <div class="status-tags">
+                                <span class="status-tag status-tag-published">公開中</span>
                             </div>
                         </div>
+                        <h3 class="card-title">AIと創造性の未来</h3>
                     </div>
-                    <span class="card-updated">2024-01-15 14:20</span>
+                    <div class="card-meta">
+                        <div class="card-meta-left">
+                            <div class="card-actions-area">
+                                <div class="card-action-group">
+                                    <span class="btn btn-xs btn-external"><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                                    <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>新しいバージョンを作成して編集</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="card-updated">2024-01-15 14:20</span>
+                    </div>
                 </div>
-            </div>
+            <% end %>
 
             <!-- a3: 公開中＋編集中 -->
-            <div class="content-card">
-                <div class="card-header">
-                    <div class="card-header-top">
-                        <span class="card-content-type">記事</span>
-                        <div class="status-tags">
-                            <span class="status-tag status-tag-published">公開中</span>
-                            <span class="status-tag status-tag-draft">編集中</span>
-                        </div>
-                    </div>
-                    <h3 class="card-title">リモートワークのベストプラクティス：効率的な在宅勤務のための完全ガイド</h3>
-                </div>
-                <div class="card-meta">
-                    <div class="card-meta-left">
-                        <div class="card-actions-area">
-                            <div class="card-action-group">
-                                <%= link_to '#', class: 'btn btn-xs btn-external', target: '_blank' do %><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i><% end %>
-                                <%= link_to edit_admin_area_content_entry_path(6), class: 'btn btn-xs btn-edit' do %><i class="fas fa-edit icon-prefix"></i>編集<% end %>
-                                <%= link_to '#', class: 'btn btn-xs btn-preview', target: '_blank' do %><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i><% end %>
+            <%= link_to admin_area_content_entry_path(3), class: 'content-card-link' do %>
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-header-top">
+                            <span class="card-content-type">記事</span>
+                            <div class="status-tags">
+                                <span class="status-tag status-tag-published">公開中</span>
+                                <span class="status-tag status-tag-draft">編集中</span>
                             </div>
                         </div>
+                        <h3 class="card-title">リモートワークのベストプラクティス：効率的な在宅勤務のための完全ガイド</h3>
                     </div>
-                    <span class="card-updated">2024-01-14 16:45</span>
+                    <div class="card-meta">
+                        <div class="card-meta-left">
+                            <div class="card-actions-area">
+                                <div class="card-action-group">
+                                    <span class="btn btn-xs btn-external"><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                                    <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>編集</span>
+                                    <span class="btn btn-xs btn-preview"><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="card-updated">2024-01-14 16:45</span>
+                    </div>
                 </div>
-            </div>
+            <% end %>
 
             <!-- 他のコンテンツタイプの例 -->
-            <div class="content-card">
-                <div class="card-header">
-                    <div class="card-header-top">
-                        <span class="card-content-type">商品</span>
-                        <div class="status-tags">
-                            <span class="status-tag status-tag-published">公開中</span>
-                        </div>
-                    </div>
-                    <h3 class="card-title">プレミアムワイヤレスヘッドフォン XZ-900 - 高音質ノイズキャンセリング機能付き</h3>
-                </div>
-                <div class="card-meta">
-                    <div class="card-meta-left">
-                        <div class="card-actions-area">
-                            <div class="card-action-group">
-                                <%= link_to '#', class: 'btn btn-xs btn-external', target: '_blank' do %><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i><% end %>
-                                <button class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>新しいバージョンを作成して編集</button>
+            <%= link_to admin_area_content_entry_path(4), class: 'content-card-link' do %>
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-header-top">
+                            <span class="card-content-type">商品</span>
+                            <div class="status-tags">
+                                <span class="status-tag status-tag-published">公開中</span>
                             </div>
                         </div>
+                        <h3 class="card-title">プレミアムワイヤレスヘッドフォン XZ-900 - 高音質ノイズキャンセリング機能付き</h3>
                     </div>
-                    <span class="card-updated">2024-01-13 11:00</span>
+                    <div class="card-meta">
+                        <div class="card-meta-left">
+                            <div class="card-actions-area">
+                                <div class="card-action-group">
+                                    <span class="btn btn-xs btn-external"><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                                    <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>新しいバージョンを作成して編集</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="card-updated">2024-01-13 11:00</span>
+                    </div>
                 </div>
-            </div>
+            <% end %>
         </div>
 
         <!-- シングルコンテンツ用表示エリア -->
@@ -588,5 +579,6 @@
                 }
             });
         });
+
     });
 </script>
