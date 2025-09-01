@@ -1,6 +1,0 @@
-region: ap-northeast-1
-cluster: triple-worker-qa
-service: triple-main-service-worker-qa
-service_definition: ecs-service-def.json
-task_definition: ecs-task-def.jsonnet
-timeout: 10m0s

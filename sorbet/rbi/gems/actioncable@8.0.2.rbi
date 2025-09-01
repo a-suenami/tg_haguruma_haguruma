@@ -2828,7 +2828,7 @@ module ActionCable::Server::Worker::ActiveRecordConnectionManagement
   def with_database_connections(&block); end
 end
 
-# source://actioncable//lib/action_cable/subscription_adapter/base.rb#6
+# source://actioncable//lib/action_cable/subscription_adapter/async.rb#6
 module ActionCable::SubscriptionAdapter; end
 
 # source://actioncable//lib/action_cable/subscription_adapter/async.rb#7
@@ -3103,8 +3103,6 @@ end
 
 # source://actioncable//lib/action_cable/subscription_adapter/redis.rb#247
 ActionCable::SubscriptionAdapter::Redis::Listener::ConnectionError = RedisClient::ConnectionError
-
-class ActionCable::SubscriptionAdapter::SolidCable < ::ActionCable::SubscriptionAdapter::Base; end
 
 # source://actioncable//lib/action_cable/subscription_adapter/subscriber_map.rb#7
 class ActionCable::SubscriptionAdapter::SubscriberMap
