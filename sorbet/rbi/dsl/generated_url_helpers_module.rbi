@@ -37,6 +37,9 @@ module GeneratedUrlHelpersModule
   def admin_area_setting_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def content_types_admin_area_content_entries_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_content_entry_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }

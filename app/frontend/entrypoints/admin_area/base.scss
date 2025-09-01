@@ -432,7 +432,7 @@ body {
         align-items: center;
         justify-content: center;
     }
-    
+
     .sidebar {
         position: fixed;
         left: -100%;
@@ -441,120 +441,120 @@ body {
         z-index: 1000;
         transition: left 0.3s ease;
     }
-    
+
     .sidebar.active {
         left: 0;
     }
-    
+
     .main {
         padding: 80px 20px 30px;
         max-width: 100%;
     }
-    
+
     .main-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
     }
-    
+
     .main-header h2 {
         font-size: 24px;
     }
-    
+
     .content-filters {
         flex-direction: column;
         padding: 20px;
     }
-    
+
     .search-input {
         width: 100%;
     }
-    
+
     .table {
         font-size: 13px;
     }
-    
+
     .table th,
     .table td {
         padding: 12px 10px;
     }
-    
+
     .table th:nth-child(3),
     .table td:nth-child(3) {
         display: none;
     }
-    
+
     .dashboard-grid {
         grid-template-columns: 1fr;
         gap: 15px;
     }
-    
+
     .stat-card {
         padding: 20px;
     }
-    
+
     .stat-value {
         font-size: 28px;
     }
-    
+
     .quick-actions {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
     }
-    
+
     .action-card {
         padding: 15px;
     }
-    
+
     .action-card-icon {
         font-size: 24px;
         margin-bottom: 5px;
     }
-    
+
     .action-card-title {
         font-size: 14px;
     }
-    
+
     .recent-section {
         padding: 20px;
     }
-    
+
     .recent-item:hover {
         margin: 0 -20px;
         padding-left: 20px;
         padding-right: 20px;
     }
-    
+
     .editor-container {
         padding: 20px;
     }
-    
+
     .form-actions {
         flex-direction: column;
     }
-    
+
     .form-actions .btn {
         width: 100%;
     }
-    
+
     .preview-container {
         padding: 20px;
     }
-    
+
     .preview-content h1 {
         font-size: 24px;
     }
-    
+
     /* モデルエディター用のレスポンシブ */
     .model-editor {
         grid-template-columns: 1fr;
     }
-    
+
     .editor-sidebar {
         order: -1;
         margin-bottom: 20px;
     }
-    
+
     .model-grid {
         grid-template-columns: 1fr;
     }
@@ -565,22 +565,22 @@ body {
         padding: 8px 16px;
         font-size: 14px;
     }
-    
+
     .btn-primary::before {
         display: none;
     }
-    
+
     .link {
         margin-right: 10px;
         padding: 4px 8px;
         font-size: 13px;
     }
-    
+
     .status {
         font-size: 11px;
         padding: 4px 10px;
     }
-    
+
     .toolbar-btn {
         font-size: 12px;
         padding: 4px 8px;

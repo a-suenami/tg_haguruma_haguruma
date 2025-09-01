@@ -2,6 +2,9 @@
 // Import base styles
 @import './base';
 
+// Content Entries specific styles
+@import './content_entries';
+
 // Additional admin-specific styles can be added here
 .admin-area {
   // Custom styles for admin area
