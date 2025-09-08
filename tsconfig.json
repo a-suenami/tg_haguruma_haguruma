@@ -12,6 +12,7 @@
     "resolveJsonModule": true,
     "target": "es2018",
     "module": "esnext",
+    "jsx": "react-jsx",
     "types": ["vite/client", "node"]
   },
   "include": ["app/frontend/**/*"],
