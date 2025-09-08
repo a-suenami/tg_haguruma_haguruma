@@ -100,25 +100,48 @@
 
                         <div class="field-group">
                             <%= form.label :content, 'content', class: 'field-label' %>
-                            <div class="rich-editor-container">
-                                <div class="rich-editor" contenteditable="true">
-                                    <h2>AIの現状と課題（改訂版）</h2>
-                                    <p>2024年は人工知能（AI）技術の飛躍的な進歩が期待される年です。特に<strong>生成AI</strong>の分野では、より高精度で実用的なモデルが続々と登場し、ビジネスの様々な場面での活用が加速しています。また、<em>量子コンピューティング</em>の実用化も視野に入ってきました。</p>
-                                    
-                                    <h3>注目すべき技術トレンド（追加）</h3>
-                                    <ul>
-                                        <li><strong>マルチモーダルAI</strong>: テキスト、画像、音声を統合的に処理</li>
-                                        <li><strong>エッジAI</strong>: デバイス上での軽量AI処理</li>
-                                        <li><strong>説明可能AI（XAI）</strong>: AI判断の透明性向上</li>
-                                        <li><strong>AI倫理とガバナンス</strong>: 責任あるAI開発</li>
-                                        <li><strong>量子AI</strong>: 量子コンピューティングとAIの融合 <span class="content-change-highlight">新規追加</span></li>
-                                    </ul>
-                                    
-                                    <div class="content-note">
-                                        <h4>📝 編集者ノート</h4>
-                                        <p>量子AIセクションを追加し、より包括的な内容に更新しました。最新の研究動向を反映しています。</p>
+
+                            <!-- Lexical Rich Text Editor -->
+                            <div class="lexical-editor-wrapper"
+                                 data-controller="lexical-editor"
+                                 data-lexical-editor-content-value="<h2>AIの現状と課題（改訂版）</h2><p>2024年は人工知能（AI）技術の飛躍的な進歩が期待される年です。特に<strong>生成AI</strong>の分野では、より高精度で実用的なモデルが続々と登場し、ビジネスの様々な場面での活用が加速しています。また、<em>量子コンピューティング</em>の実用化も視野に入ってきました。</p><h3>注目すべき技術トレンド（追加）</h3><ul><li><strong>マルチモーダルAI</strong>: テキスト、画像、音声を統合的に処理</li><li><strong>エッジAI</strong>: デバイス上での軽量AI処理</li><li><strong>説明可能AI（XAI）</strong>: AI判断の透明性向上</li><li><strong>AI倫理とガバナンス</strong>: 責任あるAI開発</li><li><strong>量子AI</strong>: 量子コンピューティングとAIの融合 <span class=\"content-change-highlight\">新規追加</span></li></ul><div class=\"content-note\"><h4>📝 編集者ノート</h4><p>量子AIセクションを追加し、より包括的な内容に更新しました。最新の研究動向を反映しています。</p></div>"
+                                 data-lexical-editor-placeholder-value="記事の内容を入力してください...">
+
+                                <!-- Editor Toolbar -->
+                                <div class="lexical-toolbar">
+                                    <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" data-action="lexical-editor#formatBold">
+                                            <i class="fas fa-bold"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-action="lexical-editor#formatItalic">
+                                            <i class="fas fa-italic"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-action="lexical-editor#formatUnderline">
+                                            <i class="fas fa-underline"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" data-action="lexical-editor#insertHeading">
+                                            <i class="fas fa-heading"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-action="lexical-editor#insertBulletList">
+                                            <i class="fas fa-list-ul"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-action="lexical-editor#insertNumberedList">
+                                            <i class="fas fa-list-ol"></i>
+                                        </button>
                                     </div>
                                 </div>
+
+                                <!-- Editor Content Area -->
+                                <div class="lexical-editor-container">
+                                    <div class="lexical-editor" data-lexical-editor-target="editor" contenteditable="true" spellcheck="false">
+                                    </div>
+                                </div>
+
+                                <!-- Hidden field to store content for form submission -->
+                                <%= form.hidden_field :content, data: { "lexical-editor-target": "hiddenField" } %>
                             </div>
                         </div>
 
