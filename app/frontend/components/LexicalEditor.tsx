@@ -14,9 +14,17 @@ import {
 } from 'lexical';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { ListNode, ListItemNode } from '@lexical/list';
+import { LexicalTypeaheadMenuPlugin, MenuOption, useBasicTypeaheadTriggerMatch } from '@lexical/react/LexicalTypeaheadMenuPlugin';
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
+import { 
+  ListNode, 
+  ListItemNode,
+  $createListNode,
+  $createListItemNode
+} from '@lexical/list';
 import { 
   $createHeadingNode,
+  $createQuoteNode,
   HeadingTagType,
   HeadingNode, 
   QuoteNode 
@@ -50,7 +58,9 @@ const theme = {
     italic: 'editor-text-italic',
     underline: 'editor-text-underline',
     strikethrough: 'editor-text-strikethrough',
+    code: 'editor-text-code',
   },
+  quote: 'editor-quote',
   paragraph: 'editor-paragraph',
 };
 
@@ -111,60 +121,204 @@ function InitialContentPlugin({ initialContent }: { initialContent?: string }) {
   return null;
 }
 
-// Toolbar component
-function ToolbarPlugin() {
+// Floating Toolbar component (Notion-like)
+function FloatingToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
+  const [isVisible, setIsVisible] = React.useState(false);
+  const [position, setPosition] = React.useState({ top: 0, left: 0 });
 
-  const formatText = (format: 'bold' | 'italic' | 'underline') => {
+  React.useEffect(() => {
+    return editor.registerUpdateListener(() => {
+      editor.getEditorState().read(() => {
+        const selection = $getSelection();
+        
+        if (selection && selection.getTextContent().trim() !== '') {
+          // Get selection bounds for positioning
+          const nativeSelection = window.getSelection();
+          if (nativeSelection && nativeSelection.rangeCount > 0) {
+            const range = nativeSelection.getRangeAt(0);
+            const rect = range.getBoundingClientRect();
+            
+            setPosition({
+              top: rect.top - 50,
+              left: rect.left + rect.width / 2,
+            });
+            setIsVisible(true);
+          }
+        } else {
+          setIsVisible(false);
+        }
+      });
+    });
+  }, [editor]);
+
+  if (!isVisible) return null;
+
+  const formatText = (format: 'bold' | 'italic' | 'underline' | 'strikethrough' | 'code') => {
     editor.dispatchCommand(FORMAT_TEXT_COMMAND, format);
   };
 
-  const insertHeading = (level: number) => {
-    editor.update(() => {
-      const selection = $getSelection();
-      if (selection) {
-        const headingNode = $createHeadingNode(`h${level}` as HeadingTagType);
-        selection.insertNodes([headingNode]);
-      }
-    });
-  };
+  return (
+    <div 
+      className="floating-toolbar"
+      style={{
+        position: 'fixed',
+        top: position.top,
+        left: position.left,
+        transform: 'translateX(-50%)',
+      }}
+    >
+      <button 
+        type="button" 
+        className="floating-btn"
+        onClick={() => formatText('bold')}
+      >
+        <i className="fas fa-bold"></i>
+      </button>
+      <button 
+        type="button" 
+        className="floating-btn"
+        onClick={() => formatText('italic')}
+      >
+        <i className="fas fa-italic"></i>
+      </button>
+      <button 
+        type="button" 
+        className="floating-btn"
+        onClick={() => formatText('underline')}
+      >
+        <i className="fas fa-underline"></i>
+      </button>
+      <button 
+        type="button" 
+        className="floating-btn"
+        onClick={() => formatText('strikethrough')}
+      >
+        <i className="fas fa-strikethrough"></i>
+      </button>
+      <button 
+        type="button" 
+        className="floating-btn"
+        onClick={() => formatText('code')}
+      >
+        <i className="fas fa-code"></i>
+      </button>
+    </div>
+  );
+}
+
+// Slash Commands Menu
+class SlashCommandOption extends MenuOption {
+  title: string;
+  icon: string;
+  onSelect: () => void;
+
+  constructor(title: string, icon: string, onSelect: () => void) {
+    super(title);
+    this.title = title;
+    this.icon = icon;
+    this.onSelect = onSelect;
+  }
+}
+
+function SlashCommandsPlugin() {
+  const [editor] = useLexicalComposerContext();
+  const checkForTriggerMatch = useBasicTypeaheadTriggerMatch('/', {
+    minLength: 0,
+  });
+
+  const options = React.useMemo(() => {
+    const baseOptions = [
+      new SlashCommandOption('見出し1', '📝', () => {
+        editor.update(() => {
+          const selection = $getSelection();
+          if (selection) {
+            const headingNode = $createHeadingNode('h1');
+            selection.insertNodes([headingNode]);
+          }
+        });
+      }),
+      new SlashCommandOption('見出し2', '📝', () => {
+        editor.update(() => {
+          const selection = $getSelection();
+          if (selection) {
+            const headingNode = $createHeadingNode('h2');
+            selection.insertNodes([headingNode]);
+          }
+        });
+      }),
+      new SlashCommandOption('見出し3', '📝', () => {
+        editor.update(() => {
+          const selection = $getSelection();
+          if (selection) {
+            const headingNode = $createHeadingNode('h3');
+            selection.insertNodes([headingNode]);
+          }
+        });
+      }),
+      new SlashCommandOption('箇条書き', '•', () => {
+        editor.update(() => {
+          const selection = $getSelection();
+          if (selection) {
+            const listNode = $createListNode('ul');
+            const listItemNode = $createListItemNode();
+            listNode.append(listItemNode);
+            selection.insertNodes([listNode]);
+          }
+        });
+      }),
+      new SlashCommandOption('番号付きリスト', '1.', () => {
+        editor.update(() => {
+          const selection = $getSelection();
+          if (selection) {
+            const listNode = $createListNode('ol');
+            const listItemNode = $createListItemNode();
+            listNode.append(listItemNode);
+            selection.insertNodes([listNode]);
+          }
+        });
+      }),
+      new SlashCommandOption('引用', '💬', () => {
+        editor.update(() => {
+          const selection = $getSelection();
+          if (selection) {
+            const quoteNode = $createQuoteNode();
+            selection.insertNodes([quoteNode]);
+          }
+        });
+      }),
+    ];
+    return baseOptions;
+  }, [editor]);
 
   return (
-    <div className="lexical-toolbar">
-      <div className="toolbar-group">
-        <button 
-          type="button" 
-          className="toolbar-btn"
-          onClick={() => formatText('bold')}
-        >
-          <i className="fas fa-bold"></i>
-        </button>
-        <button 
-          type="button" 
-          className="toolbar-btn"
-          onClick={() => formatText('italic')}
-        >
-          <i className="fas fa-italic"></i>
-        </button>
-        <button 
-          type="button" 
-          className="toolbar-btn"
-          onClick={() => formatText('underline')}
-        >
-          <i className="fas fa-underline"></i>
-        </button>
-      </div>
-      
-      <div className="toolbar-group">
-        <button 
-          type="button" 
-          className="toolbar-btn"
-          onClick={() => insertHeading(2)}
-        >
-          <i className="fas fa-heading"></i>
-        </button>
-      </div>
-    </div>
+    <LexicalTypeaheadMenuPlugin<SlashCommandOption>
+      onQueryChange={() => {}}
+      onSelectOption={(option) => {
+        option.onSelect();
+      }}
+      triggerFn={checkForTriggerMatch}
+      options={options}
+      menuRenderFn={(anchorElementRef, { selectedIndex, selectOptionAndCleanUp, setHighlightedIndex }) => {
+        if (!anchorElementRef.current) return null;
+
+        return (
+          <div className="slash-commands-menu">
+            {options.map((option, index) => (
+              <div
+                key={option.key}
+                className={`slash-command-item ${index === selectedIndex ? 'selected' : ''}`}
+                onClick={() => selectOptionAndCleanUp(option)}
+                onMouseEnter={() => setHighlightedIndex(index)}
+              >
+                <span className="slash-command-icon">{option.icon}</span>
+                <span className="slash-command-title">{option.title}</span>
+              </div>
+            ))}
+          </div>
+        );
+      }}
+    />
   );
 }
 
@@ -186,7 +340,6 @@ export default function LexicalEditor({
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <div className="lexical-editor-wrapper">
-        <ToolbarPlugin />
         <div className="lexical-editor-container">
           <RichTextPlugin
             contentEditable={
@@ -201,8 +354,11 @@ export default function LexicalEditor({
             ErrorBoundary={LexicalErrorBoundary}
           />
         </div>
+        <FloatingToolbarPlugin />
         <HistoryPlugin />
         <ListPlugin />
+        <LinkPlugin />
+        <SlashCommandsPlugin />
         {initialContent && <InitialContentPlugin initialContent={initialContent} />}
         {hiddenFieldId && <ContentSyncPlugin hiddenFieldId={hiddenFieldId} />}
       </div>
