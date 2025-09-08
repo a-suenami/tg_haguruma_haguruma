@@ -151,3 +151,7 @@ example: `source env.sh && bundle exec rails ridgepole:apply`
 
 ## Edit CLAUDE.md for memory
 If there are any hard-won know-how or discoveries (regarding tacit knowledge) that you struggled with, organize and write them out at the end of CLAUDE.md.
+
+## Session Context
+- **Current Project Status**: See `.claude/PROGRESS.md` for detailed session context and progress information
+- **Latest Work**: React + Lexical rich text editor implementation with Notion-like features completed
