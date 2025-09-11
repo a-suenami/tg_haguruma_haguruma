@@ -7,6 +7,7 @@ import { INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND } from "@lex
 import { $createCodeNode } from "@lexical/code";
 import { $createImageNode } from "./ImageNode";
 import { $createVideoNode } from "./VideoNode";
+import { parseAnyEmbedUrl } from "./EmbedConfigs";
 import { $patchStyleText } from "@lexical/selection";
 import InlineColorPicker from "./InlineColorPicker";
 
@@ -97,6 +98,18 @@ const ToolbarPlugin: FC = () => {
         });
       }
     });
+  };
+
+  const insertEmbed = () => {
+    const url = prompt('Enter URL to embed (YouTube, Twitter, etc.):');
+    if (url) {
+      const parsedEmbed = parseAnyEmbedUrl(url);
+      if (parsedEmbed) {
+        parsedEmbed.config.insertNode(editor, parsedEmbed.result);
+      } else {
+        alert('URL not supported. Currently supports YouTube and Twitter URLs.');
+      }
+    }
   };
 
   return (
@@ -192,6 +205,16 @@ const ToolbarPlugin: FC = () => {
           style={{ display: 'none' }}
         />
       </label>
+
+      <div className="toolbar-divider" />
+
+      <button
+        onClick={insertEmbed}
+        className="toolbar-item"
+        title="Insert embed (YouTube, Twitter, etc.)"
+      >
+        🔗 Embed
+      </button>
     </div>
   );
 };

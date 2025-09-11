@@ -12,12 +12,14 @@ import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPl
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { ListNode, ListItemNode } from "@lexical/list";
 import { CodeNode } from "@lexical/code";
-import { LinkNode } from "@lexical/link";
+import { LinkNode, AutoLinkNode } from "@lexical/link";
 
 import ToolbarPlugin from "./components/ToolbarPlugin";
 import { ImageNode } from "./components/ImageNode";
 import { VideoNode } from "./components/VideoNode";
+import { AutoEmbedNode } from "./components/AutoEmbedNode";
 import FileDragDropPlugin from "./components/FileDragDropPlugin";
+import AutoEmbedPluginComponent from "./components/AutoEmbedPluginComponent";
 import "./Editor.scss";
 
 // Markdown transformers
@@ -55,6 +57,7 @@ const initialConfig = {
     code: "editor-code",
     image: "editor-image",
     video: "editor-video",
+    embedBlock: "editor-embed-block",
   },
   nodes: [
     HeadingNode,
@@ -63,8 +66,10 @@ const initialConfig = {
     ListNode,
     ListItemNode,
     LinkNode,
+    AutoLinkNode,
     ImageNode,
     VideoNode,
+    AutoEmbedNode,
   ],
   onError: (error: Error) => {
     console.error(error);
@@ -93,6 +98,7 @@ export const Editor: FC = () => {
           <LinkPlugin />
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
           <FileDragDropPlugin />
+          <AutoEmbedPluginComponent />
         </div>
       </LexicalComposer>
     </div>
