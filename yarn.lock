@@ -273,9 +273,9 @@
     "@lexical/utils" "0.35.0"
     lexical "0.35.0"
 
-"@lexical/code@0.35.0":
+"@lexical/code@0.35.0", "@lexical/code@^0.35.0":
   version "0.35.0"
-  resolved "https://registry.npmjs.org/@lexical/code/-/code-0.35.0.tgz"
+  resolved "https://registry.yarnpkg.com/@lexical/code/-/code-0.35.0.tgz#2634ccf227914e6b9257fefa4bca0f1dfb373acb"
   integrity sha512-ox4DZwETQ9IA7+DS6PN8RJNwSAF7RMjL7YTVODIqFZ5tUFIf+5xoCHbz7Fll0Bvixlp12hVH90xnLwTLRGpkKw==
   dependencies:
     "@lexical/utils" "0.35.0"
