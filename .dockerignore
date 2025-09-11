@@ -2,13 +2,14 @@
 
 # Ignore git directory.
 /.git/
-/.gitignore
 
 # Ignore bundler config.
 /.bundle
 
-# Ignore all environment files.
+# Ignore all environment files (except templates).
 /.env*
+/*.env
+!/.env*.erb
 
 # Ignore all default key files.
 /config/master.key
@@ -19,6 +20,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+!/tmp/cache/bootsnap/*
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
@@ -35,17 +37,3 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
-
-# Ignore CI service files.
-/.github
-
-# Ignore Kamal files.
-/config/deploy*.yml
-/.kamal
-
-# Ignore development files
-/.devcontainer
-
-# Ignore Docker-related files
-/.dockerignore
-/Dockerfile*

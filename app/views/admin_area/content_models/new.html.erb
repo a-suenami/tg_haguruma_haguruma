@@ -1,0 +1,218 @@
+<% content_for :title, '新規コンテンツモデル' %>
+<% content_for :head do %>
+    <style>
+        .model-editor {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .editor-main {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .editor-sidebar {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .field-list {
+            margin-top: 30px;
+        }
+
+        .field-item {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .field-item:hover {
+            border-color: #6366f1;
+            background: white;
+        }
+
+        .field-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .field-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #0f172a;
+        }
+
+        .field-id {
+            font-size: 12px;
+            color: #94a3b8;
+            font-family: monospace;
+        }
+
+        .field-type {
+            background: #6366f1;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .field-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .field-action-btn {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .field-action-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .add-field-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6366f1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-field-btn:hover {
+            background: #f8fafc;
+            border-color: #6366f1;
+        }
+
+        .field-types {
+            display: grid;
+            gap: 10px;
+        }
+
+        .field-type-btn {
+            padding: 15px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .field-type-btn:hover {
+            background: white;
+            border-color: #6366f1;
+        }
+
+        .field-type-name {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 5px;
+        }
+
+        .field-type-desc {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+<% end %>
+
+<main class="main">
+    <header class="main-header">
+        <h2>新規コンテンツモデル</h2>
+        <div>
+            <%= link_to 'キャンセル', admin_area_content_models_path, class: 'btn btn-secondary' %>
+            <button class="btn btn-primary">保存</button>
+        </div>
+    </header>
+
+    <div class="model-editor">
+        <div class="editor-main">
+            <form>
+                <div class="form-group">
+                    <label class="form-label">モデル名</label>
+                    <input type="text" class="form-input" placeholder="例: 記事">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">モデルID</label>
+                    <input type="text" class="form-input" placeholder="例: article">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">説明</label>
+                    <textarea class="form-textarea" rows="3" placeholder="このコンテンツモデルの説明を入力"></textarea>
+                </div>
+
+                <div class="field-list">
+                    <h3 style="margin-bottom: 20px;">フィールド</h3>
+
+                    <button class="add-field-btn">+ フィールドを追加</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="editor-sidebar">
+            <h3 style="margin-bottom: 20px;">フィールドタイプ</h3>
+            <div class="field-types">
+                <button class="field-type-btn">
+                    <div class="field-type-name">テキスト</div>
+                    <div class="field-type-desc">短いテキスト入力</div>
+                </button>
+                <button class="field-type-btn">
+                    <div class="field-type-name">リッチテキスト</div>
+                    <div class="field-type-desc">書式付きの長文テキスト</div>
+                </button>
+                <button class="field-type-btn">
+                    <div class="field-type-name">数値</div>
+                    <div class="field-type-desc">整数または小数</div>
+                </button>
+                <button class="field-type-btn">
+                    <div class="field-type-name">日付</div>
+                    <div class="field-type-desc">日付と時刻</div>
+                </button>
+                <button class="field-type-btn">
+                    <div class="field-type-name">メディア</div>
+                    <div class="field-type-desc">画像や動画ファイル</div>
+                </button>
+                <button class="field-type-btn">
+                    <div class="field-type-name">参照</div>
+                    <div class="field-type-desc">他のコンテンツへの参照</div>
+                </button>
+                <button class="field-type-btn">
+                    <div class="field-type-name">選択肢</div>
+                    <div class="field-type-desc">ドロップダウンまたはラジオボタン</div>
+                </button>
+                <button class="field-type-btn">
+                    <div class="field-type-name">真偽値</div>
+                    <div class="field-type-desc">はい/いいえの選択</div>
+                </button>
+            </div>
+        </div>
+    </div>
+</main>

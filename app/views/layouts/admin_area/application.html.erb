@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - <%= yield(:title) || 'Admin' %></title>
+    <link rel="icon" type="image/svg+xml" href="/admin/favicon.svg">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= vite_client_tag %>
+    <%= vite_typescript_tag 'entrypoints/admin_area/application' %>
+    <%= vite_stylesheet_tag 'entrypoints/admin_area/application.scss', skip_preload_tags: true %>
+    <%= yield(:head) %>
+</head>
+<body>
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    <div class="sidebar-overlay" onclick="toggleMobileMenu()"></div>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="logo">CMS</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="<%= 'active' if controller_name == 'dashboard' %>">
+                        <%= link_to 'ダッシュボード', admin_area_dashboard_path %>
+                    </li>
+                    <li class="<%= 'active' if controller_name == 'content_entries' %>">
+                        <%= link_to 'コンテンツ', admin_area_content_entries_path %>
+                    </li>
+                    <li class="<%= 'active' if controller_name == 'media' %>">
+                        <%= link_to 'メディア', admin_area_media_path %>
+                    </li>
+                    <li class="<%= 'active' if controller_name == 'categories' %>">
+                        <%= link_to 'カテゴリー', admin_area_categories_path %>
+                    </li>
+                    <li class="<%= 'active' if controller_name == 'content_models' %>">
+                        <%= link_to 'コンテンツモデル', admin_area_content_models_path %>
+                    </li>
+                    <li class="<%= 'active' if controller_name == 'setting' %>">
+                        <%= link_to '設定', admin_area_setting_path %>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <%= yield %>
+    </div>
+</body>
+</html>

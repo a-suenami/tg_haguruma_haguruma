@@ -1,10 +1,19 @@
-require_relative "boot"
+require_relative 'boot'
 
-require "rails/all"
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+
+# Fix for Rails 8.0 ActionMailer API change - apply after gems are loaded
+if Rails.version.start_with?('8.') && defined?(ActionMailer::Base)
+  ActionMailer::Base.class_eval do
+    def self.preview_path=(path)
+      self.preview_paths = [path] if path
+    end
+  end
+end
 
 module HagurumaApi
   class Application < Rails::Application
@@ -23,5 +32,13 @@ module HagurumaApi
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Locale configuration
+    config.i18n.default_locale = :ja
+    config.i18n.available_locales = [:ja, :en]
+
+    # Timezone configuration
+    config.time_zone = 'Asia/Tokyo'
+    config.active_record.time_zone_aware_types = %i[datetime time]
   end
 end

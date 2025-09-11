@@ -1,0 +1,25 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景円 -->
+  <circle cx="16" cy="16" r="15" fill="#6366f1"/>
+
+  <!-- シンプルな歯車 -->
+  <g fill="white">
+    <!-- 外側の歯 -->
+    <rect x="15" y="4" width="2" height="4"/>
+    <rect x="15" y="24" width="2" height="4"/>
+    <rect x="4" y="15" width="4" height="2"/>
+    <rect x="24" y="15" width="4" height="2"/>
+
+    <!-- 斜めの歯 -->
+    <rect x="23" y="7" width="2" height="3" transform="rotate(45 24 8.5)"/>
+    <rect x="7" y="22" width="2" height="3" transform="rotate(45 8 23.5)"/>
+    <rect x="7" y="7" width="2" height="3" transform="rotate(-45 8 8.5)"/>
+    <rect x="23" y="22" width="2" height="3" transform="rotate(-45 24 23.5)"/>
+
+    <!-- 本体円 -->
+    <circle cx="16" cy="16" r="6"/>
+  </g>
+
+  <!-- 中央の穴 -->
+  <circle cx="16" cy="16" r="3" fill="#6366f1"/>
+</svg>

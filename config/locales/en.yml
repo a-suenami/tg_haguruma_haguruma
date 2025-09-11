@@ -28,4 +28,39 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  activerecord:
+    models:
+      tenant: Tenant
+    attributes:
+      tenant:
+        id: ID
+        name: Name
+        user_page_domain: User page domain
+        created_at: Created at
+        updated_at: Updated at
+    errors:
+      models:
+        tenant:
+          attributes:
+            base:
+              reserved_id_error: This ID is reserved and cannot be used
+  helpers:
+    messages:
+      created: Created successfully
+      updated: Updated successfully
+    action:
+      new: Create
+      edit: Edit
+      delete: Delete
+      back: Back
+    submit:
+      create: Create
+      update: Update
+  time:
+    formats:
+      default: '%Y/%m/%d %H:%M'
+      long: '%Y/%m/%d %H:%M'
+      short: '%m/%d %H:%M'
+  date:
+    formats:
+      default: '%Y/%m/%d'

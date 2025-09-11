@@ -1,0 +1,6 @@
+create_table :tenants, force: :cascade, id: :string do |t|
+  t.string :name
+  t.string :user_page_domain
+
+  t.timestamps null: false
+end

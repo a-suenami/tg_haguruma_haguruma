@@ -1,0 +1,132 @@
+<% content_for :title, 'コンテンツタイプ選択' %>
+
+<main class="main">
+    <header class="main-header">
+        <h2>コンテンツタイプを選択</h2>
+    </header>
+
+    <div class="content-types-grid">
+        <!-- コレクションタイプ -->
+        <%= link_to '/admin/content_entries/content_types/article', class: 'content-type-card' do %>
+            <div class="content-type-icon">📝</div>
+            <h3 class="content-type-name">記事</h3>
+            <div class="content-type-stats">
+                <div class="stat-item">
+                    <span class="stat-number">892</span>
+                    <span class="stat-label">件</span>
+                </div>
+                <div class="stat-breakdown">
+                    <span class="stat-detail">公開中: 687</span>
+                    <span class="stat-detail">下書き: 205</span>
+                </div>
+            </div>
+        <% end %>
+
+        <%= link_to '/admin/content_entries/content_types/announcement', class: 'content-type-card' do %>
+            <div class="content-type-icon">📢</div>
+            <h3 class="content-type-name">お知らせ</h3>
+            <div class="content-type-stats">
+                <div class="stat-item">
+                    <span class="stat-number">145</span>
+                    <span class="stat-label">件</span>
+                </div>
+                <div class="stat-breakdown">
+                    <span class="stat-detail">公開中: 98</span>
+                    <span class="stat-detail">下書き: 47</span>
+                </div>
+            </div>
+        <% end %>
+
+        <%= link_to '/admin/content_entries/content_types/product', class: 'content-type-card' do %>
+            <div class="content-type-icon">🛍️</div>
+            <h3 class="content-type-name">商品</h3>
+            <div class="content-type-stats">
+                <div class="stat-item">
+                    <span class="stat-number">2,341</span>
+                    <span class="stat-label">件</span>
+                </div>
+                <div class="stat-breakdown">
+                    <span class="stat-detail">販売中: 1,892</span>
+                    <span class="stat-detail">在庫切れ: 449</span>
+                </div>
+            </div>
+        <% end %>
+
+        <%= link_to '/admin/content_entries/content_types/profile', class: 'content-type-card' do %>
+            <div class="content-type-icon">👤</div>
+            <h3 class="content-type-name">プロフィール</h3>
+            <div class="content-type-stats">
+                <div class="stat-item">
+                    <span class="stat-number">48</span>
+                    <span class="stat-label">件</span>
+                </div>
+                <div class="stat-breakdown">
+                    <span class="stat-detail">公開中: 42</span>
+                    <span class="stat-detail">非公開: 6</span>
+                </div>
+            </div>
+        <% end %>
+
+        <%= link_to '/admin/content_entries/content_types/gallery', class: 'content-type-card' do %>
+            <div class="content-type-icon">📸</div>
+            <h3 class="content-type-name">ギャラリー</h3>
+            <div class="content-type-stats">
+                <div class="stat-item">
+                    <span class="stat-number">76</span>
+                    <span class="stat-label">件</span>
+                </div>
+                <div class="stat-breakdown">
+                    <span class="stat-detail">公開中: 65</span>
+                    <span class="stat-detail">非公開: 11</span>
+                </div>
+            </div>
+        <% end %>
+
+        <!-- 区切り線 -->
+        <div class="content-types-divider">
+            <span>シングルページ</span>
+        </div>
+
+        <!-- シングルタイプ -->
+        <%= link_to '/admin/content_entries/single/about', class: 'content-type-card content-type-single' do %>
+            <div class="content-type-icon">📄</div>
+            <h3 class="content-type-name">会社概要</h3>
+            <div class="content-type-status">
+                <span class="status-tag status-tag-draft">編集中</span>
+            </div>
+        <% end %>
+
+        <%= link_to '/admin/content_entries/single/privacy', class: 'content-type-card content-type-single' do %>
+            <div class="content-type-icon">🔒</div>
+            <h3 class="content-type-name">プライバシーポリシー</h3>
+            <div class="content-type-status">
+                <span class="status-tag status-tag-published">公開中</span>
+            </div>
+        <% end %>
+
+        <%= link_to '/admin/content_entries/single/terms', class: 'content-type-card content-type-single' do %>
+            <div class="content-type-icon">📋</div>
+            <h3 class="content-type-name">利用規約</h3>
+            <div class="content-type-status">
+                <span class="status-tag status-tag-published">公開中</span>
+                <span class="status-tag status-tag-draft">編集中</span>
+            </div>
+        <% end %>
+
+        <%= link_to '/admin/content_entries/single/contact', class: 'content-type-card content-type-single' do %>
+            <div class="content-type-icon">📮</div>
+            <h3 class="content-type-name">お問い合わせ</h3>
+            <div class="content-type-status">
+                <span class="status-tag status-tag-draft">編集中</span>
+            </div>
+        <% end %>
+
+        <%= link_to '/admin/content_entries/single/settings', class: 'content-type-card content-type-single' do %>
+            <div class="content-type-icon">⚙️</div>
+            <h3 class="content-type-name">サイト設定</h3>
+            <div class="content-type-status">
+                <span class="status-tag status-tag-published">公開中</span>
+            </div>
+        <% end %>
+    </div>
+</main>
