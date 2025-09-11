@@ -2,9 +2,9 @@ local worker_environment = import '../../templates/rails_environment.libsonnet';
 local worker_secrets = import '../../templates/rails_secrets.libsonnet';
 local worker_image_tag = std.extVar('APP_IMAGE_TAG');
 
-local cpu = 512;
-local memory = 15000;
-local memory_reservation = 3000;
+local cpu = 1024;
+local memory = 1024;
+local memory_reservation = 512;
 
 {
   "containerDefinitions": [
@@ -31,11 +31,11 @@ local memory_reservation = 3000;
         }
       ],
       "essential": true,
-      "image": "218794653131.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-stg:" + worker_image_tag,
+      "image": "287511440462.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-stg:" + worker_image_tag,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/triple-main-service-worker/worker",
+          "awslogs-group": "/ecs/haguruma-main-service-worker/worker",
           "awslogs-region": "ap-northeast-1",
           "awslogs-stream-prefix": "worker"
         }
@@ -47,14 +47,11 @@ local memory_reservation = 3000;
       "portMappings": [],
       "secrets": worker_secrets,
       "stopTimeout": 120,
-      "dnsServers": [
-        "172.17.0.1"
-      ],
       "volumesFrom": []
     }
   ],
-  "executionRoleArn": "arn:aws:iam::218794653131:role/triple-main-ecs-task-execution-stg",
-  "family": "triple-main-service-worker-stg",
+  "executionRoleArn": "arn:aws:iam::287511440462:role/haguruma-main-ecs-task-execution-stg",
+  "family": "haguruma-main-service-worker-stg",
   "placementConstraints": [],
   "requiresCompatibilities": [
     "EC2"
@@ -66,9 +63,9 @@ local memory_reservation = 3000;
     },
     {
       "key": "project",
-      "value": "triple"
+      "value": "haguruma"
     }
   ],
-  "taskRoleArn": "arn:aws:iam::218794653131:role/triple-main-ecs-task-stg",
+  "taskRoleArn": "arn:aws:iam::287511440462:role/haguruma-main-ecs-task-stg",
   "volumes": []
 }
