@@ -1,8 +1,9 @@
 .editor-container {
   border: 1px solid #ccc;
   border-radius: 8px;
-  max-width: 800px;
-  margin: 20px 0;
+  width: calc(100vw - 40px);
+  max-width: none;
+  margin: 20px;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -78,8 +79,8 @@
 
 .editor-input {
   position: relative;
-  padding: 16px 16px 16px 36px;
-  min-height: 300px;
+  padding: 20px;
+  min-height: 500px;
   font-size: 16px;
   line-height: 1.6;
   color: #333;
@@ -302,49 +303,58 @@
 
 .editor-placeholder {
   position: absolute;
-  top: 16px;
-  left: 36px;
+  top: 20px;
+  left: 20px;
   color: #999;
   pointer-events: none;
   font-size: 16px;
 }
 
-// Drag and drop styles
+// Lexical draggable block plugin styles
+[data-lexical-drag-block] {
+  position: relative;
+}
+
+// Drag handle positioning for Lexical's draggable block plugin
 .draggable-block-menu {
-  position: absolute;
-  left: -20px;
-  top: 0;
-  width: 20px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: grab;
+  position: absolute !important;
+  left: -30px !important;
+  top: 0 !important;
+  z-index: 10 !important;
   opacity: 0;
   transition: opacity 0.2s ease;
   
   &:hover {
-    opacity: 1;
-  }
-
-  &::before {
-    content: '⋮⋮';
-    font-size: 12px;
-    color: #999;
-    line-height: 1;
+    opacity: 1 !important;
   }
 }
 
-.editor-input:hover .draggable-block-menu,
-.editor-input .draggable-block-menu:hover {
-  opacity: 1;
+// Show drag handle on block hover
+[data-lexical-drag-block]:hover .draggable-block-menu {
+  opacity: 1 !important;
+}
+
+// Target line for drop indication
+.drag-target-line {
+  height: 2px !important;
+  background: #007acc !important;
+  border-radius: 1px;
+  margin: 2px 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  
+  &.active {
+    opacity: 1 !important;
+  }
 }
 
 // Drag preview styles
-.drag-ghost {
+.dragging {
   opacity: 0.5;
   background: #f0f0f0;
   border-radius: 4px;
+  transform: rotate(2deg);
+  transition: transform 0.2s ease;
 }
 
 .drag-target-line {
@@ -366,6 +376,123 @@
   &:hover {
     background: #f5f5f5 !important;
     border-color: #ccc !important;
+  }
+}
+
+// Color picker styles
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// Inline color picker styles
+.inline-color-picker {
+  position: relative;
+}
+
+.color-picker-trigger {
+  width: 32px;
+  height: 24px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s ease;
+  
+  &:hover {
+    border-color: #007acc;
+  }
+}
+
+.color-picker-arrow {
+  position: absolute;
+  bottom: 0;
+  right: 2px;
+  font-size: 8px;
+  color: white;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+}
+
+.color-picker-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 280px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.color-section {
+  margin-bottom: 12px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.section-colors {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+}
+
+.dropdown-color-button {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #007acc;
+    border-width: 2px;
+    box-shadow: 0 0 4px rgba(0, 122, 204, 0.3);
+  }
+}
+
+.color-input-section {
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.hex-input-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.hex-input {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 4px 6px;
+  font-size: 11px;
+  font-family: monospace;
+  width: 80px;
+  text-transform: uppercase;
+  
+  &:focus {
+    outline: none;
+    border-color: #007acc;
   }
 }
 

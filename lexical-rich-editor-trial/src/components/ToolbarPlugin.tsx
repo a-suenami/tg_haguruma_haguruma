@@ -7,6 +7,8 @@ import { INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND } from "@lex
 import { $createCodeNode } from "@lexical/code";
 import { $createImageNode } from "./ImageNode";
 import { $createVideoNode } from "./VideoNode";
+import { $patchStyleText } from "@lexical/selection";
+import InlineColorPicker from "./InlineColorPicker";
 
 const ToolbarPlugin: FC = () => {
   const [editor] = useLexicalComposerContext();
@@ -86,6 +88,17 @@ const ToolbarPlugin: FC = () => {
     event.target.value = '';
   };
 
+  const applyTextColor = (color: string) => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        $patchStyleText(selection, {
+          color: color,
+        });
+      }
+    });
+  };
+
   return (
     <div className="toolbar">
       <button
@@ -118,6 +131,13 @@ const ToolbarPlugin: FC = () => {
       >
         {'</>'}
       </button>
+
+      <div className="toolbar-divider" />
+
+      <div className="color-picker-container">
+        <span style={{ fontSize: '12px', marginRight: '8px' }}>Text Color:</span>
+        <InlineColorPicker onColorSelect={applyTextColor} />
+      </div>
       
       <div className="toolbar-divider" />
       
