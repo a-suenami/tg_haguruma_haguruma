@@ -1,9 +1,9 @@
 .editor-container {
   border: 1px solid #ccc;
   border-radius: 8px;
-  width: calc(100vw - 40px);
+  width: 100%;
   max-width: none;
-  margin: 20px;
+  margin: 20px 0;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -89,24 +89,47 @@
   resize: none;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin: 16px 0 8px 0;
     font-weight: 600;
     line-height: 1.3;
   }
 
-  h1 { font-size: 32px; }
-  h2 { font-size: 24px; }
-  h3 { font-size: 20px; }
-  h4 { font-size: 18px; }
-  h5 { font-size: 16px; }
-  h6 { font-size: 14px; }
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  h3 {
+    font-size: 20px;
+  }
+
+  h4 {
+    font-size: 18px;
+  }
+
+  h5 {
+    font-size: 16px;
+  }
+
+  h6 {
+    font-size: 14px;
+  }
 
   p {
     margin: 8px 0;
   }
 
-  ul, ol {
+  ul,
+  ol {
     margin: 8px 0;
     padding-left: 24px;
   }
@@ -341,17 +364,17 @@
   color: #ccc;
   transition: all 0.1s ease-in-out;
   user-select: none;
-  
+
   &:hover {
     background: rgba(55, 53, 47, 0.1);
     color: #999;
   }
-  
+
   &:active {
     cursor: grabbing;
     color: #666;
   }
-  
+
   svg {
     pointer-events: none;
   }
@@ -376,7 +399,7 @@
   transition: opacity 0.2s ease;
   pointer-events: none;
   box-shadow: 0 0 4px rgba(0, 122, 204, 0.3);
-  
+
   &.active {
     opacity: 1;
   }
@@ -402,7 +425,7 @@
   margin: 2px 0;
   opacity: 0;
   transition: opacity 0.2s ease;
-  
+
   &.show {
     opacity: 1;
   }
@@ -411,7 +434,7 @@
 // File upload button
 .file-upload-button {
   cursor: pointer !important;
-  
+
   &:hover {
     background: #f5f5f5 !important;
     border-color: #ccc !important;
@@ -438,7 +461,7 @@
   cursor: pointer;
   position: relative;
   transition: border-color 0.2s ease;
-  
+
   &:hover {
     border-color: #007acc;
   }
@@ -470,7 +493,7 @@
 
 .color-section {
   margin-bottom: 12px;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -498,7 +521,7 @@
   border-radius: 3px;
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
   &:hover {
     border-color: #007acc;
     border-width: 2px;
@@ -528,7 +551,7 @@
   font-family: monospace;
   width: 80px;
   text-transform: uppercase;
-  
+
   &:focus {
     outline: none;
     border-color: #007acc;
@@ -552,7 +575,7 @@
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
@@ -572,7 +595,7 @@
   display: block;
   border-radius: 8px;
   outline: none;
-  
+
   &:focus {
     outline: 2px solid #007acc;
     outline-offset: 2px;
@@ -583,7 +606,7 @@
 .editor-content {
   &.drag-over {
     position: relative;
-    
+
     &::after {
       content: '📁 Drop files here to upload';
       position: absolute;
@@ -617,7 +640,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   background: white;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -671,7 +694,7 @@
     background: #f8f9fa;
     color: #6c757d;
     font-size: 14px;
-    
+
     &::before {
       content: "📺 Loading YouTube video...";
     }
@@ -686,7 +709,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   background: white;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -746,7 +769,7 @@
   color: #007acc;
   text-decoration: none;
   font-weight: 500;
-  
+
   &:hover {
     text-decoration: underline;
   }
@@ -769,16 +792,16 @@
   border-bottom: 1px solid #eee;
   font-size: 14px;
   transition: background-color 0.2s ease;
-  
+
   &:last-child {
     border-bottom: none;
   }
-  
+
   &:hover,
   &.selected {
     background: #f8f9fa;
   }
-  
+
   &:first-child:hover,
   &:first-child.selected {
     background: #007acc;
@@ -807,7 +830,7 @@
   min-width: 400px;
   max-width: 500px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  
+
   h3 {
     margin: 0 0 16px 0;
     font-size: 18px;
@@ -822,7 +845,7 @@
   border-radius: 6px;
   font-size: 14px;
   margin-bottom: 8px;
-  
+
   &:focus {
     outline: none;
     border-color: #007acc;
@@ -854,7 +877,7 @@
 .embed-button-primary {
   background: #007acc;
   color: white;
-  
+
   &:hover {
     background: #0056b3;
   }
@@ -864,7 +887,7 @@
   background: #f8f9fa;
   color: #495057;
   border: 1px solid #ddd;
-  
+
   &:hover {
     background: #e9ecef;
   }
