@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "outDir": "./dist",
+    "noEmit": true,
     "paths": {
       "@app/*": ["app/frontend/*"]
     },
@@ -16,5 +18,5 @@
     "types": ["vite/client", "node"]
   },
   "include": ["app/frontend/**/*"],
-  "exclude": ["node_modules", "public", "storage"]
+  "exclude": ["node_modules", "public", "storage", "dist"]
 }
