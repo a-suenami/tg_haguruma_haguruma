@@ -20,6 +20,7 @@ import { VideoNode } from "./components/VideoNode";
 import { AutoEmbedNode } from "./components/AutoEmbedNode";
 import FileDragDropPlugin from "./components/FileDragDropPlugin";
 import AutoEmbedPluginComponent from "./components/AutoEmbedPluginComponent";
+import DraggableBlockPlugin from "./components/DraggableBlockPlugin";
 import "./Editor.scss";
 
 // Markdown transformers
@@ -99,6 +100,7 @@ export const Editor: FC = () => {
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
           <FileDragDropPlugin />
           <AutoEmbedPluginComponent />
+          <DraggableBlockPlugin />
         </div>
       </LexicalComposer>
     </div>

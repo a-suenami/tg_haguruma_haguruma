@@ -79,7 +79,7 @@
 
 .editor-input {
   position: relative;
-  padding: 20px;
+  padding: 20px 20px 20px 50px;
   min-height: 500px;
   font-size: 16px;
   line-height: 1.6;
@@ -304,48 +304,87 @@
 .editor-placeholder {
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 50px;
   color: #999;
   pointer-events: none;
   font-size: 16px;
 }
 
-// Lexical draggable block plugin styles
-[data-lexical-drag-block] {
-  position: relative;
-}
-
-// Drag handle positioning for Lexical's draggable block plugin
+// Draggable block plugin styles
 .draggable-block-menu {
-  position: absolute !important;
-  left: -30px !important;
-  top: 0 !important;
-  z-index: 10 !important;
+  position: absolute;
+  left: 20px;
+  top: 0;
+  z-index: 10;
   opacity: 0;
   transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  height: 24px;
   
-  &:hover {
-    opacity: 1 !important;
+  &:hover,
+  &:focus-within {
+    opacity: 1;
   }
 }
 
-// Show drag handle on block hover
-[data-lexical-drag-block]:hover .draggable-block-menu {
-  opacity: 1 !important;
+.draggable-block-handle {
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  transition: all 0.1s ease-in-out;
+  user-select: none;
+  
+  &:hover {
+    background: rgba(55, 53, 47, 0.1);
+    color: #999;
+  }
+  
+  &:active {
+    cursor: grabbing;
+    color: #666;
+  }
+  
+  svg {
+    pointer-events: none;
+  }
+}
+
+.drag-handle-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
 }
 
 // Target line for drop indication
-.drag-target-line {
-  height: 2px !important;
-  background: #007acc !important;
-  border-radius: 1px;
-  margin: 2px 0;
+.draggable-block-target-line {
+  position: absolute;
+  height: 4px;
+  background: #007acc;
+  border-radius: 2px;
+  left: 25px; // ハンドルの右側から開始
+  right: 0px; // エディタの端まで
+  top: -2px; // 上下位置を調整（ブロックの直上に配置）
   opacity: 0;
   transition: opacity 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(0, 122, 204, 0.3);
   
   &.active {
-    opacity: 1 !important;
+    opacity: 1;
   }
+}
+
+// Editor container needs relative positioning for drag plugin
+.editor-input {
+  position: relative;
 }
 
 // Drag preview styles
