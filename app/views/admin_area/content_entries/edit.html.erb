@@ -92,7 +92,7 @@
 
                 <!-- コンテンツフィールド（編集中バージョン - editable form） -->
                 <div class="content-form-area">
-                    <%= form_with url: admin_area_content_entry_path(params[:id]), method: :patch, class: 'content-form' do |form| %>
+                    <%= form_with url: "#", method: :get, class: 'content-form', local: true do |form| %>
                         <div class="field-group">
                             <%= form.label :title, 'title', class: 'field-label' %>
                             <%= form.text_field :title, value: '2024年の技術トレンド予測', class: 'field-input' %>
@@ -135,13 +135,13 @@
                 <div class="action-section">
                     <h4 class="action-section-title">ENTRY</h4>
                     <div class="action-buttons">
-                        <button type="submit" class="btn btn-secondary action-btn">
+                        <button type="button" class="btn btn-secondary action-btn" disabled>
                             <i class="fas fa-save icon-prefix"></i>
-                            保存
+                            保存 (テスト用)
                         </button>
-                        <button type="submit" class="btn btn-success action-btn">
+                        <button type="button" class="btn btn-success action-btn" disabled>
                             <i class="fas fa-upload icon-prefix"></i>
-                            公開
+                            公開 (テスト用)
                         </button>
                     </div>
                 </div>
