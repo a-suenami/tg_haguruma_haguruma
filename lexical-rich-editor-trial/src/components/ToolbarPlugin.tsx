@@ -1,0 +1,179 @@
+import type { FC } from "react";
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND, $insertNodes } from "lexical";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $setBlocksType } from "@lexical/selection";
+import { $createHeadingNode, $createQuoteNode } from "@lexical/rich-text";
+import { INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND } from "@lexical/list";
+import { $createCodeNode } from "@lexical/code";
+import { $createImageNode } from "./ImageNode";
+import { $createVideoNode } from "./VideoNode";
+
+const ToolbarPlugin: FC = () => {
+  const [editor] = useLexicalComposerContext();
+
+  const formatText = (format: 'bold' | 'italic' | 'underline' | 'strikethrough' | 'code') => {
+    editor.dispatchCommand(FORMAT_TEXT_COMMAND, format);
+  };
+
+  const formatHeading = (headingSize: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        $setBlocksType(selection, () => $createHeadingNode(headingSize));
+      }
+    });
+  };
+
+  const formatQuote = () => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        $setBlocksType(selection, () => $createQuoteNode());
+      }
+    });
+  };
+
+  const formatCodeBlock = () => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        $setBlocksType(selection, () => $createCodeNode());
+      }
+    });
+  };
+
+  const formatList = (type: 'bullet' | 'number') => {
+    if (type === 'bullet') {
+      editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+    } else {
+      editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+    }
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        const src = e.target?.result as string;
+        
+        editor.update(() => {
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            if (file.type.startsWith('image/')) {
+              const imageNode = $createImageNode({
+                src,
+                altText: file.name,
+                maxWidth: 500,
+              });
+              $insertNodes([imageNode]);
+            } else if (file.type.startsWith('video/')) {
+              const videoNode = $createVideoNode({
+                src,
+              });
+              $insertNodes([videoNode]);
+            }
+          }
+        });
+      };
+      
+      reader.readAsDataURL(file);
+    }
+    
+    // Reset input
+    event.target.value = '';
+  };
+
+  return (
+    <div className="toolbar">
+      <button
+        onClick={() => formatText('bold')}
+        className="toolbar-item"
+      >
+        <b>B</b>
+      </button>
+      <button
+        onClick={() => formatText('italic')}
+        className="toolbar-item"
+      >
+        <i>I</i>
+      </button>
+      <button
+        onClick={() => formatText('underline')}
+        className="toolbar-item"
+      >
+        <u>U</u>
+      </button>
+      <button
+        onClick={() => formatText('strikethrough')}
+        className="toolbar-item"
+      >
+        <s>S</s>
+      </button>
+      <button
+        onClick={() => formatText('code')}
+        className="toolbar-item"
+      >
+        {'</>'}
+      </button>
+      
+      <div className="toolbar-divider" />
+      
+      <select
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value === 'h1' || value === 'h2' || value === 'h3' || value === 'h4' || value === 'h5' || value === 'h6') {
+            formatHeading(value);
+          } else if (value === 'quote') {
+            formatQuote();
+          } else if (value === 'code') {
+            formatCodeBlock();
+          }
+        }}
+        className="toolbar-select"
+        defaultValue=""
+      >
+        <option value="" disabled>Format</option>
+        <option value="h1">Heading 1</option>
+        <option value="h2">Heading 2</option>
+        <option value="h3">Heading 3</option>
+        <option value="h4">Heading 4</option>
+        <option value="h5">Heading 5</option>
+        <option value="h6">Heading 6</option>
+        <option value="quote">Quote</option>
+        <option value="code">Code Block</option>
+      </select>
+
+      <div className="toolbar-divider" />
+
+      <button
+        onClick={() => formatList('bullet')}
+        className="toolbar-item"
+      >
+        • List
+      </button>
+      <button
+        onClick={() => formatList('number')}
+        className="toolbar-item"
+      >
+        1. List
+      </button>
+
+      <div className="toolbar-divider" />
+
+      <label className="toolbar-item file-upload-button">
+        📁 Upload
+        <input
+          type="file"
+          accept="image/*,video/*"
+          onChange={handleFileUpload}
+          style={{ display: 'none' }}
+        />
+      </label>
+    </div>
+  );
+};
+
+export default ToolbarPlugin;

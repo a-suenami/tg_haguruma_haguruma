@@ -1,0 +1,440 @@
+.editor-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  max-width: 800px;
+  margin: 20px 0;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  gap: 4px;
+  background: #fafafa;
+  border-radius: 8px 8px 0 0;
+}
+
+.toolbar-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f5f5f5;
+    border-color: #ccc;
+  }
+
+  &:active {
+    background: #eee;
+  }
+
+  &.active {
+    background: #007acc;
+    color: white;
+    border-color: #007acc;
+  }
+}
+
+.toolbar-select {
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+
+  &:focus {
+    outline: none;
+    border-color: #007acc;
+  }
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background: #ddd;
+  margin: 0 8px;
+}
+
+.editor-content {
+  position: relative;
+}
+
+.editor-input {
+  position: relative;
+  padding: 16px 16px 16px 36px;
+  min-height: 300px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  outline: none;
+  border: none;
+  resize: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 16px 0 8px 0;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  h1 { font-size: 32px; }
+  h2 { font-size: 24px; }
+  h3 { font-size: 20px; }
+  h4 { font-size: 18px; }
+  h5 { font-size: 16px; }
+  h6 { font-size: 14px; }
+
+  p {
+    margin: 8px 0;
+  }
+
+  ul, ol {
+    margin: 8px 0;
+    padding-left: 24px;
+  }
+
+  li {
+    margin: 4px 0;
+  }
+
+  blockquote {
+    margin: 16px 0;
+    padding: 12px 16px;
+    border-left: 4px solid #ddd;
+    background: #f9f9f9;
+    font-style: italic;
+    color: #666;
+  }
+
+  code {
+    background: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 14px;
+  }
+
+  pre {
+    background: #f4f4f4;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 16px 0;
+
+    code {
+      background: none;
+      padding: 0;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  u {
+    text-decoration: underline;
+  }
+
+  s {
+    text-decoration: line-through;
+  }
+
+  a {
+    color: #007acc;
+    text-decoration: underline;
+  }
+}
+
+// Theme-specific classes
+.editor-text-bold {
+  font-weight: bold;
+}
+
+.editor-text-italic {
+  font-style: italic;
+}
+
+.editor-text-underline {
+  text-decoration: underline;
+}
+
+.editor-text-strikethrough {
+  text-decoration: line-through;
+}
+
+.editor-text-code {
+  background: #f4f4f4;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 14px;
+}
+
+.editor-heading-h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-heading-h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-heading-h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-heading-h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-heading-h5 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-heading-h6 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-quote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-left: 4px solid #ddd;
+  background: #f9f9f9;
+  font-style: italic;
+  color: #666;
+}
+
+.editor-code {
+  background: #f4f4f4;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 16px 0;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.editor-list-ol,
+.editor-list-ul {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+
+.editor-listitem {
+  margin: 4px 0;
+}
+
+.editor-nested-listitem {
+  margin: 2px 0;
+}
+
+// Code highlighting tokens
+.editor-tokenComment {
+  color: #708090;
+}
+
+.editor-tokenPunctuation {
+  color: #999;
+}
+
+.editor-tokenProperty {
+  color: #905;
+}
+
+.editor-tokenSelector {
+  color: #690;
+}
+
+.editor-tokenOperator {
+  color: #9a6e3a;
+}
+
+.editor-tokenAttr {
+  color: #07a;
+}
+
+.editor-tokenVariable {
+  color: #e90;
+}
+
+.editor-tokenFunction {
+  color: #dd4a68;
+}
+
+.editor-placeholder {
+  position: absolute;
+  top: 16px;
+  left: 36px;
+  color: #999;
+  pointer-events: none;
+  font-size: 16px;
+}
+
+// Drag and drop styles
+.draggable-block-menu {
+  position: absolute;
+  left: -20px;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 1;
+  }
+
+  &::before {
+    content: '⋮⋮';
+    font-size: 12px;
+    color: #999;
+    line-height: 1;
+  }
+}
+
+.editor-input:hover .draggable-block-menu,
+.editor-input .draggable-block-menu:hover {
+  opacity: 1;
+}
+
+// Drag preview styles
+.drag-ghost {
+  opacity: 0.5;
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+.drag-target-line {
+  height: 2px;
+  background: #007acc;
+  margin: 2px 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  
+  &.show {
+    opacity: 1;
+  }
+}
+
+// File upload button
+.file-upload-button {
+  cursor: pointer !important;
+  
+  &:hover {
+    background: #f5f5f5 !important;
+    border-color: #ccc !important;
+  }
+}
+
+// Image and Video styles
+.editor-image,
+.editor-video {
+  margin: 16px 0;
+  text-align: center;
+}
+
+.image-wrapper,
+.video-wrapper {
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+  margin: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.image-node {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.video-node {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  outline: none;
+  
+  &:focus {
+    outline: 2px solid #007acc;
+    outline-offset: 2px;
+  }
+}
+
+// Drag and drop overlay
+.editor-content {
+  &.drag-over {
+    position: relative;
+    
+    &::after {
+      content: '📁 Drop files here to upload';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 122, 204, 0.1);
+      border: 2px dashed #007acc;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 500;
+      color: #007acc;
+      z-index: 1000;
+    }
+  }
+}
