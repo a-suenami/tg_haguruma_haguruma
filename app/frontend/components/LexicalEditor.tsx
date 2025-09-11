@@ -5,44 +5,50 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
-import { 
-  $getRoot, 
+import {
+  $getRoot,
   $getSelection,
-  $createParagraphNode, 
+  $createParagraphNode,
   $createTextNode,
-  FORMAT_TEXT_COMMAND
+  FORMAT_TEXT_COMMAND,
+  ParagraphNode,
+  TextNode
 } from 'lexical';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { LexicalTypeaheadMenuPlugin, MenuOption, useBasicTypeaheadTriggerMatch } from '@lexical/react/LexicalTypeaheadMenuPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
-import { 
-  ListNode, 
+import {
+  ListNode,
   ListItemNode,
   $createListNode,
   $createListItemNode
 } from '@lexical/list';
-import { 
+import {
   $createHeadingNode,
   $createQuoteNode,
   HeadingTagType,
-  HeadingNode, 
-  QuoteNode 
+  HeadingNode,
+  QuoteNode
 } from '@lexical/rich-text';
+import { LinkNode } from '@lexical/link';
 
 // Lexical nodes
 const editorNodes = [
+  ParagraphNode,
+  TextNode,
   HeadingNode,
   ListNode,
   ListItemNode,
   QuoteNode,
+  LinkNode,
 ];
 
 // Theme configuration
 const theme = {
   heading: {
     h1: 'editor-heading-h1',
-    h2: 'editor-heading-h2', 
+    h2: 'editor-heading-h2',
     h3: 'editor-heading-h3',
     h4: 'editor-heading-h4',
     h5: 'editor-heading-h5',
@@ -62,6 +68,7 @@ const theme = {
   },
   quote: 'editor-quote',
   paragraph: 'editor-paragraph',
+  link: 'editor-link',
 };
 
 interface LexicalEditorProps {
@@ -131,14 +138,14 @@ function FloatingToolbarPlugin() {
     return editor.registerUpdateListener(() => {
       editor.getEditorState().read(() => {
         const selection = $getSelection();
-        
+
         if (selection && selection.getTextContent().trim() !== '') {
           // Get selection bounds for positioning
           const nativeSelection = window.getSelection();
           if (nativeSelection && nativeSelection.rangeCount > 0) {
             const range = nativeSelection.getRangeAt(0);
             const rect = range.getBoundingClientRect();
-            
+
             setPosition({
               top: rect.top - 50,
               left: rect.left + rect.width / 2,
@@ -159,7 +166,7 @@ function FloatingToolbarPlugin() {
   };
 
   return (
-    <div 
+    <div
       className="floating-toolbar"
       style={{
         position: 'fixed',
@@ -168,36 +175,36 @@ function FloatingToolbarPlugin() {
         transform: 'translateX(-50%)',
       }}
     >
-      <button 
-        type="button" 
+      <button
+        type="button"
         className="floating-btn"
         onClick={() => formatText('bold')}
       >
         <i className="fas fa-bold"></i>
       </button>
-      <button 
-        type="button" 
+      <button
+        type="button"
         className="floating-btn"
         onClick={() => formatText('italic')}
       >
         <i className="fas fa-italic"></i>
       </button>
-      <button 
-        type="button" 
+      <button
+        type="button"
         className="floating-btn"
         onClick={() => formatText('underline')}
       >
         <i className="fas fa-underline"></i>
       </button>
-      <button 
-        type="button" 
+      <button
+        type="button"
         className="floating-btn"
         onClick={() => formatText('strikethrough')}
       >
         <i className="fas fa-strikethrough"></i>
       </button>
-      <button 
-        type="button" 
+      <button
+        type="button"
         className="floating-btn"
         onClick={() => formatText('code')}
       >
@@ -260,7 +267,7 @@ function SlashCommandsPlugin() {
         editor.update(() => {
           const selection = $getSelection();
           if (selection) {
-            const listNode = $createListNode('ul');
+            const listNode = $createListNode('bullet');
             const listItemNode = $createListItemNode();
             listNode.append(listItemNode);
             selection.insertNodes([listNode]);
@@ -271,7 +278,7 @@ function SlashCommandsPlugin() {
         editor.update(() => {
           const selection = $getSelection();
           if (selection) {
-            const listNode = $createListNode('ol');
+            const listNode = $createListNode('number');
             const listItemNode = $createListItemNode();
             listNode.append(listItemNode);
             selection.insertNodes([listNode]);
@@ -323,10 +330,10 @@ function SlashCommandsPlugin() {
 }
 
 // Main editor component
-export default function LexicalEditor({ 
-  initialContent, 
-  placeholder = '記事の内容を入力してください...', 
-  hiddenFieldId 
+export default function LexicalEditor({
+  initialContent,
+  placeholder = '記事の内容を入力してください...',
+  hiddenFieldId
 }: LexicalEditorProps) {
   const initialConfig = {
     namespace: 'LexicalEditor',
@@ -343,8 +350,8 @@ export default function LexicalEditor({
         <div className="lexical-editor-container">
           <RichTextPlugin
             contentEditable={
-              <ContentEditable 
-                className="lexical-editor" 
+              <ContentEditable
+                className="lexical-editor"
                 style={{ outline: 'none' }}
               />
             }
