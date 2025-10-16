@@ -92,7 +92,7 @@
 
                 <!-- コンテンツフィールド（編集中バージョン - editable form） -->
                 <div class="content-form-area">
-                    <%= form_with url: admin_area_content_entry_path(params[:id]), method: :patch, class: 'content-form' do |form| %>
+                    <%= form_with url: "#", method: :get, class: 'content-form', local: true do |form| %>
                         <div class="field-group">
                             <%= form.label :title, 'title', class: 'field-label' %>
                             <%= form.text_field :title, value: '2024年の技術トレンド予測', class: 'field-input' %>
@@ -100,26 +100,16 @@
 
                         <div class="field-group">
                             <%= form.label :content, 'content', class: 'field-label' %>
-                            <div class="rich-editor-container">
-                                <div class="rich-editor" contenteditable="true">
-                                    <h2>AIの現状と課題（改訂版）</h2>
-                                    <p>2024年は人工知能（AI）技術の飛躍的な進歩が期待される年です。特に<strong>生成AI</strong>の分野では、より高精度で実用的なモデルが続々と登場し、ビジネスの様々な場面での活用が加速しています。また、<em>量子コンピューティング</em>の実用化も視野に入ってきました。</p>
-                                    
-                                    <h3>注目すべき技術トレンド（追加）</h3>
-                                    <ul>
-                                        <li><strong>マルチモーダルAI</strong>: テキスト、画像、音声を統合的に処理</li>
-                                        <li><strong>エッジAI</strong>: デバイス上での軽量AI処理</li>
-                                        <li><strong>説明可能AI（XAI）</strong>: AI判断の透明性向上</li>
-                                        <li><strong>AI倫理とガバナンス</strong>: 責任あるAI開発</li>
-                                        <li><strong>量子AI</strong>: 量子コンピューティングとAIの融合 <span class="content-change-highlight">新規追加</span></li>
-                                    </ul>
-                                    
-                                    <div class="content-note">
-                                        <h4>📝 編集者ノート</h4>
-                                        <p>量子AIセクションを追加し、より包括的な内容に更新しました。最新の研究動向を反映しています。</p>
-                                    </div>
-                                </div>
+
+                            <!-- React Lexical Rich Text Editor -->
+                            <div data-controller="react-lexical"
+                                 data-react-lexical-initial-content-value="<%= html_escape('<h2>AIの現状と課題（改訂版）</h2><p>2024年は人工知能（AI）技術の飛躍的な進歩が期待される年です。特に<strong>生成AI</strong>の分野では、より高精度で実用的なモデルが続々と登場し、ビジネスの様々な場面での活用が加速しています。また、<em>量子コンピューティング</em>の実用化も視野に入ってきました。</p><h3>注目すべき技術トレンド（追加）</h3><ul><li><strong>マルチモーダルAI</strong>: テキスト、画像、音声を統合的に処理</li><li><strong>エッジAI</strong>: デバイス上での軽量AI処理</li><li><strong>説明可能AI（XAI）</strong>: AI判断の透明性向上</li><li><strong>AI倫理とガバナンス</strong>: 責任あるAI開発</li><li><strong>量子AI</strong>: 量子コンピューティングとAIの融合 <span class="content-change-highlight">新規追加</span></li></ul><div class="content-note"><h4>📝 編集者ノート</h4><p>量子AIセクションを追加し、より包括的な内容に更新しました。最新の研究動向を反映しています。</p></div>') %>"
+                                 data-react-lexical-placeholder-value="記事の内容を入力してください..."
+                                 data-react-lexical-hidden-field-id-value="content_field">
                             </div>
+
+                            <!-- Hidden field to store content for form submission -->
+                            <%= form.hidden_field :content, id: "content_field" %>
                         </div>
 
                         <div class="field-group">
@@ -145,13 +135,13 @@
                 <div class="action-section">
                     <h4 class="action-section-title">ENTRY</h4>
                     <div class="action-buttons">
-                        <button type="submit" class="btn btn-secondary action-btn">
+                        <button type="button" class="btn btn-secondary action-btn" disabled>
                             <i class="fas fa-save icon-prefix"></i>
-                            保存
+                            保存 (テスト用)
                         </button>
-                        <button type="submit" class="btn btn-success action-btn">
+                        <button type="button" class="btn btn-success action-btn" disabled>
                             <i class="fas fa-upload icon-prefix"></i>
-                            公開
+                            公開 (テスト用)
                         </button>
                     </div>
                 </div>

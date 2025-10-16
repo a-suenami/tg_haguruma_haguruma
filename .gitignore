@@ -42,6 +42,9 @@ yarn-error.log*
 
 # Vite Ruby
 /public/vite
+
+# TypeScript compilation output
+/dist
 /public/vite-dev
 /public/vite-test
 node_modules

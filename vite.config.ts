@@ -8,8 +8,8 @@ export default defineConfig({
   server: {
     allowedHosts: ['vite-dev-server', '.localhost'],
     hmr: {
-      host: process.env.VITE_SERVER_HMR_HOST,
-      clientPort: Number(process.env.VITE_SERVER_HMR_PORT),
+      host: process.env.VITE_SERVER_HMR_HOST || 'localhost',
+      clientPort: Number(process.env.VITE_SERVER_HMR_PORT) || 3036,
     },
   },
   resolve: {

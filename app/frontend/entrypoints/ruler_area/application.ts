@@ -46,7 +46,7 @@ class RulerArea {
       // Make rows clickable if they have data-href
       const clickableRows = table.querySelectorAll('tbody tr[data-href]');
       clickableRows.forEach((row) => {
-        row.style.cursor = 'pointer';
+        (row as HTMLElement).style.cursor = 'pointer';
         row.addEventListener('click', (e) => {
           const target = e.target as HTMLElement;
           // Don't navigate if clicking on a link or button

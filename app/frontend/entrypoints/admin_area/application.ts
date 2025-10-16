@@ -1,6 +1,7 @@
 // Admin Area TypeScript Entry Point
 import '@hotwired/turbo-rails';
 import './application.scss';
+import '../../controllers/index';
 
 interface AdminAreaConfig {
   sidebarSelector: string;
@@ -95,7 +96,7 @@ declare global {
   }
 }
 
-window.toggleMobileMenu = function() {
+window.toggleMobileMenu = function () {
   const sidebar = document.querySelector('.sidebar');
   const overlay = document.querySelector('.sidebar-overlay');
 
