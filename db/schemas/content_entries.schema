@@ -1,0 +1,11 @@
+create_table :content_entries, force: :cascade, id: :uuid do |t|
+  t.uuid :tenant_id, null: false
+  t.uuid :content_type_id, null: false
+
+  t.timestamps null: false
+end
+
+add_index :content_entries, [:tenant_id, :id], unique: true
+add_index :content_entries, [:tenant_id, :content_type_id, :id], unique: true
+
+add_foreign_key :content_entries, :content_types, column: [:tenant_id, :content_type_id], primary_key: [:tenant_id, :id]

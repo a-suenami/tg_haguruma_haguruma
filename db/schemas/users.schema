@@ -1,0 +1,9 @@
+create_table :users, force: :cascade, id: :uuid do |t|
+  t.uuid :tenant_id, null: false
+
+  t.timestamps null: false
+end
+
+add_index :users, [:tenant_id, :id], unique: true
+
+add_foreign_key :users, :tenants, column: :tenant_id, primary_key: :id
