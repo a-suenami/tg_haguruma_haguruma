@@ -1,0 +1,875 @@
+.editor-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: calc(100vw - 40px);
+  max-width: none;
+  margin: 20px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  gap: 4px;
+  background: #fafafa;
+  border-radius: 8px 8px 0 0;
+}
+
+.toolbar-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f5f5f5;
+    border-color: #ccc;
+  }
+
+  &:active {
+    background: #eee;
+  }
+
+  &.active {
+    background: #007acc;
+    color: white;
+    border-color: #007acc;
+  }
+}
+
+.toolbar-select {
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+
+  &:focus {
+    outline: none;
+    border-color: #007acc;
+  }
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background: #ddd;
+  margin: 0 8px;
+}
+
+.editor-content {
+  position: relative;
+}
+
+.editor-input {
+  position: relative;
+  padding: 20px 20px 20px 50px;
+  min-height: 500px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  outline: none;
+  border: none;
+  resize: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 16px 0 8px 0;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  h1 { font-size: 32px; }
+  h2 { font-size: 24px; }
+  h3 { font-size: 20px; }
+  h4 { font-size: 18px; }
+  h5 { font-size: 16px; }
+  h6 { font-size: 14px; }
+
+  p {
+    margin: 8px 0;
+  }
+
+  ul, ol {
+    margin: 8px 0;
+    padding-left: 24px;
+  }
+
+  li {
+    margin: 4px 0;
+  }
+
+  blockquote {
+    margin: 16px 0;
+    padding: 12px 16px;
+    border-left: 4px solid #ddd;
+    background: #f9f9f9;
+    font-style: italic;
+    color: #666;
+  }
+
+  code {
+    background: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 14px;
+  }
+
+  pre {
+    background: #f4f4f4;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 16px 0;
+
+    code {
+      background: none;
+      padding: 0;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  u {
+    text-decoration: underline;
+  }
+
+  s {
+    text-decoration: line-through;
+  }
+
+  a {
+    color: #007acc;
+    text-decoration: underline;
+  }
+}
+
+// Theme-specific classes
+.editor-text-bold {
+  font-weight: bold;
+}
+
+.editor-text-italic {
+  font-style: italic;
+}
+
+.editor-text-underline {
+  text-decoration: underline;
+}
+
+.editor-text-strikethrough {
+  text-decoration: line-through;
+}
+
+.editor-text-code {
+  background: #f4f4f4;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 14px;
+}
+
+.editor-heading-h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-heading-h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-heading-h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-heading-h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-heading-h5 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-heading-h6 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  line-height: 1.3;
+}
+
+.editor-quote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-left: 4px solid #ddd;
+  background: #f9f9f9;
+  font-style: italic;
+  color: #666;
+}
+
+.editor-code {
+  background: #f4f4f4;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 16px 0;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.editor-list-ol,
+.editor-list-ul {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+
+.editor-listitem {
+  margin: 4px 0;
+}
+
+.editor-nested-listitem {
+  margin: 2px 0;
+}
+
+// Code highlighting tokens
+.editor-tokenComment {
+  color: #708090;
+}
+
+.editor-tokenPunctuation {
+  color: #999;
+}
+
+.editor-tokenProperty {
+  color: #905;
+}
+
+.editor-tokenSelector {
+  color: #690;
+}
+
+.editor-tokenOperator {
+  color: #9a6e3a;
+}
+
+.editor-tokenAttr {
+  color: #07a;
+}
+
+.editor-tokenVariable {
+  color: #e90;
+}
+
+.editor-tokenFunction {
+  color: #dd4a68;
+}
+
+.editor-placeholder {
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  color: #999;
+  pointer-events: none;
+  font-size: 16px;
+}
+
+// Draggable block plugin styles
+.draggable-block-menu {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  
+  &:hover,
+  &:focus-within {
+    opacity: 1;
+  }
+}
+
+.draggable-block-handle {
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  transition: all 0.1s ease-in-out;
+  user-select: none;
+  
+  &:hover {
+    background: rgba(55, 53, 47, 0.1);
+    color: #999;
+  }
+  
+  &:active {
+    cursor: grabbing;
+    color: #666;
+  }
+  
+  svg {
+    pointer-events: none;
+  }
+}
+
+.drag-handle-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+// Target line for drop indication
+.draggable-block-target-line {
+  position: absolute;
+  height: 4px;
+  background: #007acc;
+  border-radius: 2px;
+  left: 25px; // ハンドルの右側から開始
+  right: 0px; // エディタの端まで
+  top: -2px; // 上下位置を調整（ブロックの直上に配置）
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(0, 122, 204, 0.3);
+  
+  &.active {
+    opacity: 1;
+  }
+}
+
+// Editor container needs relative positioning for drag plugin
+.editor-input {
+  position: relative;
+}
+
+// Drag preview styles
+.dragging {
+  opacity: 0.5;
+  background: #f0f0f0;
+  border-radius: 4px;
+  transform: rotate(2deg);
+  transition: transform 0.2s ease;
+}
+
+.drag-target-line {
+  height: 2px;
+  background: #007acc;
+  margin: 2px 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  
+  &.show {
+    opacity: 1;
+  }
+}
+
+// File upload button
+.file-upload-button {
+  cursor: pointer !important;
+  
+  &:hover {
+    background: #f5f5f5 !important;
+    border-color: #ccc !important;
+  }
+}
+
+// Color picker styles
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// Inline color picker styles
+.inline-color-picker {
+  position: relative;
+}
+
+.color-picker-trigger {
+  width: 32px;
+  height: 24px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s ease;
+  
+  &:hover {
+    border-color: #007acc;
+  }
+}
+
+.color-picker-arrow {
+  position: absolute;
+  bottom: 0;
+  right: 2px;
+  font-size: 8px;
+  color: white;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+}
+
+.color-picker-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 280px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.color-section {
+  margin-bottom: 12px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.section-colors {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+}
+
+.dropdown-color-button {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #007acc;
+    border-width: 2px;
+    box-shadow: 0 0 4px rgba(0, 122, 204, 0.3);
+  }
+}
+
+.color-input-section {
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.hex-input-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.hex-input {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 4px 6px;
+  font-size: 11px;
+  font-family: monospace;
+  width: 80px;
+  text-transform: uppercase;
+  
+  &:focus {
+    outline: none;
+    border-color: #007acc;
+  }
+}
+
+// Image and Video styles
+.editor-image,
+.editor-video {
+  margin: 16px 0;
+  text-align: center;
+}
+
+.image-wrapper,
+.video-wrapper {
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+  margin: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.image-node {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.video-node {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  outline: none;
+  
+  &:focus {
+    outline: 2px solid #007acc;
+    outline-offset: 2px;
+  }
+}
+
+// Drag and drop overlay
+.editor-content {
+  &.drag-over {
+    position: relative;
+    
+    &::after {
+      content: '📁 Drop files here to upload';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 122, 204, 0.1);
+      border: 2px dashed #007acc;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 500;
+      color: #007acc;
+      z-index: 1000;
+    }
+  }
+}
+
+// YouTube embed styles
+.editor-embed-block {
+  margin: 20px 0;
+}
+
+.youtube-embed-wrapper {
+  margin: 16px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: white;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.youtube-embed-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; // 16:9 aspect ratio
+  background: #000;
+}
+
+.youtube-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.youtube-video-info {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  gap: 8px;
+}
+
+.youtube-icon {
+  font-size: 18px;
+}
+
+.youtube-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #495057;
+  flex: 1;
+}
+
+// Loading state
+.youtube-embed-wrapper:has(.youtube-iframe[src=""]) {
+  .youtube-embed-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    color: #6c757d;
+    font-size: 14px;
+    
+    &::before {
+      content: "📺 Loading YouTube video...";
+    }
+  }
+}
+
+// Twitter embed styles
+.twitter-embed-wrapper {
+  margin: 16px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: white;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.twitter-embed-container {
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+}
+
+.twitter-iframe {
+  width: 100%;
+  border: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.twitter-embed-info {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  gap: 8px;
+}
+
+.twitter-icon {
+  font-size: 18px;
+}
+
+.twitter-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #495057;
+  flex: 1;
+}
+
+// Generic embed styles
+.generic-embed-wrapper {
+  margin: 16px 0;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.generic-embed-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.embed-link {
+  color: #007acc;
+  text-decoration: none;
+  font-weight: 500;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// AutoEmbed menu styles
+.auto-embed-menu {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 120px;
+}
+
+.auto-embed-menu-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &:hover,
+  &.selected {
+    background: #f8f9fa;
+  }
+  
+  &:first-child:hover,
+  &:first-child.selected {
+    background: #007acc;
+    color: white;
+  }
+}
+
+// Embed modal styles
+.embed-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.embed-modal {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 400px;
+  max-width: 500px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+.embed-url-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  
+  &:focus {
+    outline: none;
+    border-color: #007acc;
+  }
+}
+
+.embed-error {
+  color: #dc3545;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.embed-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.embed-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.embed-button-primary {
+  background: #007acc;
+  color: white;
+  
+  &:hover {
+    background: #0056b3;
+  }
+}
+
+.embed-button-secondary {
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #ddd;
+  
+  &:hover {
+    background: #e9ecef;
+  }
+}
+
+.auto-embed-container {
+  margin: 16px 0;
+}
