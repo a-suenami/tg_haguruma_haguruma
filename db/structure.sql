@@ -1,3 +1,8 @@
+\restrict keki7Alallu3LdmIH09RXQfkmUwQ9a4r9oVZvBHbZocXJNdzDvO2GPnjQl4v1Kj
+
+-- Dumped from database version 16.10
+-- Dumped by pg_dump version 16.10
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -42,6 +47,335 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: content_entries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_entries (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id public.citext NOT NULL,
+    content_type_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_entry_field_media_assets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_entry_field_media_assets (
+    id bigint NOT NULL,
+    tenant_id public.citext NOT NULL,
+    media_type integer NOT NULL,
+    media_asset_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_entry_field_media_assets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_entry_field_media_assets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_entry_field_media_assets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_entry_field_media_assets_id_seq OWNED BY public.content_entry_field_media_assets.id;
+
+
+--
+-- Name: content_entry_field_richtexts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_entry_field_richtexts (
+    id bigint NOT NULL,
+    value jsonb NOT NULL
+);
+
+
+--
+-- Name: content_entry_field_richtexts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_entry_field_richtexts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_entry_field_richtexts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_entry_field_richtexts_id_seq OWNED BY public.content_entry_field_richtexts.id;
+
+
+--
+-- Name: content_entry_field_texts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_entry_field_texts (
+    id bigint NOT NULL,
+    value text NOT NULL
+);
+
+
+--
+-- Name: content_entry_field_texts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_entry_field_texts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_entry_field_texts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_entry_field_texts_id_seq OWNED BY public.content_entry_field_texts.id;
+
+
+--
+-- Name: content_entry_fields; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_entry_fields (
+    id bigint NOT NULL,
+    tenant_id public.citext NOT NULL,
+    content_type_id uuid NOT NULL,
+    content_entry_id uuid NOT NULL,
+    version integer NOT NULL,
+    content_type_field_id integer NOT NULL,
+    field_type integer NOT NULL,
+    text_id integer,
+    richtext_id integer,
+    media_asset_id integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_entry_fields_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_entry_fields_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_entry_fields_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_entry_fields_id_seq OWNED BY public.content_entry_fields.id;
+
+
+--
+-- Name: content_entry_versions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_entry_versions (
+    id bigint NOT NULL,
+    tenant_id public.citext NOT NULL,
+    content_type_id uuid NOT NULL,
+    content_entry_id uuid NOT NULL,
+    version integer DEFAULT 1 NOT NULL,
+    status integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    published_at timestamp(6) without time zone,
+    unpublished_at timestamp(6) without time zone
+);
+
+
+--
+-- Name: content_entry_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_entry_versions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_entry_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_entry_versions_id_seq OWNED BY public.content_entry_versions.id;
+
+
+--
+-- Name: content_type_field_media_assets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_type_field_media_assets (
+    id bigint NOT NULL
+);
+
+
+--
+-- Name: content_type_field_media_assets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_type_field_media_assets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_type_field_media_assets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_type_field_media_assets_id_seq OWNED BY public.content_type_field_media_assets.id;
+
+
+--
+-- Name: content_type_field_richtexts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_type_field_richtexts (
+    id bigint NOT NULL
+);
+
+
+--
+-- Name: content_type_field_richtexts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_type_field_richtexts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_type_field_richtexts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_type_field_richtexts_id_seq OWNED BY public.content_type_field_richtexts.id;
+
+
+--
+-- Name: content_type_field_texts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_type_field_texts (
+    id bigint NOT NULL
+);
+
+
+--
+-- Name: content_type_field_texts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_type_field_texts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_type_field_texts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_type_field_texts_id_seq OWNED BY public.content_type_field_texts.id;
+
+
+--
+-- Name: content_type_fields; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_type_fields (
+    id bigint NOT NULL,
+    tenant_id public.citext NOT NULL,
+    content_type_id uuid NOT NULL,
+    api_identifier character varying(32) NOT NULL,
+    label character varying(255) NOT NULL,
+    field_type integer NOT NULL,
+    text_id integer,
+    richtext_id integer,
+    media_asset_id integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_type_fields_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_type_fields_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_type_fields_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_type_fields_id_seq OWNED BY public.content_type_fields.id;
+
+
+--
+-- Name: content_types; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_types (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id public.citext NOT NULL,
+    is_collection boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: media_assets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.media_assets (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id public.citext NOT NULL,
+    media_type integer NOT NULL,
+    mime_type character varying NOT NULL,
+    metadata jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: tenants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -55,6 +389,177 @@ CREATE TABLE public.tenants (
 
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id public.citext NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_entry_field_media_assets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_media_assets ALTER COLUMN id SET DEFAULT nextval('public.content_entry_field_media_assets_id_seq'::regclass);
+
+
+--
+-- Name: content_entry_field_richtexts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_richtexts ALTER COLUMN id SET DEFAULT nextval('public.content_entry_field_richtexts_id_seq'::regclass);
+
+
+--
+-- Name: content_entry_field_texts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_texts ALTER COLUMN id SET DEFAULT nextval('public.content_entry_field_texts_id_seq'::regclass);
+
+
+--
+-- Name: content_entry_fields id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_fields ALTER COLUMN id SET DEFAULT nextval('public.content_entry_fields_id_seq'::regclass);
+
+
+--
+-- Name: content_entry_versions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_versions ALTER COLUMN id SET DEFAULT nextval('public.content_entry_versions_id_seq'::regclass);
+
+
+--
+-- Name: content_type_field_media_assets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_media_assets ALTER COLUMN id SET DEFAULT nextval('public.content_type_field_media_assets_id_seq'::regclass);
+
+
+--
+-- Name: content_type_field_richtexts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_richtexts ALTER COLUMN id SET DEFAULT nextval('public.content_type_field_richtexts_id_seq'::regclass);
+
+
+--
+-- Name: content_type_field_texts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_texts ALTER COLUMN id SET DEFAULT nextval('public.content_type_field_texts_id_seq'::regclass);
+
+
+--
+-- Name: content_type_fields id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_fields ALTER COLUMN id SET DEFAULT nextval('public.content_type_fields_id_seq'::regclass);
+
+
+--
+-- Name: content_entries content_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entries
+    ADD CONSTRAINT content_entries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_entry_field_media_assets content_entry_field_media_assets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_media_assets
+    ADD CONSTRAINT content_entry_field_media_assets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_entry_field_richtexts content_entry_field_richtexts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_richtexts
+    ADD CONSTRAINT content_entry_field_richtexts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_entry_field_texts content_entry_field_texts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_texts
+    ADD CONSTRAINT content_entry_field_texts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_entry_fields content_entry_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_fields
+    ADD CONSTRAINT content_entry_fields_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_entry_versions content_entry_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_versions
+    ADD CONSTRAINT content_entry_versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_type_field_media_assets content_type_field_media_assets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_media_assets
+    ADD CONSTRAINT content_type_field_media_assets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_type_field_richtexts content_type_field_richtexts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_richtexts
+    ADD CONSTRAINT content_type_field_richtexts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_type_field_texts content_type_field_texts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_texts
+    ADD CONSTRAINT content_type_field_texts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_type_fields content_type_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_fields
+    ADD CONSTRAINT content_type_fields_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_types content_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_types
+    ADD CONSTRAINT content_types_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: media_assets media_assets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.media_assets
+    ADD CONSTRAINT media_assets_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tenants tenants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -63,8 +568,214 @@ ALTER TABLE ONLY public.tenants
 
 
 --
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idx_on_tenant_id_content_type_id_id_01457429a3; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_tenant_id_content_type_id_id_01457429a3 ON public.content_type_fields USING btree (tenant_id, content_type_id, id);
+
+
+--
+-- Name: index_content_entries_on_tenant_id_and_content_type_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entries_on_tenant_id_and_content_type_id_and_id ON public.content_entries USING btree (tenant_id, content_type_id, id);
+
+
+--
+-- Name: index_content_entries_on_tenant_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entries_on_tenant_id_and_id ON public.content_entries USING btree (tenant_id, id);
+
+
+--
+-- Name: index_content_entry_field_media_assets_on_tenant_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_field_media_assets_on_tenant_id_and_id ON public.content_entry_field_media_assets USING btree (tenant_id, id);
+
+
+--
+-- Name: index_content_entry_versions_on_tenant_type_entry_version; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_versions_on_tenant_type_entry_version ON public.content_entry_versions USING btree (tenant_id, content_type_id, content_entry_id, version);
+
+
+--
+-- Name: index_content_type_fields_on_tenant_type_id_field_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_type_fields_on_tenant_type_id_field_type ON public.content_type_fields USING btree (tenant_id, content_type_id, id, field_type);
+
+
+--
+-- Name: index_content_types_on_id_and_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_types_on_id_and_tenant_id ON public.content_types USING btree (id, tenant_id);
+
+
+--
+-- Name: index_content_types_on_tenant_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_types_on_tenant_id_and_id ON public.content_types USING btree (tenant_id, id);
+
+
+--
+-- Name: index_media_assets_on_id_and_media_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_media_assets_on_id_and_media_type ON public.media_assets USING btree (id, media_type);
+
+
+--
+-- Name: index_media_assets_on_tenant_id_and_id_and_media_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_media_assets_on_tenant_id_and_id_and_media_type ON public.media_assets USING btree (tenant_id, id, media_type);
+
+
+--
+-- Name: index_media_assets_on_tenant_id_and_media_type_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_media_assets_on_tenant_id_and_media_type_and_id ON public.media_assets USING btree (tenant_id, media_type, id);
+
+
+--
+-- Name: index_users_on_tenant_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_tenant_id_and_id ON public.users USING btree (tenant_id, id);
+
+
+--
+-- Name: content_entry_field_media_assets fk_content_entry_field_media_assets_media_assets; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_media_assets
+    ADD CONSTRAINT fk_content_entry_field_media_assets_media_assets FOREIGN KEY (tenant_id, media_type, media_asset_id) REFERENCES public.media_assets(tenant_id, media_type, id);
+
+
+--
+-- Name: content_entry_fields fk_content_entry_fields_content_entry_versions; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_fields
+    ADD CONSTRAINT fk_content_entry_fields_content_entry_versions FOREIGN KEY (tenant_id, content_type_id, content_entry_id, version) REFERENCES public.content_entry_versions(tenant_id, content_type_id, content_entry_id, version);
+
+
+--
+-- Name: content_entry_fields fk_content_entry_fields_content_type_fields; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_fields
+    ADD CONSTRAINT fk_content_entry_fields_content_type_fields FOREIGN KEY (tenant_id, content_type_id, content_type_field_id, field_type) REFERENCES public.content_type_fields(tenant_id, content_type_id, id, field_type);
+
+
+--
+-- Name: content_entry_fields fk_content_entry_fields_media_assets; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_fields
+    ADD CONSTRAINT fk_content_entry_fields_media_assets FOREIGN KEY (tenant_id, media_asset_id) REFERENCES public.content_entry_field_media_assets(tenant_id, id);
+
+
+--
+-- Name: content_entry_versions fk_content_entry_versions_content_entries; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_versions
+    ADD CONSTRAINT fk_content_entry_versions_content_entries FOREIGN KEY (tenant_id, content_type_id, content_entry_id) REFERENCES public.content_entries(tenant_id, content_type_id, id);
+
+
+--
+-- Name: content_type_fields fk_rails_0be4e1abaf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_fields
+    ADD CONSTRAINT fk_rails_0be4e1abaf FOREIGN KEY (text_id) REFERENCES public.content_type_field_texts(id);
+
+
+--
+-- Name: users fk_rails_135c8f54b2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_135c8f54b2 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
+-- Name: content_type_fields fk_rails_56320489b5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_fields
+    ADD CONSTRAINT fk_rails_56320489b5 FOREIGN KEY (richtext_id) REFERENCES public.content_type_field_richtexts(id);
+
+
+--
+-- Name: content_type_fields fk_rails_782051ab84; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_fields
+    ADD CONSTRAINT fk_rails_782051ab84 FOREIGN KEY (tenant_id, content_type_id) REFERENCES public.content_types(tenant_id, id);
+
+
+--
+-- Name: content_types fk_rails_8c76f12b40; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_types
+    ADD CONSTRAINT fk_rails_8c76f12b40 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
+-- Name: content_entry_fields fk_rails_a74056eefd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_fields
+    ADD CONSTRAINT fk_rails_a74056eefd FOREIGN KEY (richtext_id) REFERENCES public.content_entry_field_richtexts(id);
+
+
+--
+-- Name: content_entry_fields fk_rails_a931b93c01; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_fields
+    ADD CONSTRAINT fk_rails_a931b93c01 FOREIGN KEY (text_id) REFERENCES public.content_entry_field_texts(id);
+
+
+--
+-- Name: content_type_fields fk_rails_b2b0938bb1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_fields
+    ADD CONSTRAINT fk_rails_b2b0938bb1 FOREIGN KEY (media_asset_id) REFERENCES public.content_type_field_media_assets(id);
+
+
+--
+-- Name: content_entries fk_rails_c4760210c1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entries
+    ADD CONSTRAINT fk_rails_c4760210c1 FOREIGN KEY (tenant_id, content_type_id) REFERENCES public.content_types(tenant_id, id);
+
+
+--
 -- PostgreSQL database dump complete
 --
+
+\unrestrict keki7Alallu3LdmIH09RXQfkmUwQ9a4r9oVZvBHbZocXJNdzDvO2GPnjQl4v1Kj
 
 SET search_path TO "$user", public;
 

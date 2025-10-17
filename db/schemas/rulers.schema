@@ -1,0 +1,5 @@
+create_table :rulers, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
+  t.string :name
+
+  t.timestamps null: false
+end

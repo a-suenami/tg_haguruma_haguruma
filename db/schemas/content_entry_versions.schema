@@ -9,8 +9,7 @@ create_table :content_entry_versions, force: :cascade do |t|
   t.datetime :unpublished_at
 end
 
-add_index :content_entry_versions, [:id, :version], unique: true
-add_index :content_entry_versions, [:tenant_id, :content_type_id, :id, :version], unique: true, name: 'index_content_entry_versions_on_tenant_type_id_version'
+add_index :content_entry_versions, [:tenant_id, :content_type_id, :content_entry_id, :version], unique: true, name: 'index_content_entry_versions_on_tenant_type_entry_version'
 
 add_foreign_key :content_entry_versions, :content_entries, column: [:tenant_id, :content_type_id, :content_entry_id], primary_key: [:tenant_id, :content_type_id, :id],
 name: 'fk_content_entry_versions_content_entries'

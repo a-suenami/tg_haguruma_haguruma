@@ -1,5 +1,5 @@
-create_table :users, force: :cascade, id: :uuid do |t|
-  t.uuid :tenant_id, null: false
+create_table :users, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
+  t.citext :tenant_id, null: false
 
   t.timestamps null: false
 end
