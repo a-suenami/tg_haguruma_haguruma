@@ -1,0 +1,12 @@
+create_table :media_assets, force: :cascade, id: :uuid do |t|
+  t.citext :tenant_id, null: false
+  t.integer :media_type, null: false
+  t.string :mime_type, null: false
+  t.jsonb :metadata, null: false
+
+  t.timestamps null: false
+end
+
+add_index :media_assets, [:id, :media_type], unique: true
+add_index :media_assets, [:tenant_id, :id, :media_type], unique: true
+add_index :media_assets, [:tenant_id, :media_type, :id], unique: true
