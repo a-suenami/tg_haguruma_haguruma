@@ -1,7 +1,7 @@
 create_table :admin_auth0_accounts, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
   t.references :admin, type: :uuid, null: false
   t.references :auth0_account, type: :uuid, null: false
-  t.references :tenant, type: :string, null: false
+  t.citext :tenant_id, null: false
 
   t.timestamps null: false
 
