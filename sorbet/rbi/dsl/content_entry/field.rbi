@@ -7,6 +7,7 @@
 
 class ContentEntry::Field
   include GeneratedAssociationMethods
+  include GeneratedAttributeMethods
   include EnumMethodsModule
   extend CommonRelationMethods
   extend GeneratedRelationMethods
@@ -272,7 +273,7 @@ class ContentEntry::Field
     sig { returns(::ContentEntry::Field) }
     def fourth!; end
 
-    sig { returns(Array) }
+    sig { returns(T::Array[T.untyped]) }
     def ids; end
 
     sig do
@@ -429,22 +430,22 @@ class ContentEntry::Field
   end
 
   module GeneratedAssociationMethods
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType::Field) }
     def build_content_type_field(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldMediaAsset) }
     def build_media_asset(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldRichtext) }
     def build_richtext(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldText) }
     def build_text(*args, &blk); end
 
-    sig { returns(T.untyped) }
+    sig { returns(T.nilable(::ContentType::Field)) }
     def content_type_field; end
 
-    sig { params(value: T.untyped).void }
+    sig { params(value: T.nilable(::ContentType::Field)).void }
     def content_type_field=(value); end
 
     sig { returns(T::Boolean) }
@@ -453,34 +454,34 @@ class ContentEntry::Field
     sig { returns(T::Boolean) }
     def content_type_field_previously_changed?; end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType::Field) }
     def create_content_type_field(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType::Field) }
     def create_content_type_field!(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldMediaAsset) }
     def create_media_asset(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldMediaAsset) }
     def create_media_asset!(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldRichtext) }
     def create_richtext(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldRichtext) }
     def create_richtext!(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldText) }
     def create_text(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldText) }
     def create_text!(*args, &blk); end
 
-    sig { returns(T.untyped) }
+    sig { returns(T.nilable(::ContentEntry::FieldMediaAsset)) }
     def media_asset; end
 
-    sig { params(value: T.untyped).void }
+    sig { params(value: T.nilable(::ContentEntry::FieldMediaAsset)).void }
     def media_asset=(value); end
 
     sig { returns(T::Boolean) }
@@ -489,16 +490,16 @@ class ContentEntry::Field
     sig { returns(T::Boolean) }
     def media_asset_previously_changed?; end
 
-    sig { returns(T.untyped) }
+    sig { returns(T.nilable(::ContentType::Field)) }
     def reload_content_type_field; end
 
-    sig { returns(T.untyped) }
+    sig { returns(T.nilable(::ContentEntry::FieldMediaAsset)) }
     def reload_media_asset; end
 
-    sig { returns(T.untyped) }
+    sig { returns(T.nilable(::ContentEntry::FieldRichtext)) }
     def reload_richtext; end
 
-    sig { returns(T.untyped) }
+    sig { returns(T.nilable(::ContentEntry::FieldText)) }
     def reload_text; end
 
     sig { void }
@@ -513,10 +514,10 @@ class ContentEntry::Field
     sig { void }
     def reset_text; end
 
-    sig { returns(T.untyped) }
+    sig { returns(T.nilable(::ContentEntry::FieldRichtext)) }
     def richtext; end
 
-    sig { params(value: T.untyped).void }
+    sig { params(value: T.nilable(::ContentEntry::FieldRichtext)).void }
     def richtext=(value); end
 
     sig { returns(T::Boolean) }
@@ -525,10 +526,10 @@ class ContentEntry::Field
     sig { returns(T::Boolean) }
     def richtext_previously_changed?; end
 
-    sig { returns(T.untyped) }
+    sig { returns(T.nilable(::ContentEntry::FieldText)) }
     def text; end
 
-    sig { params(value: T.untyped).void }
+    sig { params(value: T.nilable(::ContentEntry::FieldText)).void }
     def text=(value); end
 
     sig { returns(T::Boolean) }
@@ -703,6 +704,749 @@ class ContentEntry::Field
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def without(*args, &blk); end
+  end
+
+  module GeneratedAttributeMethods
+    sig { returns(::String) }
+    def content_entry_id; end
+
+    sig { params(value: ::String).returns(::String) }
+    def content_entry_id=(value); end
+
+    sig { returns(T::Boolean) }
+    def content_entry_id?; end
+
+    sig { returns(T.nilable(::String)) }
+    def content_entry_id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def content_entry_id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def content_entry_id_came_from_user?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def content_entry_id_change; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def content_entry_id_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def content_entry_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def content_entry_id_in_database; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def content_entry_id_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def content_entry_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def content_entry_id_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def content_entry_id_was; end
+
+    sig { void }
+    def content_entry_id_will_change!; end
+
+    sig { returns(::Integer) }
+    def content_type_field_id; end
+
+    sig { params(value: ::Integer).returns(::Integer) }
+    def content_type_field_id=(value); end
+
+    sig { returns(T::Boolean) }
+    def content_type_field_id?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def content_type_field_id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def content_type_field_id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def content_type_field_id_came_from_user?; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def content_type_field_id_change; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def content_type_field_id_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def content_type_field_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def content_type_field_id_in_database; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def content_type_field_id_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def content_type_field_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def content_type_field_id_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def content_type_field_id_was; end
+
+    sig { void }
+    def content_type_field_id_will_change!; end
+
+    sig { returns(::String) }
+    def content_type_id; end
+
+    sig { params(value: ::String).returns(::String) }
+    def content_type_id=(value); end
+
+    sig { returns(T::Boolean) }
+    def content_type_id?; end
+
+    sig { returns(T.nilable(::String)) }
+    def content_type_id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def content_type_id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def content_type_id_came_from_user?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def content_type_id_change; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def content_type_id_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def content_type_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def content_type_id_in_database; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def content_type_id_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def content_type_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def content_type_id_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def content_type_id_was; end
+
+    sig { void }
+    def content_type_id_will_change!; end
+
+    sig { returns(::ActiveSupport::TimeWithZone) }
+    def created_at; end
+
+    sig { params(value: ::ActiveSupport::TimeWithZone).returns(::ActiveSupport::TimeWithZone) }
+    def created_at=(value); end
+
+    sig { returns(T::Boolean) }
+    def created_at?; end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def created_at_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def created_at_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def created_at_came_from_user?; end
+
+    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
+    def created_at_change; end
+
+    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
+    def created_at_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def created_at_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def created_at_in_database; end
+
+    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
+    def created_at_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def created_at_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def created_at_previously_was; end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def created_at_was; end
+
+    sig { void }
+    def created_at_will_change!; end
+
+    sig { returns(::String) }
+    def field_type; end
+
+    sig { params(value: T.any(::String, ::Symbol, ::Integer)).returns(T.any(::String, ::Symbol, ::Integer)) }
+    def field_type=(value); end
+
+    sig { returns(T::Boolean) }
+    def field_type?; end
+
+    sig { returns(T.nilable(::String)) }
+    def field_type_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def field_type_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def field_type_came_from_user?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def field_type_change; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def field_type_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def field_type_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def field_type_in_database; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def field_type_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def field_type_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def field_type_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def field_type_was; end
+
+    sig { void }
+    def field_type_will_change!; end
+
+    sig { returns(::Integer) }
+    def id; end
+
+    sig { params(value: ::Integer).returns(::Integer) }
+    def id=(value); end
+
+    sig { returns(T::Boolean) }
+    def id?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def id_came_from_user?; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def id_change; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def id_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def id_in_database; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def id_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def id_previously_was; end
+
+    sig { returns(::Integer) }
+    def id_value; end
+
+    sig { params(value: ::Integer).returns(::Integer) }
+    def id_value=(value); end
+
+    sig { returns(T::Boolean) }
+    def id_value?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def id_value_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def id_value_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def id_value_came_from_user?; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def id_value_change; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def id_value_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def id_value_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def id_value_in_database; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def id_value_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def id_value_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def id_value_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def id_value_was; end
+
+    sig { void }
+    def id_value_will_change!; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def id_was; end
+
+    sig { void }
+    def id_will_change!; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def media_asset_id; end
+
+    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
+    def media_asset_id=(value); end
+
+    sig { returns(T::Boolean) }
+    def media_asset_id?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def media_asset_id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def media_asset_id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def media_asset_id_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def media_asset_id_change; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def media_asset_id_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def media_asset_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def media_asset_id_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def media_asset_id_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def media_asset_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def media_asset_id_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def media_asset_id_was; end
+
+    sig { void }
+    def media_asset_id_will_change!; end
+
+    sig { void }
+    def restore_content_entry_id!; end
+
+    sig { void }
+    def restore_content_type_field_id!; end
+
+    sig { void }
+    def restore_content_type_id!; end
+
+    sig { void }
+    def restore_created_at!; end
+
+    sig { void }
+    def restore_field_type!; end
+
+    sig { void }
+    def restore_id!; end
+
+    sig { void }
+    def restore_id_value!; end
+
+    sig { void }
+    def restore_media_asset_id!; end
+
+    sig { void }
+    def restore_richtext_id!; end
+
+    sig { void }
+    def restore_tenant_id!; end
+
+    sig { void }
+    def restore_text_id!; end
+
+    sig { void }
+    def restore_updated_at!; end
+
+    sig { void }
+    def restore_version!; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def richtext_id; end
+
+    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
+    def richtext_id=(value); end
+
+    sig { returns(T::Boolean) }
+    def richtext_id?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def richtext_id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def richtext_id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def richtext_id_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def richtext_id_change; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def richtext_id_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def richtext_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def richtext_id_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def richtext_id_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def richtext_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def richtext_id_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def richtext_id_was; end
+
+    sig { void }
+    def richtext_id_will_change!; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def saved_change_to_content_entry_id; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_content_entry_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def saved_change_to_content_type_field_id; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_content_type_field_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def saved_change_to_content_type_id; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_content_type_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
+    def saved_change_to_created_at; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def saved_change_to_field_type; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_field_type?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def saved_change_to_id; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def saved_change_to_id_value; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def saved_change_to_media_asset_id; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_media_asset_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def saved_change_to_richtext_id; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_richtext_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def saved_change_to_tenant_id; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def saved_change_to_text_id; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_text_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
+    def saved_change_to_updated_at; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_updated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def saved_change_to_version; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_version?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(::String) }
+    def tenant_id; end
+
+    sig { params(value: ::String).returns(::String) }
+    def tenant_id=(value); end
+
+    sig { returns(T::Boolean) }
+    def tenant_id?; end
+
+    sig { returns(T.nilable(::String)) }
+    def tenant_id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def tenant_id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def tenant_id_came_from_user?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def tenant_id_change; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def tenant_id_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tenant_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tenant_id_in_database; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def tenant_id_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tenant_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tenant_id_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def tenant_id_was; end
+
+    sig { void }
+    def tenant_id_will_change!; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def text_id; end
+
+    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
+    def text_id=(value); end
+
+    sig { returns(T::Boolean) }
+    def text_id?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def text_id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def text_id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def text_id_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def text_id_change; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def text_id_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def text_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def text_id_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def text_id_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def text_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def text_id_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def text_id_was; end
+
+    sig { void }
+    def text_id_will_change!; end
+
+    sig { returns(::ActiveSupport::TimeWithZone) }
+    def updated_at; end
+
+    sig { params(value: ::ActiveSupport::TimeWithZone).returns(::ActiveSupport::TimeWithZone) }
+    def updated_at=(value); end
+
+    sig { returns(T::Boolean) }
+    def updated_at?; end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def updated_at_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def updated_at_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def updated_at_came_from_user?; end
+
+    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
+    def updated_at_change; end
+
+    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
+    def updated_at_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def updated_at_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def updated_at_in_database; end
+
+    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
+    def updated_at_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def updated_at_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def updated_at_previously_was; end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def updated_at_was; end
+
+    sig { void }
+    def updated_at_will_change!; end
+
+    sig { returns(::Integer) }
+    def version; end
+
+    sig { params(value: ::Integer).returns(::Integer) }
+    def version=(value); end
+
+    sig { returns(T::Boolean) }
+    def version?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def version_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def version_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def version_came_from_user?; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def version_change; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def version_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def version_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def version_in_database; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def version_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def version_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def version_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def version_was; end
+
+    sig { void }
+    def version_will_change!; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_content_entry_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_content_type_field_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_content_type_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_field_type?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_media_asset_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_richtext_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_text_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_updated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_version?(from: T.unsafe(nil), to: T.unsafe(nil)); end
   end
 
   module GeneratedRelationMethods
