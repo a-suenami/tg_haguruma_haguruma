@@ -1,0 +1,13 @@
+create_table :admin_auth0_accounts, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
+  t.references :admin, type: :uuid, null: false
+  t.references :auth0_account, type: :uuid, null: false
+  t.references :tenant, type: :string, null: false
+
+  t.timestamps null: false
+
+  t.index [:tenant_id, :admin_id, :auth0_account_id], name: :idx_admin_auth0_accounts_tenant_admin_auth0_uniq, using: :btree, unique: true
+end
+
+add_foreign_key :admin_auth0_accounts, :admins, name: :fk_admin_auth0_accounts_admins
+add_foreign_key :admin_auth0_accounts, :auth0_accounts, name: :fk_admin_auth0_accounts_auth0_accounts
+add_foreign_key :admin_auth0_accounts, :tenants, name: :fk_admin_auth0_accounts_tenants
