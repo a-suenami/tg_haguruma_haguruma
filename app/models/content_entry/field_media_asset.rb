@@ -1,11 +1,11 @@
 # typed: false
 
 class ContentEntry::FieldMediaAsset < ApplicationRecord
-  enum media_type: {
+  enum :media_type, {
     image: 1,
     video: 2,
     audio: 3,
-    document: 4
+    document: 4,
   }
 
   validates :media_type, presence: true

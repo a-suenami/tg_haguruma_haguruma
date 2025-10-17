@@ -5,7 +5,7 @@ class ContentEntry::Version < ApplicationRecord
     draft: 1,
     preview: 2,
     published: 3,
-    unpublished: 4
+    unpublished: 4,
   }.freeze
 
   has_many :fields, dependent: :destroy
@@ -16,7 +16,7 @@ class ContentEntry::Version < ApplicationRecord
   validates :version, presence: true, numericality: { greater_than: 0 }
   validates :status, presence: true, inclusion: { in: STATUSES.values }
 
-  enum status: STATUSES
+  enum :status, STATUSES
 
   scope :drafts, -> { where(status: STATUSES[:draft]) }
   scope :previews, -> { where(status: STATUSES[:preview]) }

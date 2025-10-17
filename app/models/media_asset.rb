@@ -1,11 +1,11 @@
 # typed: false
 
 class MediaAsset < ApplicationRecord
-  enum media_type: {
+  enum :media_type, {
     image: 1,
     video: 2,
     audio: 3,
-    document: 4
+    document: 4,
   }
 
   validates :tenant_id, presence: true
