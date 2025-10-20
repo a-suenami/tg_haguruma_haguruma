@@ -6,7 +6,7 @@
             <ul class="tree-nav">
                 <!-- すべて表示 -->
                 <li class="tree-item">
-                    <%= link_to admin_area_contents_all_path, class: 'tree-item-header' do %>
+                    <%= link_to admin_area_contents_all_path, class: "tree-item-header #{@show_all ? 'active' : ''}" do %>
                         <span class="tree-toggle" style="visibility: hidden;"></span>
                         <span class="tree-label">すべて表示</span>
                         <span class="tree-count"><%= @content_entries&.count || ContentEntry.count %></span>

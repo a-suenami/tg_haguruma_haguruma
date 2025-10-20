@@ -9,6 +9,7 @@ module AdminArea
       def all
         @content_types = ContentType.all
         @content_entries = ContentEntry.all
+        @show_all = true
       end
 
       def by_content_type
