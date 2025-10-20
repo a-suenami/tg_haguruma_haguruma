@@ -16,28 +16,23 @@ class ContentType < ApplicationRecord
   # 一時的な表示用メソッド（後でDBカラムに移行予定）
   # TODO: display_name, api_identifier, icon カラムをスキーマに追加後、これらのメソッドを削除
   CONTENT_TYPE_METADATA = {
-    'article' => { display_name: '記事', icon: '📝' },
-    'announcement' => { display_name: 'お知らせ', icon: '📢' },
-    'product' => { display_name: '商品', icon: '🛍️' },
-    'profile' => { display_name: 'プロフィール', icon: '👤' },
-    'gallery' => { display_name: 'ギャラリー', icon: '📸' },
-    'about' => { display_name: '会社概要', icon: '📄' },
-    'privacy' => { display_name: 'プライバシーポリシー', icon: '🔒' },
-    'terms' => { display_name: '利用規約', icon: '📋' },
-    'contact' => { display_name: 'お問い合わせ', icon: '📮' },
-    'settings' => { display_name: 'サイト設定', icon: '⚙️' },
+    '00000000-0000-0000-0000-000000000001' => { api_identifier: 'article', display_name: '記事', icon: '📝' },
+    '00000000-0000-0000-0000-000000000002' => { api_identifier: 'announcement', display_name: 'お知らせ', icon: '📢' },
+    '00000000-0000-0000-0000-000000000003' => { api_identifier: 'video', display_name: '動画', icon: '🎥' },
+    '00000000-0000-0000-0000-000000000010' => { api_identifier: 'terms', display_name: '利用規約', icon: '📋' },
+    '00000000-0000-0000-0000-000000000011' => { api_identifier: 'privacy', display_name: 'プライバシーポリシー', icon: '🔒' },
   }.freeze
 
   def api_identifier
-    # 仮実装: IDをそのまま使用（後でDBカラムから取得）
-    id.to_s
+    # 仮実装: メタデータから取得、なければIDを使用
+    CONTENT_TYPE_METADATA.dig(id, :api_identifier) || id.to_s
   end
 
   def display_name
-    CONTENT_TYPE_METADATA.dig(api_identifier, :display_name) || 'コンテンツ'
+    CONTENT_TYPE_METADATA.dig(id, :display_name) || 'コンテンツ'
   end
 
   def icon
-    CONTENT_TYPE_METADATA.dig(api_identifier, :icon) || '📄'
+    CONTENT_TYPE_METADATA.dig(id, :icon) || '📄'
   end
 end

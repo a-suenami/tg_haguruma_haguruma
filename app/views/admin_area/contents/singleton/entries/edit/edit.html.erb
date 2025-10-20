@@ -1,57 +1,7 @@
 <% content_for :title, 'コンテンツ編集' %>
 
 <div class="custom-container">
-    <!-- カスタムサイドバー -->
-    <aside class="custom-sidebar">
-        <div class="sidebar-content">
-            <div class="sidebar-section">
-                <ul class="tree-nav">
-                    <!-- すべて表示 -->
-                    <li class="tree-item">
-                        <%= link_to admin_area_contents_all_path, class: 'tree-item-header' do %>
-                            <span class="tree-toggle" style="visibility: hidden;"></span>
-                            <span class="tree-label">すべて表示</span>
-                            <span class="tree-count">3,502</span>
-                        <% end %>
-                    </li>
-
-                    <!-- 区切り線 -->
-                    <div class="tree-section-divider"></div>
-
-                    <!-- 記事 -->
-                    <li class="tree-item">
-                        <div class="tree-item-header active" data-model="article">
-                            <span class="tree-toggle expanded">▶</span>
-                            <span class="tree-icon">📝</span>
-                            <span class="tree-label">記事</span>
-                            <span class="tree-count">892</span>
-                        </div>
-                        <ul class="tree-submenu expanded">
-                            <li class="tree-submenu-item">
-                                <%= link_to admin_area_contents_all_path, class: 'submenu-link' do %>
-                                    すべての記事
-                                <% end %>
-                            </li>
-                            <li class="tree-submenu-item">公開中 (687)</li>
-                            <li class="tree-submenu-item">下書き (205)</li>
-                            <li class="tree-submenu-item">+ 新規作成</li>
-                        </ul>
-                    </li>
-
-                    <!-- 区切り線 -->
-                    <div class="tree-section-divider"></div>
-
-                    <!-- シングルコンテンツリンク -->
-                    <li class="tree-item">
-                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'about'), class: 'tree-item-header' do %>
-                            <span class="tree-icon">📄</span>
-                            <span class="tree-label">会社概要</span>
-                        <% end %>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </aside>
+    <%= render 'admin_area/contents/sidebar' %>
 
     <!-- メインコンテンツ -->
     <main class="custom-main">
