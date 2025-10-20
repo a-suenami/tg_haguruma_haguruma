@@ -9,40 +9,30 @@
         <div class="breadcrumb">
             <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
             <span class="breadcrumb-separator">/</span>
-            <%= link_to '記事一覧', admin_area_contents_all_path, class: 'breadcrumb-link' %>
+            <%= link_to "#{@content_type.display_name}一覧", admin_area_contents_by_content_type_path(content_type_id: @content_type.id), class: 'breadcrumb-link' %>
             <span class="breadcrumb-separator">/</span>
-            <span class="breadcrumb-current">2024年の技術トレンド予測</span>
+            <span class="breadcrumb-current">新規作成</span>
         </div>
 
-        <!-- コレクションコンテンツの編集 -->
+        <!-- コレクションコンテンツの新規作成 -->
         <header class="content-detail-header">
             <div class="content-detail-title-section">
                 <div class="content-title-with-back">
-                    <%= link_to admin_area_contents_collection_entry_path(content_type_id: params[:content_type_id], id: params[:id]), class: 'back-to-list-btn' do %>
+                    <%= link_to admin_area_contents_by_content_type_path(content_type_id: @content_type.id), class: 'back-to-list-btn' do %>
                         <i class="fas fa-arrow-left"></i>
                     <% end %>
-                    <h1 class="content-detail-title">2024年の技術トレンド予測</h1>
+                    <h1 class="content-detail-title">新しい<%= @content_type.display_name %>を作成</h1>
                 </div>
             </div>
         </header>
-
-        <!-- バージョンタブ -->
-        <div class="version-tabs">
-            <%= link_to edit_admin_area_contents_collection_entry_path(content_type_id: params[:content_type_id], id: params[:id]), class: 'version-tab active' do %>
-                編集中
-            <% end %>
-            <%= link_to admin_area_contents_collection_entry_path(content_type_id: params[:content_type_id], id: params[:id]), class: 'version-tab' do %>
-                公開中
-            <% end %>
-        </div>
 
         <div class="content-detail-layout">
             <!-- メインコンテンツエリア -->
             <div class="content-main-area">
 
-                <!-- コンテンツフィールド（編集中バージョン - editable form） -->
+                <!-- コンテンツフィールド（新規作成フォーム） -->
                 <div class="content-form-area">
-                    <%= form_with url: "#", method: :get, class: 'content-form', local: true do |form| %>
+                    <%= form_with model: @content_entry, url: admin_area_contents_collection_entries_path(content_type_id: @content_type.id), method: :post, class: 'content-form', local: true do |form| %>
                         <div class="field-group">
                             <%= form.label :title, 'title', class: 'field-label' %>
                             <%= form.text_field :title, value: '2024年の技術トレンド予測', class: 'field-input' %>
@@ -132,3 +122,4 @@
         </div>
     </main>
 </div>
+

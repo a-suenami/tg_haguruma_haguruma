@@ -27,7 +27,57 @@ class AdminArea {
   private init(): void {
     this.setupMobileMenu();
     this.setupNavigationHighlight();
+    this.setupContentsSidebar();
     console.log('Admin Area initialized');
+  }
+
+  private setupContentsSidebar(): void {
+    // サブメニューの開閉制御
+    const treeHeaders = document.querySelectorAll('.tree-item-header');
+
+    treeHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const toggle = header.querySelector('.tree-toggle');
+        const submenu = header.nextElementSibling;
+
+        // サブメニューの展開/折りたたみ
+        if (submenu && submenu.classList.contains('tree-submenu')) {
+          toggle?.classList.toggle('expanded');
+          submenu.classList.toggle('expanded');
+        }
+
+        // アクティブ状態の切り替え
+        treeHeaders.forEach(item => item.classList.remove('active'));
+        header.classList.add('active');
+      });
+    });
+
+    // コンテンツエリアのモバイルメニュー制御
+    const customSidebar = document.querySelector('.custom-sidebar');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+
+    if (mobileMenuToggle && customSidebar && mobileOverlay) {
+      mobileMenuToggle.addEventListener('click', () => {
+        customSidebar.classList.toggle('mobile-open');
+        mobileOverlay.classList.toggle('active');
+      });
+
+      mobileOverlay.addEventListener('click', () => {
+        customSidebar.classList.remove('mobile-open');
+        mobileOverlay.classList.remove('active');
+      });
+
+      // サイドバーメニューをクリックしたときもメニューを閉じる(モバイル時)
+      treeHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+          if (window.innerWidth <= 768) {
+            customSidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('active');
+          }
+        });
+      });
+    }
   }
 
   private setupMobileMenu(): void {

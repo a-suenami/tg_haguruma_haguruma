@@ -87,33 +87,3 @@
     </main>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // モバイルメニューの制御
-        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-        const mobileOverlay = document.getElementById('mobile-overlay');
-        const customSidebar = document.querySelector('.custom-sidebar');
-
-        // ハンバーガーメニューボタンのクリック
-        mobileMenuToggle.addEventListener('click', function() {
-            customSidebar.classList.toggle('mobile-open');
-            mobileOverlay.classList.toggle('active');
-        });
-
-        // オーバーレイクリックでメニューを閉じる
-        mobileOverlay.addEventListener('click', function() {
-            customSidebar.classList.remove('mobile-open');
-            mobileOverlay.classList.remove('active');
-        });
-
-        // サイドバーメニューをクリックしたときもメニューを閉じる(モバイル時)
-        document.querySelectorAll('.tree-item-header').forEach(header => {
-            header.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    customSidebar.classList.remove('mobile-open');
-                    mobileOverlay.classList.remove('active');
-                }
-            });
-        });
-    });
-</script>

@@ -19,15 +19,30 @@
                 <!-- Collection Types -->
                 <% content_types = @content_types || ContentType.all %>
                 <% content_types.where(is_collection: true).each do |content_type| %>
+                    <% published_count = content_type.content_entries.joins(:versions).where(content_entry_versions: { status: ContentEntry::Version::STATUSES[:published] }).distinct.count %>
+                    <% draft_count = content_type.content_entries.joins(:versions).where(content_entry_versions: { status: ContentEntry::Version::STATUSES[:draft] }).distinct.count %>
                     <li class="tree-item">
-                        <%= link_to admin_area_contents_by_content_type_path(content_type_id: content_type.id),
-                            class: "tree-item-header #{@content_type&.id == content_type.id ? 'active' : ''}",
-                            data: { model: content_type.api_identifier } do %>
-                            <span class="tree-toggle">▶</span>
+                        <div class="tree-item-header <%= 'active' if @content_type&.id == content_type.id %>"
+                             data-model="<%= content_type.api_identifier %>">
+                            <span class="tree-toggle <%= 'expanded' if @content_type&.id == content_type.id %>">▶</span>
                             <span class="tree-icon"><%= content_type.icon %></span>
                             <span class="tree-label"><%= content_type.display_name %></span>
                             <span class="tree-count"><%= content_type.content_entries.count %></span>
-                        <% end %>
+                        </div>
+                        <ul class="tree-submenu <%= 'expanded' if @content_type&.id == content_type.id %>">
+                            <li class="tree-submenu-item">
+                                <%= link_to admin_area_contents_by_content_type_path(content_type_id: content_type.id), class: 'submenu-link' do %>
+                                    すべての<%= content_type.display_name %>
+                                <% end %>
+                            </li>
+                            <li class="tree-submenu-item">公開中 (<%= published_count %>)</li>
+                            <li class="tree-submenu-item">下書き (<%= draft_count %>)</li>
+                            <li class="tree-submenu-item">
+                                <%= link_to new_admin_area_contents_collection_entry_path(content_type_id: content_type.id), class: 'submenu-link' do %>
+                                    + 新規作成
+                                <% end %>
+                            </li>
+                        </ul>
                     </li>
                 <% end %>
 
