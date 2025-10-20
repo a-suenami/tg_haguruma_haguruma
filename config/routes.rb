@@ -28,34 +28,5 @@ Rails.application.routes.draw do
   end
 
   # Admin Area routes
-  namespace :admin_area, path: :admin do
-    root to: 'dashboard#index'
-    get 'dashboard', to: 'dashboard#index'
-
-    # 動的なコンテンツタイプルーティング
-    # コレクション型: /admin/contents/:content_type_id
-    # シングル型: /admin/contents/single/:content_type_id
-    get 'contents/:content_type_id', to: 'content_entries#index', as: :content_type_entries
-    get 'contents/:content_type_id/new', to: 'content_entries#new', as: :new_content_type_entry
-    get 'contents/:content_type_id/:id', to: 'content_entries#show', as: :content_type_entry
-    get 'contents/:content_type_id/:id/edit', to: 'content_entries#edit', as: :edit_content_type_entry
-    post 'contents/:content_type_id', to: 'content_entries#create'
-    patch 'contents/:content_type_id/:id', to: 'content_entries#update'
-    delete 'contents/:content_type_id/:id', to: 'content_entries#destroy'
-
-    # シングル型コンテンツ専用
-    get 'contents/single/:content_type_id', to: 'content_entries#show_single', as: :single_content_type
-
-    # 従来の互換性用ルート（後で削除予定）
-    resources :content_entries, only: [:index, :show, :new, :create, :edit, :update] do
-      collection do
-        get :content_types
-      end
-    end
-    resources :content_models, only: [:index, :new, :edit]
-
-    resources :media, only: [:index]
-    resources :categories, only: [:index]
-    get 'setting', to: 'setting#index'
-  end
+  draw :admin
 end
