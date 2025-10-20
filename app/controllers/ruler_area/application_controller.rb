@@ -8,21 +8,22 @@ module RulerArea
     # TODO: Add Pagy when available
     # include Pagy::Backend
 
-    # TODO: Add authentication when Ruler model is available
-    # before_action :authenticate!
+    before_action :authenticate!
     # after_action :log_activity
 
-    # def authenticate!
-    #   redirect_to ruler_area_login_path unless signed_in?
-    # end
+    helper_method :current_ruler, :ruler_signed_in?
 
-    # def current_ruler
-    #   @current_ruler ||= Ruler.find_by(id: session[:ruler_id])
-    # end
+    def authenticate!
+      redirect_to ruler_area_login_path unless ruler_signed_in?
+    end
 
-    # def signed_in?
-    #   current_ruler.present?
-    # end
+    def current_ruler
+      @current_ruler ||= Ruler.find_by(id: session[:ruler_id]) if session[:ruler_id]
+    end
+
+    def ruler_signed_in?
+      current_ruler.present?
+    end
 
     private
 

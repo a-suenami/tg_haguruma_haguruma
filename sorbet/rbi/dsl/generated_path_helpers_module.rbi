@@ -145,6 +145,18 @@ module GeneratedPathHelpersModule
   def rails_storage_redirect_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_auth_auth0_callback_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_auth_failure_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_login_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_logout_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_root_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
