@@ -24,8 +24,8 @@ html lang="ja"
           ul
             / li class=('active' if controller_name == 'dashboard')
             /   = link_to 'ダッシュボード', admin_area_dashboard_path
-            li class=('active' if controller_name == 'content_entries')
-              = link_to 'コンテンツ', admin_area_content_entries_path
+            li class=('active' if controller_path.start_with?('admin_area/contents'))
+              = link_to 'コンテンツ', admin_area_contents_all_path
             li class=('active' if controller_name == 'media')
               = link_to 'メディア', admin_area_media_path
             li class=('active' if controller_name == 'categories')

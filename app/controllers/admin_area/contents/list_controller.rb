@@ -7,10 +7,12 @@ module AdminArea
       extend T::Sig
 
       def all
+        @content_types = ContentType.all
         @content_entries = ContentEntry.all
       end
 
       def by_content_type
+        @content_types = ContentType.all
         @content_type = ContentType.find(params[:content_type_id])
 
         if @content_type.is_collection

@@ -20,139 +20,37 @@
                         <%= link_to admin_area_contents_all_path, class: 'tree-item-header' do %>
                             <span class="tree-toggle" style="visibility: hidden;"></span>
                             <span class="tree-label">すべて表示</span>
-                            <span class="tree-count">3,502</span>
+                            <span class="tree-count"><%= ContentEntry.count %></span>
                         <% end %>
                     </li>
 
                     <!-- 区切り線 -->
                     <div class="tree-section-divider"></div>
 
-                    <!-- 記事 -->
-                    <li class="tree-item">
-                        <div class="tree-item-header active" data-model="article">
-                            <span class="tree-toggle expanded">▶</span>
-                            <span class="tree-icon">📝</span>
-                            <span class="tree-label">記事</span>
-                            <span class="tree-count">892</span>
-                        </div>
-                        <ul class="tree-submenu expanded">
-                            <li class="tree-submenu-item">
-                                <%= link_to admin_area_contents_all_path, class: 'submenu-link' do %>
-                                    すべての記事
-                                <% end %>
-                            </li>
-                            <li class="tree-submenu-item">公開中 (687)</li>
-                            <li class="tree-submenu-item">下書き (205)</li>
-                            <li class="tree-submenu-item">+ 新規作成</li>
-                        </ul>
-                    </li>
-
-                    <!-- お知らせ -->
-                    <li class="tree-item">
-                        <div class="tree-item-header" data-model="announcement">
-                            <span class="tree-toggle">▶</span>
-                            <span class="tree-icon">📢</span>
-                            <span class="tree-label">お知らせ</span>
-                            <span class="tree-count">145</span>
-                        </div>
-                        <ul class="tree-submenu">
-                            <li class="tree-submenu-item">すべてのお知らせ</li>
-                            <li class="tree-submenu-item">公開中 (98)</li>
-                            <li class="tree-submenu-item">下書き (47)</li>
-                            <li class="tree-submenu-item">+ 新規作成</li>
-                        </ul>
-                    </li>
-
-                    <!-- 商品 -->
-                    <li class="tree-item">
-                        <div class="tree-item-header" data-model="product">
-                            <span class="tree-toggle">▶</span>
-                            <span class="tree-icon">🛍️</span>
-                            <span class="tree-label">商品</span>
-                            <span class="tree-count">2,341</span>
-                        </div>
-                        <ul class="tree-submenu">
-                            <li class="tree-submenu-item">すべての商品</li>
-                            <li class="tree-submenu-item">販売中 (1,892)</li>
-                            <li class="tree-submenu-item">在庫切れ (449)</li>
-                            <li class="tree-submenu-item">+ 新規作成</li>
-                        </ul>
-                    </li>
-
-                    <!-- プロフィール -->
-                    <li class="tree-item">
-                        <div class="tree-item-header" data-model="profile">
-                            <span class="tree-toggle">▶</span>
-                            <span class="tree-icon">👤</span>
-                            <span class="tree-label">プロフィール</span>
-                            <span class="tree-count">48</span>
-                        </div>
-                        <ul class="tree-submenu">
-                            <li class="tree-submenu-item">すべてのプロフィール</li>
-                            <li class="tree-submenu-item">公開中 (42)</li>
-                            <li class="tree-submenu-item">非公開 (6)</li>
-                            <li class="tree-submenu-item">+ 新規作成</li>
-                        </ul>
-                    </li>
-
-                    <!-- ギャラリー -->
-                    <li class="tree-item">
-                        <div class="tree-item-header" data-model="gallery">
-                            <span class="tree-toggle">▶</span>
-                            <span class="tree-icon">📸</span>
-                            <span class="tree-label">ギャラリー</span>
-                            <span class="tree-count">76</span>
-                        </div>
-                        <ul class="tree-submenu">
-                            <li class="tree-submenu-item">すべてのギャラリー</li>
-                            <li class="tree-submenu-item">公開中 (65)</li>
-                            <li class="tree-submenu-item">非公開 (11)</li>
-                            <li class="tree-submenu-item">+ 新規作成</li>
-                        </ul>
-                    </li>
+                    <!-- Collection Types -->
+                    <% @content_types.where(is_collection: true).each do |content_type| %>
+                        <li class="tree-item">
+                            <%= link_to admin_area_contents_by_content_type_path(content_type_id: content_type.id), class: "tree-item-header #{content_type.id == @content_type.id ? 'active' : ''}", data: { model: content_type.api_identifier } do %>
+                                <span class="tree-toggle">▶</span>
+                                <span class="tree-icon"><%= content_type.icon %></span>
+                                <span class="tree-label"><%= content_type.display_name %></span>
+                                <span class="tree-count"><%= content_type.content_entries.count %></span>
+                            <% end %>
+                        </li>
+                    <% end %>
 
                     <!-- 区切り線 -->
                     <div class="tree-section-divider"></div>
 
-                    <!-- 会社概要 (single) -->
-                    <li class="tree-item">
-                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'about'), class: 'tree-item-header' do %>
-                            <span class="tree-icon">📄</span>
-                            <span class="tree-label">会社概要</span>
-                        <% end %>
-                    </li>
-
-                    <!-- プライバシーポリシー (single) -->
-                    <li class="tree-item">
-                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'privacy'), class: 'tree-item-header' do %>
-                            <span class="tree-icon">🔒</span>
-                            <span class="tree-label">プライバシーポリシー</span>
-                        <% end %>
-                    </li>
-
-                    <!-- 利用規約 (single) -->
-                    <li class="tree-item">
-                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'terms'), class: 'tree-item-header' do %>
-                            <span class="tree-icon">📋</span>
-                            <span class="tree-label">利用規約</span>
-                        <% end %>
-                    </li>
-
-                    <!-- お問い合わせページ (single) -->
-                    <li class="tree-item">
-                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'contact'), class: 'tree-item-header' do %>
-                            <span class="tree-icon">📮</span>
-                            <span class="tree-label">お問い合わせ</span>
-                        <% end %>
-                    </li>
-
-                    <!-- サイト設定 (single) -->
-                    <li class="tree-item">
-                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'settings'), class: 'tree-item-header' do %>
-                            <span class="tree-icon">⚙️</span>
-                            <span class="tree-label">サイト設定</span>
-                        <% end %>
-                    </li>
+                    <!-- Singleton Types -->
+                    <% @content_types.where(is_collection: false).each do |content_type| %>
+                        <li class="tree-item">
+                            <%= link_to admin_area_contents_singleton_entry_path(content_type_id: content_type.id), class: 'tree-item-header' do %>
+                                <span class="tree-icon"><%= content_type.icon %></span>
+                                <span class="tree-label"><%= content_type.display_name %></span>
+                            <% end %>
+                        </li>
+                    <% end %>
 
                 </ul>
             </div>
@@ -165,394 +63,77 @@
         <div class="breadcrumb">
             <span>コンテンツ</span>
             <span class="breadcrumb-separator">/</span>
-            <span class="breadcrumb-current" id="breadcrumb-current">記事</span>
+            <span class="breadcrumb-current"><%= @content_type.display_name %></span>
         </div>
 
         <header class="main-header">
-            <h2 id="main-title">記事一覧</h2>
+            <h2><%= @content_type.display_name %>一覧</h2>
         </header>
 
         <!-- フィルター -->
         <div class="content-filters">
-            <input type="search" placeholder="記事を検索..." class="search-input">
+            <input type="search" placeholder="<%= @content_type.display_name %>を検索..." class="search-input">
         </div>
 
         <!-- コレクション用カードリスト -->
-        <div class="content-list" id="collection-content">
-            <!-- a1: 編集中のみ -->
-            <%= link_to admin_area_contents_collection_entry_path(content_type_id: "dummy-type", id: 1), class: 'content-card-link' do %>
-                <div class="content-card">
-                    <div class="card-header">
-                        <div class="card-header-top">
-                            <span class="card-content-type">記事</span>
-                            <div class="status-tags">
-                                <span class="status-tag status-tag-draft">編集中</span>
-                            </div>
-                        </div>
-                        <h3 class="card-title">2024年の技術トレンド予測</h3>
-                    </div>
-                    <div class="card-meta">
-                        <div class="card-meta-left">
-                            <div class="card-action-buttons">
-                                <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>編集</span>
-                                <span class="btn btn-xs btn-preview"><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i></span>
-                            </div>
-                        </div>
-                        <span class="card-updated">2024-01-16 10:30</span>
-                    </div>
-                </div>
-            <% end %>
+        <div class="content-list">
+            <% @content_entries.each do |entry| %>
+                <% latest_version = entry.versions.order(version: :desc).first %>
+                <% next unless latest_version %>
 
-            <!-- a2: 公開中のみ -->
-            <%= link_to admin_area_contents_collection_entry_path(content_type_id: "dummy-type", id: 2), class: 'content-card-link' do %>
-                <div class="content-card">
-                    <div class="card-header">
-                        <div class="card-header-top">
-                            <span class="card-content-type">記事</span>
-                            <div class="status-tags">
-                                <span class="status-tag status-tag-published">公開中</span>
-                            </div>
-                        </div>
-                        <h3 class="card-title">AIと創造性の未来</h3>
-                    </div>
-                    <div class="card-meta">
-                        <div class="card-meta-left">
-                            <div class="card-actions-area">
-                                <div class="card-action-group">
-                                    <span class="btn btn-xs btn-external"><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i></span>
-                                    <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>新しいバージョンを作成して編集</span>
+                <%= link_to admin_area_contents_collection_entry_path(content_type_id: entry.content_type_id, id: entry.id), class: 'content-card-link' do %>
+                    <div class="content-card">
+                        <div class="card-header">
+                            <div class="card-header-top">
+                                <span class="card-content-type"><%= entry.content_type.display_name %></span>
+                                <div class="status-tags">
+                                    <% if latest_version.published? %>
+                                        <span class="status-tag status-tag-published">公開中</span>
+                                    <% elsif latest_version.draft? %>
+                                        <span class="status-tag status-tag-draft">編集中</span>
+                                    <% elsif latest_version.preview? %>
+                                        <span class="status-tag status-tag-preview">プレビュー</span>
+                                    <% end %>
                                 </div>
                             </div>
+                            <h3 class="card-title">
+                                <% title_field = ContentEntry::Field.joins(:content_type_field).find_by(
+                                    tenant_id: entry.tenant_id,
+                                    content_type_id: entry.content_type_id,
+                                    content_entry_id: entry.id,
+                                    version: latest_version.version,
+                                    content_type_fields: { api_identifier: 'title' }
+                                ) %>
+                                <% if title_field&.text %>
+                                    <%= title_field.text.value %>
+                                <% else %>
+                                    無題
+                                <% end %>
+                            </h3>
                         </div>
-                        <span class="card-updated">2024-01-15 14:20</span>
-                    </div>
-                </div>
-            <% end %>
-
-            <!-- a3: 公開中＋編集中 -->
-            <%= link_to admin_area_contents_collection_entry_path(content_type_id: "dummy-type", id: 3), class: 'content-card-link' do %>
-                <div class="content-card">
-                    <div class="card-header">
-                        <div class="card-header-top">
-                            <span class="card-content-type">記事</span>
-                            <div class="status-tags">
-                                <span class="status-tag status-tag-published">公開中</span>
-                                <span class="status-tag status-tag-draft">編集中</span>
-                            </div>
-                        </div>
-                        <h3 class="card-title">リモートワークのベストプラクティス：効率的な在宅勤務のための完全ガイド</h3>
-                    </div>
-                    <div class="card-meta">
-                        <div class="card-meta-left">
-                            <div class="card-actions-area">
-                                <div class="card-action-group">
-                                    <span class="btn btn-xs btn-external"><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i></span>
-                                    <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>編集</span>
-                                    <span class="btn btn-xs btn-preview"><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                        <div class="card-meta">
+                            <div class="card-meta-left">
+                                <div class="card-action-buttons">
+                                    <% if latest_version.draft? %>
+                                        <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>編集</span>
+                                        <span class="btn btn-xs btn-preview"><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                                    <% elsif latest_version.published? %>
+                                        <span class="btn btn-xs btn-external"><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                                        <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>新しいバージョンを作成して編集</span>
+                                    <% end %>
                                 </div>
                             </div>
+                            <span class="card-updated"><%= latest_version.created_at.strftime('%Y-%m-%d %H:%M') %></span>
                         </div>
-                        <span class="card-updated">2024-01-14 16:45</span>
                     </div>
-                </div>
+                <% end %>
             <% end %>
-
-            <!-- 他のコンテンツタイプの例 -->
-            <%= link_to admin_area_contents_collection_entry_path(content_type_id: "dummy-type", id: 4), class: 'content-card-link' do %>
-                <div class="content-card">
-                    <div class="card-header">
-                        <div class="card-header-top">
-                            <span class="card-content-type">商品</span>
-                            <div class="status-tags">
-                                <span class="status-tag status-tag-published">公開中</span>
-                            </div>
-                        </div>
-                        <h3 class="card-title">プレミアムワイヤレスヘッドフォン XZ-900 - 高音質ノイズキャンセリング機能付き</h3>
-                    </div>
-                    <div class="card-meta">
-                        <div class="card-meta-left">
-                            <div class="card-actions-area">
-                                <div class="card-action-group">
-                                    <span class="btn btn-xs btn-external"><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i></span>
-                                    <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>新しいバージョンを作成して編集</span>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="card-updated">2024-01-13 11:00</span>
-                    </div>
-                </div>
-            <% end %>
-        </div>
-
-        <!-- シングルコンテンツ用表示エリア -->
-        <div class="single-content-area hidden" id="single-content">
-            <div class="single-content-header">
-                <h3 class="single-content-title" id="single-title">会社概要</h3>
-                <div id="single-actions">
-                    <button class="btn btn-primary">編集</button>
-                </div>
-            </div>
-
-            <div class="single-content-meta" id="single-meta">
-                <span class="single-content-meta-label">ステータス:</span>
-                <span class="single-content-meta-value" id="single-status">下書き</span>
-
-                <span class="single-content-meta-label">最終更新:</span>
-                <span class="single-content-meta-value" id="single-updated">2024-01-16 14:30</span>
-
-                <span class="single-content-meta-label">作成者:</span>
-                <span class="single-content-meta-value" id="single-author">管理者</span>
-            </div>
-
-            <div id="single-description">
-                <p>ここにコンテンツの詳細情報や編集フォームが表示されます。</p>
-            </div>
         </div>
     </main>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const treeHeaders = document.querySelectorAll('.tree-item-header');
-        const breadcrumb = document.getElementById('breadcrumb-current');
-        const mainTitle = document.getElementById('main-title');
-        const contentTable = document.getElementById('content-table');
-
-        treeHeaders.forEach(header => {
-            header.addEventListener('click', function() {
-                const toggle = this.querySelector('.tree-toggle');
-                const submenu = this.nextElementSibling;
-
-                // サブメニューの展開/折りたたみ
-                if (submenu && submenu.classList.contains('tree-submenu')) {
-                    toggle.classList.toggle('expanded');
-                    submenu.classList.toggle('expanded');
-                }
-
-                // アクティブ状態の切り替え
-                treeHeaders.forEach(item => item.classList.remove('active'));
-                this.classList.add('active');
-
-                // コンテンツの更新
-                const model = this.dataset.model;
-                const type = this.dataset.type;
-                const label = this.querySelector('.tree-label').textContent;
-
-                // data-model がない場合はスキップ
-                if (!model) return;
-
-                breadcrumb.textContent = label;
-
-                // singleタイプの場合はタイトルを変更
-                if (type === 'single') {
-                    mainTitle.textContent = label;
-                } else {
-                    mainTitle.textContent = label + '一覧';
-                }
-
-                // テーブル内容の更新（実際の実装ではAjaxで取得）
-                updateContent(model, type);
-            });
-        });
-
-        // サブメニューアイテムのクリックイベント
-        document.querySelectorAll('.tree-submenu-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.stopPropagation();
-
-                const action = this.dataset.action;
-                const parentHeader = this.closest('.tree-item').querySelector('.tree-item-header');
-                const model = parentHeader.dataset.model;
-                const type = parentHeader.dataset.type;
-
-                if (type === 'single' && action) {
-                    handleSingleContentAction(model, action);
-                } else {
-                    console.log('Clicked:', this.textContent);
-                }
-            });
-        });
-
-        function handleSingleContentAction(model, action) {
-            const breadcrumb = document.getElementById('breadcrumb-current');
-            const mainTitle = document.getElementById('main-title');
-            const collectionContent = document.getElementById('collection-content');
-            const singleContent = document.getElementById('single-content');
-            const contentFilters = document.querySelector('.content-filters');
-
-            // シングルコンテンツエリアを表示
-            collectionContent.classList.add('hidden');
-            singleContent.classList.remove('hidden');
-            contentFilters.style.display = 'none';
-
-            // パンくずとタイトルを更新
-            const modelNames = {
-                'about': '会社概要',
-                'privacy': 'プライバシーポリシー',
-                'terms': '利用規約',
-                'contact': 'お問い合わせ',
-                'settings': 'サイト設定'
-            };
-
-            const modelName = modelNames[model] || model;
-            breadcrumb.textContent = modelName;
-
-            if (action === 'published') {
-                mainTitle.textContent = `${modelName}（公開中）`;
-            } else if (action === 'draft') {
-                mainTitle.textContent = `${modelName}（下書き）`;
-            } else {
-                mainTitle.textContent = modelName;
-            }
-
-            // シングルコンテンツの詳細を更新
-            updateSingleContentByAction(model, action);
-        }
-
-        function updateSingleContentByAction(model, action) {
-            const title = document.getElementById('single-title');
-            const status = document.getElementById('single-status');
-            const updated = document.getElementById('single-updated');
-            const author = document.getElementById('single-author');
-            const actions = document.getElementById('single-actions');
-
-            const modelNames = {
-                'about': '会社概要',
-                'privacy': 'プライバシーポリシー',
-                'terms': '利用規約',
-                'contact': 'お問い合わせ',
-                'settings': 'サイト設定'
-            };
-
-            title.textContent = modelNames[model] || model;
-
-            // モックデータ：編集中下書きの存在状況
-            const hasDraft = {
-                'about': true,    // 編集中下書きあり
-                'privacy': false, // 編集中下書きなし
-                'terms': true,    // 編集中下書きあり（b3状態）
-                'contact': true,  // 編集中下書きあり
-                'settings': false // 編集中下書きなし
-            };
-
-            if (action === 'published') {
-                status.textContent = '公開中';
-
-                // 編集中下書きがある場合は「編集用コピーを作成」ボタンを非表示
-                if (hasDraft[model]) {
-                    actions.innerHTML = `
-                        <a href="#" class="btn btn-secondary" target="_blank">公開ページ</a>
-                    `;
-                } else {
-                    actions.innerHTML = `
-                        <a href="#" class="btn btn-secondary" target="_blank">公開ページ</a>
-                        <button class="btn btn-secondary">編集用コピーを作成</button>
-                    `;
-                }
-            } else if (action === 'draft') {
-                status.textContent = '下書き';
-                actions.innerHTML = `
-                    <a href="#" class="btn btn-primary">編集</a>
-                    <a href="#" class="btn btn-secondary">プレビュー</a>
-                `;
-            }
-
-            updated.textContent = '2024-01-16 14:30';
-            author.textContent = '管理者';
-        }
-
-        function updateSingleContent(model) {
-            const title = document.getElementById('single-title');
-            const status = document.getElementById('single-status');
-            const updated = document.getElementById('single-updated');
-            const author = document.getElementById('single-author');
-            const actions = document.getElementById('single-actions');
-
-            // モックデータ（実際の実装では、サーバーからデータを取得）
-            const singleData = {
-                'about': {
-                    title: '会社概要',
-                    status: '下書き',
-                    updated: '2024-01-16 14:30',
-                    author: '管理者',
-                    state: 'draft-only',
-                    hasDraft: true
-                },
-                'privacy': {
-                    title: 'プライバシーポリシー',
-                    status: '公開中',
-                    updated: '2024-01-10 09:15',
-                    author: '法務部',
-                    state: 'published-only',
-                    hasDraft: false
-                },
-                'terms': {
-                    title: '利用規約',
-                    status: '下書き',
-                    updated: '2024-01-14 16:20',
-                    author: '管理者',
-                    state: 'both',
-                    hasDraft: true
-                }
-            };
-
-            const data = singleData[model] || singleData['about'];
-
-            title.textContent = data.title;
-            status.textContent = data.status;
-            updated.textContent = data.updated;
-            author.textContent = data.author;
-
-            // 状態に応じてアクションボタンを変更
-            if (data.state === 'published-only') {
-                // 編集中下書きがある場合は「編集用コピーを作成」ボタンを非表示
-                if (data.hasDraft) {
-                    actions.innerHTML = `
-                        <a href="#" class="btn btn-secondary" target="_blank">公開ページ</a>
-                    `;
-                } else {
-                    actions.innerHTML = `
-                        <a href="#" class="btn btn-secondary" target="_blank">公開ページ</a>
-                        <button class="btn btn-secondary">編集用コピーを作成</button>
-                    `;
-                }
-            } else {
-                actions.innerHTML = `
-                    <a href="#" class="btn btn-primary">編集</a>
-                    <a href="#" class="btn btn-secondary">プレビュー</a>
-                `;
-            }
-        }
-
-        function updateContent(model, type) {
-            const collectionContent = document.getElementById('collection-content');
-            const singleContent = document.getElementById('single-content');
-            const contentFilters = document.querySelector('.content-filters');
-
-            if (type === 'single') {
-                // シングルコンテンツの場合
-                collectionContent.classList.add('hidden');
-                singleContent.classList.remove('hidden');
-                contentFilters.style.display = 'none';
-
-                // シングルコンテンツの詳細を更新
-                updateSingleContent(model);
-            } else {
-                // コレクションコンテンツの場合
-                singleContent.classList.add('hidden');
-                collectionContent.classList.remove('hidden');
-                contentFilters.style.display = 'flex';
-
-                // コレクションコンテンツの一覧を更新
-                updateCollectionContent(model);
-            }
-        }
-
-        function updateCollectionContent(model) {
-            // コレクションコンテンツの一覧更新処理
-            console.log('Loading collection content for:', model);
-        }
-
         // モバイルメニューの制御
         const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
         const mobileOverlay = document.getElementById('mobile-overlay');
@@ -570,7 +151,7 @@
             mobileOverlay.classList.remove('active');
         });
 
-        // サイドバーメニューをクリックしたときもメニューを閉じる（モバイル時）
+        // サイドバーメニューをクリックしたときもメニューを閉じる(モバイル時)
         document.querySelectorAll('.tree-item-header').forEach(header => {
             header.addEventListener('click', function() {
                 if (window.innerWidth <= 768) {
@@ -579,6 +160,5 @@
                 }
             });
         });
-
     });
 </script>
