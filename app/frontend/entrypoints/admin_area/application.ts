@@ -32,30 +32,11 @@ class AdminArea {
   }
 
   private setupContentsSidebar(): void {
-    // サブメニューの開閉制御
-    const treeHeaders = document.querySelectorAll('.tree-item-header');
-
-    treeHeaders.forEach(header => {
-      header.addEventListener('click', () => {
-        const toggle = header.querySelector('.tree-toggle');
-        const submenu = header.nextElementSibling;
-
-        // サブメニューの展開/折りたたみ
-        if (submenu && submenu.classList.contains('tree-submenu')) {
-          toggle?.classList.toggle('expanded');
-          submenu.classList.toggle('expanded');
-        }
-
-        // アクティブ状態の切り替え
-        treeHeaders.forEach(item => item.classList.remove('active'));
-        header.classList.add('active');
-      });
-    });
-
     // コンテンツエリアのモバイルメニュー制御
     const customSidebar = document.querySelector('.custom-sidebar');
     const mobileOverlay = document.getElementById('mobile-overlay');
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const treeHeaders = document.querySelectorAll('.tree-item-header');
 
     if (mobileMenuToggle && customSidebar && mobileOverlay) {
       mobileMenuToggle.addEventListener('click', () => {

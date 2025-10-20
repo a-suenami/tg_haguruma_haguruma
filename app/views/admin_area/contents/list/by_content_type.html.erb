@@ -22,6 +22,11 @@
 
         <header class="main-header">
             <h2><%= @content_type.display_name %>一覧</h2>
+            <% if @content_type.is_collection %>
+                <%= link_to new_admin_area_contents_collection_entry_path(content_type_id: @content_type.id), class: 'btn btn-primary new-entry-btn' do %>
+                    <i class="fas fa-plus"></i> 新規作成
+                <% end %>
+            <% end %>
         </header>
 
         <!-- フィルター -->
