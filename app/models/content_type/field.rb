@@ -15,7 +15,7 @@ class ContentType::Field < ApplicationRecord
   validates :tenant_id, presence: true
   validates :api_identifier, presence: true, length: { maximum: 32 }
   validates :label, presence: true, length: { maximum: 255 }
-  validates :field_type, presence: true, inclusion: { in: FIELD_TYPES.values }
+  validates :field_type, presence: true
 
   enum :field_type, FIELD_TYPES
 end

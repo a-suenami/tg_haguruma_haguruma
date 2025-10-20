@@ -14,7 +14,7 @@ class ContentEntry::Version < ApplicationRecord
   validates :content_type_id, presence: true
   validates :content_entry_id, presence: true
   validates :version, presence: true, numericality: { greater_than: 0 }
-  validates :status, presence: true, inclusion: { in: STATUSES.values }
+  validates :status, presence: true
 
   enum :status, STATUSES
 
