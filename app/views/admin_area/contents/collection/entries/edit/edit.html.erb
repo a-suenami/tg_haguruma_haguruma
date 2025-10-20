@@ -8,7 +8,7 @@
                 <ul class="tree-nav">
                     <!-- すべて表示 -->
                     <li class="tree-item">
-                        <%= link_to admin_area_content_entries_path, class: 'tree-item-header' do %>
+                        <%= link_to admin_area_contents_all_path, class: 'tree-item-header' do %>
                             <span class="tree-toggle" style="visibility: hidden;"></span>
                             <span class="tree-label">すべて表示</span>
                             <span class="tree-count">3,502</span>
@@ -28,7 +28,7 @@
                         </div>
                         <ul class="tree-submenu expanded">
                             <li class="tree-submenu-item">
-                                <%= link_to admin_area_content_entries_path, class: 'submenu-link' do %>
+                                <%= link_to admin_area_contents_all_path, class: 'submenu-link' do %>
                                     すべての記事
                                 <% end %>
                             </li>
@@ -43,7 +43,7 @@
 
                     <!-- シングルコンテンツリンク -->
                     <li class="tree-item">
-                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'about'), class: 'tree-item-header' do %>
+                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'about'), class: 'tree-item-header' do %>
                             <span class="tree-icon">📄</span>
                             <span class="tree-label">会社概要</span>
                         <% end %>
@@ -57,9 +57,9 @@
     <main class="custom-main">
         <!-- パンくずリスト -->
         <div class="breadcrumb">
-            <%= link_to 'コンテンツ', admin_area_content_entries_path, class: 'breadcrumb-link' %>
+            <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
             <span class="breadcrumb-separator">/</span>
-            <%= link_to '記事一覧', admin_area_content_entries_path, class: 'breadcrumb-link' %>
+            <%= link_to '記事一覧', admin_area_contents_all_path, class: 'breadcrumb-link' %>
             <span class="breadcrumb-separator">/</span>
             <span class="breadcrumb-current">2024年の技術トレンド予測</span>
         </div>
@@ -68,7 +68,7 @@
         <header class="content-detail-header">
             <div class="content-detail-title-section">
                 <div class="content-title-with-back">
-                    <%= link_to admin_area_content_entry_path(params[:id]), class: 'back-to-list-btn' do %>
+                    <%= link_to admin_area_contents_collection_entry_path(content_type_id: params[:content_type_id], id: params[:id]), class: 'back-to-list-btn' do %>
                         <i class="fas fa-arrow-left"></i>
                     <% end %>
                     <h1 class="content-detail-title">2024年の技術トレンド予測</h1>
@@ -78,10 +78,10 @@
 
         <!-- バージョンタブ -->
         <div class="version-tabs">
-            <%= link_to edit_admin_area_content_entry_path(params[:id]), class: 'version-tab active' do %>
+            <%= link_to edit_admin_area_contents_collection_entry_path(content_type_id: params[:content_type_id], id: params[:id]), class: 'version-tab active' do %>
                 編集中
             <% end %>
-            <%= link_to admin_area_content_entry_path(params[:id]), class: 'version-tab' do %>
+            <%= link_to admin_area_contents_collection_entry_path(content_type_id: params[:content_type_id], id: params[:id]), class: 'version-tab' do %>
                 公開中
             <% end %>
         </div>

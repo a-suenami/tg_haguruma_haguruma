@@ -17,7 +17,7 @@
                 <ul class="tree-nav">
                     <!-- すべて表示 -->
                     <li class="tree-item">
-                        <%= link_to admin_area_content_entries_path, class: 'tree-item-header' do %>
+                        <%= link_to admin_area_contents_all_path, class: 'tree-item-header' do %>
                             <span class="tree-toggle" style="visibility: hidden;"></span>
                             <span class="tree-label">すべて表示</span>
                             <span class="tree-count">3,502</span>
@@ -37,7 +37,7 @@
                         </div>
                         <ul class="tree-submenu expanded">
                             <li class="tree-submenu-item">
-                                <%= link_to admin_area_content_entries_path, class: 'submenu-link' do %>
+                                <%= link_to admin_area_contents_all_path, class: 'submenu-link' do %>
                                     すべての記事
                                 <% end %>
                             </li>
@@ -116,7 +116,7 @@
 
                     <!-- 会社概要 (single) -->
                     <li class="tree-item">
-                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'about'), class: 'tree-item-header' do %>
+                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'about'), class: 'tree-item-header' do %>
                             <span class="tree-icon">📄</span>
                             <span class="tree-label">会社概要</span>
                         <% end %>
@@ -124,7 +124,7 @@
 
                     <!-- プライバシーポリシー (single) -->
                     <li class="tree-item">
-                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'privacy'), class: 'tree-item-header' do %>
+                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'privacy'), class: 'tree-item-header' do %>
                             <span class="tree-icon">🔒</span>
                             <span class="tree-label">プライバシーポリシー</span>
                         <% end %>
@@ -132,7 +132,7 @@
 
                     <!-- 利用規約 (single) -->
                     <li class="tree-item">
-                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'terms'), class: 'tree-item-header' do %>
+                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'terms'), class: 'tree-item-header' do %>
                             <span class="tree-icon">📋</span>
                             <span class="tree-label">利用規約</span>
                         <% end %>
@@ -140,7 +140,7 @@
 
                     <!-- お問い合わせページ (single) -->
                     <li class="tree-item">
-                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'contact'), class: 'tree-item-header' do %>
+                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'contact'), class: 'tree-item-header' do %>
                             <span class="tree-icon">📮</span>
                             <span class="tree-label">お問い合わせ</span>
                         <% end %>
@@ -148,7 +148,7 @@
 
                     <!-- サイト設定 (single) -->
                     <li class="tree-item">
-                        <%= link_to admin_area_content_entry_path(1, single: true, model: 'settings'), class: 'tree-item-header' do %>
+                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: 1, model: 'settings'), class: 'tree-item-header' do %>
                             <span class="tree-icon">⚙️</span>
                             <span class="tree-label">サイト設定</span>
                         <% end %>
@@ -180,7 +180,7 @@
         <!-- コレクション用カードリスト -->
         <div class="content-list" id="collection-content">
             <!-- a1: 編集中のみ -->
-            <%= link_to admin_area_content_entry_path(1), class: 'content-card-link' do %>
+            <%= link_to admin_area_contents_collection_entry_path(content_type_id: "dummy-type", id: 1), class: 'content-card-link' do %>
                 <div class="content-card">
                     <div class="card-header">
                         <div class="card-header-top">
@@ -204,7 +204,7 @@
             <% end %>
 
             <!-- a2: 公開中のみ -->
-            <%= link_to admin_area_content_entry_path(2), class: 'content-card-link' do %>
+            <%= link_to admin_area_contents_collection_entry_path(content_type_id: "dummy-type", id: 2), class: 'content-card-link' do %>
                 <div class="content-card">
                     <div class="card-header">
                         <div class="card-header-top">
@@ -230,7 +230,7 @@
             <% end %>
 
             <!-- a3: 公開中＋編集中 -->
-            <%= link_to admin_area_content_entry_path(3), class: 'content-card-link' do %>
+            <%= link_to admin_area_contents_collection_entry_path(content_type_id: "dummy-type", id: 3), class: 'content-card-link' do %>
                 <div class="content-card">
                     <div class="card-header">
                         <div class="card-header-top">
@@ -258,7 +258,7 @@
             <% end %>
 
             <!-- 他のコンテンツタイプの例 -->
-            <%= link_to admin_area_content_entry_path(4), class: 'content-card-link' do %>
+            <%= link_to admin_area_contents_collection_entry_path(content_type_id: "dummy-type", id: 4), class: 'content-card-link' do %>
                 <div class="content-card">
                     <div class="card-header">
                         <div class="card-header-top">
