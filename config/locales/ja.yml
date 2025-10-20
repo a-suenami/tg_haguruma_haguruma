@@ -15,6 +15,14 @@ ja:
           attributes:
             base:
               reserved_id_error: このIDは予約されているため使用できません
+  ruler_area:
+    auth0:
+      already_logged_in: すでにログインしています
+      auth_info_not_found: 認証情報が取得できませんでした
+      account_not_registered: このアカウントは登録されていません。Auth0からログアウトしました。
+      no_ruler_access: Rulerアクセス権がありません。Auth0からログアウトしました。
+      logged_in: ログインしました
+      authentication_failed: "認証に失敗しました: %{error}"
   helpers:
     messages:
       created: 登録しました
