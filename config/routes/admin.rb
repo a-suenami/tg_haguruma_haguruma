@@ -3,12 +3,6 @@ namespace :admin_area, path: :admin do
   # root to: 'dashboard#index'
   # get 'dashboard', to: 'dashboard#index'
 
-  resources :content_entries, only: [:index, :show, :new, :create, :edit, :update] do
-    collection do
-      get :content_types
-    end
-  end
-
   namespace :contents do
     root to: 'root#index'
     get :mobile, to: 'root#mobile', as: :mobile
