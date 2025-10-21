@@ -385,6 +385,20 @@ class ContentType
   end
 
   module GeneratedAssociationMethods
+    # This method is created by ActiveRecord on the `ContentType` class because it declared `has_many :content_entries`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::ContentEntry::PrivateCollectionProxy) }
+    def content_entries; end
+
+    sig { params(value: T::Enumerable[::ContentEntry]).void }
+    def content_entries=(value); end
+
+    sig { returns(T::Array[T.untyped]) }
+    def content_entry_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def content_entry_ids=(ids); end
+
     sig { returns(T::Array[T.untyped]) }
     def field_ids; end
 

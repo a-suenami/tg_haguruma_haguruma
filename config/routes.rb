@@ -28,19 +28,5 @@ Rails.application.routes.draw do
   end
 
   # Admin Area routes
-  namespace :admin_area, path: :admin do
-    root to: 'dashboard#index'
-    get 'dashboard', to: 'dashboard#index'
-
-    resources :content_entries, only: [:index, :show, :new, :create, :edit, :update] do
-      collection do
-        get :content_types
-      end
-    end
-    resources :content_models, only: [:index, :new, :edit]
-
-    resources :media, only: [:index]
-    resources :categories, only: [:index]
-    get 'setting', to: 'setting#index'
-  end
+  draw :admin
 end

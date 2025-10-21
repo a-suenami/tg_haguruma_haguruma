@@ -22,7 +22,7 @@ if command -v docker &> /dev/null; then
   alias app="rm -f tmp/pids/server.pid && up app"
   alias rails="bundle exec rails"
   alias rake="bundle exec rake"
-  alias rspec="docker-compose-run -e RAILS_ENV=test --rm app rspec"
+  alias rspec="docker-compose-run -e RAILS_ENV=test app rspec"
   alias rspec_parallel="docker-compose-run -e RAILS_ENV=test --rm app bash -c 'CORES=${PARALLEL_JOBS:-$( (command -v nproc >/dev/null && nproc) || getconf _NPROCESSORS_ONLN || sysctl -n hw.ncpu || echo 4 )}; bundle exec rake parallel:create parallel:prepare && bundle exec parallel_test --type rspec -n $CORES'"
   alias rubocop="bundle exec rubocop -DES --cache true"
   alias lint="bundle exec rubocop -a"
