@@ -27,3 +27,8 @@ require 'schemas/content_entry_field_media_assets.schema'
 
 # # content authorization
 # require 'schemas/content_tags.schema'
+
+# auth0 accounts
+require 'schemas/auth0_accounts.schema'
+require 'schemas/ruler/auth0_accounts.schema'
+require 'schemas/rulers.schema'
