@@ -11,7 +11,8 @@ class ContentEntry::Version < ApplicationRecord
   has_many :fields, class_name: 'ContentEntry::Field',
     foreign_key: [:tenant_id, :content_type_id, :content_entry_id, :version],
     primary_key: [:tenant_id, :content_type_id, :content_entry_id, :version],
-    dependent: :destroy
+    dependent: :destroy,
+    inverse_of: false
 
   validates :tenant_id, presence: true
   validates :content_type_id, presence: true

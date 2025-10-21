@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'AdminArea::Contents routing', type: :routing do
+RSpec.describe 'AdminArea::Contents routing' do
   describe 'root and mobile routes' do
     it 'routes GET /admin/contents to contents/root#index' do
       expect(get: '/admin/contents').to route_to(
@@ -45,7 +45,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(get: "/admin/contents/types/#{content_type_id}/entries/#{entry_id}").to route_to(
           controller: 'admin_area/contents/collection/entries/show',
           action: 'show',
-          content_type_id: content_type_id,
+          content_type_id:,
           id: entry_id,
         )
       end
@@ -56,7 +56,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(get: "/admin/contents/types/#{content_type_id}/entries/new").to route_to(
           controller: 'admin_area/contents/collection/entries/edit',
           action: 'new',
-          content_type_id: content_type_id,
+          content_type_id:,
         )
       end
 
@@ -64,7 +64,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(post: "/admin/contents/types/#{content_type_id}/entries").to route_to(
           controller: 'admin_area/contents/collection/entries/edit',
           action: 'create',
-          content_type_id: content_type_id,
+          content_type_id:,
         )
       end
 
@@ -72,7 +72,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(get: "/admin/contents/types/#{content_type_id}/entries/#{entry_id}/edit").to route_to(
           controller: 'admin_area/contents/collection/entries/edit',
           action: 'edit',
-          content_type_id: content_type_id,
+          content_type_id:,
           id: entry_id,
         )
       end
@@ -81,7 +81,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(patch: "/admin/contents/types/#{content_type_id}/entries/#{entry_id}").to route_to(
           controller: 'admin_area/contents/collection/entries/edit',
           action: 'update',
-          content_type_id: content_type_id,
+          content_type_id:,
           id: entry_id,
         )
       end
@@ -90,7 +90,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(put: "/admin/contents/types/#{content_type_id}/entries/#{entry_id}").to route_to(
           controller: 'admin_area/contents/collection/entries/edit',
           action: 'update',
-          content_type_id: content_type_id,
+          content_type_id:,
           id: entry_id,
         )
       end
@@ -101,7 +101,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(post: "/admin/contents/types/#{content_type_id}/entries/#{entry_id}/publication").to route_to(
           controller: 'admin_area/contents/collection/publications',
           action: 'create',
-          content_type_id: content_type_id,
+          content_type_id:,
           content_entry_id: entry_id,
         )
       end
@@ -116,7 +116,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(get: "/admin/contents/types/#{content_type_id}/entry").to route_to(
           controller: 'admin_area/contents/singleton/entries/show',
           action: 'show',
-          content_type_id: content_type_id,
+          content_type_id:,
         )
       end
     end
@@ -126,7 +126,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(get: "/admin/contents/types/#{content_type_id}/entry/edit").to route_to(
           controller: 'admin_area/contents/singleton/entries/edit',
           action: 'edit',
-          content_type_id: content_type_id,
+          content_type_id:,
         )
       end
 
@@ -134,7 +134,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(patch: "/admin/contents/types/#{content_type_id}/entry").to route_to(
           controller: 'admin_area/contents/singleton/entries/edit',
           action: 'update',
-          content_type_id: content_type_id,
+          content_type_id:,
         )
       end
 
@@ -142,7 +142,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(put: "/admin/contents/types/#{content_type_id}/entry").to route_to(
           controller: 'admin_area/contents/singleton/entries/edit',
           action: 'update',
-          content_type_id: content_type_id,
+          content_type_id:,
         )
       end
     end
@@ -152,7 +152,7 @@ RSpec.describe 'AdminArea::Contents routing', type: :routing do
         expect(post: "/admin/contents/types/#{content_type_id}/entry/publication").to route_to(
           controller: 'admin_area/contents/singleton/publications',
           action: 'create',
-          content_type_id: content_type_id,
+          content_type_id:,
         )
       end
     end
