@@ -23,6 +23,16 @@ ja:
       no_ruler_access: Rulerアクセス権がありません。Auth0からログアウトしました。
       logged_in: ログインしました
       authentication_failed: "認証に失敗しました: %{error}"
+  admin_area:
+    auth0:
+      already_logged_in: すでにログインしています
+      logged_in: ログインしました
+      auth_info_not_found: 認証情報が見つかりませんでした
+      account_not_registered: このAuth0アカウントはシステムに登録されていません
+      no_admin_access: このテナントへの管理者アクセス権がありません
+      tenant_not_found: テナントが見つかりませんでした
+      session_expired: セッションの有効期限が切れました。再度ログインしてください
+      authentication_failed: '認証に失敗しました: %{error}'
   helpers:
     messages:
       created: 登録しました

@@ -27,19 +27,24 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   )
 
   # ----------------------------------------------------------------------------
-  # Admin Auth0 Provider (Coming Soon)
+  # Admin Auth0 Provider
   # ----------------------------------------------------------------------------
-  # TODO: Add admin provider when admin area authentication is implemented
-  # provider(
-  #   :auth0_admin,
-  #   Settings.auth0.admin.client_id,
-  #   Settings.auth0.admin.client_secret,
-  #   Settings.auth0.admin.domain,
-  #   callback_path: '/admin/auth/auth0/callback',
-  #   authorize_params: {
-  #     scope: 'openid profile email'
-  #   }
-  # )
+  # Used for admin area authentication (tenant administrators)
+  # Callback URL: /admin/auth/auth0/callback
+  # Tenant is detected from subdomain (e.g., sample.idp.localhost:3000)
+  # NOTE: Uses same :auth0 strategy with different callback path
+  provider(
+    :auth0,
+    Settings.auth0.admin.client_id,
+    Settings.auth0.admin.client_secret,
+    Settings.auth0.admin.domain,
+    callback_path: '/admin/auth/auth0/callback',
+    path_prefix: '/admin/auth',
+    authorize_params: {
+      scope: 'openid profile email',
+      prompt: 'login', # Always show login screen (disable SSO)
+    },
+  )
 end
 
 # ------------------------------------------------------------------------------
