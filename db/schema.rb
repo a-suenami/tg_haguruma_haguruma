@@ -16,6 +16,14 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
 
+  create_table "auth0_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "uid", null: false
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["uid"], name: "idx_auth0_accounts_uid_uniq", unique: true
+  end
+
   create_table "content_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
     t.uuid "content_type_id", null: false
@@ -113,6 +121,22 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["tenant_id", "media_type", "id"], name: "index_media_assets_on_tenant_id_and_media_type_and_id", unique: true
   end
 
+  create_table "ruler_auth0_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "ruler_id", null: false
+    t.uuid "auth0_account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["auth0_account_id"], name: "index_ruler_auth0_accounts_on_auth0_account_id"
+    t.index ["ruler_id", "auth0_account_id"], name: "idx_ruler_auth0_accounts_ruler_auth0_uniq", unique: true
+    t.index ["ruler_id"], name: "index_ruler_auth0_accounts_on_ruler_id"
+  end
+
+  create_table "rulers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tenants", id: :string, force: :cascade do |t|
     t.string "name"
     t.string "user_page_domain"
@@ -140,5 +164,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "content_type_fields", "content_type_field_texts", column: "text_id"
   add_foreign_key "content_type_fields", "content_types", column: ["tenant_id", "content_type_id"], primary_key: ["tenant_id", "id"]
   add_foreign_key "content_types", "tenants"
+  add_foreign_key "ruler_auth0_accounts", "auth0_accounts", name: "fk_ruler_auth0_accounts_auth0_accounts"
+  add_foreign_key "ruler_auth0_accounts", "rulers", name: "fk_ruler_auth0_accounts_rulers"
   add_foreign_key "users", "tenants"
 end
