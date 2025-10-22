@@ -18,15 +18,11 @@ module AdminArea
       redirect_to admin_area_login_path, alert: t('admin_area.auth0.auth_info_not_found') unless auth_info
 
       uid = auth_info['uid']
-      email = auth_info.dig('info', 'email')
-
-      Rails.logger.info "Auth0 callback: uid=#{uid}, email=#{email}"
 
       # Detect tenant from subdomain
       tenant_id = detect_tenant_id
 
       unless tenant_id
-        Rails.logger.warn "Tenant not found from subdomain: #{request.subdomain}"
         reset_session
         flash[:alert] = t('admin_area.auth0.tenant_not_found')
         redirect_to auth0_logout_url, allow_other_host: true
@@ -37,7 +33,6 @@ module AdminArea
       tenant = Tenant.find_by(id: tenant_id)
 
       unless tenant
-        Rails.logger.warn "Tenant does not exist: tenant_id=#{tenant_id}"
         reset_session
         flash[:alert] = t('admin_area.auth0.tenant_not_found')
         redirect_to auth0_logout_url, allow_other_host: true
@@ -48,7 +43,6 @@ module AdminArea
       auth0_account = Auth0Account.find_by(uid:)
 
       unless auth0_account
-        Rails.logger.warn "Auth0 account not found: uid=#{uid}, email=#{email}"
         reset_session
         flash[:alert] = t('admin_area.auth0.account_not_registered')
         redirect_to auth0_logout_url, allow_other_host: true
@@ -59,7 +53,6 @@ module AdminArea
       admin_link = auth0_account.admin_auth0_accounts.find_by(tenant_id:)
 
       unless admin_link
-        Rails.logger.warn "Admin link not found: auth0_account_id=#{auth0_account.id}, tenant_id=#{tenant_id}"
         reset_session
         flash[:alert] = t('admin_area.auth0.no_admin_access')
         redirect_to auth0_logout_url, allow_other_host: true
