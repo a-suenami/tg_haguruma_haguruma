@@ -9,6 +9,8 @@ class AdminArea::ApplicationController < ApplicationController
   before_action :authenticate!
   before_action :set_tenant
 
+  helper_method :current_admin, :signed_in?
+
   sig { void }
   def authenticate!
     redirect_to admin_area_login_path unless signed_in?
