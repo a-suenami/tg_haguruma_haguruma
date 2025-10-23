@@ -389,7 +389,48 @@ class ContentEntry
     def third_to_last!; end
   end
 
-  module GeneratedAssociationMethods; end
+  module GeneratedAssociationMethods
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType) }
+    def build_content_type(*args, &blk); end
+
+    sig { returns(T.nilable(::ContentType)) }
+    def content_type; end
+
+    sig { params(value: T.nilable(::ContentType)).void }
+    def content_type=(value); end
+
+    sig { returns(T::Boolean) }
+    def content_type_changed?; end
+
+    sig { returns(T::Boolean) }
+    def content_type_previously_changed?; end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType) }
+    def create_content_type(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType) }
+    def create_content_type!(*args, &blk); end
+
+    sig { returns(T.nilable(::ContentType)) }
+    def reload_content_type; end
+
+    sig { void }
+    def reset_content_type; end
+
+    sig { returns(T::Array[T.untyped]) }
+    def version_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def version_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `ContentEntry` class because it declared `has_many :versions`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::ContentEntry::Version::PrivateCollectionProxy) }
+    def versions; end
+
+    sig { params(value: T::Enumerable[::ContentEntry::Version]).void }
+    def versions=(value); end
+  end
 
   module GeneratedAssociationRelationMethods
     sig { returns(PrivateAssociationRelation) }

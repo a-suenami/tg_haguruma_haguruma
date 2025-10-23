@@ -13,16 +13,31 @@ module GeneratedPathHelpersModule
   def admin_area_categories_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_content_entries_path(*args); end
+  def admin_area_contents_all_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_content_entry_path(*args); end
+  def admin_area_contents_by_content_type_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_content_models_path(*args); end
+  def admin_area_contents_collection_entries_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_dashboard_path(*args); end
+  def admin_area_contents_collection_entry_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_publication_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_mobile_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_root_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_publication_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_media_path(*args); end
@@ -34,25 +49,16 @@ module GeneratedPathHelpersModule
   def admin_area_ruler_area_tenant_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_setting_path(*args); end
+  def edit_admin_area_contents_collection_entry_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def content_types_admin_area_content_entries_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_admin_area_content_entry_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_admin_area_content_model_path(*args); end
+  def edit_admin_area_contents_singleton_entry_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def new_admin_area_content_entry_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_admin_area_content_model_path(*args); end
+  def new_admin_area_contents_collection_entry_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_rails_conductor_inbound_email_path(*args); end

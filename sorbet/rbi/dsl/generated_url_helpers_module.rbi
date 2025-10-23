@@ -13,16 +13,31 @@ module GeneratedUrlHelpersModule
   def admin_area_categories_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_content_entries_url(*args); end
+  def admin_area_contents_all_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_content_entry_url(*args); end
+  def admin_area_contents_by_content_type_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_content_models_url(*args); end
+  def admin_area_contents_collection_entries_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_dashboard_url(*args); end
+  def admin_area_contents_collection_entry_publication_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_mobile_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_root_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_publication_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_media_url(*args); end
@@ -34,25 +49,16 @@ module GeneratedUrlHelpersModule
   def admin_area_ruler_area_tenant_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_setting_url(*args); end
+  def edit_admin_area_contents_collection_entry_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def content_types_admin_area_content_entries_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_admin_area_content_entry_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_admin_area_content_model_url(*args); end
+  def edit_admin_area_contents_singleton_entry_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def new_admin_area_content_entry_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_admin_area_content_model_url(*args); end
+  def new_admin_area_contents_collection_entry_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_rails_conductor_inbound_email_source_url(*args); end

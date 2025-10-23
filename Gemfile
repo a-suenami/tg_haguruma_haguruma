@@ -45,6 +45,7 @@ gem 'activerecord-import', '~> 1.5.0'
 
 # Template engine
 gem 'liquid', '~> 5.4.0'
+gem 'slim-rails', '~> 3.6.0'
 
 # Connection pooling
 gem 'connection_pool', '~> 2.4.1'

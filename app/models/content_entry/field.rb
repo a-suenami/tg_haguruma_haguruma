@@ -16,7 +16,7 @@ class ContentEntry::Field < ApplicationRecord
   validates :content_type_id, presence: true
   validates :content_entry_id, presence: true
   validates :version, presence: true
-  validates :field_type, presence: true, inclusion: { in: FIELD_TYPES.values }
+  validates :field_type, presence: true
 
   enum :field_type, FIELD_TYPES
 
