@@ -47,6 +47,13 @@ module RulerArea
 
       ruler = ruler_link.ruler
 
+      unless ruler
+        reset_session
+        flash[:alert] = t('ruler_area.auth0.no_ruler_access')
+        redirect_to auth0_logout_url, allow_other_host: true
+        return
+      end
+
       # Create session
       session[:ruler_id] = ruler.id
 
