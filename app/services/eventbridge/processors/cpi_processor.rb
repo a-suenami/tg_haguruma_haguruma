@@ -76,7 +76,7 @@ module Eventbridge::Processors
     end
 
     sig { params(detail: T::Hash[T.untyped, T.untyped], submitted_at: ActiveSupport::TimeWithZone).void }
-    def process_deletion(detail, _submitted_at)
+    def process_deletion(detail, submitted_at)
       # deleted_atフィールドの日時を解析
       deleted_at = begin
         Time.zone.parse(detail['deleted_at'])
