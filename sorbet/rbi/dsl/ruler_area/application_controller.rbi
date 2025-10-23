@@ -27,6 +27,12 @@ class RulerArea::ApplicationController
     include ::ActionController::Base::HelperMethods
     include ::RulerArea::ApplicationHelper
     include ::ApplicationHelper
+
+    sig { returns(T.untyped) }
+    def current_ruler; end
+
+    sig { returns(T.untyped) }
+    def ruler_signed_in?; end
   end
 
   class HelperProxy < ::ActionView::Base

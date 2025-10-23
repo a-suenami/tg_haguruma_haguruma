@@ -14,6 +14,12 @@ Rails.application.routes.draw do
 
   # Ruler Area routes
   namespace :ruler_area, path: :ruler do
+    # Auth0 Authentication routes
+    get 'login', to: 'auth0#login', as: :login
+    get 'logout', to: 'auth0#logout', as: :logout
+    get '/auth/auth0/callback', to: 'auth0#callback'
+    get '/auth/failure', to: 'auth0#failure'
+
     root to: 'tenants#index', as: :root
 
     resources :tenants do

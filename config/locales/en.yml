@@ -44,6 +44,14 @@ en:
           attributes:
             base:
               reserved_id_error: This ID is reserved and cannot be used
+  ruler_area:
+    auth0:
+      already_logged_in: Already logged in
+      auth_info_not_found: Could not retrieve authentication information
+      account_not_registered: This account is not registered. Logged out from Auth0.
+      no_ruler_access: You do not have Ruler access rights. Logged out from Auth0.
+      logged_in: Successfully logged in
+      authentication_failed: "Authentication failed: %{error}"
   helpers:
     messages:
       created: Created successfully
