@@ -75,8 +75,8 @@ module Eventbridge::Processors
       #   Tenant.current_id = previous_tenant_id if defined?(Tenant)
     end
 
-    sig { params(detail: T::Hash[T.untyped, T.untyped], submitted_at: ActiveSupport::TimeWithZone).void }
-    def process_deletion(detail, submitted_at)
+    sig { params(detail: T::Hash[T.untyped, T.untyped], _submitted_at: ActiveSupport::TimeWithZone).void }
+    def process_deletion(detail, _submitted_at)
       # deleted_atフィールドの日時を解析
       deleted_at = begin
         Time.zone.parse(detail['deleted_at'])
