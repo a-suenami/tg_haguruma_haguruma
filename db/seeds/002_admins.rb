@@ -13,7 +13,7 @@ sample_tenant = Tenant.find_or_create_by!(id: 'sample') do |tenant|
   tenant.name = 'Sample Tenant'
 end
 
-Rails.logger.debug "  ✅ Tenant: #{sample_tenant.name} (#{sample_tenant.id})"
+Rails.logger.debug { "  ✅ Tenant: #{sample_tenant.name} (#{sample_tenant.id})" }
 
 # -----------------------------------------------------------------------------
 # Production Admin (Mrs. Tram) - Same Auth0 account as Ruler
