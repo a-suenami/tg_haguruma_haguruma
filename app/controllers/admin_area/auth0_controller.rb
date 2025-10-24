@@ -61,6 +61,13 @@ module AdminArea
 
       admin = admin_link.admin
 
+      unless admin
+        reset_session
+        flash[:alert] = t('admin_area.auth0.admin_not_found')
+        redirect_to auth0_logout_url, allow_other_host: true
+        return
+      end
+
       # Create session
       session[:admin_id] = admin.id
       session[:tenant_id] = tenant_id
