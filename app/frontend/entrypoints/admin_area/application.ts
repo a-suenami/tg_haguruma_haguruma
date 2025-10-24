@@ -27,7 +27,38 @@ class AdminArea {
   private init(): void {
     this.setupMobileMenu();
     this.setupNavigationHighlight();
+    this.setupContentsSidebar();
     console.log('Admin Area initialized');
+  }
+
+  private setupContentsSidebar(): void {
+    // コンテンツエリアのモバイルメニュー制御
+    const customSidebar = document.querySelector('.custom-sidebar');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const treeHeaders = document.querySelectorAll('.tree-item-header');
+
+    if (mobileMenuToggle && customSidebar && mobileOverlay) {
+      mobileMenuToggle.addEventListener('click', () => {
+        customSidebar.classList.toggle('mobile-open');
+        mobileOverlay.classList.toggle('active');
+      });
+
+      mobileOverlay.addEventListener('click', () => {
+        customSidebar.classList.remove('mobile-open');
+        mobileOverlay.classList.remove('active');
+      });
+
+      // サイドバーメニューをクリックしたときもメニューを閉じる(モバイル時)
+      treeHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+          if (window.innerWidth <= 768) {
+            customSidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('active');
+          }
+        });
+      });
+    }
   }
 
   private setupMobileMenu(): void {

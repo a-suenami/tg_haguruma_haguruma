@@ -39,8 +39,27 @@
         </div>
         <div class="uk-navbar-right">
           <ul class="uk-navbar-nav">
-            <li><a href="#">管理</a></li>
-            <li><a href="#">アカウント</a></li>
+            <% if ruler_signed_in? %>
+              <li>
+                <a href="#" class="uk-text-small">
+                  <span uk-icon="icon: user; ratio: 0.8" class="uk-margin-small-right"></span>
+                  <%= current_ruler.email %>
+                </a>
+              </li>
+              <li>
+                <%= link_to ruler_area_logout_path, class: 'uk-text-small' do %>
+                  <span uk-icon="icon: sign-out; ratio: 0.8" class="uk-margin-small-right"></span>
+                  ログアウト
+                <% end %>
+              </li>
+            <% else %>
+              <li>
+                <%= link_to ruler_area_login_path do %>
+                  <span uk-icon="icon: sign-in; ratio: 0.8" class="uk-margin-small-right"></span>
+                  ログイン
+                <% end %>
+              </li>
+            <% end %>
           </ul>
         </div>
       </div>

@@ -71,10 +71,27 @@
     cursor: pointer;
     border-radius: 8px;
     user-select: none;
+    text-decoration: none;
+    color: inherit;
+}
+
+.tree-item-header:visited {
+    color: inherit;
 }
 
 .tree-item-header:hover {
     background: #f1f5f9;
+}
+
+/* 新規作成ボタン */
+.main-header {
+    position: relative;
+}
+
+.new-entry-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .tree-item-header.active {

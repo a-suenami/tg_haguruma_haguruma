@@ -1,4 +1,4 @@
-\restrict keki7Alallu3LdmIH09RXQfkmUwQ9a4r9oVZvBHbZocXJNdzDvO2GPnjQl4v1Kj
+\restrict QTAhTvf7kczEiLgnCVQy3tOEROtdQRl96fdlEzJOHrXAujRJaxG43xhthDVI4Et
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -45,6 +45,19 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: auth0_accounts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth0_accounts (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    uid character varying NOT NULL,
+    email character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
 
 --
 -- Name: content_entries; Type: TABLE; Schema: public; Owner: -
@@ -376,6 +389,31 @@ CREATE TABLE public.media_assets (
 
 
 --
+-- Name: ruler_auth0_accounts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ruler_auth0_accounts (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    ruler_id uuid NOT NULL,
+    auth0_account_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: rulers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rulers (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: tenants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -461,6 +499,14 @@ ALTER TABLE ONLY public.content_type_field_texts ALTER COLUMN id SET DEFAULT nex
 --
 
 ALTER TABLE ONLY public.content_type_fields ALTER COLUMN id SET DEFAULT nextval('public.content_type_fields_id_seq'::regclass);
+
+
+--
+-- Name: auth0_accounts auth0_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth0_accounts
+    ADD CONSTRAINT auth0_accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -560,6 +606,22 @@ ALTER TABLE ONLY public.media_assets
 
 
 --
+-- Name: ruler_auth0_accounts ruler_auth0_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ruler_auth0_accounts
+    ADD CONSTRAINT ruler_auth0_accounts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: rulers rulers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rulers
+    ADD CONSTRAINT rulers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tenants tenants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -576,10 +638,24 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: idx_auth0_accounts_uid_uniq; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_auth0_accounts_uid_uniq ON public.auth0_accounts USING btree (uid);
+
+
+--
 -- Name: idx_on_tenant_id_content_type_id_id_01457429a3; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX idx_on_tenant_id_content_type_id_id_01457429a3 ON public.content_type_fields USING btree (tenant_id, content_type_id, id);
+
+
+--
+-- Name: idx_ruler_auth0_accounts_ruler_auth0_uniq; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_ruler_auth0_accounts_ruler_auth0_uniq ON public.ruler_auth0_accounts USING btree (ruler_id, auth0_account_id);
 
 
 --
@@ -650,6 +726,20 @@ CREATE UNIQUE INDEX index_media_assets_on_tenant_id_and_id_and_media_type ON pub
 --
 
 CREATE UNIQUE INDEX index_media_assets_on_tenant_id_and_media_type_and_id ON public.media_assets USING btree (tenant_id, media_type, id);
+
+
+--
+-- Name: index_ruler_auth0_accounts_on_auth0_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ruler_auth0_accounts_on_auth0_account_id ON public.ruler_auth0_accounts USING btree (auth0_account_id);
+
+
+--
+-- Name: index_ruler_auth0_accounts_on_ruler_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ruler_auth0_accounts_on_ruler_id ON public.ruler_auth0_accounts USING btree (ruler_id);
 
 
 --
@@ -772,10 +862,26 @@ ALTER TABLE ONLY public.content_entries
 
 
 --
+-- Name: ruler_auth0_accounts fk_ruler_auth0_accounts_auth0_accounts; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ruler_auth0_accounts
+    ADD CONSTRAINT fk_ruler_auth0_accounts_auth0_accounts FOREIGN KEY (auth0_account_id) REFERENCES public.auth0_accounts(id);
+
+
+--
+-- Name: ruler_auth0_accounts fk_ruler_auth0_accounts_rulers; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ruler_auth0_accounts
+    ADD CONSTRAINT fk_ruler_auth0_accounts_rulers FOREIGN KEY (ruler_id) REFERENCES public.rulers(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict keki7Alallu3LdmIH09RXQfkmUwQ9a4r9oVZvBHbZocXJNdzDvO2GPnjQl4v1Kj
+\unrestrict QTAhTvf7kczEiLgnCVQy3tOEROtdQRl96fdlEzJOHrXAujRJaxG43xhthDVI4Et
 
 SET search_path TO "$user", public;
 

@@ -14,6 +14,12 @@ Rails.application.routes.draw do
 
   # Ruler Area routes
   namespace :ruler_area, path: :ruler do
+    # Auth0 Authentication routes
+    get 'login', to: 'auth0#login', as: :login
+    get 'logout', to: 'auth0#logout', as: :logout
+    get '/auth/auth0/callback', to: 'auth0#callback'
+    get '/auth/failure', to: 'auth0#failure'
+
     root to: 'tenants#index', as: :root
 
     resources :tenants do
@@ -28,19 +34,5 @@ Rails.application.routes.draw do
   end
 
   # Admin Area routes
-  namespace :admin_area, path: :admin do
-    root to: 'dashboard#index'
-    get 'dashboard', to: 'dashboard#index'
-
-    resources :content_entries, only: [:index, :show, :new, :create, :edit, :update] do
-      collection do
-        get :content_types
-      end
-    end
-    resources :content_models, only: [:index, :new, :edit]
-
-    resources :media, only: [:index]
-    resources :categories, only: [:index]
-    get 'setting', to: 'setting#index'
-  end
+  draw :admin
 end

@@ -36,11 +36,16 @@ gem 'request_store-sidekiq', '~> 0.1.0'
 # Authorization
 gem 'pundit', '~> 2.3.1'
 
+# Authentication (Auth0)
+gem 'omniauth-auth0', '~> 3.1'
+gem 'omniauth-rails_csrf_protection', '~> 1.0'
+
 # Bulk insert
 gem 'activerecord-import', '~> 1.5.0'
 
 # Template engine
 gem 'liquid', '~> 5.4.0'
+gem 'slim-rails', '~> 3.6.0'
 
 # Connection pooling
 gem 'connection_pool', '~> 2.4.1'
