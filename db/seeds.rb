@@ -12,8 +12,8 @@
 # Structure:
 #   db/seeds/
 #     001_rulers.rb      - Rulers & Auth0 accounts
-#     002_tenants.rb     - Tenants
-#     003_admins.rb      - Admins (future)
+#     002_admins.rb      - Admins & Auth0 accounts
+#     003_tenants.rb     - Tenants
 #     999_sample_data.rb - Development sample data (future)
 
 puts "🌱 Loading Haguruma seeds...\n"
@@ -51,10 +51,13 @@ puts "\n📊 Database Summary:"
 puts "   - Auth0Accounts: #{Auth0Account.count}"
 puts "   - Rulers: #{Ruler.count}"
 puts "   - Ruler::Auth0Account: #{Ruler::Auth0Account.count}"
+puts "   - Admins: #{Admin.count}"
+puts "   - Admin::Auth0Account: #{Admin::Auth0Account.count}"
 puts "   - Tenants: #{Tenant.count}"
 
-puts "\n🔗 Login URL:"
-puts '   http://idp.localhost:3000/ruler/login'
+puts "\n🔗 Login URLs:"
+puts '   Ruler: http://idp.localhost:3000/ruler/login'
+puts '   Admin: http://sample.idp.localhost:3000/admin/login'
 
 puts "\n💡 Tips:"
 puts '   - Load all seeds: rails db:seed'
