@@ -52,6 +52,16 @@ en:
       no_ruler_access: You do not have Ruler access rights. Logged out from Auth0.
       logged_in: Successfully logged in
       authentication_failed: "Authentication failed: %{error}"
+  admin_area:
+    auth0:
+      already_logged_in: You are already logged in
+      logged_in: Successfully logged in
+      auth_info_not_found: Authentication information not found
+      account_not_registered: This Auth0 account is not registered in the system
+      no_admin_access: You do not have admin access to this tenant
+      tenant_not_found: Tenant not found
+      session_expired: Your session has expired. Please log in again
+      authentication_failed: 'Authentication failed: %{error}'
   helpers:
     messages:
       created: Created successfully

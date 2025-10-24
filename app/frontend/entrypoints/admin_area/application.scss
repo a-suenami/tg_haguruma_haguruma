@@ -1,12 +1,17 @@
 // Admin Area Styles
-// Import base styles
-@import './base';
+// Use Sass module system instead of @import (deprecated in Dart Sass 3.0.0)
 
-// Content Entries specific styles
-@import './content_entries';
+// Load base styles
+@use './base';
 
-// Lexical Editor styles
-@import './lexical_editor';
+// Load authentication pages styles
+@use './auth';
+
+// Load content entries specific styles
+@use './content_entries';
+
+// Load lexical editor styles
+@use './lexical_editor';
 
 // Additional admin-specific styles can be added here
 .admin-area {

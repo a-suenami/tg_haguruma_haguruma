@@ -1,5 +1,6 @@
 // Admin Area TypeScript Entry Point
 import '@hotwired/turbo-rails';
+import '@fortawesome/fontawesome-free/css/all.css';
 import './application.scss';
 import '../../controllers/index';
 

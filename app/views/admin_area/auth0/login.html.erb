@@ -1,0 +1,29 @@
+<div class="auth-page">
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="auth-logo">CMS</h1>
+        <h2 class="auth-title">Admin Area</h2>
+        <p class="auth-subtitle">Tenant Administrator Login</p>
+      </div>
+
+      <div class="auth-body">
+        <%= button_to '/admin/auth/auth0',
+            method: :post,
+            class: 'auth-button',
+            data: { turbo: false } do %>
+          <svg class="auth-button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          Login with Auth0
+        <% end %>
+      </div>
+
+      <div class="auth-footer">
+        <p class="auth-footer-text">Secure authentication powered by Auth0</p>
+      </div>
+    </div>
+  </div>
+</div>
