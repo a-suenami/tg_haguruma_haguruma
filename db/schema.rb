@@ -16,6 +16,25 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
 
+  create_table "admin_auth0_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "admin_id", null: false
+    t.uuid "auth0_account_id", null: false
+    t.citext "tenant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_admin_auth0_accounts_on_admin_id"
+    t.index ["auth0_account_id"], name: "index_admin_auth0_accounts_on_auth0_account_id"
+    t.index ["tenant_id", "admin_id", "auth0_account_id"], name: "idx_admin_auth0_accounts_tenant_admin_auth0_uniq", unique: true
+  end
+
+  create_table "admins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.citext "tenant_id", null: false
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "idx_admins_tenant_id"
+  end
+
   create_table "auth0_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "uid", null: false
     t.string "email"
@@ -151,6 +170,10 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["tenant_id", "id"], name: "index_users_on_tenant_id_and_id", unique: true
   end
 
+  add_foreign_key "admin_auth0_accounts", "admins", name: "fk_admin_auth0_accounts_admins"
+  add_foreign_key "admin_auth0_accounts", "auth0_accounts", name: "fk_admin_auth0_accounts_auth0_accounts"
+  add_foreign_key "admin_auth0_accounts", "tenants", name: "fk_admin_auth0_accounts_tenants"
+  add_foreign_key "admins", "tenants", name: "fk_admins_tenants"
   add_foreign_key "content_entries", "content_types", column: ["tenant_id", "content_type_id"], primary_key: ["tenant_id", "id"]
   add_foreign_key "content_entry_field_media_assets", "media_assets", column: ["tenant_id", "media_type", "media_asset_id"], primary_key: ["tenant_id", "media_type", "id"], name: "fk_content_entry_field_media_assets_media_assets"
   add_foreign_key "content_entry_fields", "content_entry_field_media_assets", column: ["tenant_id", "media_asset_id"], primary_key: ["tenant_id", "id"], name: "fk_content_entry_fields_media_assets"
