@@ -21,9 +21,6 @@ module Eventbridge
       case source
       when 'id-platform.twogate'
         Eventbridge::Processors::IdPlatformProcessor.new
-      when 'auth-adapter-cpi.twogate'
-        # CPI Auth Adapterからのユーザーイベントを処理（削除・更新等）
-        Eventbridge::Processors::CpiProcessor.new
       end
     end
   end
