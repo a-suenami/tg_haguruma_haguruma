@@ -27,8 +27,7 @@ Rails.application.routes.draw do
         get :admin_area
       end
 
-      # Sidebar navigation routes (placeholder controllers)
-      resources :admins, only: [:index]
+      resources :admins, except: [:show]
       resources :oauth_providers, only: [:index]
     end
   end

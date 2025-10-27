@@ -1,0 +1,20 @@
+<%= form_with(url: form_url, method: form_method, local: true) do |form| %>
+  <div class="uk-margin">
+    <%= form.label :email, 'メールアドレス', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.email_field :email, value: @admin.email, class: 'uk-input', placeholder: 'admin@example.com', required: true %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.label :name, '名前', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.text_field :name, value: @admin.name, class: 'uk-input', placeholder: '管理者名', required: true %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.submit submit_label, class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_tenant_admins_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>

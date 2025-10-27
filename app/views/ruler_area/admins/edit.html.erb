@@ -1,0 +1,23 @@
+<ul class="uk-breadcrumb">
+  <li>
+    <%= link_to 'テナント', ruler_area_tenants_path %>
+  </li>
+  <li>
+    <%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %>
+  </li>
+  <li>
+    <%= link_to '管理者', ruler_area_tenant_admins_path(@tenant) %>
+  </li>
+  <li>
+    <span>編集</span>
+  </li>
+</ul>
+
+<div class="am-page-header">
+  <h3>管理者編集</h3>
+</div>
+
+<%= render 'form',
+    form_url: ruler_area_tenant_admin_path(@tenant, @admin.id),
+    form_method: :patch,
+    submit_label: '更新' %>
