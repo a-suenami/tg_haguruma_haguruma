@@ -62,6 +62,11 @@ en:
       tenant_not_found: Tenant not found
       session_expired: Your session has expired. Please log in again
       authentication_failed: 'Authentication failed: %{error}'
+    admins:
+      created: Admin created successfully
+      updated: Admin updated successfully
+      destroyed: Admin deleted successfully
+      not_found: Admin not found
   helpers:
     messages:
       created: Created successfully

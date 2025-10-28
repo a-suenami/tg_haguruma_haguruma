@@ -33,6 +33,11 @@ ja:
       tenant_not_found: テナントが見つかりませんでした
       session_expired: セッションの有効期限が切れました。再度ログインしてください
       authentication_failed: '認証に失敗しました: %{error}'
+    admins:
+      created: 管理者を作成しました
+      updated: 管理者を更新しました
+      destroyed: 管理者を削除しました
+      not_found: 管理者が見つかりません
   helpers:
     messages:
       created: 登録しました
