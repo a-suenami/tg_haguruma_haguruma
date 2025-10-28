@@ -124,7 +124,7 @@ rspec:
     GOD_AREA_PASSWORD: 'god'
   services:
     - ${POSTGRES_IMAGE}
-    - name: containers.l.twogate.net/docker/redis:7.0
+    - name: ${REDIS_IMAGE}
       alias: redis
     - name: amazon/dynamodb-local:1.22.0
       alias: dynamodb
