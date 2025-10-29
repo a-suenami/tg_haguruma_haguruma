@@ -169,6 +169,19 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "session_tokens", id: :string, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expires_at"], name: "idx_session_tokens_expires_at"
+    t.index ["tenant_id"], name: "idx_session_tokens_tenant_id"
+    t.index ["updated_at"], name: "idx_session_tokens_updated_at"
+    t.index ["user_id"], name: "idx_session_tokens_user_id"
+    t.index ["user_id"], name: "index_session_tokens_on_user_id"
+  end
+
   create_table "tenants", id: :string, force: :cascade do |t|
     t.string "name"
     t.string "user_page_domain"
@@ -208,6 +221,8 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "oauth_providers", "tenants"
   add_foreign_key "ruler_auth0_accounts", "auth0_accounts", name: "fk_ruler_auth0_accounts_auth0_accounts"
   add_foreign_key "ruler_auth0_accounts", "rulers", name: "fk_ruler_auth0_accounts_rulers"
+  add_foreign_key "session_tokens", "tenants"
+  add_foreign_key "session_tokens", "users"
   add_foreign_key "users", "oauth_providers"
   add_foreign_key "users", "tenants"
 end

@@ -1,4 +1,4 @@
-\restrict fwwEBAbDVz8P3RUYR8B10CGouRO6LynhL83AZacwAW0siVDB89MRXPK1bcEmcP6
+\restrict Ib8dUnPau4fIz7PmoCRvpkabSXJdBtxPdbzEcwUfSbRMOqWn6ruBOAidbjdpDbR
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -473,6 +473,20 @@ CREATE TABLE public.rulers (
 
 
 --
+-- Name: session_tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.session_tokens (
+    id character varying NOT NULL,
+    tenant_id character varying NOT NULL,
+    user_id uuid NOT NULL,
+    expires_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: tenants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -715,6 +729,14 @@ ALTER TABLE ONLY public.rulers
 
 
 --
+-- Name: session_tokens session_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.session_tokens
+    ADD CONSTRAINT session_tokens_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tenants tenants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -763,6 +785,34 @@ CREATE UNIQUE INDEX idx_on_tenant_id_content_type_id_id_01457429a3 ON public.con
 --
 
 CREATE UNIQUE INDEX idx_ruler_auth0_accounts_ruler_auth0_uniq ON public.ruler_auth0_accounts USING btree (ruler_id, auth0_account_id);
+
+
+--
+-- Name: idx_session_tokens_expires_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_session_tokens_expires_at ON public.session_tokens USING btree (expires_at);
+
+
+--
+-- Name: idx_session_tokens_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_session_tokens_tenant_id ON public.session_tokens USING btree (tenant_id);
+
+
+--
+-- Name: idx_session_tokens_updated_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_session_tokens_updated_at ON public.session_tokens USING btree (updated_at);
+
+
+--
+-- Name: idx_session_tokens_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_session_tokens_user_id ON public.session_tokens USING btree (user_id);
 
 
 --
@@ -868,6 +918,13 @@ CREATE INDEX index_ruler_auth0_accounts_on_auth0_account_id ON public.ruler_auth
 --
 
 CREATE INDEX index_ruler_auth0_accounts_on_ruler_id ON public.ruler_auth0_accounts USING btree (ruler_id);
+
+
+--
+-- Name: index_session_tokens_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_session_tokens_on_user_id ON public.session_tokens USING btree (user_id);
 
 
 --
@@ -996,6 +1053,22 @@ ALTER TABLE ONLY public.content_type_fields
 
 
 --
+-- Name: session_tokens fk_rails_66eec3760e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.session_tokens
+    ADD CONSTRAINT fk_rails_66eec3760e FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
+-- Name: session_tokens fk_rails_6ef0c8cde9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.session_tokens
+    ADD CONSTRAINT fk_rails_6ef0c8cde9 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: content_type_fields fk_rails_782051ab84; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1071,7 +1144,7 @@ ALTER TABLE ONLY public.ruler_auth0_accounts
 -- PostgreSQL database dump complete
 --
 
-\unrestrict fwwEBAbDVz8P3RUYR8B10CGouRO6LynhL83AZacwAW0siVDB89MRXPK1bcEmcP6
+\unrestrict Ib8dUnPau4fIz7PmoCRvpkabSXJdBtxPdbzEcwUfSbRMOqWn6ruBOAidbjdpDbR
 
 SET search_path TO "$user", public;
 

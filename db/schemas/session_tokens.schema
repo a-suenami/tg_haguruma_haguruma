@@ -1,0 +1,16 @@
+create_table :session_tokens, force: :cascade, id: :string do |t|
+  t.string :tenant_id, null: false
+  t.references :user, type: :uuid, null: false
+
+  t.datetime :expires_at, null: false
+
+  t.timestamps null: false
+end
+
+add_index :session_tokens, [:tenant_id], name: :idx_session_tokens_tenant_id
+add_index :session_tokens, [:user_id], name: :idx_session_tokens_user_id
+add_index :session_tokens, [:expires_at], name: :idx_session_tokens_expires_at
+add_index :session_tokens, [:updated_at], name: :idx_session_tokens_updated_at
+
+add_foreign_key :session_tokens, :tenants, column: :tenant_id, primary_key: :id
+add_foreign_key :session_tokens, :users, column: :user_id
