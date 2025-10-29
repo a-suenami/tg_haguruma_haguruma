@@ -17,6 +17,6 @@ class Admin < ApplicationRecord
   # Get primary auth0_account (first linked account)
   sig { returns(T.nilable(::Auth0Account)) }
   def primary_auth0_account
-    T.cast(auth0_accounts.first, T.nilable(::Auth0Account))
+    auth0_accounts.first
   end
 end

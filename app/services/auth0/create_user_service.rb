@@ -33,20 +33,20 @@ module Auth0
         ('a'..'z').to_a,  # lowercase
         ('A'..'Z').to_a,  # uppercase
         ('0'..'9').to_a,  # digits
-        ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '[', ']', '{', '}']  # special chars
+        ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '[', ']', '{', '}'], # special chars
       ].flatten
       password = Array.new(32) { chars.sample(random: SecureRandom) }.join
 
       user_data = {
         email: @email,
         name: @name,
-        password: password,
-        email_verified: true,  # Skip auto verification email, admin will use Forgot Password flow
+        password:,
+        email_verified: true, # Skip auto verification email, admin will use Forgot Password flow
       }
 
       # create_user(connection, options)
       user = client.create_user('Username-Password-Authentication', user_data)
-      Result.new(success: true, user: user, errors: [])
+      Result.new(success: true, user:, errors: [])
     rescue StandardError => e
       Rails.logger.error("Auth0::CreateUserService error: #{e.message}")
 

@@ -40,47 +40,46 @@ module RulerArea
 
       sig { returns(Result) }
       def execute
-        admin = nil
+        # Step 1: Search or create Auth0 user (outside transaction - external API call)
+        auth0_user_result = find_or_create_auth0_user
+        return Result.new(success: false, admin: nil, errors: auth0_user_result[:errors]) if auth0_user_result[:errors].present?
 
+        # Step 2: Find or create Auth0Account record (idempotent, can be outside transaction)
+        auth0_account = find_or_create_auth0_account(auth0_user_result[:data])
+
+        # Step 3: Check if admin already exists in this tenant (before transaction)
+        if admin_exists_in_tenant?(auth0_account)
+          return Result.new(
+            success: false,
+            admin: nil,
+            errors: [I18n.t('ruler_area.admins.errors.email_already_exists_in_tenant')],
+          )
+        end
+
+        # Step 4 & 5: Database operations only (in transaction)
+        admin = T.let(nil, T.nilable(Admin))
         ActiveRecord::Base.transaction do
-          # Step 1: Search or create Auth0 user
-          auth0_user = find_or_create_auth0_user
-
-          return Result.new(success: false, admin: nil, errors: auth0_user[:errors]) if auth0_user[:errors].present?
-
-          # Step 2: Find or create Auth0Account record
-          auth0_account = find_or_create_auth0_account(auth0_user[:data])
-
-          # Step 3: Check if admin already exists in this tenant with this email
-          if admin_exists_in_tenant?(auth0_account)
-            return Result.new(
-              success: false,
-              admin: nil,
-              errors: [I18n.t('ruler_area.admins.errors.email_already_exists_in_tenant')]
-            )
-          end
-
-          # Step 4: Create Admin
+          # Create Admin record
           admin = Admin.create!(
             tenant: @tenant,
             name: @name,
           )
 
-          # Step 5: Link Admin to Auth0Account
+          # Link Admin to Auth0Account
           Admin::Auth0Account.create!(
-            admin: admin,
-            auth0_account: auth0_account,
+            admin:,
+            auth0_account:,
             tenant: @tenant,
           )
         end
 
-        Result.new(success: true, admin: admin, errors: [])
+        Result.new(success: true, admin:, errors: [])
       rescue ActiveRecord::RecordInvalid => e
         # Return the invalid record so controller can access validation errors
         Result.new(success: false, admin: e.record.is_a?(Admin) ? e.record : nil, errors: [e.message])
       rescue StandardError => e
         Rails.logger.error("RulerArea::Admins::CreateService error: #{e.message}")
-        Result.new(success: false, admin: admin, errors: [e.message])
+        Result.new(success: false, admin:, errors: [e.message])
       end
 
       private
@@ -90,7 +89,7 @@ module RulerArea
         # Check if this tenant already has an admin linked to this Auth0 account
         Admin::Auth0Account.exists?(
           tenant: @tenant,
-          auth0_account: auth0_account
+          auth0_account:,
         )
       end
 
@@ -122,7 +121,7 @@ module RulerArea
         uid = auth0_user['user_id']
         email = auth0_user['email']
 
-        Auth0Account.find_or_create_by!(email: email) do |account|
+        Auth0Account.find_or_create_by!(email:) do |account|
           account.uid = uid
           account.email = email
         end

@@ -6,6 +6,7 @@
 
 
 class Tenant
+  include GeneratedAssociationMethods
   include GeneratedAttributeMethods
   extend CommonRelationMethods
   extend GeneratedRelationMethods
@@ -331,6 +332,22 @@ class Tenant
 
     sig { returns(::Tenant) }
     def third_to_last!; end
+  end
+
+  module GeneratedAssociationMethods
+    sig { returns(T::Array[T.untyped]) }
+    def admin_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def admin_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `Tenant` class because it declared `has_many :admins`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::Admin::PrivateCollectionProxy) }
+    def admins; end
+
+    sig { params(value: T::Enumerable[::Admin]).void }
+    def admins=(value); end
   end
 
   module GeneratedAssociationRelationMethods
