@@ -52,6 +52,23 @@ en:
       no_ruler_access: You do not have Ruler access rights. Logged out from Auth0.
       logged_in: Successfully logged in
       authentication_failed: "Authentication failed: %{error}"
+    admins:
+      title: Admin Management
+      list: Admin List
+      new: Create New Admin
+      edit: Edit Admin
+      show: Admin Details
+      email: Email Address
+      name: Name
+      actions: Actions
+      created_at: Created At
+      confirm_delete: Are you sure you want to delete this admin?
+      created: Admin created successfully
+      updated: Admin updated successfully
+      destroyed: Admin deleted successfully
+      not_found: Admin not found
+      errors:
+        email_already_exists_in_tenant: An admin with this email address already exists in this tenant
   admin_area:
     auth0:
       already_logged_in: You are already logged in
@@ -67,6 +84,8 @@ en:
       updated: Admin updated successfully
       destroyed: Admin deleted successfully
       not_found: Admin not found
+      errors:
+        email_already_exists: This email address is already in use
   helpers:
     messages:
       created: Created successfully

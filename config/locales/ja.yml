@@ -23,6 +23,24 @@ ja:
       no_ruler_access: Rulerアクセス権がありません。Auth0からログアウトしました。
       logged_in: ログインしました
       authentication_failed: "認証に失敗しました: %{error}"
+    admins:
+      title: 管理者管理
+      list: 管理者一覧
+      new: 新規管理者作成
+      edit: 管理者編集
+      show: 管理者詳細
+      email: メールアドレス
+      name: 名前
+      actions: 操作
+      created_at: 作成日時
+      confirm_delete: この管理者を削除してもよろしいですか？
+      created: 管理者を作成しました
+      updated: 管理者を更新しました
+      destroyed: 管理者を削除しました
+      not_found: 管理者が見つかりません
+      errors:
+        email_already_exists: このメールアドレスは既に使用されています
+        email_already_exists_in_tenant: このテナントには既にこのメールアドレスの管理者が存在します
   admin_area:
     auth0:
       already_logged_in: すでにログインしています

@@ -3,6 +3,8 @@
 class Tenant < ApplicationRecord
   extend T::Sig
 
+  has_many :admins, dependent: :destroy
+
   validates :id, :name, presence: true
   validates :id, uniqueness: { case_sensitive: false }
   validates :id, format: { with: /\A[a-z0-9][a-z0-9-]+[a-z0-9]\z/ }, if: proc { Array(Settings.models.tenant.manually_allow_ids).exclude?(_1.id&.downcase) }
