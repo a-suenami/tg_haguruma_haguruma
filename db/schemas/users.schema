@@ -1,9 +1,18 @@
 create_table :users, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
   t.citext :tenant_id, null: false
+  t.references :oauth_provider, type: :uuid, null: false
+
+  # Minimal authentication data
+  t.string :uid, null: false, comment: 'IDP platform user ID'
+
+  # Optional: Session tracking (if needed)
+  t.datetime :last_authenticated_at
 
   t.timestamps null: false
 end
 
+add_index :users, [:tenant_id, :uid], unique: true
 add_index :users, [:tenant_id, :id], unique: true
 
 add_foreign_key :users, :tenants, column: :tenant_id, primary_key: :id
+add_foreign_key :users, :oauth_providers, column: :oauth_provider_id

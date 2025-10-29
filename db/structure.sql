@@ -1,4 +1,4 @@
-\restrict QTAhTvf7kczEiLgnCVQy3tOEROtdQRl96fdlEzJOHrXAujRJaxG43xhthDVI4Et
+\restrict fwwEBAbDVz8P3RUYR8B10CGouRO6LynhL83AZacwAW0siVDB89MRXPK1bcEmcP6
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -45,6 +45,33 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: admin_auth0_accounts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.admin_auth0_accounts (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    admin_id uuid NOT NULL,
+    auth0_account_id uuid NOT NULL,
+    tenant_id public.citext NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: admins; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.admins (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id public.citext NOT NULL,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
 
 --
 -- Name: auth0_accounts; Type: TABLE; Schema: public; Owner: -
@@ -389,6 +416,38 @@ CREATE TABLE public.media_assets (
 
 
 --
+-- Name: oauth_providers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.oauth_providers (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id character varying NOT NULL,
+    client_id character varying NOT NULL,
+    client_secret character varying,
+    endpoint_base character varying NOT NULL,
+    scopes character varying DEFAULT ''::character varying NOT NULL,
+    keypath_uid character varying,
+    session_expires_in integer DEFAULT 7776000 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN oauth_providers.keypath_uid; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.oauth_providers.keypath_uid IS 'UIDを取得するためのkeypath (デフォルト: sub)';
+
+
+--
+-- Name: COLUMN oauth_providers.session_expires_in; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.oauth_providers.session_expires_in IS 'セッショントークンの有効期間 (90 days)';
+
+
+--
 -- Name: ruler_auth0_accounts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -433,9 +492,19 @@ CREATE TABLE public.tenants (
 CREATE TABLE public.users (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id public.citext NOT NULL,
+    oauth_provider_id uuid NOT NULL,
+    uid character varying NOT NULL,
+    last_authenticated_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: COLUMN users.uid; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.users.uid IS 'IDP platform user ID';
 
 
 --
@@ -499,6 +568,22 @@ ALTER TABLE ONLY public.content_type_field_texts ALTER COLUMN id SET DEFAULT nex
 --
 
 ALTER TABLE ONLY public.content_type_fields ALTER COLUMN id SET DEFAULT nextval('public.content_type_fields_id_seq'::regclass);
+
+
+--
+-- Name: admin_auth0_accounts admin_auth0_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admin_auth0_accounts
+    ADD CONSTRAINT admin_auth0_accounts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: admins admins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admins
+    ADD CONSTRAINT admins_pkey PRIMARY KEY (id);
 
 
 --
@@ -606,6 +691,14 @@ ALTER TABLE ONLY public.media_assets
 
 
 --
+-- Name: oauth_providers oauth_providers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.oauth_providers
+    ADD CONSTRAINT oauth_providers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ruler_auth0_accounts ruler_auth0_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -638,6 +731,20 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: idx_admin_auth0_accounts_tenant_admin_auth0_uniq; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_admin_auth0_accounts_tenant_admin_auth0_uniq ON public.admin_auth0_accounts USING btree (tenant_id, admin_id, auth0_account_id);
+
+
+--
+-- Name: idx_admins_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_admins_tenant_id ON public.admins USING btree (tenant_id);
+
+
+--
 -- Name: idx_auth0_accounts_uid_uniq; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -656,6 +763,20 @@ CREATE UNIQUE INDEX idx_on_tenant_id_content_type_id_id_01457429a3 ON public.con
 --
 
 CREATE UNIQUE INDEX idx_ruler_auth0_accounts_ruler_auth0_uniq ON public.ruler_auth0_accounts USING btree (ruler_id, auth0_account_id);
+
+
+--
+-- Name: index_admin_auth0_accounts_on_admin_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_auth0_accounts_on_admin_id ON public.admin_auth0_accounts USING btree (admin_id);
+
+
+--
+-- Name: index_admin_auth0_accounts_on_auth0_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_auth0_accounts_on_auth0_account_id ON public.admin_auth0_accounts USING btree (auth0_account_id);
 
 
 --
@@ -729,6 +850,13 @@ CREATE UNIQUE INDEX index_media_assets_on_tenant_id_and_media_type_and_id ON pub
 
 
 --
+-- Name: index_oauth_providers_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_oauth_providers_on_tenant_id ON public.oauth_providers USING btree (tenant_id);
+
+
+--
 -- Name: index_ruler_auth0_accounts_on_auth0_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -743,10 +871,56 @@ CREATE INDEX index_ruler_auth0_accounts_on_ruler_id ON public.ruler_auth0_accoun
 
 
 --
+-- Name: index_users_on_oauth_provider_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_oauth_provider_id ON public.users USING btree (oauth_provider_id);
+
+
+--
 -- Name: index_users_on_tenant_id_and_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_tenant_id_and_id ON public.users USING btree (tenant_id, id);
+
+
+--
+-- Name: index_users_on_tenant_id_and_uid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_tenant_id_and_uid ON public.users USING btree (tenant_id, uid);
+
+
+--
+-- Name: admin_auth0_accounts fk_admin_auth0_accounts_admins; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admin_auth0_accounts
+    ADD CONSTRAINT fk_admin_auth0_accounts_admins FOREIGN KEY (admin_id) REFERENCES public.admins(id);
+
+
+--
+-- Name: admin_auth0_accounts fk_admin_auth0_accounts_auth0_accounts; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admin_auth0_accounts
+    ADD CONSTRAINT fk_admin_auth0_accounts_auth0_accounts FOREIGN KEY (auth0_account_id) REFERENCES public.auth0_accounts(id);
+
+
+--
+-- Name: admin_auth0_accounts fk_admin_auth0_accounts_tenants; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admin_auth0_accounts
+    ADD CONSTRAINT fk_admin_auth0_accounts_tenants FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
+-- Name: admins fk_admins_tenants; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admins
+    ADD CONSTRAINT fk_admins_tenants FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
 
 
 --
@@ -787,6 +961,14 @@ ALTER TABLE ONLY public.content_entry_fields
 
 ALTER TABLE ONLY public.content_entry_versions
     ADD CONSTRAINT fk_content_entry_versions_content_entries FOREIGN KEY (tenant_id, content_type_id, content_entry_id) REFERENCES public.content_entries(tenant_id, content_type_id, id);
+
+
+--
+-- Name: oauth_providers fk_rails_024daef17e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.oauth_providers
+    ADD CONSTRAINT fk_rails_024daef17e FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
 
 
 --
@@ -846,6 +1028,14 @@ ALTER TABLE ONLY public.content_entry_fields
 
 
 --
+-- Name: users fk_rails_ae6de3e094; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_ae6de3e094 FOREIGN KEY (oauth_provider_id) REFERENCES public.oauth_providers(id);
+
+
+--
 -- Name: content_type_fields fk_rails_b2b0938bb1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -881,7 +1071,7 @@ ALTER TABLE ONLY public.ruler_auth0_accounts
 -- PostgreSQL database dump complete
 --
 
-\unrestrict QTAhTvf7kczEiLgnCVQy3tOEROtdQRl96fdlEzJOHrXAujRJaxG43xhthDVI4Et
+\unrestrict fwwEBAbDVz8P3RUYR8B10CGouRO6LynhL83AZacwAW0siVDB89MRXPK1bcEmcP6
 
 SET search_path TO "$user", public;
 
