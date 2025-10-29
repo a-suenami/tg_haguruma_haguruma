@@ -6,5 +6,4 @@ class User < ApplicationRecord
 
   validates :tenant_id, presence: true
   validates :uid, presence: true
-  validates :oauth_provider_id, presence: true
 end

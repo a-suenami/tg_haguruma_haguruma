@@ -6,6 +6,7 @@
 
 
 class User
+  include GeneratedAssociationMethods
   include GeneratedAttributeMethods
   extend CommonRelationMethods
   extend GeneratedRelationMethods
@@ -331,6 +332,49 @@ class User
 
     sig { returns(::User) }
     def third_to_last!; end
+  end
+
+  module GeneratedAssociationMethods
+    sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
+    def build_oauth_provider(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
+    def create_oauth_provider(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
+    def create_oauth_provider!(*args, &blk); end
+
+    sig { returns(T.nilable(::OauthProvider)) }
+    def oauth_provider; end
+
+    sig { params(value: T.nilable(::OauthProvider)).void }
+    def oauth_provider=(value); end
+
+    sig { returns(T::Boolean) }
+    def oauth_provider_changed?; end
+
+    sig { returns(T::Boolean) }
+    def oauth_provider_previously_changed?; end
+
+    sig { returns(T.nilable(::OauthProvider)) }
+    def reload_oauth_provider; end
+
+    sig { void }
+    def reset_oauth_provider; end
+
+    sig { returns(T::Array[T.untyped]) }
+    def session_token_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def session_token_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `User` class because it declared `has_many :session_tokens`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::SessionToken::PrivateCollectionProxy) }
+    def session_tokens; end
+
+    sig { params(value: T::Enumerable[::SessionToken]).void }
+    def session_tokens=(value); end
   end
 
   module GeneratedAssociationRelationMethods
