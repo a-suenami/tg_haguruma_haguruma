@@ -18,7 +18,9 @@ module RulerArea
     end
 
     def current_ruler
-      @current_ruler ||= Ruler.find_by(id: session[:ruler_id]) if session[:ruler_id]
+      return @current_ruler if defined?(@current_ruler)
+
+      @current_ruler = Ruler.includes(:auth0_accounts).find_by(id: session[:ruler_id]) if session[:ruler_id]
     end
 
     def ruler_signed_in?

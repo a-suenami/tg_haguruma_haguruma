@@ -1,0 +1,38 @@
+<%# Error display %>
+<% if @error_message.present? %>
+  <div class="uk-alert-danger" uk-alert>
+    <a href="#" class="uk-alert-close" uk-close></a>
+    <p><%= @error_message %></p>
+  </div>
+<% end %>
+
+<%= form_with scope: :profile, url: ruler_area_profiles_path, method: :patch, class: 'uk-form-stacked' do |f| %>
+
+  <%# Email field %>
+  <div class="uk-margin">
+    <%= f.label :email, t('ruler_area.profiles.form.email'), class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= f.email_field :email,
+          value: @auth0_account.email,
+          required: true,
+          class: 'uk-input',
+          placeholder: t('ruler_area.profiles.form.email_placeholder') %>
+    </div>
+  </div>
+
+  <%# Password field (optional) %>
+  <div class="uk-margin">
+    <%= f.label :password, t('ruler_area.profiles.form.password'), class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= f.password_field :password,
+          class: 'uk-input',
+          placeholder: t('ruler_area.profiles.form.password_placeholder') %>
+      <p class="uk-text-small uk-text-muted"><%= t('ruler_area.profiles.form.password_hint') %></p>
+    </div>
+  </div>
+
+  <%# Submit button %>
+  <div class="uk-margin">
+    <%= f.submit t('helpers.submit.update'), class: 'uk-button uk-button-primary' %>
+  </div>
+<% end %>

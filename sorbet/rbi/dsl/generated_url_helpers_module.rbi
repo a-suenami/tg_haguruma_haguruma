@@ -67,6 +67,9 @@ module GeneratedUrlHelpersModule
   def edit_admin_area_contents_singleton_entry_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_profiles_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_admin_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -179,6 +182,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_logout_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_profiles_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_root_url(*args); end

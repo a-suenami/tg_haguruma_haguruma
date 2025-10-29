@@ -22,6 +22,9 @@ Rails.application.routes.draw do
 
     root to: 'tenants#index', as: :root
 
+    # Profile management
+    resource :profiles, only: [:edit, :update]
+
     resources :tenants do
       member do
         get :admin_area
