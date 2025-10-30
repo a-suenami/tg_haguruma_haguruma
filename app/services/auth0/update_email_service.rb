@@ -3,6 +3,16 @@
 
 module Auth0
   # Update user email in Auth0
+  #
+  # Usage:
+  #   service = Auth0::UpdateEmailService.new(uid: 'auth0|123', email: 'new@example.com')
+  #   result = service.execute
+  #
+  #   if result.is_a?(Mangrove::Result::Ok)
+  #     # Success
+  #   else
+  #     errors = result.err_inner
+  #   end
   class UpdateEmailService < BaseService
     extend T::Sig
 
@@ -12,15 +22,15 @@ module Auth0
       @email = email
     end
 
-    sig { returns(Result) }
+    sig { returns(Mangrove::Result[T::Boolean, T::Array[String]]) }
     def execute
       # Update email and name (name should match email)
       client.patch_user(@uid, { email: @email, name: @email })
-      Result.new(success: true, errors: [])
+      Mangrove::Result::Ok.new(T.let(true, T::Boolean))
     rescue StandardError => e
       Rails.logger.error("Auth0::UpdateEmailService error: #{e.message}")
       error_message = parse_auth0_error(e.message)
-      Result.new(success: false, errors: [error_message])
+      Mangrove::Result::Err.new(T.let([error_message], T::Array[String]))
     end
 
     private
@@ -47,31 +57,5 @@ module Auth0
       error_string
     end
 
-    # Result object
-    class Result
-      extend T::Sig
-
-      sig { returns(T::Boolean) }
-      attr_reader :success
-
-      sig { returns(T::Array[String]) }
-      attr_reader :errors
-
-      sig { params(success: T::Boolean, errors: T::Array[String]).void }
-      def initialize(success:, errors:)
-        @success = success
-        @errors = errors
-      end
-
-      sig { returns(T::Boolean) }
-      def success?
-        @success
-      end
-
-      sig { returns(T::Boolean) }
-      def failure?
-        !@success
-      end
-    end
   end
 end

@@ -18,7 +18,7 @@ module RulerArea
         password: profile_params[:password],
       ).execute(current_ruler)
 
-      if result.success?
+      if result.is_a?(Mangrove::Result::Ok)
         redirect_to edit_ruler_area_profiles_path, notice: t('helpers.messages.updated')
       else
         # Reload ruler from DB to get fresh data
@@ -28,7 +28,7 @@ module RulerArea
           T.nilable(Ruler),
         )
         @auth0_account = T.let(@ruler&.auth0_accounts&.first, T.nilable(Auth0Account))
-        @error_message = T.let(result.errors.join(', '), T.nilable(String))
+        @error_message = T.let(result.err_inner.join(', '), T.nilable(String))
         render :edit, status: :unprocessable_entity
       end
     end

@@ -19,10 +19,10 @@ module RulerArea
     #   service = RulerArea::Profiles::UpdateService.new(email: '...', password: '...')
     #   result = service.execute(ruler)
     #
-    #   if result.success?
+    #   if result.is_a?(Mangrove::Result::Ok)
     #     # Success
     #   else
-    #     errors = result.errors
+    #     errors = result.err_inner
     #   end
     class UpdateService
       extend T::Sig
@@ -33,16 +33,13 @@ module RulerArea
         @password = password
       end
 
-      sig { params(ruler: Ruler).returns(Result) }
+      sig { params(ruler: Ruler).returns(Mangrove::Result[T::Boolean, T::Array[String]]) }
       def execute(ruler)
         # Get Auth0Account (first from has_many)
         auth0_account = ruler.auth0_accounts.first
 
         if auth0_account.nil?
-          return Result.new(
-            success: false,
-            errors: ['Auth0 account not found for this Ruler'],
-          )
+          return Mangrove::Result::Err.new(T.let(['Auth0 account not found for this Ruler'], T::Array[String]))
         end
 
         # Step 1: Update Auth0 FIRST (external API)
@@ -54,11 +51,8 @@ module RulerArea
             email: @email,
           ).execute
 
-          if email_result.failure?
-            return Result.new(
-              success: false,
-              errors: email_result.errors,
-            )
+          if email_result.is_a?(Mangrove::Result::Err)
+            return Mangrove::Result::Err.new(email_result.err_inner)
           end
         end
 
@@ -69,11 +63,8 @@ module RulerArea
             password: @password,
           ).execute
 
-          if password_result.failure?
-            return Result.new(
-              success: false,
-              errors: password_result.errors,
-            )
+          if password_result.is_a?(Mangrove::Result::Err)
+            return Mangrove::Result::Err.new(password_result.err_inner)
           end
         end
 
@@ -86,37 +77,10 @@ module RulerArea
           end
         end
 
-        Result.new(success: true, errors: [])
+        Mangrove::Result::Ok.new(T.let(true, T::Boolean))
       rescue StandardError => e
         Rails.logger.error("RulerArea::Profiles::UpdateService error: #{e.message}")
-        Result.new(success: false, errors: [e.message])
-      end
-
-      # Result object for service response
-      class Result
-        extend T::Sig
-
-        sig { returns(T::Boolean) }
-        attr_reader :success
-
-        sig { returns(T::Array[String]) }
-        attr_reader :errors
-
-        sig { params(success: T::Boolean, errors: T::Array[String]).void }
-        def initialize(success:, errors:)
-          @success = success
-          @errors = errors
-        end
-
-        sig { returns(T::Boolean) }
-        def success?
-          @success
-        end
-
-        sig { returns(T::Boolean) }
-        def failure?
-          !@success
-        end
+        Mangrove::Result::Err.new(T.let([e.message], T::Array[String]))
       end
     end
   end

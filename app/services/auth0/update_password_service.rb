@@ -3,6 +3,16 @@
 
 module Auth0
   # Update user password in Auth0
+  #
+  # Usage:
+  #   service = Auth0::UpdatePasswordService.new(uid: 'auth0|123', password: 'newpassword')
+  #   result = service.execute
+  #
+  #   if result.is_a?(Mangrove::Result::Ok)
+  #     # Success
+  #   else
+  #     errors = result.err_inner
+  #   end
   class UpdatePasswordService < BaseService
     extend T::Sig
 
@@ -12,41 +22,14 @@ module Auth0
       @password = password
     end
 
-    sig { returns(Result) }
+    sig { returns(Mangrove::Result[T::Boolean, T::Array[String]]) }
     def execute
       # Update password only
       client.patch_user(@uid, { password: @password })
-      Result.new(success: true, errors: [])
+      Mangrove::Result::Ok.new(T.let(true, T::Boolean))
     rescue StandardError => e
       Rails.logger.error("Auth0::UpdatePasswordService error: #{e.message}")
-      Result.new(success: false, errors: [e.message])
-    end
-
-    # Result object
-    class Result
-      extend T::Sig
-
-      sig { returns(T::Boolean) }
-      attr_reader :success
-
-      sig { returns(T::Array[String]) }
-      attr_reader :errors
-
-      sig { params(success: T::Boolean, errors: T::Array[String]).void }
-      def initialize(success:, errors:)
-        @success = success
-        @errors = errors
-      end
-
-      sig { returns(T::Boolean) }
-      def success?
-        @success
-      end
-
-      sig { returns(T::Boolean) }
-      def failure?
-        !@success
-      end
+      Mangrove::Result::Err.new(T.let([e.message], T::Array[String]))
     end
   end
 end
