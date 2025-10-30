@@ -14,6 +14,7 @@ module Auth0
 
     sig { returns(Result) }
     def execute
+      # Update email and name (name should match email)
       client.patch_user(@uid, { email: @email, name: @email })
       Result.new(success: true, errors: [])
     rescue StandardError => e

@@ -10,9 +10,10 @@ module RulerArea
     #
     # Flow:
     # 1. Get Ruler's Auth0Account (from has_many relationship)
-    # 2. Call Auth0 Management API to update email (Auth0 validates format)
-    # 3. Call Auth0 Management API to update password (if provided)
-    # 4. Only if Auth0 succeeds, update local database
+    # 2. Call Auth0 Management API to update email and/or password (separate API calls)
+    #    - Only call email API if email has changed (optimization)
+    #    - Only call password API if password is provided
+    # 3. Only if Auth0 succeeds, update local database
     #
     # Usage:
     #   service = RulerArea::Profiles::UpdateService.new(email: '...', password: '...')
@@ -45,19 +46,28 @@ module RulerArea
         end
 
         # Step 1: Update Auth0 FIRST (external API)
-        # If Auth0 fails, we don't touch the database
-        email_result = Auth0::UpdateEmailService.new(uid: auth0_account.uid, email: @email).execute
 
-        if email_result.failure?
-          return Result.new(
-            success: false,
-            errors: email_result.errors,
-          )
+        # Update email only if it has changed
+        if auth0_account.email != @email
+          email_result = Auth0::UpdateEmailService.new(
+            uid: auth0_account.uid,
+            email: @email,
+          ).execute
+
+          if email_result.failure?
+            return Result.new(
+              success: false,
+              errors: email_result.errors,
+            )
+          end
         end
 
-        # Update password if provided
+        # Update password only if provided
         if @password.present?
-          password_result = Auth0::UpdatePasswordService.new(uid: auth0_account.uid, password: @password).execute
+          password_result = Auth0::UpdatePasswordService.new(
+            uid: auth0_account.uid,
+            password: @password,
+          ).execute
 
           if password_result.failure?
             return Result.new(
@@ -68,9 +78,12 @@ module RulerArea
         end
 
         # Step 2: Only update database AFTER Auth0 succeeds
-        ActiveRecord::Base.transaction do
-          auth0_account.email = @email
-          auth0_account.save!
+        # Only update email in DB if it changed
+        if auth0_account.email != @email
+          ActiveRecord::Base.transaction do
+            auth0_account.email = @email
+            auth0_account.save!
+          end
         end
 
         Result.new(success: true, errors: [])

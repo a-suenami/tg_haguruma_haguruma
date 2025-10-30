@@ -14,13 +14,12 @@ module Auth0
 
     sig { returns(Result) }
     def execute
-      begin
-        client.patch_user(@uid, { password: @password })
-        Result.new(success: true, errors: [])
-      rescue StandardError => e
-        Rails.logger.error("Auth0::UpdatePasswordService error: #{e.message}")
-        Result.new(success: false, errors: [e.message])
-      end
+      # Update password only
+      client.patch_user(@uid, { password: @password })
+      Result.new(success: true, errors: [])
+    rescue StandardError => e
+      Rails.logger.error("Auth0::UpdatePasswordService error: #{e.message}")
+      Result.new(success: false, errors: [e.message])
     end
 
     # Result object

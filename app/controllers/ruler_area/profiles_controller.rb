@@ -8,7 +8,7 @@ module RulerArea
     sig { void }
     def edit
       @ruler = T.let(current_ruler, T.nilable(Ruler))
-      @auth0_account = T.let(@ruler&.auth0_accounts&.first, T.untyped)
+      @auth0_account = T.let(@ruler&.auth0_accounts&.first, T.nilable(Auth0Account))
     end
 
     sig { void }
@@ -27,7 +27,7 @@ module RulerArea
           Ruler.includes(:auth0_accounts).find_by(id: session[:ruler_id]),
           T.nilable(Ruler),
         )
-        @auth0_account = T.let(@ruler&.auth0_accounts&.first, T.untyped)
+        @auth0_account = T.let(@ruler&.auth0_accounts&.first, T.nilable(Auth0Account))
         @error_message = T.let(result.errors.join(', '), T.nilable(String))
         render :edit, status: :unprocessable_entity
       end
