@@ -8,6 +8,8 @@ module Api
   module V1
     class ApplicationController < ActionController::API
       extend T::Sig
+
+      include Api::ExceptionRescuable
     end
   end
 end
