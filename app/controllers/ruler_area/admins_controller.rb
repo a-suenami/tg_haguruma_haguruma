@@ -36,26 +36,19 @@ module RulerArea
     end
 
     def update
-      result = RulerArea::Admins::UpdateService.new(
-        admin: @admin,
-        name: admin_params[:name],
-      ).execute
-
-      if result.success?
+      if @admin.update(name: admin_params[:name])
         redirect_to ruler_area_tenant_admins_path(@tenant), notice: t('ruler_area.admins.updated')
       else
-        @error_message = result.errors.join(', ')  # Store in instance variable for inline display
+        @error_message = @admin.errors.full_messages.join(', ')
         render :edit, status: :unprocessable_entity
       end
     end
 
     def destroy
-      result = RulerArea::Admins::DestroyService.new(admin: @admin).execute
-
-      if result.success?
+      if @admin.destroy
         redirect_to ruler_area_tenant_admins_path(@tenant), notice: t('ruler_area.admins.destroyed')
       else
-        redirect_to ruler_area_tenant_admins_path(@tenant), alert: result.errors.join(', ')
+        redirect_to ruler_area_tenant_admins_path(@tenant), alert: @admin.errors.full_messages.join(', ')
       end
     end
 

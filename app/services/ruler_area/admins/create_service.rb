@@ -75,11 +75,13 @@ module RulerArea
 
         Result.new(success: true, admin:, errors: [])
       rescue ActiveRecord::RecordInvalid => e
-        # Return the invalid record so controller can access validation errors
-        Result.new(success: false, admin: e.record.is_a?(Admin) ? e.record : nil, errors: [e.message])
-      rescue StandardError => e
-        Rails.logger.error("RulerArea::Admins::CreateService error: #{e.message}")
-        Result.new(success: false, admin:, errors: [e.message])
+        # Return validation errors with i18n from model
+        errors = if e.record.respond_to?(:errors)
+          e.record.errors.full_messages
+        else
+          [e.message]
+        end
+        Result.new(success: false, admin: e.record.is_a?(Admin) ? e.record : nil, errors:)
       end
 
       private
