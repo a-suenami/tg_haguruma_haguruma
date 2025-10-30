@@ -11,10 +11,10 @@ module Auth0
   #   service = Auth0::SearchUserService.new(email: 'user@example.com')
   #   result = service.execute
   #
-  #   if result.success?
-  #     user = result.user # Auth0 Database user data
+  #   if result.is_a?(Mangrove::Result::Ok)
+  #     user = result.unwrap # Auth0 Database user data
   #   else
-  #     errors = result.errors
+  #     errors = result.unwrap_err
   #   end
   class SearchUserService < BaseService
     extend T::Sig
@@ -24,51 +24,20 @@ module Auth0
       @email = email
     end
 
-    sig { returns(Result) }
+    sig { returns(Mangrove::Result[T::Hash[String, T.untyped], T::Array[String]]) }
     def execute
       # Only search for Database connection users (not Google OAuth, Facebook, etc.)
       query = "email:\"#{@email}\" AND identities.connection:\"Username-Password-Authentication\""
       users = client.users(q: query)
 
       if users.empty?
-        Result.new(success: false, user: nil, errors: ['User not found'])
+        Mangrove::Result::Err.new(T.let(['User not found'], T::Array[String]))
       else
-        Result.new(success: true, user: users.first, errors: [])
+        Mangrove::Result::Ok.new(T.must(users.first))
       end
     rescue StandardError => e
       Rails.logger.error("Auth0::SearchUserService error: #{e.message}")
-      Result.new(success: false, user: nil, errors: [e.message])
-    end
-
-    # Result object for service response
-    class Result
-      extend T::Sig
-
-      sig { returns(T::Boolean) }
-      attr_reader :success
-
-      sig { returns(T.nilable(T::Hash[String, T.untyped])) }
-      attr_reader :user
-
-      sig { returns(T::Array[String]) }
-      attr_reader :errors
-
-      sig { params(success: T::Boolean, user: T.nilable(T::Hash[String, T.untyped]), errors: T::Array[String]).void }
-      def initialize(success:, user:, errors:)
-        @success = success
-        @user = user
-        @errors = errors
-      end
-
-      sig { returns(T::Boolean) }
-      def success?
-        @success
-      end
-
-      sig { returns(T::Boolean) }
-      def failure?
-        !@success
-      end
+      Mangrove::Result::Err.new(T.let([e.message], T::Array[String]))
     end
   end
 end

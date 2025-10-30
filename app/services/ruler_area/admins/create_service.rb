@@ -23,10 +23,10 @@ module RulerArea
     #   )
     #   result = service.execute
     #
-    #   if result.success?
-    #     admin = result.admin
+    #   if result.is_a?(Mangrove::Result::Ok)
+    #     admin = result.unwrap
     #   else
-    #     errors = result.errors
+    #     errors = result.unwrap_err
     #   end
     class CreateService
       extend T::Sig
@@ -38,22 +38,18 @@ module RulerArea
         @name = name
       end
 
-      sig { returns(Result) }
+      sig { returns(Mangrove::Result[Admin, T::Array[String]]) }
       def execute
         # Step 1: Search or create Auth0 user (outside transaction - external API call)
         auth0_user_result = find_or_create_auth0_user
-        return Result.new(success: false, admin: nil, errors: auth0_user_result[:errors]) if auth0_user_result[:errors].present?
+        return Mangrove::Result::Err.new(T.let(auth0_user_result[:errors], T::Array[String])) if auth0_user_result[:errors].present?
 
         # Step 2: Find or create Auth0Account record (idempotent, can be outside transaction)
         auth0_account = find_or_create_auth0_account(auth0_user_result[:data])
 
         # Step 3: Check if admin already exists in this tenant (before transaction)
         if admin_exists_in_tenant?(auth0_account)
-          return Result.new(
-            success: false,
-            admin: nil,
-            errors: [I18n.t('ruler_area.admins.errors.email_already_exists_in_tenant')],
-          )
+          return Mangrove::Result::Err.new(T.let([I18n.t('ruler_area.admins.errors.email_already_exists_in_tenant')], T::Array[String]))
         end
 
         # Step 4 & 5: Database operations only (in transaction)
@@ -73,7 +69,7 @@ module RulerArea
           )
         end
 
-        Result.new(success: true, admin:, errors: [])
+        Mangrove::Result::Ok.new(T.must(admin))
       rescue ActiveRecord::RecordInvalid => e
         # Return validation errors with i18n from model
         errors = if e.record.respond_to?(:errors)
@@ -81,7 +77,7 @@ module RulerArea
         else
           [e.message]
         end
-        Result.new(success: false, admin: e.record.is_a?(Admin) ? e.record : nil, errors:)
+        Mangrove::Result::Err.new(T.let(errors, T::Array[String]))
       end
 
       private
@@ -100,20 +96,20 @@ module RulerArea
         # Step 1: Search for existing Auth0 user
         search_result = Auth0::SearchUserService.new(email: @email).execute
 
-        if search_result.success?
+        if search_result.is_a?(Mangrove::Result::Ok)
           # User exists, reuse it
           Rails.logger.info("Reusing existing Auth0 user for email: #{@email}")
-          { data: search_result.user, errors: [] }
+          { data: search_result.unwrap!, errors: [] }
         else
           # Step 2: User not found, create new one
           Rails.logger.info("Creating new Auth0 user for email: #{@email}")
           create_result = Auth0::CreateUserService.new(email: @email, name: @name).execute
 
-          if create_result.success?
-            { data: create_result.user, errors: [] }
+          if create_result.is_a?(Mangrove::Result::Ok)
+            { data: create_result.unwrap!, errors: [] }
           else
             # Failed to create user
-            { data: nil, errors: create_result.errors }
+            { data: nil, errors: create_result.err_inner }
           end
         end
       end
@@ -129,36 +125,6 @@ module RulerArea
         end
       end
 
-      # Result object for service response
-      class Result
-        extend T::Sig
-
-        sig { returns(T::Boolean) }
-        attr_reader :success
-
-        sig { returns(T.nilable(Admin)) }
-        attr_reader :admin
-
-        sig { returns(T::Array[String]) }
-        attr_reader :errors
-
-        sig { params(success: T::Boolean, admin: T.nilable(Admin), errors: T::Array[String]).void }
-        def initialize(success:, admin:, errors:)
-          @success = success
-          @admin = admin
-          @errors = errors
-        end
-
-        sig { returns(T::Boolean) }
-        def success?
-          @success
-        end
-
-        sig { returns(T::Boolean) }
-        def failure?
-          !@success
-        end
-      end
     end
   end
 end

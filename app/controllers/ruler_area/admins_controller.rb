@@ -23,14 +23,14 @@ module RulerArea
         name: admin_params[:name],
       ).execute
 
-      if result.success?
+      if result.is_a?(Mangrove::Result::Ok)
         redirect_to ruler_area_tenant_admins_path(@tenant), notice: t('ruler_area.admins.created')
       else
         # Admin doesn't have email column, only name
-        @admin = result.admin || Admin.new(name: admin_params[:name], tenant: @tenant)
+        @admin = Admin.new(name: admin_params[:name], tenant: @tenant)
         # Store email in instance variable for form display
         @admin.instance_variable_set(:@_form_email, admin_params[:email])
-        @error_message = result.errors.join(', ')  # Store in instance variable for inline display
+        @error_message = result.err_inner.join(', ')  # Store in instance variable for inline display
         render :new, status: :unprocessable_entity
       end
     end

@@ -11,10 +11,10 @@ module Auth0
   #   )
   #   result = service.execute
   #
-  #   if result.success?
-  #     user = result.user # Auth0 user data with user_id
+  #   if result.is_a?(Mangrove::Result::Ok)
+  #     user = result.unwrap # Auth0 user data with user_id
   #   else
-  #     errors = result.errors
+  #     errors = result.unwrap_err
   #   end
   class CreateUserService < BaseService
     extend T::Sig
@@ -25,7 +25,7 @@ module Auth0
       @name = name
     end
 
-    sig { returns(Result) }
+    sig { returns(Mangrove::Result[T::Hash[String, T.untyped], T::Array[String]]) }
     def execute
       # Generate strong random password for Auth0 user (with all character types)
       # Admin will reset via forgot password flow
@@ -46,7 +46,7 @@ module Auth0
 
       # create_user(connection, options)
       user = client.create_user('Username-Password-Authentication', user_data)
-      Result.new(success: true, user:, errors: [])
+      Mangrove::Result::Ok.new(user)
     rescue StandardError => e
       Rails.logger.error("Auth0::CreateUserService error: #{e.message}")
 
@@ -65,38 +65,7 @@ module Auth0
         e.message
       end
 
-      Result.new(success: false, user: nil, errors: [error_message])
-    end
-
-    # Result object for service response
-    class Result
-      extend T::Sig
-
-      sig { returns(T::Boolean) }
-      attr_reader :success
-
-      sig { returns(T.nilable(T::Hash[String, T.untyped])) }
-      attr_reader :user
-
-      sig { returns(T::Array[String]) }
-      attr_reader :errors
-
-      sig { params(success: T::Boolean, user: T.nilable(T::Hash[String, T.untyped]), errors: T::Array[String]).void }
-      def initialize(success:, user:, errors:)
-        @success = success
-        @user = user
-        @errors = errors
-      end
-
-      sig { returns(T::Boolean) }
-      def success?
-        @success
-      end
-
-      sig { returns(T::Boolean) }
-      def failure?
-        !@success
-      end
+      Mangrove::Result::Err.new(T.let([error_message], T::Array[String]))
     end
   end
 end
