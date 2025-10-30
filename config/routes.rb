@@ -34,4 +34,7 @@ Rails.application.routes.draw do
 
   # Admin Area routes
   draw :admin
+
+  # API routes
+  draw :'api/v1/auth'
 end
