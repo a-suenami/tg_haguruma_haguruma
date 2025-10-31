@@ -47,21 +47,23 @@ module Auth0
       # create_user(connection, options)
       user = client.create_user('Username-Password-Authentication', user_data)
       Mangrove::Result::Ok.new(user)
-    rescue StandardError => e
-      Rails.logger.error("Auth0::CreateUserService error: #{e.message}")
+    rescue Auth0::HTTPError => e
+      Rails.logger.error("Auth0::CreateUserService error: HTTP #{e.http_code} - #{e.message}")
 
-      # Parse Auth0 error message if it's JSON
-      error_message = begin
-        error_data = JSON.parse(e.message)
-
-        # Translate specific Auth0 errors to user-friendly messages
-        case error_data['statusCode']
-        when 409
-          I18n.t('ruler_area.admins.errors.email_already_exists')
-        else
+      # Map Auth0 API HTTP status codes to user-friendly messages
+      error_message = case e.http_code
+      when 409 # Conflict - Email already exists in Auth0
+        I18n.t('ruler_area.admins.errors.email_already_exists')
+      when 400 # Bad Request - Invalid parameters
+        # Parse error message from Auth0 response
+        begin
+          error_data = JSON.parse(e.message)
           error_data['message'] || e.message
+        rescue JSON::ParserError
+          e.message
         end
-      rescue JSON::ParserError
+      else
+        # For other HTTP errors (401, 404, 429, 500, etc.), use raw message
         e.message
       end
 

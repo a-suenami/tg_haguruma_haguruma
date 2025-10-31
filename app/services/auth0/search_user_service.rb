@@ -35,9 +35,23 @@ module Auth0
       else
         Mangrove::Result::Ok.new(T.must(users.first))
       end
-    rescue StandardError => e
-      Rails.logger.error("Auth0::SearchUserService error: #{e.message}")
-      Mangrove::Result::Err.new(T.let([e.message], T::Array[String]))
+    rescue Auth0::HTTPError => e
+      Rails.logger.error("Auth0::SearchUserService error: HTTP #{e.http_code} - #{e.message}")
+
+      # Map Auth0 API HTTP status codes to user-friendly messages
+      error_message = case e.http_code
+      when 401 # Unauthorized - Invalid M2M credentials
+        'Auth0 API authentication failed. Please check credentials.'
+      when 403 # Forbidden - Missing required scopes
+        'Auth0 API access forbidden. Please check read:users scope.'
+      when 429 # Too Many Requests - Rate limit exceeded
+        'Auth0 API rate limit exceeded. Please try again later.'
+      else
+        # For other HTTP errors, use raw message
+        e.message
+      end
+
+      Mangrove::Result::Err.new(T.let([error_message], T::Array[String]))
     end
   end
 end
