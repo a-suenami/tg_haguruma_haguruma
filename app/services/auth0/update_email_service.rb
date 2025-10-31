@@ -27,35 +27,34 @@ module Auth0
       # Update email and name (name should match email)
       client.patch_user(@uid, { email: @email, name: @email })
       Mangrove::Result::Ok.new(T.let(true, T::Boolean))
-    rescue StandardError => e
-      Rails.logger.error("Auth0::UpdateEmailService error: #{e.message}")
-      error_message = parse_auth0_error(e.message)
-      Mangrove::Result::Err.new(T.let([error_message], T::Array[String]))
-    end
+    rescue Auth0::HTTPError => e
+      Rails.logger.error("Auth0::UpdateEmailService error: HTTP #{e.http_code} - #{e.message}")
 
-    private
+      # Map Auth0 API HTTP status codes to user-friendly messages
+      error_message = case e.http_code
+      when 400 # Bad Request - Could be duplicate email or invalid format
+        # Parse error message from Auth0 response
+        begin
+          error_data = JSON.parse(e.message)
+          error_code = error_data['errorCode']
+          auth0_message = error_data['message'] || ''
 
-    sig { params(error_string: String).returns(String) }
-    def parse_auth0_error(error_string)
-      # Try to parse JSON error from Auth0
-      json_error = JSON.parse(error_string)
-      message = json_error['message'] || json_error['error_description']
-
-      # Map common Auth0 errors to user-friendly messages
-      case json_error['errorCode']
-      when 'auth0_idp_error'
-        if message&.include?('already exists')
-          I18n.t('ruler_area.profiles.errors.email_already_exists')
-        else
-          message
+          # Check error code for duplicate email
+          if error_code == 'auth0_idp_error'
+            I18n.t('ruler_area.profiles.errors.email_already_exists')
+          else
+            # Other validation errors (invalid format, etc)
+            auth0_message.presence || e.message
+          end
+        rescue JSON::ParserError
+          e.message
         end
       else
-        message || error_string
+        # For other HTTP errors (401, 404, 429, 500, etc.), use raw message
+        e.message
       end
-    rescue JSON::ParserError
-      # If not JSON, return as is
-      error_string
-    end
 
+      Mangrove::Result::Err.new(T.let([error_message], T::Array[String]))
+    end
   end
 end

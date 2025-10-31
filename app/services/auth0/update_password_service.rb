@@ -27,9 +27,25 @@ module Auth0
       # Update password only
       client.patch_user(@uid, { password: @password })
       Mangrove::Result::Ok.new(T.let(true, T::Boolean))
-    rescue StandardError => e
-      Rails.logger.error("Auth0::UpdatePasswordService error: #{e.message}")
-      Mangrove::Result::Err.new(T.let([e.message], T::Array[String]))
+    rescue Auth0::HTTPError => e
+      Rails.logger.error("Auth0::UpdatePasswordService error: HTTP #{e.http_code} - #{e.message}")
+
+      # Map Auth0 API HTTP status codes to user-friendly messages
+      error_message = case e.http_code
+      when 400 # Bad Request - Password doesn't meet requirements
+        # Parse error message from Auth0 response
+        begin
+          error_data = JSON.parse(e.message)
+          error_data['message'] || e.message
+        rescue JSON::ParserError
+          e.message
+        end
+      else
+        # For other HTTP errors (401, 404, 429, 500, etc.), use raw message
+        e.message
+      end
+
+      Mangrove::Result::Err.new(T.let([error_message], T::Array[String]))
     end
   end
 end
