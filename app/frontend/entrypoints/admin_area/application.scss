@@ -13,6 +13,9 @@
 // Load lexical editor styles
 @use './lexical_editor';
 
+// Load profiles styles
+@use './profiles';
+
 // Additional admin-specific styles can be added here
 .admin-area {
   // Custom styles for admin area

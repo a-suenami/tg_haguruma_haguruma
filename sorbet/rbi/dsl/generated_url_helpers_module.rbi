@@ -55,6 +55,9 @@ module GeneratedUrlHelpersModule
   def admin_area_media_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_profiles_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_root_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -65,6 +68,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_contents_singleton_entry_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_profiles_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_profiles_url(*args); end

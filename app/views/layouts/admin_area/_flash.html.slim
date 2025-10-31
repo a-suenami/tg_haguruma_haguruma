@@ -1,0 +1,23 @@
+- if flash.any?
+  .flash-container
+    - flash.each do |type, message|
+      - flash_class = type == 'notice' ? 'flash-success' : 'flash-error'
+      .flash-message class=flash_class data-flash="true"
+        .flash-content
+          = message
+        button.flash-close onclick="this.parentElement.remove()" type="button"
+          | ×
+
+  script
+    |
+      (function() {
+        const flashMessages = document.querySelectorAll('[data-flash="true"]');
+        flashMessages.forEach(function(flash) {
+          setTimeout(function() {
+            flash.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(function() {
+              flash.remove();
+            }, 300);
+          }, 5000);
+        });
+      })();

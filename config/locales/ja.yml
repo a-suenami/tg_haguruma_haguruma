@@ -67,6 +67,16 @@ ja:
       updated: 管理者を更新しました
       destroyed: 管理者を削除しました
       not_found: 管理者が見つかりません
+    profiles:
+      edit:
+        title: プロフィール設定
+      form:
+        email: メールアドレス
+        password: パスワード
+        password_hint: 変更しない場合は空欄のまま
+        submit: 更新
+      errors:
+        email_already_exists: このメールアドレスは既に使用されています
   helpers:
     messages:
       created: 登録しました

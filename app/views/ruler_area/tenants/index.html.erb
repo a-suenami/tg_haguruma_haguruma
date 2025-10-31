@@ -27,7 +27,7 @@
             <% else %>
               <button class="uk-button uk-button-small uk-button-default uk-margin-small-right" disabled>ユーザ画面</button>
             <% end %>
-            <%= link_to '管理画面', '#', class: 'uk-button uk-button-small uk-button-default uk-margin-small-right', target: '_blank' %>
+            <%= link_to '管理画面', admin_area_ruler_area_tenant_path(tenant), class: 'uk-button uk-button-small uk-button-default uk-margin-small-right', target: '_blank' %>
             <%= link_to '設定', ruler_area_tenant_path(tenant.id), class: 'uk-button uk-button-small uk-button-default uk-margin-small-right' %>
           </div>
         </td>

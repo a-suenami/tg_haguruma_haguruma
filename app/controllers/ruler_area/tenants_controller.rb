@@ -46,11 +46,10 @@ module RulerArea
       # TODO: Enable when Admin model is available
       # Admin.find_or_create_by(tenant_id: @tenant.id, auth0_account_id: current_ruler.auth0_account_id)
 
-      # TODO: Update path when admin_area is available
       url = if Rails.env.development?
-        "http://#{@tenant.id}.#{request.host}:#{request.port}/"
+        "http://#{@tenant.id}.#{request.host}:#{request.port}/admin"
       else
-        "https://#{@tenant.id}.#{Settings.domains.admin}/"
+        "https://#{@tenant.id}.#{Settings.domains.admin}/admin"
       end
 
       redirect_to url, allow_other_host: true
