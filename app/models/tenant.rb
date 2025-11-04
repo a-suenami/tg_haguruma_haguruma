@@ -3,7 +3,7 @@
 class Tenant < ApplicationRecord
   extend T::Sig
 
-  has_many :oauth_providers
+  has_one :oauth_provider
 
   validates :id, :name, presence: true
   validates :id, uniqueness: { case_sensitive: false }

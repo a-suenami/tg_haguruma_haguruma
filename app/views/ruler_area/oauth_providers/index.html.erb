@@ -1,0 +1,76 @@
+<ul class="uk-breadcrumb">
+  <li>
+    <%= link_to 'テナント', ruler_area_tenants_path %>
+  </li>
+  <li>
+    <%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %>
+  </li>
+  <li>
+    <span>認証プロバイダ</span>
+  </li>
+</ul>
+
+<div class="am-page-header">
+  <h3>認証プロバイダ設定</h3>
+  <% if @oauth_provider.nil? %>
+    <div>
+      <%= link_to '新規作成', new_ruler_area_tenant_oauth_provider_path(@tenant), class: 'uk-button uk-button-primary' %>
+    </div>
+  <% end %>
+</div>
+
+<% if @oauth_provider.present? %>
+  <div class="uk-card uk-card-default uk-card-body">
+    <table class="uk-table uk-table-divider">
+      <tbody>
+        <tr>
+          <th style="width: 200px;">Client ID</th>
+          <td><%= @oauth_provider.client_id %></td>
+        </tr>
+        <tr>
+          <th>Client Secret</th>
+          <td>
+            <% if @oauth_provider.client_secret.present? %>
+              <span class="uk-text-muted">••••••••</span>
+            <% else %>
+              <span class="uk-text-muted">未設定</span>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <th>エンドポイントベースURL</th>
+          <td><%= @oauth_provider.endpoint_base %></td>
+        </tr>
+        <tr>
+          <th>スコープ</th>
+          <td><%= @oauth_provider.scopes.presence || '-' %></td>
+        </tr>
+        <tr>
+          <th>UID Keypath</th>
+          <td><%= @oauth_provider.keypath_uid.presence || 'sub (デフォルト)' %></td>
+        </tr>
+        <tr>
+          <th>セッション有効期間</th>
+          <td><%= @oauth_provider.session_expires_in %> 秒 (<%= @oauth_provider.session_expires_in / 86400 %> 日)</td>
+        </tr>
+        <tr>
+          <th>作成日時</th>
+          <td><%= @oauth_provider.created_at.strftime('%Y/%m/%d %H:%M') %></td>
+        </tr>
+        <tr>
+          <th>更新日時</th>
+          <td><%= @oauth_provider.updated_at.strftime('%Y/%m/%d %H:%M') %></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="uk-margin-top">
+      <%= link_to '編集', edit_ruler_area_tenant_oauth_provider_path(@tenant, @oauth_provider.id), class: 'uk-button uk-button-default uk-margin-small-right' %>
+      <%= link_to '削除', ruler_area_tenant_oauth_provider_path(@tenant, @oauth_provider.id), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'uk-button uk-button-danger' %>
+    </div>
+  </div>
+<% else %>
+  <div class="uk-alert uk-alert-primary">
+    <p>認証プロバイダが設定されていません。新規作成ボタンから設定を追加してください。</p>
+  </div>
+<% end %>

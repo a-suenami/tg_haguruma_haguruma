@@ -1,0 +1,65 @@
+<%= form_with(model: @oauth_provider, url: form_url, method: form_method, local: true) do |form| %>
+  <% if @oauth_provider.errors.any? %>
+    <div class="uk-alert-danger" uk-alert>
+      <h4><%= pluralize(@oauth_provider.errors.count, "error") %> prohibited this oauth provider from being saved:</h4>
+      <ul>
+        <% @oauth_provider.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="uk-margin">
+    <%= form.label :client_id, 'Client ID', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.text_field :client_id, class: 'uk-input', placeholder: 'your-client-id', required: true %>
+    </div>
+    <p class="uk-text-meta uk-margin-small-top">OAuth2.0のクライアントID</p>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.label :client_secret, 'Client Secret', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.password_field :client_secret, class: 'uk-input', placeholder: '••••••••', autocomplete: 'off' %>
+    </div>
+    <p class="uk-text-meta uk-margin-small-top">OAuth2.0のクライアントシークレット（オプション）</p>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.label :endpoint_base, 'エンドポイントベースURL', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.text_field :endpoint_base, class: 'uk-input', placeholder: 'https://auth.example.com', required: true %>
+    </div>
+    <p class="uk-text-meta uk-margin-small-top">認証プロバイダのベースURL</p>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.label :scopes, 'スコープ', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.text_field :scopes, class: 'uk-input', placeholder: 'openid profile email' %>
+    </div>
+    <p class="uk-text-meta uk-margin-small-top">スペース区切りでスコープを指定（例: openid profile email）</p>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.label :keypath_uid, 'UID Keypath', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.text_field :keypath_uid, class: 'uk-input', placeholder: 'sub' %>
+    </div>
+    <p class="uk-text-meta uk-margin-small-top">ユーザーIDを取得するためのキーパス（デフォルト: sub）</p>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.label :session_expires_in, 'セッション有効期間（秒）', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.number_field :session_expires_in, class: 'uk-input', placeholder: '7776000', value: @oauth_provider.session_expires_in || 7776000 %>
+    </div>
+    <p class="uk-text-meta uk-margin-small-top">セッショントークンの有効期間（デフォルト: 7776000秒 = 90日）</p>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.submit submit_label, class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_tenant_oauth_providers_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>
