@@ -40,36 +40,38 @@ module AdminArea
       end
 
       # Find Admin by Auth0 UID for this tenant
-      begin
-        auth0_account = Auth0Account.find_by!(uid:)
-        admin_link = auth0_account.admin_auth0_accounts.find_by(tenant_id:)
+      auth0_account = Auth0Account.find_by(uid:)
 
-        unless admin_link
-          reset_session
-          flash[:alert] = t('admin_area.auth0.no_admin_access')
-          redirect_to auth0_logout_url, allow_other_host: true
-          return
-        end
-
-        admin = admin_link.admin
-
-        unless admin
-          reset_session
-          flash[:alert] = t('admin_area.auth0.admin_not_found')
-          redirect_to auth0_logout_url, allow_other_host: true
-          return
-        end
-
-        # Create session
-        session[:admin_id] = admin.id
-        session[:tenant_id] = tenant_id
-
-        redirect_to admin_area_root_path, notice: t('admin_area.auth0.logged_in')
-      rescue ActiveRecord::RecordNotFound
+      unless auth0_account
         reset_session
         flash[:alert] = t('admin_area.auth0.account_not_registered')
         redirect_to auth0_logout_url, allow_other_host: true
+        return
       end
+
+      admin_link = auth0_account.admin_auth0_accounts.find_by(tenant_id:)
+
+      unless admin_link
+        reset_session
+        flash[:alert] = t('admin_area.auth0.no_admin_access')
+        redirect_to auth0_logout_url, allow_other_host: true
+        return
+      end
+
+      admin = admin_link.admin
+
+      unless admin
+        reset_session
+        flash[:alert] = t('admin_area.auth0.admin_not_found')
+        redirect_to auth0_logout_url, allow_other_host: true
+        return
+      end
+
+      # Create session
+      session[:admin_id] = admin.id
+      session[:tenant_id] = tenant_id
+
+      redirect_to admin_area_root_path, notice: t('admin_area.auth0.logged_in')
     end
 
     def logout
