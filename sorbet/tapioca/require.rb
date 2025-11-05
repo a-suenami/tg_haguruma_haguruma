@@ -5,3 +5,5 @@
 # Run `bundle exec tapioca require` to regenerate.
 
 # Add requires here to add additional files to be loaded by Tapioca
+require "aws-sdk-eventbridge"
+require "aws-sdk-sqs"
