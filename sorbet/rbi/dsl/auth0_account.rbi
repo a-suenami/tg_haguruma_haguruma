@@ -418,33 +418,47 @@ class Auth0Account
     sig { params(value: T::Enumerable[::Admin]).void }
     def admins=(value); end
 
-    sig { returns(T::Array[T.untyped]) }
-    def ruler_auth0_account_ids; end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler) }
+    def build_ruler(*args, &blk); end
 
-    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
-    def ruler_auth0_account_ids=(ids); end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler::Auth0Account) }
+    def build_ruler_auth0_account(*args, &blk); end
 
-    # This method is created by ActiveRecord on the `Auth0Account` class because it declared `has_many :ruler_auth0_accounts`.
-    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
-    sig { returns(::Ruler::Auth0Account::PrivateCollectionProxy) }
-    def ruler_auth0_accounts; end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler) }
+    def create_ruler(*args, &blk); end
 
-    sig { params(value: T::Enumerable[::Ruler::Auth0Account]).void }
-    def ruler_auth0_accounts=(value); end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler) }
+    def create_ruler!(*args, &blk); end
 
-    sig { returns(T::Array[T.untyped]) }
-    def ruler_ids; end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler::Auth0Account) }
+    def create_ruler_auth0_account(*args, &blk); end
 
-    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
-    def ruler_ids=(ids); end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler::Auth0Account) }
+    def create_ruler_auth0_account!(*args, &blk); end
 
-    # This method is created by ActiveRecord on the `Auth0Account` class because it declared `has_many :rulers, through: :ruler_auth0_accounts`.
-    # 🔗 [Rails guide for `has_many_through` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association)
-    sig { returns(::Ruler::PrivateCollectionProxy) }
-    def rulers; end
+    sig { returns(T.nilable(::Ruler)) }
+    def reload_ruler; end
 
-    sig { params(value: T::Enumerable[::Ruler]).void }
-    def rulers=(value); end
+    sig { returns(T.nilable(::Ruler::Auth0Account)) }
+    def reload_ruler_auth0_account; end
+
+    sig { void }
+    def reset_ruler; end
+
+    sig { void }
+    def reset_ruler_auth0_account; end
+
+    sig { returns(T.nilable(::Ruler)) }
+    def ruler; end
+
+    sig { params(value: T.nilable(::Ruler)).void }
+    def ruler=(value); end
+
+    sig { returns(T.nilable(::Ruler::Auth0Account)) }
+    def ruler_auth0_account; end
+
+    sig { params(value: T.nilable(::Ruler::Auth0Account)).void }
+    def ruler_auth0_account=(value); end
   end
 
   module GeneratedAssociationRelationMethods
@@ -638,10 +652,10 @@ class Auth0Account
     sig { void }
     def created_at_will_change!; end
 
-    sig { returns(T.nilable(::String)) }
+    sig { returns(::String) }
     def email; end
 
-    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    sig { params(value: ::String).returns(::String) }
     def email=(value); end
 
     sig { returns(T::Boolean) }
@@ -656,10 +670,10 @@ class Auth0Account
     sig { returns(T::Boolean) }
     def email_came_from_user?; end
 
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    sig { returns(T.nilable([::String, ::String])) }
     def email_change; end
 
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    sig { returns(T.nilable([::String, ::String])) }
     def email_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -668,7 +682,7 @@ class Auth0Account
     sig { returns(T.nilable(::String)) }
     def email_in_database; end
 
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    sig { returns(T.nilable([::String, ::String])) }
     def email_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -797,7 +811,7 @@ class Auth0Account
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_email; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
