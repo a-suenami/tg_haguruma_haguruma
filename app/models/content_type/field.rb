@@ -32,9 +32,10 @@ class ContentType::Field < ApplicationRecord
   def set_position
     # Only auto-set if position is explicitly nil (not 0)
     return unless position.nil?
+
     # Query DB directly to get max position for this content_type
     max_position = ContentType::Field.unscoped
-                                     .where(content_type_id: content_type_id)
+                                     .where(content_type_id:)
                                      .maximum(:position) || -1
     self.position = max_position + 1
   end
