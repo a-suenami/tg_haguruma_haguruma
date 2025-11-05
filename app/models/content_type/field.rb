@@ -13,9 +13,29 @@ class ContentType::Field < ApplicationRecord
   belongs_to :media_asset, class_name: 'ContentType::FieldMediaAsset', optional: true
 
   validates :tenant_id, presence: true
-  validates :api_identifier, presence: true, length: { maximum: 32 }
+  validates :api_identifier, presence: true, length: { maximum: 32 }, uniqueness: { scope: :content_type_id }
   validates :label, presence: true, length: { maximum: 255 }
   validates :field_type, presence: true
+  validates :required, inclusion: { in: [true, false] }
+  validates :position, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   enum :field_type, FIELD_TYPES
+
+  # Order by position by default
+  default_scope { order(:position) }
+
+  # Auto-set position before create
+  before_validation :set_position, on: :create
+
+  private
+
+  def set_position
+    # Only auto-set if position is explicitly nil (not 0)
+    return unless position.nil?
+    # Query DB directly to get max position for this content_type
+    max_position = ContentType::Field.unscoped
+                                     .where(content_type_id: content_type_id)
+                                     .maximum(:position) || -1
+    self.position = max_position + 1
+  end
 end
