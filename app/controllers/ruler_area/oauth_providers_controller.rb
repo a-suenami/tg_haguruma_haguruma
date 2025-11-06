@@ -52,6 +52,7 @@ module RulerArea
 
     def oauth_provider_params
       params.require(:oauth_provider).permit(
+        :kind,
         :client_id,
         :client_secret,
         :endpoint_base,

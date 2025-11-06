@@ -1,4 +1,4 @@
-\restrict Ib8dUnPau4fIz7PmoCRvpkabSXJdBtxPdbzEcwUfSbRMOqWn6ruBOAidbjdpDbR
+\restrict DsTpwMqeawWkasxV74mz01yxf62I9fHIkrfnahmgaedVFp0WHPEJPQZxmnvtkWd
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -422,6 +422,7 @@ CREATE TABLE public.media_assets (
 CREATE TABLE public.oauth_providers (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id character varying NOT NULL,
+    kind character varying DEFAULT 'user'::character varying NOT NULL,
     client_id character varying NOT NULL,
     client_secret character varying,
     endpoint_base character varying NOT NULL,
@@ -431,6 +432,13 @@ CREATE TABLE public.oauth_providers (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: COLUMN oauth_providers.kind; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.oauth_providers.kind IS 'user or admin';
 
 
 --
@@ -903,7 +911,14 @@ CREATE UNIQUE INDEX index_media_assets_on_tenant_id_and_media_type_and_id ON pub
 -- Name: index_oauth_providers_on_tenant_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_oauth_providers_on_tenant_id ON public.oauth_providers USING btree (tenant_id);
+CREATE INDEX index_oauth_providers_on_tenant_id ON public.oauth_providers USING btree (tenant_id);
+
+
+--
+-- Name: index_oauth_providers_on_tenant_id_and_kind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_oauth_providers_on_tenant_id_and_kind ON public.oauth_providers USING btree (tenant_id, kind) WHERE ((kind)::text = 'user'::text);
 
 
 --
@@ -1144,7 +1159,7 @@ ALTER TABLE ONLY public.ruler_auth0_accounts
 -- PostgreSQL database dump complete
 --
 
-\unrestrict Ib8dUnPau4fIz7PmoCRvpkabSXJdBtxPdbzEcwUfSbRMOqWn6ruBOAidbjdpDbR
+\unrestrict DsTpwMqeawWkasxV74mz01yxf62I9fHIkrfnahmgaedVFp0WHPEJPQZxmnvtkWd
 
 SET search_path TO "$user", public;
 

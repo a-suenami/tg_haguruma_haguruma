@@ -11,6 +11,15 @@
   <% end %>
 
   <div class="uk-margin">
+    <%= form.label :kind, 'Kind', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <% object_class = form.object.present? ? form.object.class : OauthProvider %>
+      <%= form.select :kind, object_class.enumerized_attributes.attributes['kind'].options, { include_blank: 'Select kind' }, class: 'uk-select', required: true %>
+    </div>
+    <p class="uk-text-meta uk-margin-small-top">OAuth Providerの種類（user: エンドユーザー用, admin: 管理者用）</p>
+  </div>
+
+  <div class="uk-margin">
     <%= form.label :client_id, 'Client ID', class: 'uk-form-label' %>
     <div class="uk-form-controls">
       <%= form.text_field :client_id, class: 'uk-input', placeholder: 'your-client-id', required: true %>
