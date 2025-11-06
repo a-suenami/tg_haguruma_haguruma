@@ -114,7 +114,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.integer "text_id"
     t.integer "richtext_id"
     t.integer "media_asset_id"
-    t.text "description"
+    t.text "description", default: "", null: false
     t.boolean "required", default: false, null: false
     t.integer "position", null: false
     t.datetime "created_at", null: false
@@ -129,13 +129,13 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.citext "tenant_id", null: false
     t.boolean "is_collection", default: true, null: false
     t.text "display_name", null: false
-    t.text "api_identifier", null: false
-    t.text "description"
+    t.text "unique_name", default: "", null: false
+    t.text "description", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id", "tenant_id"], name: "index_content_types_on_id_and_tenant_id", unique: true
-    t.index ["tenant_id", "api_identifier"], name: "index_content_types_on_tenant_id_and_api_identifier", unique: true
     t.index ["tenant_id", "id"], name: "index_content_types_on_tenant_id_and_id", unique: true
+    t.index ["tenant_id", "unique_name"], name: "index_content_types_on_tenant_id_and_unique_name", unique: true
   end
 
   create_table "media_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -7,7 +7,7 @@ class ContentType < ApplicationRecord
   accepts_nested_attributes_for :fields, allow_destroy: true, reject_if: :all_blank
 
   validates :tenant_id, presence: true
-  validates :api_identifier, presence: true, length: { maximum: 32 }, uniqueness: { scope: :tenant_id }
+  validates :unique_name, presence: true, length: { maximum: 32 }, uniqueness: { scope: :tenant_id }
   validates :display_name, presence: true, length: { maximum: 255 }
   validates :is_collection, inclusion: { in: [true, false] }
 
