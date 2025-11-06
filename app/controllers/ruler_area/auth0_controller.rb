@@ -21,33 +21,21 @@ module RulerArea
 
       Rails.logger.info "Auth0 callback: uid=#{uid}, email=#{email}"
 
-      # Find Auth0Account by UID
+      # Find Ruler by Auth0 UID (simplified with has_one relationship)
       auth0_account = Auth0Account.find_by(uid:)
 
       unless auth0_account
         Rails.logger.warn "Auth0 account not found: uid=#{uid}, email=#{email}"
-        # Clear Rails session and logout from Auth0
         reset_session
         flash[:alert] = t('ruler_area.auth0.account_not_registered')
         redirect_to auth0_logout_url, allow_other_host: true
         return
       end
 
-      # Find Ruler linked to this Auth0Account
-      ruler_link = auth0_account.ruler_auth0_accounts.first
-
-      unless ruler_link
-        Rails.logger.warn "Ruler link not found: auth0_account_id=#{auth0_account.id}, uid=#{uid}"
-        # Clear Rails session and logout from Auth0
-        reset_session
-        flash[:alert] = t('ruler_area.auth0.no_ruler_access')
-        redirect_to auth0_logout_url, allow_other_host: true
-        return
-      end
-
-      ruler = ruler_link.ruler
+      ruler = auth0_account.ruler
 
       unless ruler
+        Rails.logger.warn "Ruler not found for auth0_account: uid=#{uid}"
         reset_session
         flash[:alert] = t('ruler_area.auth0.no_ruler_access')
         redirect_to auth0_logout_url, allow_other_host: true

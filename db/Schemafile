@@ -4,8 +4,14 @@ ActiveRecord::Schema.enable_extension(:citext)
 # tenants
 require 'schemas/tenants.schema'
 
+# oauth providers
+require 'schemas/oauth_providers.schema'
+
 # users
 require 'schemas/users.schema'
+
+# session tokens
+require 'schemas/session_tokens.schema'
 
 # media assets
 require 'schemas/media_assets.schema'
