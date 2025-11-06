@@ -335,33 +335,47 @@ class Ruler
   end
 
   module GeneratedAssociationMethods
-    sig { returns(T::Array[T.untyped]) }
-    def auth0_account_ids; end
+    sig { returns(T.nilable(::Auth0Account)) }
+    def auth0_account; end
 
-    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
-    def auth0_account_ids=(ids); end
+    sig { params(value: T.nilable(::Auth0Account)).void }
+    def auth0_account=(value); end
 
-    # This method is created by ActiveRecord on the `Ruler` class because it declared `has_many :auth0_accounts, through: :ruler_auth0_accounts`.
-    # 🔗 [Rails guide for `has_many_through` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association)
-    sig { returns(::Auth0Account::PrivateCollectionProxy) }
-    def auth0_accounts; end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Auth0Account) }
+    def build_auth0_account(*args, &blk); end
 
-    sig { params(value: T::Enumerable[::Auth0Account]).void }
-    def auth0_accounts=(value); end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler::Auth0Account) }
+    def build_ruler_auth0_account(*args, &blk); end
 
-    sig { returns(T::Array[T.untyped]) }
-    def ruler_auth0_account_ids; end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Auth0Account) }
+    def create_auth0_account(*args, &blk); end
 
-    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
-    def ruler_auth0_account_ids=(ids); end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Auth0Account) }
+    def create_auth0_account!(*args, &blk); end
 
-    # This method is created by ActiveRecord on the `Ruler` class because it declared `has_many :ruler_auth0_accounts`.
-    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
-    sig { returns(::Ruler::Auth0Account::PrivateCollectionProxy) }
-    def ruler_auth0_accounts; end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler::Auth0Account) }
+    def create_ruler_auth0_account(*args, &blk); end
 
-    sig { params(value: T::Enumerable[::Ruler::Auth0Account]).void }
-    def ruler_auth0_accounts=(value); end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler::Auth0Account) }
+    def create_ruler_auth0_account!(*args, &blk); end
+
+    sig { returns(T.nilable(::Auth0Account)) }
+    def reload_auth0_account; end
+
+    sig { returns(T.nilable(::Ruler::Auth0Account)) }
+    def reload_ruler_auth0_account; end
+
+    sig { void }
+    def reset_auth0_account; end
+
+    sig { void }
+    def reset_ruler_auth0_account; end
+
+    sig { returns(T.nilable(::Ruler::Auth0Account)) }
+    def ruler_auth0_account; end
+
+    sig { params(value: T.nilable(::Ruler::Auth0Account)).void }
+    def ruler_auth0_account=(value); end
   end
 
   module GeneratedAssociationRelationMethods

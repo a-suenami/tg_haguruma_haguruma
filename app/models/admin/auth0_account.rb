@@ -7,5 +7,5 @@ class Admin::Auth0Account < ApplicationRecord
   belongs_to :auth0_account, class_name: '::Auth0Account'
   belongs_to :tenant
 
-  validates :admin_id, uniqueness: { scope: [:auth0_account_id, :tenant_id] }
+  validates :admin_id, uniqueness: true
 end
