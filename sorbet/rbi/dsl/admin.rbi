@@ -335,36 +335,38 @@ class Admin
   end
 
   module GeneratedAssociationMethods
-    sig { returns(T::Array[T.untyped]) }
-    def admin_auth0_account_ids; end
+    sig { returns(T.nilable(::Admin::Auth0Account)) }
+    def admin_auth0_account; end
 
-    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
-    def admin_auth0_account_ids=(ids); end
+    sig { params(value: T.nilable(::Admin::Auth0Account)).void }
+    def admin_auth0_account=(value); end
 
-    # This method is created by ActiveRecord on the `Admin` class because it declared `has_many :admin_auth0_accounts`.
-    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
-    sig { returns(::Admin::Auth0Account::PrivateCollectionProxy) }
-    def admin_auth0_accounts; end
+    sig { returns(T.nilable(::Auth0Account)) }
+    def auth0_account; end
 
-    sig { params(value: T::Enumerable[::Admin::Auth0Account]).void }
-    def admin_auth0_accounts=(value); end
+    sig { params(value: T.nilable(::Auth0Account)).void }
+    def auth0_account=(value); end
 
-    sig { returns(T::Array[T.untyped]) }
-    def auth0_account_ids; end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Admin::Auth0Account) }
+    def build_admin_auth0_account(*args, &blk); end
 
-    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
-    def auth0_account_ids=(ids); end
-
-    # This method is created by ActiveRecord on the `Admin` class because it declared `has_many :auth0_accounts, through: :admin_auth0_accounts`.
-    # 🔗 [Rails guide for `has_many_through` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association)
-    sig { returns(::Auth0Account::PrivateCollectionProxy) }
-    def auth0_accounts; end
-
-    sig { params(value: T::Enumerable[::Auth0Account]).void }
-    def auth0_accounts=(value); end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Auth0Account) }
+    def build_auth0_account(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def build_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Admin::Auth0Account) }
+    def create_admin_auth0_account(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Admin::Auth0Account) }
+    def create_admin_auth0_account!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Auth0Account) }
+    def create_auth0_account(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Auth0Account) }
+    def create_auth0_account!(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def create_tenant(*args, &blk); end
@@ -372,8 +374,20 @@ class Admin
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def create_tenant!(*args, &blk); end
 
+    sig { returns(T.nilable(::Admin::Auth0Account)) }
+    def reload_admin_auth0_account; end
+
+    sig { returns(T.nilable(::Auth0Account)) }
+    def reload_auth0_account; end
+
     sig { returns(T.nilable(::Tenant)) }
     def reload_tenant; end
+
+    sig { void }
+    def reset_admin_auth0_account; end
+
+    sig { void }
+    def reset_auth0_account; end
 
     sig { void }
     def reset_tenant; end

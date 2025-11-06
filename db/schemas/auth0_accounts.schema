@@ -1,8 +1,9 @@
 create_table :auth0_accounts, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
   t.string :uid, null: false
-  t.string :email
+  t.string :email, null: false
 
   t.timestamps null: false
 
   t.index :uid, name: :idx_auth0_accounts_uid_uniq, using: :btree, unique: true
+  t.index :email, name: :idx_auth0_accounts_email_uniq, using: :btree, unique: true
 end
