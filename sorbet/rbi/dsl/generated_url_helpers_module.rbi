@@ -85,6 +85,9 @@ module GeneratedUrlHelpersModule
   def new_ruler_area_tenant_admin_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_tenant_content_model_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -188,6 +191,12 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_admins_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_content_model_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_content_models_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_providers_url(*args); end

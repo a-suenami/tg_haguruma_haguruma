@@ -1,0 +1,33 @@
+<%
+  # Collect all errors from target and nested associations
+  all_errors = []
+
+  # Add target's own errors
+  all_errors.concat(target.errors.full_messages) if target.errors.any?
+
+  # Add nested fields errors if they exist
+  if target.respond_to?(:fields) && target.fields.present?
+    target.fields.each_with_index do |field, index|
+      if field.errors.any?
+        field_name = field.label.presence || field.api_identifier.presence || "フィールド #{index + 1}"
+        field.errors.full_messages.each do |msg|
+          all_errors << "#{field_name}: #{msg}"
+        end
+      end
+    end
+  end
+%>
+
+<% if all_errors.any? %>
+  <div class="uk-alert-danger" uk-alert>
+    <a href class="uk-alert-close" uk-close></a>
+    <h4 class="uk-margin-remove-bottom">
+      <%= pluralize(all_errors.count, "つのエラー") %>が発生しました
+    </h4>
+    <ul class="uk-list uk-margin-small-top">
+      <% all_errors.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
