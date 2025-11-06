@@ -1,0 +1,25 @@
+create_table :oauth_providers, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
+  # Core identification
+  t.string :tenant_id, null: false
+
+  # OAuth credentials
+  t.string :client_id,     null: false
+  t.string :client_secret # encrypted
+
+  # IDP configuration
+  t.string :endpoint_base, null: false
+  t.string :scopes,        null: false, default: ''
+
+  # User identification
+  t.string :keypath_uid, comment: 'UIDを取得するためのkeypath (デフォルト: sub)'
+
+  # Session management
+  t.integer :session_expires_in, null: false, default: 7_776_000, comment: 'セッショントークンの有効期間 (90 days)'
+
+  t.timestamps null: false
+end
+
+# One provider per tenant
+add_index :oauth_providers, [:tenant_id], unique: true
+
+add_foreign_key :oauth_providers, :tenants, column: :tenant_id, primary_key: :id

@@ -39,7 +39,7 @@ module AdminArea
         return
       end
 
-      # Find Auth0Account by UID
+      # Find Admin by Auth0 UID for this tenant
       auth0_account = Auth0Account.find_by(uid:)
 
       unless auth0_account
@@ -49,7 +49,6 @@ module AdminArea
         return
       end
 
-      # Find Admin linked to this Auth0Account for this tenant
       admin_link = auth0_account.admin_auth0_accounts.find_by(tenant_id:)
 
       unless admin_link
