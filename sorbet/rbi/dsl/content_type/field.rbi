@@ -843,51 +843,6 @@ class ContentType::Field
     def created_at_will_change!; end
 
     sig { returns(::String) }
-    def description; end
-
-    sig { params(value: ::String).returns(::String) }
-    def description=(value); end
-
-    sig { returns(T::Boolean) }
-    def description?; end
-
-    sig { returns(T.nilable(::String)) }
-    def description_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def description_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def description_came_from_user?; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def description_change; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def description_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def description_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def description_in_database; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def description_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def description_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def description_previously_was; end
-
-    sig { returns(T.nilable(::String)) }
-    def description_was; end
-
-    sig { void }
-    def description_will_change!; end
-
-    sig { returns(::String) }
     def field_type; end
 
     sig { params(value: T.any(::String, ::Symbol, ::Integer)).returns(T.any(::String, ::Symbol, ::Integer)) }
@@ -1112,96 +1067,6 @@ class ContentType::Field
     sig { void }
     def media_asset_id_will_change!; end
 
-    sig { returns(::Integer) }
-    def position; end
-
-    sig { params(value: ::Integer).returns(::Integer) }
-    def position=(value); end
-
-    sig { returns(T::Boolean) }
-    def position?; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def position_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def position_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def position_came_from_user?; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def position_change; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def position_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def position_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def position_in_database; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def position_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def position_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def position_previously_was; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def position_was; end
-
-    sig { void }
-    def position_will_change!; end
-
-    sig { returns(T::Boolean) }
-    def required; end
-
-    sig { params(value: T::Boolean).returns(T::Boolean) }
-    def required=(value); end
-
-    sig { returns(T::Boolean) }
-    def required?; end
-
-    sig { returns(T.nilable(T::Boolean)) }
-    def required_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def required_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def required_came_from_user?; end
-
-    sig { returns(T.nilable([T::Boolean, T::Boolean])) }
-    def required_change; end
-
-    sig { returns(T.nilable([T::Boolean, T::Boolean])) }
-    def required_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def required_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(T::Boolean)) }
-    def required_in_database; end
-
-    sig { returns(T.nilable([T::Boolean, T::Boolean])) }
-    def required_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def required_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(T::Boolean)) }
-    def required_previously_was; end
-
-    sig { returns(T.nilable(T::Boolean)) }
-    def required_was; end
-
-    sig { void }
-    def required_will_change!; end
-
     sig { void }
     def restore_api_identifier!; end
 
@@ -1210,9 +1075,6 @@ class ContentType::Field
 
     sig { void }
     def restore_created_at!; end
-
-    sig { void }
-    def restore_description!; end
 
     sig { void }
     def restore_field_type!; end
@@ -1228,12 +1090,6 @@ class ContentType::Field
 
     sig { void }
     def restore_media_asset_id!; end
-
-    sig { void }
-    def restore_position!; end
-
-    sig { void }
-    def restore_required!; end
 
     sig { void }
     def restore_richtext_id!; end
@@ -1311,12 +1167,6 @@ class ContentType::Field
     def saved_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
-    def saved_change_to_description; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_description?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_field_type; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -1345,18 +1195,6 @@ class ContentType::Field
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_media_asset_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def saved_change_to_position; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_position?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([T::Boolean, T::Boolean])) }
-    def saved_change_to_required; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_required?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
     def saved_change_to_richtext_id; end
@@ -1527,9 +1365,6 @@ class ContentType::Field
     def will_save_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_description?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_field_type?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -1543,12 +1378,6 @@ class ContentType::Field
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_media_asset_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_position?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_required?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_richtext_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
