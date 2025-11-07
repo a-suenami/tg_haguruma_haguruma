@@ -61,6 +61,12 @@ module GeneratedUrlHelpersModule
   def admin_area_ruler_area_tenant_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def api_v1_auth_provider_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def api_v1_auth_session_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_contents_collection_entry_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }

@@ -106,3 +106,18 @@ en:
   date:
     formats:
       default: '%Y/%m/%d'
+  errors:
+    messages:
+      not_found: Resource not found
+      error_occurred: An error occurred
+      parameter_missing: Required parameter is missing
+      something_went_wrong: Something went wrong
+      bad_gateway: Service temporarily unavailable
+      unauthorized: Authentication required
+      forbidden: Access forbidden
+      invalid_token: Invalid authentication token
+      token_verification_failed: Token verification failed
+      token_expired: Token has expired
+      invalid_issuer: Invalid token issuer
+      invalid_audience: Invalid token audience
+      incorrect_algorithm: Incorrect token algorithm
