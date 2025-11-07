@@ -143,6 +143,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   create_table "oauth_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "tenant_id", null: false
+    t.string "kind", default: "user", null: false, comment: "user or admin"
     t.string "client_id", null: false
     t.string "client_secret"
     t.string "endpoint_base", null: false
@@ -151,7 +152,8 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.integer "session_expires_in", default: 7776000, null: false, comment: "セッショントークンの有効期間 (90 days)"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["tenant_id"], name: "index_oauth_providers_on_tenant_id", unique: true
+    t.index ["tenant_id", "kind"], name: "index_oauth_providers_on_tenant_id_and_kind", unique: true, where: "((kind)::text = 'user'::text)"
+    t.index ["tenant_id"], name: "index_oauth_providers_on_tenant_id"
   end
 
   create_table "ruler_auth0_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

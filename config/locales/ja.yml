@@ -52,6 +52,11 @@ ja:
         password_hint: パスワードを変更しない場合は空欄のままにしてください
       errors:
         email_already_exists: このメールアドレスは既に使用されています
+    oauth_providers:
+      created: 認証プロバイダを作成しました
+      updated: 認証プロバイダを更新しました
+      destroyed: 認証プロバイダを削除しました
+      not_found: 認証プロバイダが見つかりません
   admin_area:
     auth0:
       already_logged_in: すでにログインしています
@@ -90,3 +95,18 @@ ja:
   date:
     formats:
       default: "%Y/%m/%d"
+  errors:
+    messages:
+      not_found: リソースが見つかりません
+      error_occurred: エラーが発生しました
+      parameter_missing: 必須パラメータが不足しています
+      something_went_wrong: 問題が発生しました
+      bad_gateway: サービスが一時的に利用できません
+      unauthorized: 認証が必要です
+      forbidden: アクセスが拒否されました
+      invalid_token: 認証トークンが無効です
+      token_verification_failed: トークンの検証に失敗しました
+      token_expired: トークンの有効期限が切れています
+      invalid_issuer: トークンの発行者が無効です
+      invalid_audience: トークンの対象者が無効です
+      incorrect_algorithm: トークンのアルゴリズムが正しくありません
