@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       end
 
       resources :admins, except: [:show]
-      resources :oauth_providers, only: [:index]
+      resources :oauth_providers, except: [:show]
     end
   end
 

@@ -41,6 +41,11 @@ ja:
       errors:
         email_already_exists: このメールアドレスは既に使用されています
         email_already_exists_in_tenant: このテナントには既にこのメールアドレスの管理者が存在します
+    oauth_providers:
+      created: 認証プロバイダを作成しました
+      updated: 認証プロバイダを更新しました
+      destroyed: 認証プロバイダを削除しました
+      not_found: 認証プロバイダが見つかりません
   admin_area:
     auth0:
       already_logged_in: すでにログインしています

@@ -4,16 +4,62 @@
 module RulerArea
   class OauthProvidersController < ApplicationController
     before_action :set_tenant
+    before_action :set_oauth_provider, only: [:edit, :update, :destroy]
 
     def index
-      # Placeholder for OAuth providers listing
-      render html: "<div style='padding: 20px;'><h2>認証プロバイダ一覧</h2><p>この機能は実装中です。</p></div>".html_safe, layout: true
+      @oauth_provider = @tenant.oauth_provider
+    end
+
+    def new
+      @oauth_provider = @tenant.build_oauth_provider
+    end
+
+    def edit; end
+
+    def create
+      @oauth_provider = @tenant.build_oauth_provider(oauth_provider_params)
+
+      if @oauth_provider.save
+        redirect_to ruler_area_tenant_oauth_providers_path(@tenant), notice: t('ruler_area.oauth_providers.created')
+      else
+        render :new, status: :unprocessable_entity
+      end
+    end
+
+    def update
+      if @oauth_provider.update(oauth_provider_params)
+        redirect_to ruler_area_tenant_oauth_providers_path(@tenant), notice: t('ruler_area.oauth_providers.updated')
+      else
+        render :edit, status: :unprocessable_entity
+      end
+    end
+
+    def destroy
+      @oauth_provider.destroy
+      redirect_to ruler_area_tenant_oauth_providers_path(@tenant), notice: t('ruler_area.oauth_providers.destroyed')
     end
 
     private
 
     def set_tenant
       @tenant = Tenant.find(params[:tenant_id])
+    end
+
+    def set_oauth_provider
+      @oauth_provider = @tenant.oauth_provider
+      redirect_to ruler_area_tenant_oauth_providers_path(@tenant), alert: t('ruler_area.oauth_providers.not_found') unless @oauth_provider
+    end
+
+    def oauth_provider_params
+      params.require(:oauth_provider).permit(
+        :kind,
+        :client_id,
+        :client_secret,
+        :endpoint_base,
+        :scopes,
+        :keypath_uid,
+        :session_expires_in,
+      )
     end
   end
 end

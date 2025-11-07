@@ -351,17 +351,26 @@ class Tenant
 
     sig { returns(T::Array[T.untyped]) }
     def oauth_provider_ids; end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
+    def build_oauth_provider(*args, &blk); end
 
-    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
-    def oauth_provider_ids=(ids); end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
+    def create_oauth_provider(*args, &blk); end
 
-    # This method is created by ActiveRecord on the `Tenant` class because it declared `has_many :oauth_providers`.
-    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
-    sig { returns(::OauthProvider::PrivateCollectionProxy) }
-    def oauth_providers; end
+    sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
+    def create_oauth_provider!(*args, &blk); end
 
-    sig { params(value: T::Enumerable[::OauthProvider]).void }
-    def oauth_providers=(value); end
+    sig { returns(T.nilable(::OauthProvider)) }
+    def oauth_provider; end
+
+    sig { params(value: T.nilable(::OauthProvider)).void }
+    def oauth_provider=(value); end
+
+    sig { returns(T.nilable(::OauthProvider)) }
+    def reload_oauth_provider; end
+
+    sig { void }
+    def reset_oauth_provider; end
   end
 
   module GeneratedAssociationRelationMethods

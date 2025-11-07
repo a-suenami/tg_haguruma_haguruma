@@ -433,6 +433,9 @@ class OauthProvider
   end
 
   module GeneratedAssociationRelationMethods
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def admin_app(*args, &blk); end
+
     sig { returns(PrivateAssociationRelation) }
     def all; end
 
@@ -562,6 +565,9 @@ class OauthProvider
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def unscope(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def user_app(*args, &blk); end
 
     sig { returns(PrivateAssociationRelationWhereChain) }
     sig { params(args: T.untyped).returns(PrivateAssociationRelation) }
@@ -893,6 +899,51 @@ class OauthProvider
     sig { void }
     def keypath_uid_will_change!; end
 
+    sig { returns(::String) }
+    def kind; end
+
+    sig { params(value: ::String).returns(::String) }
+    def kind=(value); end
+
+    sig { returns(T::Boolean) }
+    def kind?; end
+
+    sig { returns(T.nilable(::String)) }
+    def kind_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def kind_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def kind_came_from_user?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def kind_change; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def kind_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def kind_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def kind_in_database; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def kind_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def kind_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def kind_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def kind_was; end
+
+    sig { void }
+    def kind_will_change!; end
+
     sig { void }
     def restore_client_id!; end
 
@@ -913,6 +964,9 @@ class OauthProvider
 
     sig { void }
     def restore_keypath_uid!; end
+
+    sig { void }
+    def restore_kind!; end
 
     sig { void }
     def restore_scopes!; end
@@ -967,6 +1021,12 @@ class OauthProvider
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_keypath_uid?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def saved_change_to_kind; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_kind?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_scopes; end
@@ -1194,6 +1254,9 @@ class OauthProvider
     def will_save_change_to_keypath_uid?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_kind?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_scopes?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -1207,6 +1270,9 @@ class OauthProvider
   end
 
   module GeneratedRelationMethods
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def admin_app(*args, &blk); end
+
     sig { returns(PrivateRelation) }
     def all; end
 
@@ -1336,6 +1402,9 @@ class OauthProvider
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def unscope(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def user_app(*args, &blk); end
 
     sig { returns(PrivateRelationWhereChain) }
     sig { params(args: T.untyped).returns(PrivateRelation) }
