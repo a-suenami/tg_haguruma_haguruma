@@ -22,9 +22,9 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.citext "tenant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_admin_auth0_accounts_on_admin_id"
+    t.index ["admin_id"], name: "idx_admin_auth0_accounts_admin_uniq", unique: true
     t.index ["auth0_account_id"], name: "index_admin_auth0_accounts_on_auth0_account_id"
-    t.index ["tenant_id", "admin_id", "auth0_account_id"], name: "idx_admin_auth0_accounts_tenant_admin_auth0_uniq", unique: true
+    t.index ["tenant_id"], name: "idx_admin_auth0_accounts_tenant"
   end
 
   create_table "admins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -37,9 +37,10 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   create_table "auth0_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "uid", null: false
-    t.string "email"
+    t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "idx_auth0_accounts_email_uniq", unique: true
     t.index ["uid"], name: "idx_auth0_accounts_uid_uniq", unique: true
   end
 
@@ -161,8 +162,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["auth0_account_id"], name: "index_ruler_auth0_accounts_on_auth0_account_id"
-    t.index ["ruler_id", "auth0_account_id"], name: "idx_ruler_auth0_accounts_ruler_auth0_uniq", unique: true
-    t.index ["ruler_id"], name: "index_ruler_auth0_accounts_on_ruler_id"
+    t.index ["ruler_id"], name: "idx_ruler_auth0_accounts_ruler_uniq", unique: true
   end
 
   create_table "rulers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

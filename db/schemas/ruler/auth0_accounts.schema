@@ -1,10 +1,10 @@
 create_table :ruler_auth0_accounts, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
-  t.references :ruler, type: :uuid, null: false
-  t.references :auth0_account, type: :uuid, null: false
+  t.references :ruler, type: :uuid, null: false, index: false
+  t.references :auth0_account, type: :uuid, null: false, index: true
 
   t.timestamps null: false
 
-  t.index [:ruler_id, :auth0_account_id], name: :idx_ruler_auth0_accounts_ruler_auth0_uniq, using: :btree, unique: true
+  t.index :ruler_id, name: :idx_ruler_auth0_accounts_ruler_uniq, using: :btree, unique: true
 end
 
 add_foreign_key :ruler_auth0_accounts, :rulers, name: :fk_ruler_auth0_accounts_rulers
