@@ -348,6 +348,8 @@ class Tenant
 
     sig { params(value: T::Enumerable[::Admin]).void }
     def admins=(value); end
+
+    sig { returns(T::Array[T.untyped]) }
     def oauth_provider_ids; end
 
     sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }

@@ -658,96 +658,6 @@ class User
     sig { void }
     def id_will_change!; end
 
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def last_authenticated_at; end
-
-    sig { params(value: T.nilable(::ActiveSupport::TimeWithZone)).returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def last_authenticated_at=(value); end
-
-    sig { returns(T::Boolean) }
-    def last_authenticated_at?; end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def last_authenticated_at_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def last_authenticated_at_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def last_authenticated_at_came_from_user?; end
-
-    sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
-    def last_authenticated_at_change; end
-
-    sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
-    def last_authenticated_at_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def last_authenticated_at_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def last_authenticated_at_in_database; end
-
-    sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
-    def last_authenticated_at_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def last_authenticated_at_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def last_authenticated_at_previously_was; end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def last_authenticated_at_was; end
-
-    sig { void }
-    def last_authenticated_at_will_change!; end
-
-    sig { returns(::String) }
-    def oauth_provider_id; end
-
-    sig { params(value: ::String).returns(::String) }
-    def oauth_provider_id=(value); end
-
-    sig { returns(T::Boolean) }
-    def oauth_provider_id?; end
-
-    sig { returns(T.nilable(::String)) }
-    def oauth_provider_id_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def oauth_provider_id_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def oauth_provider_id_came_from_user?; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def oauth_provider_id_change; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def oauth_provider_id_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def oauth_provider_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def oauth_provider_id_in_database; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def oauth_provider_id_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def oauth_provider_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def oauth_provider_id_previously_was; end
-
-    sig { returns(T.nilable(::String)) }
-    def oauth_provider_id_was; end
-
-    sig { void }
-    def oauth_provider_id_will_change!; end
-
     sig { void }
     def restore_created_at!; end
 
@@ -758,16 +668,7 @@ class User
     def restore_id_value!; end
 
     sig { void }
-    def restore_last_authenticated_at!; end
-
-    sig { void }
-    def restore_oauth_provider_id!; end
-
-    sig { void }
     def restore_tenant_id!; end
-
-    sig { void }
-    def restore_uid!; end
 
     sig { void }
     def restore_updated_at!; end
@@ -790,29 +691,11 @@ class User
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
-    sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
-    def saved_change_to_last_authenticated_at; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_last_authenticated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def saved_change_to_oauth_provider_id; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_oauth_provider_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_tenant_id; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def saved_change_to_uid; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_uid?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
     def saved_change_to_updated_at; end
@@ -864,51 +747,6 @@ class User
 
     sig { void }
     def tenant_id_will_change!; end
-
-    sig { returns(::String) }
-    def uid; end
-
-    sig { params(value: ::String).returns(::String) }
-    def uid=(value); end
-
-    sig { returns(T::Boolean) }
-    def uid?; end
-
-    sig { returns(T.nilable(::String)) }
-    def uid_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def uid_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def uid_came_from_user?; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def uid_change; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def uid_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def uid_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def uid_in_database; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def uid_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def uid_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def uid_previously_was; end
-
-    sig { returns(T.nilable(::String)) }
-    def uid_was; end
-
-    sig { void }
-    def uid_will_change!; end
 
     sig { returns(::ActiveSupport::TimeWithZone) }
     def updated_at; end
@@ -965,16 +803,7 @@ class User
     def will_save_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_last_authenticated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_oauth_provider_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_uid?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_updated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
