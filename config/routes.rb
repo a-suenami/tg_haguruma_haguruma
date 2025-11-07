@@ -31,10 +31,13 @@ Rails.application.routes.draw do
       end
 
       resources :admins, except: [:show]
-      resources :oauth_providers, only: [:index]
+      resources :oauth_providers, except: [:show]
     end
   end
 
   # Admin Area routes
   draw :admin
+
+  # API routes
+  draw :'api/v1/auth'
 end

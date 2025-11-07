@@ -35,8 +35,7 @@ module RulerArea
 
       sig { params(ruler: Ruler).returns(Mangrove::Result[T::Boolean, T::Array[String]]) }
       def execute(ruler)
-        # Get Auth0Account (first from has_many)
-        auth0_account = ruler.auth0_accounts.first
+        auth0_account = ruler.auth0_account
 
         if auth0_account.nil?
           return Mangrove::Result::Err.new(T.let(['Auth0 account not found for this Ruler'], T::Array[String]))

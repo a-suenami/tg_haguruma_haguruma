@@ -348,6 +348,27 @@ class Tenant
 
     sig { params(value: T::Enumerable[::Admin]).void }
     def admins=(value); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
+    def build_oauth_provider(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
+    def create_oauth_provider(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
+    def create_oauth_provider!(*args, &blk); end
+
+    sig { returns(T.nilable(::OauthProvider)) }
+    def oauth_provider; end
+
+    sig { params(value: T.nilable(::OauthProvider)).void }
+    def oauth_provider=(value); end
+
+    sig { returns(T.nilable(::OauthProvider)) }
+    def reload_oauth_provider; end
+
+    sig { void }
+    def reset_oauth_provider; end
   end
 
   module GeneratedAssociationRelationMethods
