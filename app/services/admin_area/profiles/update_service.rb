@@ -35,8 +35,7 @@ module AdminArea
 
       sig { params(admin: Admin).returns(Mangrove::Result[T::Boolean, T::Array[String]]) }
       def execute(admin)
-        # Get Auth0Account (first from has_many)
-        auth0_account = admin.auth0_accounts.first
+        auth0_account = admin.auth0_account
 
         if auth0_account.nil?
           return Mangrove::Result::Err.new(T.let(['Auth0 account not found for this Admin'], T::Array[String]))

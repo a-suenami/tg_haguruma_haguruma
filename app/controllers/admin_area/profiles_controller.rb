@@ -8,7 +8,7 @@ module AdminArea
     sig { void }
     def edit
       @admin = T.let(current_admin, T.nilable(Admin))
-      @auth0_account = T.let(@admin&.auth0_accounts&.first, T.nilable(Auth0Account))
+      @auth0_account = T.let(@admin&.auth0_account, T.nilable(Auth0Account))
     end
 
     sig { void }
@@ -24,10 +24,10 @@ module AdminArea
         # Reload admin from DB to get fresh data
         # (bypassing current_admin cache which may have been mutated by service)
         @admin = T.let(
-          Admin.includes(:auth0_accounts).find_by(id: session[:admin_id]),
+          Admin.includes(:auth0_account).find_by(id: session[:admin_id]),
           T.nilable(Admin),
         )
-        @auth0_account = T.let(@admin&.auth0_accounts&.first, T.nilable(Auth0Account))
+        @auth0_account = T.let(@admin&.auth0_account, T.nilable(Auth0Account))
         @error_message = T.let(result.err_inner.join(', '), T.nilable(String))
         render :edit, status: :unprocessable_content
       end
