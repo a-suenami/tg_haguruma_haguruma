@@ -39,6 +39,7 @@ gem 'pundit', '~> 2.3.1'
 # Authentication (Auth0)
 gem 'omniauth-auth0', '~> 3.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0'
+gem 'auth0', '~> 5.15.0' # Auth0 Management API client
 
 # Bulk insert
 gem 'activerecord-import', '~> 1.5.0'

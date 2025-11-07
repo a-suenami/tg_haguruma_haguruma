@@ -1,15 +1,36 @@
-<%= form_with(url: form_url, method: form_method, local: true) do |form| %>
+<% if @error_message.present? %>
+  <div class="uk-alert-danger" uk-alert>
+    <a href="#" class="uk-alert-close" uk-close></a>
+    <p><%= @error_message %></p>
+  </div>
+<% end %>
+
+<%= form_with(url: form_url, method: form_method, scope: :admin, local: true) do |form| %>
   <div class="uk-margin">
     <%= form.label :email, 'メールアドレス', class: 'uk-form-label' %>
     <div class="uk-form-controls">
-      <%= form.email_field :email, value: @admin.email, class: 'uk-input', placeholder: 'admin@example.com', required: true %>
+      <% if defined?(is_edit) && is_edit %>
+        <!-- Edit mode: Email is read-only (stored in Auth0Account, not editable) -->
+        <%= form.email_field :email, value: @admin.email, class: "uk-input", placeholder: 'admin@example.com', disabled: true %>
+        <div class="uk-text-muted uk-text-small">※ メールアドレスは変更できません（Auth0アカウントに紐付いています）</div>
+      <% else %>
+        <!-- Create mode: Email is editable (used to create Auth0 user) -->
+        <% email_value = @admin.instance_variable_get(:@_form_email) || @admin.email %>
+        <%= form.email_field :email, value: email_value, class: "uk-input #{'uk-form-danger' if @admin.errors[:email].any?}", placeholder: 'admin@example.com', required: true %>
+        <% if @admin.errors[:email].any? %>
+          <div class="uk-text-danger uk-text-small"><%= @admin.errors[:email].join(', ') %></div>
+        <% end %>
+      <% end %>
     </div>
   </div>
 
   <div class="uk-margin">
     <%= form.label :name, '名前', class: 'uk-form-label' %>
     <div class="uk-form-controls">
-      <%= form.text_field :name, value: @admin.name, class: 'uk-input', placeholder: '管理者名', required: true %>
+      <%= form.text_field :name, value: @admin.name, class: "uk-input #{'uk-form-danger' if @admin.errors[:name].any?}", placeholder: '管理者名', required: true %>
+      <% if @admin.errors[:name].any? %>
+        <div class="uk-text-danger uk-text-small"><%= @admin.errors[:name].join(', ') %></div>
+      <% end %>
     </div>
   </div>
 

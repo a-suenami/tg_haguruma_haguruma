@@ -41,8 +41,8 @@
           <td><%= admin.created_at.strftime('%Y/%m/%d %H:%M') %></td>
           <td>
             <div class="uk-text-right">
-              <%= link_to '編集', edit_ruler_area_tenant_admin_path(@tenant, admin.id), class: 'uk-button uk-button-small uk-button-default uk-margin-small-right' %>
-              <%= link_to '削除', ruler_area_tenant_admin_path(@tenant, admin.id), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'uk-button uk-button-small uk-button-danger' %>
+              <%= link_to '編集', edit_ruler_area_tenant_admin_path(@tenant, admin), class: 'uk-button uk-button-small uk-button-default uk-margin-small-right' %>
+              <%= link_to '削除', ruler_area_tenant_admin_path(@tenant, admin), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'uk-button uk-button-small uk-button-danger' %>
             </div>
           </td>
         </tr>

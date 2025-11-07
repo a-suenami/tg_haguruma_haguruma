@@ -3,6 +3,7 @@
 class Tenant < ApplicationRecord
   extend T::Sig
 
+  has_many :admins, dependent: :destroy
   has_one :oauth_provider
 
   validates :id, :name, presence: true
