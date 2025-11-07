@@ -15,7 +15,7 @@ module Api
         sig { returns(T.nilable(OauthProvider)) }
         def set_user_oauth_provider
           @user_oauth_provider = T.let(
-            Tenant.current&.oauth_providers&.first,
+            Tenant.current&.oauth_provider,
             T.nilable(OauthProvider),
           )
         end

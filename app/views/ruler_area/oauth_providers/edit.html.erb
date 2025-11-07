@@ -1,0 +1,22 @@
+<ul class="uk-breadcrumb">
+  <li>
+    <%= link_to 'テナント', ruler_area_tenants_path %>
+  </li>
+  <li>
+    <%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %>
+  </li>
+  <li>
+    <%= link_to '認証プロバイダ', ruler_area_tenant_oauth_providers_path(@tenant) %>
+  </li>
+  <li>
+    <span>編集</span>
+  </li>
+</ul>
+
+<div class="am-page-header">
+  <h3>認証プロバイダの編集</h3>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body">
+  <%= render 'form', form_url: ruler_area_tenant_oauth_provider_path(@tenant, @oauth_provider), form_method: :patch, submit_label: '更新' %>
+</div>
