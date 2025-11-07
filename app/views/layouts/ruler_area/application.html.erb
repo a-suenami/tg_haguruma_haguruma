@@ -41,10 +41,10 @@
           <ul class="uk-navbar-nav">
             <% if ruler_signed_in? %>
               <li>
-                <a href="#" class="uk-text-small">
+                <%= link_to edit_ruler_area_profiles_path, class: 'uk-text-small' do %>
                   <span uk-icon="icon: user; ratio: 0.8" class="uk-margin-small-right"></span>
                   <%= current_ruler.email %>
-                </a>
+                <% end %>
               </li>
               <li>
                 <%= link_to ruler_area_logout_path, class: 'uk-text-small' do %>

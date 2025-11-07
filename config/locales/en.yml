@@ -69,6 +69,17 @@ en:
       not_found: Admin not found
       errors:
         email_already_exists_in_tenant: An admin with this email address already exists in this tenant
+    profiles:
+      edit:
+        title: Edit Profile
+      form:
+        email: Email Address
+        email_placeholder: Enter your email address
+        password: Password
+        password_placeholder: Leave blank to keep current password
+        password_hint: Leave blank if you don't want to change your password
+      errors:
+        email_already_exists: This email address is already in use
   admin_area:
     auth0:
       already_logged_in: You are already logged in

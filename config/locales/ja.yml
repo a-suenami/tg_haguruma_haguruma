@@ -41,6 +41,17 @@ ja:
       errors:
         email_already_exists: このメールアドレスは既に使用されています
         email_already_exists_in_tenant: このテナントには既にこのメールアドレスの管理者が存在します
+    profiles:
+      edit:
+        title: プロフィール編集
+      form:
+        email: メールアドレス
+        email_placeholder: メールアドレスを入力
+        password: パスワード
+        password_placeholder: 変更しない場合は空欄
+        password_hint: パスワードを変更しない場合は空欄のままにしてください
+      errors:
+        email_already_exists: このメールアドレスは既に使用されています
     oauth_providers:
       created: 認証プロバイダを作成しました
       updated: 認証プロバイダを更新しました
