@@ -55,6 +55,9 @@ module GeneratedPathHelpersModule
   def admin_area_media_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_profiles_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_root_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -71,6 +74,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_contents_singleton_entry_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_profiles_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_profiles_path(*args); end

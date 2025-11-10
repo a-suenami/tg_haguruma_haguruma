@@ -14,6 +14,7 @@ html lang="ja"
     = yield(:head)
 
   body
+    = render 'layouts/admin_area/flash'
     button.mobile-menu-toggle onclick="toggleMobileMenu()" ☰
     .sidebar-overlay onclick="toggleMobileMenu()"
     .layout
@@ -37,7 +38,7 @@ html lang="ja"
 
         - if signed_in?
           .sidebar-footer
-            .sidebar-user
+            = link_to edit_admin_area_profiles_path, class: 'sidebar-user' do
               .sidebar-user-icon
                 svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   circle cx="12" cy="8" r="5"
