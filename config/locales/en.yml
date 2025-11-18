@@ -76,6 +76,17 @@ en:
     content_models:
       created: Content model created successfully
       updated: Content model updated successfully
+      type_labels:
+        collection: Collection
+        singleton: Singleton
+      field_types:
+        text: Short Text
+        richtext: Rich Text
+        media_asset: Media
+      errors:
+        unique_name_taken: "This identifier is already in use by:"
+        field_api_identifier_taken: "This identifier is already in use by:"
+        fields_have_errors: "There are errors in the fields. Please check the details below."
     admins:
       title: Admin Management
       list: Admin List

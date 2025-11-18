@@ -7,9 +7,29 @@
 <div class="uk-margin">
   <%= f.label :unique_name, '識別子', class: 'uk-form-label' %>
   <div class="uk-form-controls">
-    <%= f.text_field :unique_name, required: true, class: 'uk-input', placeholder: '例: blog_post' %>
+    <%= f.text_field :unique_name, required: true, class: "uk-input #{f.object.errors[:unique_name].any? ? 'input-error' : ''}", placeholder: '例: blog_post' %>
+    <% if f.object.errors[:unique_name].any? && (conflicting = f.object.conflicting_content_type) %>
+      <div class="uk-alert-danger uk-margin-small-top" uk-alert style="padding: 10px;">
+        <p style="margin: 0;">
+          <span uk-icon="icon: warning; ratio: 0.8"></span>
+          <%= t('ruler_area.content_models.errors.unique_name_taken') %>
+          <strong><%= conflicting.display_name %></strong>
+          (<%= t("ruler_area.content_models.type_labels.#{conflicting.is_collection ? 'collection' : 'singleton'}") %>)
+        </p>
+      </div>
+    <% end %>
   </div>
 </div>
+
+<style>
+  .input-error {
+    border-color: #f0506e !important;
+  }
+  .input-error:focus {
+    border-color: #f0506e !important;
+    outline: none;
+  }
+</style>
 
 <div class="uk-margin">
   <%= f.label :display_name, '名前', class: 'uk-form-label' %>
@@ -77,15 +97,24 @@
       </tr>
     </thead>
     <tbody id="fields-table-body" uk-sortable="handle: .drag-handle">
-      <% @content_type.fields.each do |field| %>
-        <tr data-field-id="<%= field.id %>">
+      <% @content_type.fields.sort_by { |f| f.position || 0 }.each do |field| %>
+        <tr data-field-id="<%= field.id || 'new' %>" <%= 'style="background-color: #fff5f7;"'.html_safe if field.errors[:api_identifier].any? %>>
           <td class="uk-text-center">
             <a href="#" uk-icon="icon: menu" class="drag-handle" style="cursor: move;"></a>
           </td>
           <td>
-            <code><%= field.api_identifier %></code>
-            <% if field.required? %>
-              <span style="color: #f0506e; font-weight: bold; margin-left: 3px;">*</span>
+            <div>
+              <code style="<%= 'color: #f0506e;' if field.errors[:api_identifier].any? %>"><%= field.api_identifier %></code>
+              <% if field.required? %>
+                <span style="color: #f0506e; font-weight: bold; margin-left: 3px;">*</span>
+              <% end %>
+            </div>
+            <% if field.errors[:api_identifier].any? && (conflicting = field.conflicting_field) %>
+              <small style="color: #f0506e; display: block; margin-top: 4px;">
+                <span uk-icon="icon: warning; ratio: 0.7"></span>
+                <%= t('ruler_area.content_models.errors.field_api_identifier_taken') %>
+                <strong><%= conflicting.label %></strong> (<%= conflicting.field_type_label %>)
+              </small>
             <% end %>
           </td>
           <td>

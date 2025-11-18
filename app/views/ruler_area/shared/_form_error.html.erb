@@ -1,20 +1,22 @@
 <%
-  # Collect all errors from target and nested associations
+  # Collect only direct errors from target (not nested associations)
+  # Nested errors are displayed inline in the form
   all_errors = []
+  has_field_errors = false
 
-  # Add target's own errors
-  all_errors.concat(target.errors.full_messages) if target.errors.any?
-
-  # Add nested fields errors if they exist
-  if target.respond_to?(:fields) && target.fields.present?
-    target.fields.each_with_index do |field, index|
-      if field.errors.any?
-        field_name = field.label.presence || field.api_identifier.presence || "フィールド #{index + 1}"
-        field.errors.full_messages.each do |msg|
-          all_errors << "#{field_name}: #{msg}"
-        end
-      end
+  # Add only target's own direct attribute errors
+  target.errors.each do |error|
+    # Check if there are nested field errors
+    if error.attribute.to_s.start_with?('fields.')
+      has_field_errors = true
+    else
+      all_errors << error.full_message
     end
+  end
+
+  # Add a general message if there are field errors
+  if has_field_errors
+    all_errors << I18n.t('ruler_area.content_models.errors.fields_have_errors')
   end
 %>
 

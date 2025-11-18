@@ -29,6 +29,30 @@ class ContentType::Field < ApplicationRecord
   # Auto-set position before create
   before_validation :set_position, on: :create
 
+  # Find conflicting field for uniqueness validation
+  def conflicting_field
+    return nil unless errors[:api_identifier].any?
+    return nil if api_identifier.blank?
+    return nil unless content_type.present?
+
+    content_type.fields.reject(&:marked_for_destruction?).find do |sibling|
+      sibling != self && sibling.api_identifier == api_identifier
+    end
+  end
+
+  def field_type_label
+    case field_type
+    when 'text'
+      I18n.t('ruler_area.content_models.field_types.text')
+    when 'richtext'
+      I18n.t('ruler_area.content_models.field_types.richtext')
+    when 'media_asset'
+      I18n.t('ruler_area.content_models.field_types.media_asset')
+    else
+      field_type
+    end
+  end
+
   private
 
   def api_identifier_unique_in_siblings

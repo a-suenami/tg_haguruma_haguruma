@@ -47,6 +47,17 @@ ja:
     content_models:
       created: コンテンツモデルを作成しました
       updated: コンテンツモデルを更新しました
+      type_labels:
+        collection: Collection
+        singleton: Singleton
+      field_types:
+        text: ショートテキスト
+        richtext: リッチテキスト
+        media_asset: メディア
+      errors:
+        unique_name_taken: "この識別子は既に使用されています："
+        field_api_identifier_taken: "この識別子は既に使用されています："
+        fields_have_errors: "フィールドにエラーがあります。詳細は下記をご確認ください。"
     admins:
       title: 管理者管理
       list: 管理者一覧
