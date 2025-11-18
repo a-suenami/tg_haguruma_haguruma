@@ -40,8 +40,8 @@ module RulerArea
     sig { params(field: T.untyped, error: T.untyped).returns(String) }
     def format_field_error(field, error)
       conflicting = field.conflicting_field
-      identifier_label = t('ruler_area.content_models.field_identifier_label')
-      field_name_prefix = t('ruler_area.content_models.field_label_prefix')
+      identifier_label = I18n.t('ruler_area.content_models.field_identifier_label')
+      field_name_prefix = I18n.t('ruler_area.content_models.field_label_prefix')
 
       base_message = "#{identifier_label} '#{field.api_identifier}' " \
                      "(#{field_name_prefix}: <strong>#{field.label}</strong>) #{error.message}"
@@ -57,12 +57,12 @@ module RulerArea
     sig { params(target: T.untyped, error: T.untyped).returns(String) }
     def format_content_type_identifier_error(target, error)
       conflicting = target.conflicting_content_type
-      identifier_label = t('ruler_area.content_models.content_type_identifier_label')
+      identifier_label = I18n.t('ruler_area.content_models.content_type_identifier_label')
 
       return "#{identifier_label}#{error.message}" unless conflicting
 
       type_key = conflicting.is_collection ? 'collection' : 'singleton'
-      type_label = t("ruler_area.content_models.type_labels.#{type_key}")
+      type_label = I18n.t("ruler_area.content_models.type_labels.#{type_key}")
       conflict_info = "：<strong>#{conflicting.display_name}</strong> (#{type_label})"
 
       "#{identifier_label} '#{target.unique_name}' #{error.message}#{conflict_info}".html_safe
