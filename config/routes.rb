@@ -22,17 +22,23 @@ Rails.application.routes.draw do
 
     root to: 'tenants#index', as: :root
 
+    # Profile management
+    resource :profiles, only: [:edit, :update]
+
     resources :tenants do
       member do
         get :admin_area
       end
 
       resources :admins, except: [:show]
-      resources :oauth_providers, only: [:index]
+      resources :oauth_providers, except: [:show]
       resources :content_models, except: [:edit, :destroy]
     end
   end
 
   # Admin Area routes
   draw :admin
+
+  # API routes
+  draw :'api/v1/auth'
 end

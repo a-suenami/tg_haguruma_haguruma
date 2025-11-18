@@ -150,6 +150,21 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["tenant_id", "media_type", "id"], name: "index_media_assets_on_tenant_id_and_media_type_and_id", unique: true
   end
 
+  create_table "oauth_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.string "kind", default: "user", null: false, comment: "user or admin"
+    t.string "client_id", null: false
+    t.string "client_secret"
+    t.string "endpoint_base", null: false
+    t.string "scopes", default: "", null: false
+    t.string "keypath_uid", comment: "UIDを取得するためのkeypath (デフォルト: sub)"
+    t.integer "session_expires_in", default: 7776000, null: false, comment: "セッショントークンの有効期間 (90 days)"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "kind"], name: "index_oauth_providers_on_tenant_id_and_kind", unique: true, where: "((kind)::text = 'user'::text)"
+    t.index ["tenant_id"], name: "index_oauth_providers_on_tenant_id"
+  end
+
   create_table "ruler_auth0_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "ruler_id", null: false
     t.uuid "auth0_account_id", null: false
@@ -165,6 +180,19 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "session_tokens", id: :string, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expires_at"], name: "idx_session_tokens_expires_at"
+    t.index ["tenant_id"], name: "idx_session_tokens_tenant_id"
+    t.index ["updated_at"], name: "idx_session_tokens_updated_at"
+    t.index ["user_id"], name: "idx_session_tokens_user_id"
+    t.index ["user_id"], name: "index_session_tokens_on_user_id"
+  end
+
   create_table "tenants", id: :string, force: :cascade do |t|
     t.string "name"
     t.string "user_page_domain"
@@ -174,9 +202,14 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
+    t.uuid "oauth_provider_id", null: false
+    t.string "uid", null: false, comment: "IDP platform user ID"
+    t.datetime "last_authenticated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["oauth_provider_id"], name: "index_users_on_oauth_provider_id"
     t.index ["tenant_id", "id"], name: "index_users_on_tenant_id_and_id", unique: true
+    t.index ["tenant_id", "uid"], name: "index_users_on_tenant_id_and_uid", unique: true
   end
 
   add_foreign_key "admin_auth0_accounts", "admins", name: "fk_admin_auth0_accounts_admins"
@@ -196,7 +229,11 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "content_type_fields", "content_type_field_texts", column: "text_id"
   add_foreign_key "content_type_fields", "content_types", column: ["tenant_id", "content_type_id"], primary_key: ["tenant_id", "id"]
   add_foreign_key "content_types", "tenants"
+  add_foreign_key "oauth_providers", "tenants"
   add_foreign_key "ruler_auth0_accounts", "auth0_accounts", name: "fk_ruler_auth0_accounts_auth0_accounts"
   add_foreign_key "ruler_auth0_accounts", "rulers", name: "fk_ruler_auth0_accounts_rulers"
+  add_foreign_key "session_tokens", "tenants"
+  add_foreign_key "session_tokens", "users"
+  add_foreign_key "users", "oauth_providers"
   add_foreign_key "users", "tenants"
 end

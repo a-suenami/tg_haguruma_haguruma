@@ -3,11 +3,11 @@
 class Auth0Account < ApplicationRecord
   extend T::Sig
 
-  # 1 auth0_account có thể là admin của nhiều tenants
+  # One auth0_account can be admin of multiple tenants (1-to-many)
   has_many :admin_auth0_accounts, class_name: 'Admin::Auth0Account', dependent: :destroy
   has_many :admins, through: :admin_auth0_accounts
 
-  # 1 auth0_account chỉ có thể là 1 ruler (1-to-1)
+  # One auth0_account can only be one ruler (1-to-1)
   has_one :ruler_auth0_account, class_name: 'Ruler::Auth0Account', dependent: :destroy
   has_one :ruler, through: :ruler_auth0_account
 

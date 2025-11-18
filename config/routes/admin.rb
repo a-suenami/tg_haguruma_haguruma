@@ -9,6 +9,9 @@ namespace :admin_area, path: :admin do
   # root to: 'dashboard#index'
   # get 'dashboard', to: 'dashboard#index'
 
+  # Profile management
+  resource :profiles, only: [:edit, :update]
+
   namespace :contents do
     root to: 'root#index'
     get :mobile, to: 'root#mobile', as: :mobile

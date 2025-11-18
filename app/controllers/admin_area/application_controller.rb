@@ -18,7 +18,10 @@ class AdminArea::ApplicationController < ApplicationController
 
   sig { returns(T.nilable(Admin)) }
   def current_admin
-    @current_admin ||= T.let(Admin.find_by(id: session[:admin_id]), T.nilable(Admin))
+    @current_admin ||= T.let(
+      Admin.includes(:auth0_accounts).find_by(id: session[:admin_id]),
+      T.nilable(Admin),
+    )
   end
 
   sig { returns(T::Boolean) }

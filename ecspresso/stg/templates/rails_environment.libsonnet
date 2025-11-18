@@ -30,5 +30,17 @@
     {
       "name": "AWS_CLOUDFRONT_MEDIA_KEY_PAIR_PRIVATE_PUBLIC_KEY_ID",
       "value": "K1I5ANI3508MDU"
+    },
+    {
+      "name": "AUTH0_RULER_DOMAIN",
+      "value": "haguruma-stg.jp.auth0.com"
+    },
+    {
+      "name": "AUTH0_ADMIN_DOMAIN",
+      "value": "haguruma-stg.jp.auth0.com"
+    },
+    {
+      "name": "AUTH0_M2M_DOMAIN",
+      "value": "haguruma-stg.jp.auth0.com"
     }
 ]

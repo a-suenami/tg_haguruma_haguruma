@@ -22,27 +22,30 @@ module RulerArea
       Rails.logger.info "Auth0 callback: uid=#{uid}, email=#{email}"
 
       # Find Ruler by Auth0 UID (simplified with has_one relationship)
-      begin
-        ruler = Auth0Account.find_by!(uid:).ruler
+      auth0_account = Auth0Account.find_by(uid:)
 
-        unless ruler
-          Rails.logger.warn "Ruler not found for auth0_account: uid=#{uid}"
-          reset_session
-          flash[:alert] = t('ruler_area.auth0.no_ruler_access')
-          redirect_to auth0_logout_url, allow_other_host: true
-          return
-        end
-
-        # Create session
-        session[:ruler_id] = ruler.id
-
-        redirect_to ruler_area_root_path, notice: t('ruler_area.auth0.logged_in')
-      rescue ActiveRecord::RecordNotFound
+      unless auth0_account
         Rails.logger.warn "Auth0 account not found: uid=#{uid}, email=#{email}"
         reset_session
         flash[:alert] = t('ruler_area.auth0.account_not_registered')
         redirect_to auth0_logout_url, allow_other_host: true
+        return
       end
+
+      ruler = auth0_account.ruler
+
+      unless ruler
+        Rails.logger.warn "Ruler not found for auth0_account: uid=#{uid}"
+        reset_session
+        flash[:alert] = t('ruler_area.auth0.no_ruler_access')
+        redirect_to auth0_logout_url, allow_other_host: true
+        return
+      end
+
+      # Create session
+      session[:ruler_id] = ruler.id
+
+      redirect_to ruler_area_root_path, notice: t('ruler_area.auth0.logged_in')
     end
 
     def logout

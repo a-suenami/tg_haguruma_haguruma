@@ -76,6 +76,34 @@ en:
     content_models:
       created: Content model created successfully
       updated: Content model updated successfully
+    admins:
+      title: Admin Management
+      list: Admin List
+      new: Create New Admin
+      edit: Edit Admin
+      show: Admin Details
+      email: Email Address
+      name: Name
+      actions: Actions
+      created_at: Created At
+      confirm_delete: Are you sure you want to delete this admin?
+      created: Admin created successfully
+      updated: Admin updated successfully
+      destroyed: Admin deleted successfully
+      not_found: Admin not found
+      errors:
+        email_already_exists_in_tenant: An admin with this email address already exists in this tenant
+    profiles:
+      edit:
+        title: Edit Profile
+      form:
+        email: Email Address
+        email_placeholder: Enter your email address
+        password: Password
+        password_placeholder: Leave blank to keep current password
+        password_hint: Leave blank if you don't want to change your password
+      errors:
+        email_already_exists: This email address is already in use
   admin_area:
     auth0:
       already_logged_in: You are already logged in
@@ -91,6 +119,18 @@ en:
       updated: Admin updated successfully
       destroyed: Admin deleted successfully
       not_found: Admin not found
+      errors:
+        email_already_exists: This email address is already in use
+    profiles:
+      edit:
+        title: Profile Settings
+      form:
+        email: Email Address
+        password: Password
+        password_hint: Leave blank if you don't want to change it
+        submit: Update
+      errors:
+        email_already_exists: This email address is already in use
   helpers:
     messages:
       created: Created successfully
@@ -111,3 +151,18 @@ en:
   date:
     formats:
       default: '%Y/%m/%d'
+  errors:
+    messages:
+      not_found: Resource not found
+      error_occurred: An error occurred
+      parameter_missing: Required parameter is missing
+      something_went_wrong: Something went wrong
+      bad_gateway: Service temporarily unavailable
+      unauthorized: Authentication required
+      forbidden: Access forbidden
+      invalid_token: Invalid authentication token
+      token_verification_failed: Token verification failed
+      token_expired: Token has expired
+      invalid_issuer: Invalid token issuer
+      invalid_audience: Invalid token audience
+      incorrect_algorithm: Incorrect token algorithm
