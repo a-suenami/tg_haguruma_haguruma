@@ -31,7 +31,8 @@
       <!-- Hidden inputs for existing fields -->
       <div id="hidden-fields-container" style="display: none;">
         <%= f.fields_for :fields do |field_form| %>
-          <div data-field-id="<%= field_form.object.id || 'new' %>">
+          <% unique_id = field_form.object.id || "new_#{field_form.object.object_id}" %>
+          <div data-field-id="<%= unique_id %>">
             <%= field_form.hidden_field :id %>
             <%= field_form.hidden_field :tenant_id, value: @tenant.id %>
             <%= field_form.hidden_field :label %>
@@ -59,23 +60,15 @@
           </thead>
           <tbody id="fields-table-body" uk-sortable="handle: .drag-handle">
             <% @content_type.fields.sort_by(&:position).each do |field| %>
-              <tr data-field-id="<%= field.id || 'new' %>" <%= 'style="background-color: #fff5f7;"'.html_safe if field.errors[:api_identifier].any? %>>
+              <% unique_id = field.id || "new_#{field.object_id}" %>
+              <tr data-field-id="<%= unique_id %>">
                 <td class="uk-text-center">
                   <a href="#" uk-icon="icon: menu" class="drag-handle" style="cursor: move;"></a>
                 </td>
                 <td>
-                  <div>
-                    <code style="<%= 'color: #f0506e;' if field.errors[:api_identifier].any? %>"><%= field.api_identifier %></code>
-                    <% if field.required? %>
-                      <span style="color: #f0506e; font-weight: bold; margin-left: 3px;">*</span>
-                    <% end %>
-                  </div>
-                  <% if field.errors[:api_identifier].any? && (conflicting = field.conflicting_field) %>
-                    <small style="color: #f0506e; display: block; margin-top: 4px;">
-                      <span uk-icon="icon: warning; ratio: 0.7"></span>
-                      <%= t('ruler_area.content_models.errors.field_api_identifier_taken') %>
-                      <strong><%= conflicting.label %></strong> (<%= conflicting.field_type_label %>)
-                    </small>
+                  <code><%= field.api_identifier %></code>
+                  <% if field.required? %>
+                    <span style="color: #f0506e; font-weight: bold; margin-left: 3px;">*</span>
                   <% end %>
                 </td>
                 <td>
@@ -93,12 +86,12 @@
                   <div uk-dropdown="mode: click">
                     <ul class="uk-nav uk-dropdown-nav">
                       <li>
-                        <a href="#" onclick="editField(event, '<%= field.id %>', '<%= field.field_type %>', '<%= j(field.api_identifier) %>', '<%= j(field.label) %>', '<%= j(field.description.to_s) %>', <%= field.required? %>)">
+                        <a href="#" onclick="editField(event, '<%= unique_id %>', '<%= field.field_type %>', '<%= j(field.api_identifier) %>', '<%= j(field.label) %>', '<%= j(field.description.to_s) %>', <%= field.required? %>)">
                           <span uk-icon="icon: pencil; ratio: 0.8"></span> 編集
                         </a>
                       </li>
                       <li>
-                        <a href="#" onclick="confirmRemoveField(event, '<%= field.id %>')" style="color: #f0506e;">
+                        <a href="#" onclick="confirmRemoveField(event, '<%= unique_id %>')" style="color: #f0506e;">
                           <span uk-icon="icon: trash; ratio: 0.8"></span> 削除
                         </a>
                       </li>

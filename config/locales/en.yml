@@ -76,6 +76,9 @@ en:
     content_models:
       created: Content model created successfully
       updated: Content model updated successfully
+      content_type_identifier_label: "Content Model Identifier"
+      field_identifier_label: "Field Identifier"
+      field_label_prefix: "Name"
       type_labels:
         collection: Collection
         singleton: Singleton
@@ -86,7 +89,6 @@ en:
       errors:
         unique_name_taken: "This identifier is already in use by:"
         field_api_identifier_taken: "This identifier is already in use by:"
-        fields_have_errors: "There are errors in the fields. Please check the details below."
     admins:
       title: Admin Management
       list: Admin List

@@ -1,24 +1,4 @@
-<%
-  # Collect only direct errors from target (not nested associations)
-  # Nested errors are displayed inline in the form
-  all_errors = []
-  has_field_errors = false
-
-  # Add only target's own direct attribute errors
-  target.errors.each do |error|
-    # Check if there are nested field errors
-    if error.attribute.to_s.start_with?('fields.')
-      has_field_errors = true
-    else
-      all_errors << error.full_message
-    end
-  end
-
-  # Add a general message if there are field errors
-  if has_field_errors
-    all_errors << I18n.t('ruler_area.content_models.errors.fields_have_errors')
-  end
-%>
+<% all_errors = format_form_errors(target) %>
 
 <% if all_errors.any? %>
   <div class="uk-alert-danger" uk-alert>
