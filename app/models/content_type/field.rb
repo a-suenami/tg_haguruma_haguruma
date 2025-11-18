@@ -33,7 +33,7 @@ class ContentType::Field < ApplicationRecord
   def conflicting_field
     return nil unless errors[:api_identifier].any?
     return nil if api_identifier.blank?
-    return nil unless content_type.present?
+    return nil if content_type.blank?
 
     content_type.fields.reject(&:marked_for_destruction?).find do |sibling|
       sibling != self && sibling.api_identifier == api_identifier

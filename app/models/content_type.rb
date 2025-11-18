@@ -23,8 +23,8 @@ class ContentType < ApplicationRecord
     return nil if unique_name.blank?
 
     ContentType.unscoped
-               .where(tenant_id: tenant_id, unique_name: unique_name)
-               .where.not(id: id)
+               .where(tenant_id:, unique_name:)
+               .where.not(id:)
                .first
   end
 end
