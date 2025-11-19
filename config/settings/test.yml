@@ -5,12 +5,12 @@ aws:
   s3:
     media:
       region: ap-northeast-1
-      bucket_name: triple-media-test
+      bucket_name: haguruma-media-test
       access_key_id: access_key_id
       secret_access_key: secret_access_key
     private:
       region: ap-northeast-1
-      bucket_name: triple-private-test
+      bucket_name: haguruma-private-test
       access_key_id: access_key_id
       secret_access_key: secret_access_key
   cloudfront:
@@ -22,7 +22,7 @@ aws:
           private_key: "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA6T7kljIAoxgOSDT7U1XLVq9Lp/VOK7PqoEOCEmsKL/50O229\nQYtxli5WGKHw7WKbfy7jG2CXyLP76fGGdoNeFGjczu2eP9SImeFdRKO2BI0ee5Rt\nRx04QCzmqozGlHixV+Lb4Opp9rFR+iLV0YFQ03p/LaSiNAQdzBJI+9dyRGvuP6TB\nQxvptN8EWyNjn9QR67fDfYowNoBi+/jVAeUNJ3SoHzRaqlYZS30g8OzAURNYvt5e\nnkY6Lk9YsX5stChY2o3fCiPeC8i28Ov2W9uQEQeGgmq7awXjwPPb37SY+VL8BiAN\nit49UD8mt1WE8ePVZ7rCma9m0V6jQSmS6lLC/QIDAQABAoIBAQCWuv4d0dJ3k2Qn\nZZXFFPyC2GWb9Pq/Y1WMnBPCs0myGk4i2Zgkc2jEFM2uvXhk8ARs/G/nkVSFb0qs\ntFig3eQ+bEXFs+lAdqiQSQNtCB7ocgnw8spr2oYvctTeAnuSFy0EDqbpgpNXyN+h\nNkHXUipZgCAP7wSjeMWIy4g+t8wwShODU8U6qZIU+N5jcPQju3AnRJl/XiXPJcB5\n/LbaUVORiptxJ4DuOxCgoAF37GAWAPd+BpYBJdWKUY+O6YP8KYo8HRLWIJZvfkaz\n1+9jHG7yOaO07wemsMxJ3DiJzKGPiqzJB7+wVM3lx5cXAFnBAzR0UrQjdMEtglQh\n1xDLsyABAoGBAPvzeJgfHNojcqA75mtZOuLNwC+AP4Xi/Q9r0je+9pis7xi4oPXw\nQMaO/YFs1Q9fefqB5CeGPJ63exElu6SUdQTn2jnoxEtuqackU0zuokluFh9ZV19d\nLyJcQsk98Ib20QWj3mfVsbzMCbB6W9eQs147d0qS2v8rIJ8L3UtXGCyBAoGBAOz+\nd70fEjrOxSdPys1nSj4XXKOJSUex7pVtKFmdyuCWMVdVJknOUhDmkKHKB33dYTFe\njGvaQ03+9WR12UxkrAknj0mGB/ilUEBWIX3Ww1656Km1MlQWyDr+gtRP6kzVp8yt\nkZOS0D+O0GpZ2PvOTN29e80xnrN1ekJF3W4loQh9AoGBAPdbY6xF73eikakK5f/C\njPOa+PIpwTPbVIPNYYflbgkaz2q/6RdMFuxZ+j0U8mCzZfgxiiPbwKw6ixKcrwq3\nzeNRFYkBI6bDMMCuAzJmnuHkuMdyWTuBKwNa/R7CNuDqdPBKn9HllSg8Uc73ci/D\nGraLP2TxpRwb5V0AsvSCv3MBAoGAHa2UMxPEBadFGzIr1GMd8f6c9EHJ8nd+yCme\nRvKyqENGtIgOPmne7wzgidIx8/oYJMWRUiRID2lhM45qgt2MiazxjaSCNQoGrbfb\ng9W0K5WeZDozrkIYGwMqQQos7ihHViNaOp/FAmCRCvBrcsUX7SDAcybGl/SbNddn\n7lY5/0UCgYANiGdVVLfki8IPjrt87b1oIHxvLvB2No0Vojj7ERdTYpQptrWlR5Lk\nMCUjYSJxN5c3M2dBDT1uyBW22KTZz8HjDWeV3/Y4TCKXw1mDPrDJNVVXevrKS81d\n1AZ5guT7erqMdomGeuRURhpo2+vRHeZsKOCTRpnBI8WF6ndHGG+aSA==\n-----END RSA PRIVATE KEY-----"
   dynamodb:
     app_constant:
-      table_name: triple-app-constant-test
+      table_name: haguruma-app-constant-test
 blastengine:
   rate_limit: 1
 qkeys:
