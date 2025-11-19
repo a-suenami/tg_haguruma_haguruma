@@ -14,11 +14,11 @@ local memory_reservation = 256;
       "entryPoint": [],
       "environment": app_environment,
       "essential": true,
-      "image": "430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-prod:" + app_image_tag,
+      "image": "843188904699.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-prod:" + app_image_tag,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/triple-main-oneshot/app",
+          "awslogs-group": "/ecs/haguruma-main-oneshot/app",
           "awslogs-region": "ap-northeast-1",
           "awslogs-stream-prefix": "app"
         }
@@ -32,8 +32,8 @@ local memory_reservation = 256;
       "volumesFrom": []
     }
   ],
-  "executionRoleArn": "arn:aws:iam::430013787765:role/triple-main-ecs-task-execution-prod",
-  "family": "triple-main-oneshot-prod",
+  "executionRoleArn": "arn:aws:iam::843188904699:role/haguruma-main-ecs-task-execution-prod",
+  "family": "haguruma-main-oneshot-prod",
   "placementConstraints": [],
   "requiresCompatibilities": [
     "EC2"
@@ -45,10 +45,10 @@ local memory_reservation = 256;
     },
     {
       "key": "project",
-      "value": "triple"
+      "value": "haguruma"
     }
   ],
-  "taskRoleArn": "arn:aws:iam::430013787765:role/triple-main-ecs-task-prod",
+  "taskRoleArn": "arn:aws:iam::843188904699:role/haguruma-main-ecs-task-prod",
   "volumes": []
 }
 
