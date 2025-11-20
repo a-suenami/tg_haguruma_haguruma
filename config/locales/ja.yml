@@ -41,6 +41,23 @@ ja:
       errors:
         email_already_exists: このメールアドレスは既に使用されています
         email_already_exists_in_tenant: このテナントには既にこのメールアドレスの管理者が存在します
+    rulers:
+      title: Ruler管理
+      list: Ruler一覧
+      new: 新規Ruler作成
+      edit: Ruler編集
+      show: Ruler詳細
+      email: メールアドレス
+      name: 名前
+      actions: 操作
+      created_at: 作成日時
+      confirm_delete: このRulerを削除してもよろしいですか？
+      created: Rulerを作成しました
+      updated: Rulerを更新しました
+      destroyed: Rulerを削除しました
+      not_found: Rulerが見つかりません
+      errors:
+        email_already_exists: このメールアドレスは既に使用されています
     profiles:
       edit:
         title: プロフィール編集

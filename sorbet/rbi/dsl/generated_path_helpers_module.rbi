@@ -82,6 +82,9 @@ module GeneratedPathHelpersModule
   def edit_ruler_area_profiles_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_ruler_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_admin_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -98,6 +101,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def new_rails_conductor_inbound_email_source_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_ruler_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_admin_path(*args); end
@@ -206,6 +212,12 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_root_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_ruler_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_rulers_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_admin_path(*args); end
