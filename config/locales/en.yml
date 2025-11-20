@@ -31,11 +31,32 @@ en:
   activerecord:
     models:
       tenant: Tenant
+      content_type: Content Model
+      content_type/field: Field
     attributes:
       tenant:
         id: ID
         name: Name
         user_page_domain: User page domain
+        created_at: Created at
+        updated_at: Updated at
+      content_type:
+        tenant_id: Tenant
+        unique_name: Identifier
+        display_name: Name
+        description: Description
+        is_collection: Content Model Type
+        created_at: Created at
+        updated_at: Updated at
+      content_type/field:
+        tenant_id: Tenant
+        content_type_id: Content Model
+        api_identifier: Identifier
+        label: Name
+        description: Description
+        field_type: Type
+        required: Required
+        position: Position
         created_at: Created at
         updated_at: Updated at
     errors:
@@ -52,6 +73,22 @@ en:
       no_ruler_access: You do not have Ruler access rights. Logged out from Auth0.
       logged_in: Successfully logged in
       authentication_failed: "Authentication failed: %{error}"
+    content_models:
+      created: Content model created successfully
+      updated: Content model updated successfully
+      content_type_identifier_label: "Content Model Identifier"
+      field_identifier_label: "Field Identifier"
+      field_label_prefix: "Name"
+      type_labels:
+        collection: Collection
+        singleton: Singleton
+      field_types:
+        text: Short Text
+        richtext: Rich Text
+        media_asset: Media
+      errors:
+        unique_name_taken: "This identifier is already in use by:"
+        field_api_identifier_taken: "This identifier is already in use by:"
     admins:
       title: Admin Management
       list: Admin List

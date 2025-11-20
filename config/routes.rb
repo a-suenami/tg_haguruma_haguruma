@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 
       resources :admins, except: [:show]
       resources :oauth_providers, except: [:show]
+      resources :content_models, except: [:edit, :destroy]
     end
   end
 

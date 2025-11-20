@@ -2,11 +2,32 @@ ja:
   activerecord:
     models:
       tenant: テナント
+      content_type: コンテンツモデル
+      content_type/field: フィールド
     attributes:
       tenant:
         id: ID
         name: テナント名
         user_page_domain: ユーザー画面ドメイン
+        created_at: 作成日時
+        updated_at: 更新日時
+      content_type:
+        tenant_id: テナント
+        unique_name: 識別子
+        display_name: 名前
+        description: 説明
+        is_collection: コンテンツモデルタイプ
+        created_at: 作成日時
+        updated_at: 更新日時
+      content_type/field:
+        tenant_id: テナント
+        content_type_id: コンテンツモデル
+        api_identifier: 識別子
+        label: 名前
+        description: 説明
+        field_type: 種別
+        required: 必須
+        position: 表示順
         created_at: 作成日時
         updated_at: 更新日時
     errors:
@@ -23,6 +44,22 @@ ja:
       no_ruler_access: Rulerアクセス権がありません。Auth0からログアウトしました。
       logged_in: ログインしました
       authentication_failed: "認証に失敗しました: %{error}"
+    content_models:
+      created: コンテンツモデルを作成しました
+      updated: コンテンツモデルを更新しました
+      content_type_identifier_label: "コンテンツモデルの識別子"
+      field_identifier_label: "フィールドの識別子"
+      field_label_prefix: "名前"
+      type_labels:
+        collection: Collection
+        singleton: Singleton
+      field_types:
+        text: ショートテキスト
+        richtext: リッチテキスト
+        media_asset: メディア
+      errors:
+        unique_name_taken: "この識別子は既に使用されています："
+        field_api_identifier_taken: "この識別子は既に使用されています："
     admins:
       title: 管理者管理
       list: 管理者一覧
