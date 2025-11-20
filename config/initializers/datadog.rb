@@ -3,7 +3,7 @@
 # ==============================================================================
 if Settings.datadog.enabled
   Datadog.configure do |c|
-    c.tracing.instrument :rails, service_name: 'triple-rails'
+    c.tracing.instrument :rails, service_name: 'haguruma-rails'
 
     c.env = Rails.env
     c.tracing.analytics.enabled = true
