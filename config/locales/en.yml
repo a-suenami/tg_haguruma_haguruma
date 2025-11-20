@@ -69,6 +69,23 @@ en:
       not_found: Admin not found
       errors:
         email_already_exists_in_tenant: An admin with this email address already exists in this tenant
+    rulers:
+      title: Ruler Management
+      list: Ruler List
+      new: Create New Ruler
+      edit: Edit Ruler
+      show: Ruler Details
+      email: Email Address
+      name: Name
+      actions: Actions
+      created_at: Created At
+      confirm_delete: Are you sure you want to delete this ruler?
+      created: Ruler created successfully
+      updated: Ruler updated successfully
+      destroyed: Ruler deleted successfully
+      not_found: Ruler not found
+      errors:
+        email_already_exists: A ruler with this email address already exists
     profiles:
       edit:
         title: Edit Profile

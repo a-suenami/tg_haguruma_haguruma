@@ -25,6 +25,9 @@ Rails.application.routes.draw do
     # Profile management
     resource :profiles, only: [:edit, :update]
 
+    # Ruler management
+    resources :rulers, except: [:show]
+
     resources :tenants do
       member do
         get :admin_area

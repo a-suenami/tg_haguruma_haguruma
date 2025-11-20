@@ -33,6 +33,9 @@
             <li class="<%= 'uk-active' if controller_name == 'tenants' && action_name == 'index' %>">
               <%= link_to 'テナント', ruler_area_tenants_path %>
             </li>
+            <li class="<%= 'uk-active' if controller_name == 'rulers' %>">
+              <%= link_to 'Ruler管理', ruler_area_rulers_path %>
+            </li>
             <li><a href="#">SIDEKIQ</a></li>
             <li><a href="#">マスタ</a></li>
           </ul>
