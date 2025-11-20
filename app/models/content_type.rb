@@ -16,4 +16,15 @@ class ContentType < ApplicationRecord
 
   scope :collections, -> { where(is_collection: true) }
   scope :singles, -> { where(is_collection: false) }
+
+  # Find conflicting content type for uniqueness validation
+  def conflicting_content_type
+    return nil unless errors[:unique_name].any?
+    return nil if unique_name.blank?
+
+    ContentType.unscoped
+               .where(tenant_id:, unique_name:)
+               .where.not(id:)
+               .first
+  end
 end
