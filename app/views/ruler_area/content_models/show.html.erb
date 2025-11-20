@@ -78,8 +78,16 @@
                   <% end %>
                 </td>
                 <td>
-                  <span uk-icon="icon: <%= field.field_type == 'text' ? 'pencil' : 'file-edit' %>"></span>
-                  <%= field.field_type == 'text' ? 'ショートテキスト' : 'リッチテキスト' %>
+                  <%
+                    icon = case field.field_type
+                           when 'text' then 'pencil'
+                           when 'richtext' then 'file-edit'
+                           when 'media_asset' then 'image'
+                           else 'file'
+                           end
+                  %>
+                  <span uk-icon="icon: <%= icon %>"></span>
+                  <%= field.field_type_label %>
                 </td>
                 <td class="uk-text-center">
                   <a href="#" uk-icon="icon: more-vertical"></a>

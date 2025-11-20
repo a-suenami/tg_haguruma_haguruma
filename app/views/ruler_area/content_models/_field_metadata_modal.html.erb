@@ -13,7 +13,7 @@
       <div class="uk-margin">
         <div class="uk-card uk-card-default uk-card-body uk-card-small">
           <div style="margin-bottom: 10px;">
-            <span uk-icon="icon: pencil; ratio: 1.5"></span>
+            <span id="selected-field-type-icon" uk-icon="icon: pencil; ratio: 1.5"></span>
             <span id="selected-field-type-label" style="margin-left: 10px; font-weight: 600;">ショートテキスト</span>
           </div>
           <p class="uk-text-small uk-text-muted" id="selected-field-type-desc">タイトルや名前などの短いテキスト</p>
@@ -65,7 +65,8 @@ let selectedFieldType = '';
 let editingFieldId = null; // null = add mode, otherwise = edit mode
 const fieldTypeLabels = {
   text: { label: 'ショートテキスト', desc: 'タイトルや名前などの短いテキスト', icon: 'pencil' },
-  richtext: { label: 'リッチテキスト', desc: 'スタイルや画像、動画などのメディアを含めたテキスト', icon: 'file-edit' }
+  richtext: { label: 'リッチテキスト', desc: 'スタイルや画像、動画などのメディアを含めたテキスト', icon: 'file-edit' },
+  media_asset: { label: 'メディア', desc: '画像や動画、PDFなどのファイル用', icon: 'image' }
 };
 
 function addField(fieldType) {
@@ -76,6 +77,10 @@ function addField(fieldType) {
   // Update metadata modal with field type info
   document.getElementById('selected-field-type-label').textContent = info.label;
   document.getElementById('selected-field-type-desc').textContent = info.desc;
+
+  // Update icon
+  const iconElement = document.getElementById('selected-field-type-icon');
+  iconElement.setAttribute('uk-icon', `icon: ${info.icon}; ratio: 1.5`);
 
   // Clear previous values
   document.getElementById('field-identifier').value = '';
@@ -103,6 +108,10 @@ function editField(event, fieldId, fieldType, identifier, name, description, req
   // Update metadata modal with field type info
   document.getElementById('selected-field-type-label').textContent = info.label;
   document.getElementById('selected-field-type-desc').textContent = info.desc;
+
+  // Update icon
+  const iconElement = document.getElementById('selected-field-type-icon');
+  iconElement.setAttribute('uk-icon', `icon: ${info.icon}; ratio: 1.5`);
 
   // Populate with existing values
   document.getElementById('field-identifier').value = identifier;
@@ -219,8 +228,9 @@ function addNewField(identifier, name, description, required) {
     tableBody.dataset.sortableInitialized = 'true';
   }
 
-  const fieldTypeLabel = selectedFieldType === 'text' ? 'ショートテキスト' : 'リッチテキスト';
-  const fieldTypeIcon = selectedFieldType === 'text' ? 'pencil' : 'file-edit';
+  const info = fieldTypeLabels[selectedFieldType];
+  const fieldTypeLabel = info ? info.label : selectedFieldType;
+  const fieldTypeIcon = info ? info.icon : 'file';
 
   const rowHtml = `
     <tr data-field-id="${timestamp}">
@@ -282,8 +292,9 @@ function updateExistingField(fieldId, identifier, name, description, required) {
   // Update table row
   const row = document.querySelector(`tr[data-field-id="${fieldId}"]`);
   if (row) {
-    const fieldTypeLabel = selectedFieldType === 'text' ? 'ショートテキスト' : 'リッチテキスト';
-    const fieldTypeIcon = selectedFieldType === 'text' ? 'pencil' : 'file-edit';
+    const info = fieldTypeLabels[selectedFieldType];
+    const fieldTypeLabel = info ? info.label : selectedFieldType;
+    const fieldTypeIcon = info ? info.icon : 'file';
 
     // Update identifier column with required asterisk
     const identifierCell = row.children[1];
