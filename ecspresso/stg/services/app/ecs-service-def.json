@@ -24,7 +24,7 @@
     "type": "ECS"
   },
   "enableECSManagedTags": true,
-  "enableExecuteCommand": false,
+  "enableExecuteCommand": true,
   "healthCheckGracePeriodSeconds": 0,
   "launchType": "",
   "loadBalancers": [
@@ -38,7 +38,7 @@
     "awsvpcConfiguration": {
       "assignPublicIp": "DISABLED",
       "securityGroups": [
-        "sg-027ad125a35e4e08c"
+        "sg-0b0b2361f0c9d7023"
       ],
       "subnets": [
         "subnet-09b7ca07a7d3740f5",

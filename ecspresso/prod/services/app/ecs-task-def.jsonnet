@@ -3,8 +3,8 @@ local app_secrets = import '../../templates/rails_secrets.libsonnet';
 local app_image_tag = std.extVar('APP_IMAGE_TAG');
 
 // Fargate
-local cpu = 4096;
-local memory = 8192;
+local cpu = 2048;
+local memory = 4096;
 
 // Container
 local nginx_cpu = 256;
@@ -20,28 +20,26 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
 {
   "containerDefinitions": [
     {
-      "command": [],
       "cpu": rails_cpu,
-      "entryPoint": [],
       "environment": app_environment + [
         {
           "name": "RAILS_MAX_THREADS",
-          "value": "8"
+          "value": "5"
         },
         {
           "name": "RAILS_WORKERS",
-          "value": "4"
+          "value": "2"
         }
       ],
       "essential": true,
-      "image": "430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-app-prod:" + app_image_tag,
+      "image": "843188904699.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-prod:" + app_image_tag,
       "logConfiguration": {
         "logDriver": "awsfirelens",
         "options": {
           "Name": "datadog",
           "Host": "http-intake.logs.datadoghq.com",
-          "dd_service": "triple-app",
-          "dd_source": "ruby",
+          "dd_service": "haguruma-app",
+          "dd_source": "app",
           "dd_tags": "env:production",
           "TLS": "on",
           "provider": "ecs"
@@ -49,16 +47,14 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
         "secretOptions": [
           {
             "name": "apikey",
-            "valueFrom": "/triple/prod/ecs/main/datadog_api_key"
+            "valueFrom": "/haguruma/prod/ecs/main/datadog_api_key"
           }
         ]
       },
       "memoryReservation": rails_memory,
-      "mountPoints": [],
       "name": "app",
-      "portMappings": [],
       "secrets": app_secrets,
-      "volumesFrom": []
+      "versionConsistency": ""
     },
     {
       "command": [
@@ -67,7 +63,6 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
         "envsubst '$HEALTH_CHECK_ALLOW_IPS $RULER_ALLOW_IPS' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
       ],
       "cpu": nginx_cpu,
-      "entryPoint": [],
       "environment": [
         {
           "name": "RULER_ALLOW_IPS",
@@ -75,17 +70,18 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
         },
         {
           "name": "HEALTH_CHECK_ALLOW_IPS",
-          "value": "allow 10.82.0.0/16; allow 52.193.111.118/32; allow 52.196.125.133/32; allow 13.113.213.40/32; allow 52.197.186.229/32; allow 52.198.79.40/32; allow 13.114.12.29/32; allow 13.113.240.89/32; allow 52.68.245.9/32; allow 13.112.142.176/32; allow 52.197.243.193/32;"
+          "value": "allow 10.84.0.0/16; allow 52.193.111.118/32; allow 52.196.125.133/32; allow 13.113.213.40/32; allow 52.197.186.229/32; allow 52.198.79.40/32; allow 13.114.12.29/32; allow 13.113.240.89/32; allow 52.68.245.9/32; allow 13.112.142.176/32; allow 52.197.243.193/32;"
         }
       ],
+      "memoryReservation": nginx_memory,
       "essential": true,
-      "image": "430013787765.dkr.ecr.ap-northeast-1.amazonaws.com/triple-main-nginx-prod:latest",
+      "image": "843188904699.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-nginx-prod:latest",
       "logConfiguration": {
         "logDriver": "awsfirelens",
         "options": {
           "Name": "datadog",
           "Host": "http-intake.logs.datadoghq.com",
-          "dd_service": "triple-nginx",
+          "dd_service": "haguruma-nginx",
           "dd_source": "nginx",
           "dd_tags": "env:production",
           "TLS": "on",
@@ -94,26 +90,24 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
         "secretOptions": [
           {
             "name": "apikey",
-            "valueFrom": "/triple/prod/ecs/main/datadog_api_key"
+            "valueFrom": "/haguruma/prod/ecs/main/datadog_api_key"
           }
         ]
       },
-      "memoryReservation": nginx_memory,
-      "mountPoints": [],
       "name": "nginx",
       "portMappings": [
         {
+          "appProtocol": "",
           "containerPort": 80,
           "hostPort": 80,
           "protocol": "tcp"
         }
       ],
-      "volumesFrom": []
+      "versionConsistency": ""
     },
-    // fluent bit
-    {
+        {
       "essential": true,
-      "image": "amazon/aws-for-fluent-bit:2.28.4",
+      "image": "public.ecr.aws/aws-observability/aws-for-fluent-bit:2.28.4",
       "name": "log_router",
       "firelensConfiguration": {
           "type": "fluentbit",
@@ -159,7 +153,7 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
         },
         {
           "name": "DD_TAGS",
-          "value": "env:prod role:app project:triple"
+          "value": "env:prod role:app project:haguruma"
         },
         {
           "name": "DD_SITE",
@@ -172,13 +166,13 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
       "secrets": [
         {
           "name": "DD_API_KEY",
-          "valueFrom": "/triple/prod/ecs/main/datadog_api_key"
+          "valueFrom": "/haguruma/prod/ecs/main/datadog_api_key"
         }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/triple-main-service-app/datadog",
+          "awslogs-group": "/ecs/haguruma-main-service-app/datadog",
           "awslogs-region": "ap-northeast-1",
           "awslogs-stream-prefix": "ecs"
         },
@@ -188,18 +182,13 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
     }
   ],
   "cpu": std.toString(cpu),
-  "executionRoleArn": "arn:aws:iam::430013787765:role/triple-main-ecs-task-execution-prod",
-  "family": "triple-main-service-app-prod",
+  "executionRoleArn": "arn:aws:iam::843188904699:role/haguruma-main-ecs-task-execution-prod",
+  "family": "haguruma-main-service-app-prod",
   "memory": std.toString(memory),
-  "placementConstraints": [],
   "networkMode": "awsvpc",
   "requiresCompatibilities": [
     "FARGATE"
   ],
-  "runtimePlatform": {
-    "cpuArchitecture": "X86_64",
-    "operatingSystemFamily": "LINUX"
-  },
   "tags": [
     {
       "key": "env",
@@ -207,9 +196,8 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
     },
     {
       "key": "project",
-      "value": "triple"
+      "value": "haguruma"
     }
   ],
-  "taskRoleArn": "arn:aws:iam::430013787765:role/triple-main-ecs-task-prod",
-  "volumes": []
+  "taskRoleArn": "arn:aws:iam::843188904699:role/haguruma-main-ecs-task-prod"
 }

@@ -82,6 +82,9 @@ module GeneratedUrlHelpersModule
   def edit_ruler_area_profiles_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_ruler_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_admin_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -100,7 +103,13 @@ module GeneratedUrlHelpersModule
   def new_rails_conductor_inbound_email_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_ruler_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_admin_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_tenant_content_model_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_oauth_provider_url(*args); end
@@ -208,10 +217,22 @@ module GeneratedUrlHelpersModule
   def ruler_area_root_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_ruler_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_rulers_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_admin_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_admins_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_content_model_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_content_models_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_provider_url(*args); end

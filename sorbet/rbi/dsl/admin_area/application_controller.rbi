@@ -24,6 +24,7 @@ class AdminArea::ApplicationController
     include ::ActionController::Base::HelperMethods
     include ::ApplicationHelper
     include ::RulerArea::ApplicationHelper
+    include ::RulerArea::ContentModelsHelper
     include ::ApplicationController::HelperMethods
 
     sig { returns(T.nilable(::Admin)) }
