@@ -224,6 +224,7 @@ assets:precompile:
     expire_in: 1d
     paths:
       - public/vite
+      - public/assets
   only:
     - /^deploy-.*$/
   except:
