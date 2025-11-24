@@ -13,7 +13,6 @@ cache: &cache
       - Gemfile.lock
   paths:
     - vendor/bundle
-    - public/vite
     - tmp/cache/vite
     - tmp/rubocop_cache
 
