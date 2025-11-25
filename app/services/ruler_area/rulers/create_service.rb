@@ -114,12 +114,17 @@ module RulerArea
         uid = auth0_user['user_id']
         email = auth0_user['email']
 
-        Auth0Account.find_or_create_by!(email:) do |account|
+        auth0_account = Auth0Account.find_or_create_by!(email:) do |account|
           account.uid = uid
           account.email = email
         end
-      end
 
+        # Update uid if it changed (e.g., user was deleted and recreated in Auth0)
+        if auth0_account.uid != uid
+          auth0_account.update!(uid:)
+        end
+        auth0_account
+      end
     end
   end
 end

@@ -41,7 +41,6 @@ module Auth0
         email: @email,
         name: @name,
         password:,
-        email_verified: true, # Skip auto verification email, admin will use Forgot Password flow
       }
 
       # create_user(connection, options)

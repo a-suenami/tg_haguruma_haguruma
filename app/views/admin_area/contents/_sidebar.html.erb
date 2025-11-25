@@ -22,8 +22,7 @@
                     <li class="tree-item">
                         <%= link_to admin_area_contents_by_content_type_path(content_type_id: content_type.id),
                             class: "tree-item-header #{@content_type&.id == content_type.id ? 'active' : ''}",
-                            data: { model: content_type.api_identifier } do %>
-                            <span class="tree-icon"><%= content_type.icon %></span>
+                            data: { model: content_type.unique_name } do %>
                             <span class="tree-label"><%= content_type.display_name %></span>
                             <span class="tree-count"><%= content_type.content_entries.count %></span>
                         <% end %>
