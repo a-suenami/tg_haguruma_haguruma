@@ -12,6 +12,26 @@ class ApplicationQuery
 
   abstract!
 
+  class << self
+    extend T::Sig
+
+    # Enable class method chaining by delegating to a new instance
+    sig { params(method_name: Symbol, args: T.untyped, block: T.nilable(T.proc.void)).returns(T.untyped) }
+    def method_missing(method_name, *, &)
+      instance = new
+      if instance.respond_to?(method_name)
+        instance.public_send(method_name, *, &)
+      else
+        super
+      end
+    end
+
+    sig { params(method_name: Symbol, include_private: T::Boolean).returns(T::Boolean) }
+    def respond_to_missing?(method_name, include_private = false)
+      new.respond_to?(method_name) || super
+    end
+  end
+
   sig { void }
   def initialize
     @scope = T.let(base_scope, ActiveRecord::Relation)

@@ -24,17 +24,11 @@ module User
       chain(@scope.joins(:versions).merge(ContentEntry::Version.published).distinct)
     end
 
-    # Include associations for efficient loading
-    sig { returns(T.self_type) }
-    def with_associations
-      chain(@scope.includes(:content_type, versions: { fields: [:content_type_field, :text, :richtext, :media_asset] }))
-    end
-
     private
 
     sig { override.returns(ActiveRecord::Relation) }
     def base_scope
-      ContentEntry.all
+      ContentEntry.includes(:content_type, versions: { fields: [:content_type_field, :text, :richtext, :media_asset] })
     end
   end
 end
