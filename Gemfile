@@ -171,3 +171,11 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
 end
+
+# OpenAPI / Swagger
+gem 'rswag-api'
+gem 'rswag-ui'
+
+group :development, :test do
+  gem 'rswag-specs'
+end
