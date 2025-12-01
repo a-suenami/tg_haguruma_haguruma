@@ -26,13 +26,21 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
-          url: '{protocol}://{defaultHost}',
+          url: '{protocol}://{tenant}.{domain}',
+          description: 'Multi-tenant API server (tenant identified by subdomain)',
           variables: {
             protocol: {
               default: 'https',
+              enum: %w[https http],
+              description: 'Protocol scheme',
             },
-            defaultHost: {
-              default: 'localhost:3000',
+            tenant: {
+              default: 'your-tenant-id',
+              description: 'Tenant subdomain identifier',
+            },
+            domain: {
+              default: 'example.com',
+              description: 'Base domain',
             },
           },
         },

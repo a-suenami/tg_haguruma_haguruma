@@ -68,7 +68,7 @@ RSpec.describe 'Api::V1::Contents', type: :request do
   end
 
   before do
-    Tenant.current_id = tenant.id
+    host! "#{tenant.id}.example.com"
   end
 
   path '/api/v1/contents' do
