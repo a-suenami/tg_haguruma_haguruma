@@ -4,7 +4,7 @@
 
 set -e
 
-# Web環境でのみ実行
+# Web環境でのみ実行（ローカルCLI版では何もしない）
 if [ "$CLAUDE_CODE_REMOTE" != "true" ]; then
   echo "Not a web session, skipping web setup"
   exit 0
@@ -20,7 +20,6 @@ if [ -n "$CLAUDE_ENV_FILE" ]; then
   echo "Configuring environment variables..."
   cat >> "$CLAUDE_ENV_FILE" << 'ENVEOF'
 export RAILS_ENV=development
-export BUNDLE_WITHOUT=production
 export PATH="/opt/rbenv/versions/3.3.6/bin:$PATH"
 ENVEOF
 fi
@@ -28,28 +27,39 @@ fi
 # PATHを即座に設定
 export PATH="/opt/rbenv/versions/3.3.6/bin:$PATH"
 
-# bundle install（pg gemなどネイティブ拡張が失敗しても続行）
+# システムパッケージのインストール（pg gem用）
+echo "Installing system dependencies..."
+apt-get update -qq 2>/dev/null || true
+apt-get install -y -qq libpq-dev 2>/dev/null || echo "Warning: Could not install libpq-dev"
+
+# bundle install
 echo "Installing Ruby gems (this may take a few minutes)..."
-if bundle install --without production 2>&1 | tail -20; then
+if bundle install 2>&1 | tail -20; then
   echo "Bundle install completed successfully"
 else
-  echo "Some gems failed to install (likely native extensions like pg)"
+  echo "Some gems failed to install"
   echo "Continuing with available gems..."
 fi
 
-# RuboCop, Sorbet などの開発ツールが使えるか確認
+# binstubs作成
+echo "Creating binstubs..."
+bundle binstubs rubocop sorbet tapioca --path=.bundle/bin 2>/dev/null || true
+
+# 開発ツールの確認
 echo ""
 echo "=== Checking available tools ==="
-if command -v /opt/rbenv/versions/3.3.6/bin/rubocop &> /dev/null; then
-  echo "✓ RuboCop available"
+if [ -x ".bundle/bin/rubocop" ]; then
+  echo "✓ RuboCop available (.bundle/bin/rubocop)"
 fi
-if command -v /opt/rbenv/versions/3.3.6/bin/srb &> /dev/null; then
-  echo "✓ Sorbet available"
+if [ -x ".bundle/bin/srb" ]; then
+  echo "✓ Sorbet available (.bundle/bin/srb)"
+fi
+if [ -x ".bundle/bin/tapioca" ]; then
+  echo "✓ Tapioca available (.bundle/bin/tapioca)"
 fi
 
 echo ""
 echo "=== Web Session Setup Complete ==="
-echo "Note: Some features requiring database connection may not work"
 echo ""
 
 exit 0
