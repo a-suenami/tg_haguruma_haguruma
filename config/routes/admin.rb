@@ -22,7 +22,9 @@ namespace :admin_area, path: :admin do
 
       scope module: :collection, as: :collection do
         resources :entries, only: [:new, :create, :edit, :update], controller: 'entries/edit' do
-          resources :fields, only: [:update], controller: 'entries/fields', param: :api_identifier
+          resources :text_fields, only: [:update], controller: 'entries/text_fields', param: :api_identifier
+          resources :richtext_fields, only: [:update], controller: 'entries/richtext_fields', param: :api_identifier
+          resources :media_asset_fields, only: [:update], controller: 'entries/media_asset_fields', param: :api_identifier
         end
         resources :entries, only: :show, controller: 'entries/show'
 

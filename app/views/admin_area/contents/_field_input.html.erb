@@ -4,11 +4,26 @@
 <%
   # Build autosave URL if content_type and content_entry are provided
   autosave_url = if defined?(content_type) && defined?(content_entry) && content_type && content_entry&.persisted?
-    admin_area_contents_collection_entry_field_path(
-      content_type_id: content_type.id,
-      entry_id: content_entry.id,
-      api_identifier: field.api_identifier,
-    )
+    case field.field_type
+    when 'text'
+      admin_area_contents_collection_entry_text_field_path(
+        content_type_id: content_type.id,
+        entry_id: content_entry.id,
+        api_identifier: field.api_identifier,
+      )
+    when 'richtext'
+      admin_area_contents_collection_entry_richtext_field_path(
+        content_type_id: content_type.id,
+        entry_id: content_entry.id,
+        api_identifier: field.api_identifier,
+      )
+    when 'media_asset'
+      admin_area_contents_collection_entry_media_asset_field_path(
+        content_type_id: content_type.id,
+        entry_id: content_entry.id,
+        api_identifier: field.api_identifier,
+      )
+    end
   end
 %>
 

@@ -5,37 +5,12 @@ module AdminArea
   module Contents
     module Collection
       module Entries
-        class FieldsController < AdminArea::ApplicationController
+        class BaseFieldController < AdminArea::ApplicationController
           extend T::Sig
 
           before_action :set_content_type
           before_action :set_content_entry
           before_action :set_content_type_field
-
-          # PATCH /entries/:entry_id/fields/:api_identifier
-          sig { void }
-          def update
-            result = AdminArea::Contents::SaveFieldService.new(
-              content_type: T.must(@content_type),
-              content_entry: T.must(@content_entry),
-              content_type_field: T.must(@content_type_field),
-              value: field_value,
-            ).call
-
-            if result.success
-              render json: {
-                success: true,
-                saved_at: Time.current.iso8601,
-                field: @content_type_field.api_identifier,
-              }
-            else
-              render json: {
-                success: false,
-                errors: result.errors,
-                field: @content_type_field.api_identifier,
-              }, status: :unprocessable_entity
-            end
-          end
 
           private
 
@@ -60,9 +35,21 @@ module AdminArea
             )
           end
 
-          sig { returns(T.untyped) }
-          def field_value
-            params[:value]
+          sig { params(result: AdminArea::Contents::BaseSaveFieldService::Result).void }
+          def render_result(result)
+            if result.success
+              render json: {
+                success: true,
+                saved_at: Time.current.iso8601,
+                field: T.must(@content_type_field).api_identifier,
+              }
+            else
+              render json: {
+                success: false,
+                errors: result.errors,
+                field: T.must(@content_type_field).api_identifier,
+              }, status: :unprocessable_entity
+            end
           end
         end
       end

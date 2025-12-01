@@ -3,8 +3,10 @@
 
 module AdminArea
   module Contents
-    class SaveFieldService < BaseService
+    class BaseSaveFieldService < BaseService
       extend T::Sig
+      extend T::Helpers
+      abstract!
 
       class Result < T::Struct
         const :success, T::Boolean
@@ -26,6 +28,7 @@ module AdminArea
         @content_type_field = content_type_field
         @value = value
         @errors = T.let([], T::Array[String])
+        @saved_field = T.let(nil, T.nilable(ContentEntry::Field))
       end
 
       sig { returns(Result) }
@@ -99,67 +102,19 @@ module AdminArea
           content_type_field_id: @content_type_field.id,
         )
 
-        field.field_type = @content_type_field.field_type
+        field.field_type = expected_field_type
 
-        case @content_type_field.field_type
-        when 'text'
-          save_text_field(field)
-        when 'richtext'
-          save_richtext_field(field)
-        when 'media_asset'
-          save_media_asset_field(field)
-        end
+        save_field_value(field)
 
         @saved_field = field
         field
       end
 
-      sig { params(field: ContentEntry::Field).void }
-      def save_text_field(field)
-        if field.text
-          field.text.update!(value: @value.to_s)
-        else
-          text = ContentEntry::FieldText.create!(value: @value.to_s)
-          field.text = text
-        end
-        field.save!
-      end
+      sig { abstract.returns(String) }
+      def expected_field_type; end
 
-      sig { params(field: ContentEntry::Field).void }
-      def save_richtext_field(field)
-        richtext_value = @value.is_a?(String) ? { html: @value } : @value
-
-        if field.richtext
-          field.richtext.update!(value: richtext_value)
-        else
-          richtext = ContentEntry::FieldRichtext.create!(value: richtext_value)
-          field.richtext = richtext
-        end
-        field.save!
-      end
-
-      sig { params(field: ContentEntry::Field).void }
-      def save_media_asset_field(field)
-        return if @value.blank?
-
-        media_asset = MediaAsset.find_by(id: @value)
-        return unless media_asset
-
-        if field.media_asset
-          field.media_asset.update!(
-            media_type: media_asset.media_type,
-            media_asset_id: media_asset.id,
-          )
-        else
-          field_media_asset = ContentEntry::FieldMediaAsset.create!(
-            tenant_id: Tenant.current_id,
-            media_type: media_asset.media_type,
-            media_asset_id: media_asset.id,
-          )
-          field.media_asset = field_media_asset
-        end
-        field.save!
-      end
+      sig { abstract.params(field: ContentEntry::Field).void }
+      def save_field_value(field); end
     end
   end
 end
