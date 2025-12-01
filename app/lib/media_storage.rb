@@ -58,7 +58,7 @@ module MediaStorage
   class CloudFrontSigner
     extend T::Sig
 
-    SIGNED_URL_EXPIRATION = 7.days
+    SIGNED_URL_EXPIRATION = 10.minutes
 
     sig { params(s3_object_path: String).returns(String) }
     def signed_url(s3_object_path)
