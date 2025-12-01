@@ -30,7 +30,8 @@ class ContentType < ApplicationRecord
 
   accepts_nested_attributes_for :fields, allow_destroy: true, reject_if: :all_blank
 
-  validates :unique_name, presence: true, length: { maximum: 32 }, uniqueness: { scope: :tenant_id }
+  # TODO: Add unique index after data migration (see db/schemas/content_types.schema)
+  validates :unique_name, presence: true, length: { maximum: 32 }, uniqueness: { scope: :tenant_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :display_name, presence: true, length: { maximum: 255 }
   validates :is_collection, inclusion: { in: [true, false] }
 
