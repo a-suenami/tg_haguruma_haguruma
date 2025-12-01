@@ -2,11 +2,11 @@
 # frozen_string_literal: true
 
 # ==============================================================================
-# app - queries - user - content entries query
+# app - queries - user_queries - content entries query
 #
 # Fetches published content entries for user-facing API
 # ==============================================================================
-module User
+module UserQueries
   class ContentEntriesQuery < ApplicationQuery
     extend T::Sig
 
@@ -17,7 +17,7 @@ module User
     def by_content_type(content_type_id)
       return self if content_type_id.blank?
 
-      chain(@scope.where(content_type_id: content_type_id))
+      chain(@scope.where(content_type_id:))
     end
 
     # Filter to only published entries

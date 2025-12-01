@@ -452,6 +452,15 @@ class ContentEntry::Version
   end
 
   module GeneratedAssociationMethods
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def build_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant!(*args, &blk); end
+
     sig { returns(T::Array[T.untyped]) }
     def field_ids; end
 
@@ -465,6 +474,24 @@ class ContentEntry::Version
 
     sig { params(value: T::Enumerable[::ContentEntry::Field]).void }
     def fields=(value); end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def reload_tenant; end
+
+    sig { void }
+    def reset_tenant; end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def tenant; end
+
+    sig { params(value: T.nilable(::Tenant)).void }
+    def tenant=(value); end
+
+    sig { returns(T::Boolean) }
+    def tenant_changed?; end
+
+    sig { returns(T::Boolean) }
+    def tenant_previously_changed?; end
   end
 
   module GeneratedAssociationRelationMethods

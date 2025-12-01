@@ -6,10 +6,17 @@
 
 
 class MediaAsset
+  include GeneratedAssociationMethods
   include GeneratedAttributeMethods
   include EnumMethodsModule
   extend CommonRelationMethods
   extend GeneratedRelationMethods
+
+  sig { returns(ActiveStorage::Attached::One) }
+  def file; end
+
+  sig { params(attachable: T.untyped).returns(T.untyped) }
+  def file=(attachable); end
 
   private
 
@@ -413,6 +420,77 @@ class MediaAsset
     def video?; end
   end
 
+  module GeneratedAssociationMethods
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Attachment) }
+    def build_file_attachment(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Blob) }
+    def build_file_blob(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def build_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Attachment) }
+    def create_file_attachment(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Attachment) }
+    def create_file_attachment!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Blob) }
+    def create_file_blob(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Blob) }
+    def create_file_blob!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant!(*args, &blk); end
+
+    sig { returns(T.nilable(::ActiveStorage::Attachment)) }
+    def file_attachment; end
+
+    sig { params(value: T.nilable(::ActiveStorage::Attachment)).void }
+    def file_attachment=(value); end
+
+    sig { returns(T.nilable(::ActiveStorage::Blob)) }
+    def file_blob; end
+
+    sig { params(value: T.nilable(::ActiveStorage::Blob)).void }
+    def file_blob=(value); end
+
+    sig { returns(T.nilable(::ActiveStorage::Attachment)) }
+    def reload_file_attachment; end
+
+    sig { returns(T.nilable(::ActiveStorage::Blob)) }
+    def reload_file_blob; end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def reload_tenant; end
+
+    sig { void }
+    def reset_file_attachment; end
+
+    sig { void }
+    def reset_file_blob; end
+
+    sig { void }
+    def reset_tenant; end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def tenant; end
+
+    sig { params(value: T.nilable(::Tenant)).void }
+    def tenant=(value); end
+
+    sig { returns(T::Boolean) }
+    def tenant_changed?; end
+
+    sig { returns(T::Boolean) }
+    def tenant_previously_changed?; end
+  end
+
   module GeneratedAssociationRelationMethods
     sig { returns(PrivateAssociationRelation) }
     def all; end
@@ -430,6 +508,9 @@ class MediaAsset
     def audio(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def audios(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def create_with(*args, &blk); end
 
     sig { params(value: T::Boolean).returns(PrivateAssociationRelation) }
@@ -437,6 +518,9 @@ class MediaAsset
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def document(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def documents(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def eager_load(*args, &blk); end
@@ -464,6 +548,9 @@ class MediaAsset
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def image(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def images(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def in_order_of(*args, &blk); end
@@ -568,12 +655,18 @@ class MediaAsset
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def video(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def videos(*args, &blk); end
+
     sig { returns(PrivateAssociationRelationWhereChain) }
     sig { params(args: T.untyped).returns(PrivateAssociationRelation) }
     def where(*args); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def with(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def with_attached_file(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def with_recursive(*args, &blk); end
@@ -1057,6 +1150,9 @@ class MediaAsset
     def audio(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def audios(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def create_with(*args, &blk); end
 
     sig { params(value: T::Boolean).returns(PrivateRelation) }
@@ -1064,6 +1160,9 @@ class MediaAsset
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def document(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def documents(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def eager_load(*args, &blk); end
@@ -1091,6 +1190,9 @@ class MediaAsset
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def image(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def images(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def in_order_of(*args, &blk); end
@@ -1195,12 +1297,18 @@ class MediaAsset
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def video(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def videos(*args, &blk); end
+
     sig { returns(PrivateRelationWhereChain) }
     sig { params(args: T.untyped).returns(PrivateRelation) }
     def where(*args); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def with(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def with_attached_file(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def with_recursive(*args, &blk); end

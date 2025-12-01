@@ -7,7 +7,6 @@
 
 class Auth0Account
   include GeneratedAssociationMethods
-  include GeneratedAttributeMethods
   extend CommonRelationMethods
   extend GeneratedRelationMethods
 
@@ -265,7 +264,7 @@ class Auth0Account
     sig { returns(::Auth0Account) }
     def fourth!; end
 
-    sig { returns(T::Array[T.untyped]) }
+    sig { returns(Array) }
     def ids; end
 
     sig do
@@ -398,10 +397,10 @@ class Auth0Account
 
     # This method is created by ActiveRecord on the `Auth0Account` class because it declared `has_many :admin_auth0_accounts`.
     # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
-    sig { returns(::Admin::Auth0Account::PrivateCollectionProxy) }
+    sig { returns(ActiveRecord::Associations::CollectionProxy) }
     def admin_auth0_accounts; end
 
-    sig { params(value: T::Enumerable[::Admin::Auth0Account]).void }
+    sig { params(value: T::Enumerable[T.untyped]).void }
     def admin_auth0_accounts=(value); end
 
     sig { returns(T::Array[T.untyped]) }
@@ -412,34 +411,34 @@ class Auth0Account
 
     # This method is created by ActiveRecord on the `Auth0Account` class because it declared `has_many :admins, through: :admin_auth0_accounts`.
     # 🔗 [Rails guide for `has_many_through` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association)
-    sig { returns(::Admin::PrivateCollectionProxy) }
+    sig { returns(ActiveRecord::Associations::CollectionProxy) }
     def admins; end
 
-    sig { params(value: T::Enumerable[::Admin]).void }
+    sig { params(value: T::Enumerable[T.untyped]).void }
     def admins=(value); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def build_ruler(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler::Auth0Account) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def build_ruler_auth0_account(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def create_ruler(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def create_ruler!(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler::Auth0Account) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def create_ruler_auth0_account(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::Ruler::Auth0Account) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def create_ruler_auth0_account!(*args, &blk); end
 
-    sig { returns(T.nilable(::Ruler)) }
+    sig { returns(T.untyped) }
     def reload_ruler; end
 
-    sig { returns(T.nilable(::Ruler::Auth0Account)) }
+    sig { returns(T.untyped) }
     def reload_ruler_auth0_account; end
 
     sig { void }
@@ -448,16 +447,16 @@ class Auth0Account
     sig { void }
     def reset_ruler_auth0_account; end
 
-    sig { returns(T.nilable(::Ruler)) }
+    sig { returns(T.untyped) }
     def ruler; end
 
-    sig { params(value: T.nilable(::Ruler)).void }
+    sig { params(value: T.untyped).void }
     def ruler=(value); end
 
-    sig { returns(T.nilable(::Ruler::Auth0Account)) }
+    sig { returns(T.untyped) }
     def ruler_auth0_account; end
 
-    sig { params(value: T.nilable(::Ruler::Auth0Account)).void }
+    sig { params(value: T.untyped).void }
     def ruler_auth0_account=(value); end
   end
 
@@ -604,350 +603,6 @@ class Auth0Account
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def without(*args, &blk); end
-  end
-
-  module GeneratedAttributeMethods
-    sig { returns(::ActiveSupport::TimeWithZone) }
-    def created_at; end
-
-    sig { params(value: ::ActiveSupport::TimeWithZone).returns(::ActiveSupport::TimeWithZone) }
-    def created_at=(value); end
-
-    sig { returns(T::Boolean) }
-    def created_at?; end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def created_at_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def created_at_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def created_at_came_from_user?; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def created_at_change; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def created_at_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def created_at_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def created_at_in_database; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def created_at_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def created_at_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def created_at_previously_was; end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def created_at_was; end
-
-    sig { void }
-    def created_at_will_change!; end
-
-    sig { returns(::String) }
-    def email; end
-
-    sig { params(value: ::String).returns(::String) }
-    def email=(value); end
-
-    sig { returns(T::Boolean) }
-    def email?; end
-
-    sig { returns(T.nilable(::String)) }
-    def email_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def email_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def email_came_from_user?; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def email_change; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def email_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def email_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def email_in_database; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def email_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def email_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def email_previously_was; end
-
-    sig { returns(T.nilable(::String)) }
-    def email_was; end
-
-    sig { void }
-    def email_will_change!; end
-
-    sig { returns(::String) }
-    def id; end
-
-    sig { params(value: ::String).returns(::String) }
-    def id=(value); end
-
-    sig { returns(T::Boolean) }
-    def id?; end
-
-    sig { returns(T.nilable(::String)) }
-    def id_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def id_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def id_came_from_user?; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def id_change; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def id_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def id_in_database; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def id_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def id_previously_was; end
-
-    sig { returns(::String) }
-    def id_value; end
-
-    sig { params(value: ::String).returns(::String) }
-    def id_value=(value); end
-
-    sig { returns(T::Boolean) }
-    def id_value?; end
-
-    sig { returns(T.nilable(::String)) }
-    def id_value_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def id_value_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def id_value_came_from_user?; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def id_value_change; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def id_value_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def id_value_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def id_value_in_database; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def id_value_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def id_value_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def id_value_previously_was; end
-
-    sig { returns(T.nilable(::String)) }
-    def id_value_was; end
-
-    sig { void }
-    def id_value_will_change!; end
-
-    sig { returns(T.nilable(::String)) }
-    def id_was; end
-
-    sig { void }
-    def id_will_change!; end
-
-    sig { void }
-    def restore_created_at!; end
-
-    sig { void }
-    def restore_email!; end
-
-    sig { void }
-    def restore_id!; end
-
-    sig { void }
-    def restore_id_value!; end
-
-    sig { void }
-    def restore_uid!; end
-
-    sig { void }
-    def restore_updated_at!; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def saved_change_to_created_at; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def saved_change_to_email; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_email?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def saved_change_to_id; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def saved_change_to_id_value; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def saved_change_to_uid; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_uid?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def saved_change_to_updated_at; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_updated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(::String) }
-    def uid; end
-
-    sig { params(value: ::String).returns(::String) }
-    def uid=(value); end
-
-    sig { returns(T::Boolean) }
-    def uid?; end
-
-    sig { returns(T.nilable(::String)) }
-    def uid_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def uid_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def uid_came_from_user?; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def uid_change; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def uid_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def uid_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def uid_in_database; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def uid_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def uid_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def uid_previously_was; end
-
-    sig { returns(T.nilable(::String)) }
-    def uid_was; end
-
-    sig { void }
-    def uid_will_change!; end
-
-    sig { returns(::ActiveSupport::TimeWithZone) }
-    def updated_at; end
-
-    sig { params(value: ::ActiveSupport::TimeWithZone).returns(::ActiveSupport::TimeWithZone) }
-    def updated_at=(value); end
-
-    sig { returns(T::Boolean) }
-    def updated_at?; end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def updated_at_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def updated_at_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def updated_at_came_from_user?; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def updated_at_change; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def updated_at_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def updated_at_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def updated_at_in_database; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def updated_at_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def updated_at_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def updated_at_previously_was; end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def updated_at_was; end
-
-    sig { void }
-    def updated_at_will_change!; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_email?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_uid?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_updated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
   end
 
   module GeneratedRelationMethods

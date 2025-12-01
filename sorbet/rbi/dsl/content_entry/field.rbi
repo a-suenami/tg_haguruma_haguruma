@@ -439,6 +439,9 @@ class ContentEntry::Field
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldRichtext) }
     def build_richtext(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def build_tenant(*args, &blk); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldText) }
     def build_text(*args, &blk); end
 
@@ -472,6 +475,12 @@ class ContentEntry::Field
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldRichtext) }
     def create_richtext!(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant!(*args, &blk); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldText) }
     def create_text(*args, &blk); end
 
@@ -499,6 +508,9 @@ class ContentEntry::Field
     sig { returns(T.nilable(::ContentEntry::FieldRichtext)) }
     def reload_richtext; end
 
+    sig { returns(T.nilable(::Tenant)) }
+    def reload_tenant; end
+
     sig { returns(T.nilable(::ContentEntry::FieldText)) }
     def reload_text; end
 
@@ -510,6 +522,9 @@ class ContentEntry::Field
 
     sig { void }
     def reset_richtext; end
+
+    sig { void }
+    def reset_tenant; end
 
     sig { void }
     def reset_text; end
@@ -525,6 +540,18 @@ class ContentEntry::Field
 
     sig { returns(T::Boolean) }
     def richtext_previously_changed?; end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def tenant; end
+
+    sig { params(value: T.nilable(::Tenant)).void }
+    def tenant=(value); end
+
+    sig { returns(T::Boolean) }
+    def tenant_changed?; end
+
+    sig { returns(T::Boolean) }
+    def tenant_previously_changed?; end
 
     sig { returns(T.nilable(::ContentEntry::FieldText)) }
     def text; end
