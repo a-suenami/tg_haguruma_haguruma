@@ -1,6 +1,8 @@
 # typed: false
 
 class ContentType::Field < ApplicationRecord
+  include Multitenancy
+
   FIELD_TYPES = {
     text: 1,
     richtext: 2,
@@ -12,7 +14,6 @@ class ContentType::Field < ApplicationRecord
   belongs_to :richtext, class_name: 'ContentType::FieldRichtext', optional: true
   belongs_to :media_asset, class_name: 'ContentType::FieldMediaAsset', optional: true
 
-  validates :tenant_id, presence: true
   validates :api_identifier, presence: true, length: { maximum: 32 }, uniqueness: { scope: :content_type_id }
   validates :label, presence: true, length: { maximum: 255 }
   validates :field_type, presence: true
@@ -21,8 +22,7 @@ class ContentType::Field < ApplicationRecord
 
   enum :field_type, FIELD_TYPES
 
-  # Order by position by default
-  default_scope { order(:position) }
+  scope :ordered, -> { order(:position) }
 
   # Auto-set position before create
   before_validation :set_position, on: :create

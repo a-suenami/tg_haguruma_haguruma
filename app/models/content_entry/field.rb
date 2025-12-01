@@ -1,6 +1,8 @@
 # typed: false
 
 class ContentEntry::Field < ApplicationRecord
+  include Multitenancy
+
   FIELD_TYPES = {
     text: 1,
     richtext: 2,
@@ -11,8 +13,6 @@ class ContentEntry::Field < ApplicationRecord
   belongs_to :text, class_name: 'ContentEntry::FieldText', optional: true
   belongs_to :richtext, class_name: 'ContentEntry::FieldRichtext', optional: true
   belongs_to :media_asset, class_name: 'ContentEntry::FieldMediaAsset', optional: true
-
-  validates :tenant_id, presence: true
   validates :content_type_id, presence: true
   validates :content_entry_id, presence: true
   validates :version, presence: true

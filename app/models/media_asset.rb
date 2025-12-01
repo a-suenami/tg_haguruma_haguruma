@@ -1,6 +1,8 @@
 # typed: false
 
 class MediaAsset < ApplicationRecord
+  include Multitenancy
+
   has_one_attached :file
 
   enum :media_type, {
@@ -10,13 +12,9 @@ class MediaAsset < ApplicationRecord
     document: 4,
   }
 
-  validates :tenant_id, presence: true
   validates :media_type, presence: true
   validates :mime_type, presence: true
   validates :metadata, presence: true
-
-  # マルチテナント対応
-  default_scope { where(tenant_id: Tenant.current_id) if Tenant.current_id.present? }
 
   scope :images, -> { where(media_type: :image) }
   scope :videos, -> { where(media_type: :video) }
