@@ -84,7 +84,7 @@ module AdminArea
           status: :published,
           published_at: Time.current,
         )
-        @published_version = version
+        @published_version = T.let(version, T.nilable(ContentEntry::Version))
       end
     end
   end

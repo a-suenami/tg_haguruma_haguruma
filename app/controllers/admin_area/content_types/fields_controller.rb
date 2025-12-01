@@ -17,7 +17,7 @@ module AdminArea
 
       def create
         @field = T.must(@content_type).fields.build(field_params)
-        @field.tenant_id = Tenant.current_id
+        @field.tenant_id = T.must(Tenant.current_id)
 
         if @field.save
           redirect_to admin_area_content_type_path(@content_type),

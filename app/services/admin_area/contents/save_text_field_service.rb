@@ -16,7 +16,7 @@ module AdminArea
       sig { override.params(field: ContentEntry::Field).void }
       def save_field_value(field)
         if field.text
-          field.text.update!(value: @value.to_s)
+          T.must(field.text).update!(value: @value.to_s)
         else
           text = ContentEntry::FieldText.create!(value: @value.to_s)
           field.text = text

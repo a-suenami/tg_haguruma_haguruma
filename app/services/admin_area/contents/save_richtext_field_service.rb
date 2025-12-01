@@ -18,7 +18,7 @@ module AdminArea
         richtext_value = @value.is_a?(String) ? { html: @value } : @value
 
         if field.richtext
-          field.richtext.update!(value: richtext_value)
+          T.must(field.richtext).update!(value: richtext_value)
         else
           richtext = ContentEntry::FieldRichtext.create!(value: richtext_value)
           field.richtext = richtext

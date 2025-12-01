@@ -21,7 +21,7 @@ module AdminArea
         return unless media_asset
 
         if field.media_asset
-          field.media_asset.update!(
+          T.must(field.media_asset).update!(
             media_type: media_asset.media_type,
             media_asset_id: media_asset.id,
           )

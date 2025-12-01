@@ -71,7 +71,7 @@ module AdminArea
         )
 
         if existing_draft
-          @saved_version = existing_draft
+          @saved_version = T.let(existing_draft, T.nilable(ContentEntry::Version))
           existing_draft
         else
           # Get next version number
@@ -92,7 +92,7 @@ module AdminArea
           unless version.save
             @errors.concat(version.errors.full_messages)
           end
-          @saved_version = version
+          @saved_version = T.let(version, T.nilable(ContentEntry::Version))
           version
         end
       end
@@ -138,7 +138,7 @@ module AdminArea
       sig { params(field: ContentEntry::Field, value: T.untyped).void }
       def save_text_field(field, value)
         if field.text
-          field.text.update!(value: value.to_s)
+          T.must(field.text).update!(value: value.to_s)
         else
           text = ContentEntry::FieldText.create!(value: value.to_s)
           field.text = text
@@ -152,7 +152,7 @@ module AdminArea
         richtext_value = value.is_a?(String) ? { html: value } : value
 
         if field.richtext
-          field.richtext.update!(value: richtext_value)
+          T.must(field.richtext).update!(value: richtext_value)
         else
           richtext = ContentEntry::FieldRichtext.create!(value: richtext_value)
           field.richtext = richtext
@@ -169,7 +169,7 @@ module AdminArea
         return unless media_asset
 
         if field.media_asset
-          field.media_asset.update!(
+          T.must(field.media_asset).update!(
             media_type: media_asset.media_type,
             media_asset_id: media_asset.id,
           )

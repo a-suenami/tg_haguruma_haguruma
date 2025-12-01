@@ -32,7 +32,7 @@ class ContentEntrySerializer < ApplicationSerializer
     published_version = content_entry.versions.find(&:published?)
 
     {
-      content_type: content_type_hash(content_entry.content_type),
+      content_type: content_type_hash(T.must(content_entry.content_type)),
       fields: fields_hash(published_version),
       published_at: published_version&.published_at,
       created_at: content_entry.created_at,
@@ -57,7 +57,7 @@ class ContentEntrySerializer < ApplicationSerializer
     return {} if version.nil?
 
     version.fields.each_with_object({}) do |field, hash|
-      api_identifier = field.content_type_field.api_identifier
+      api_identifier = T.must(field.content_type_field).api_identifier
       hash[api_identifier] = field_value(field)
     end
   end
