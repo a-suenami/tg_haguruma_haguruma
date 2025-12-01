@@ -1,4 +1,4 @@
-\restrict gKJnS9AzuCa9uBNjVjVsnGRDXjWb12V72KjfOX9Nwblgf4Vrggc1bTVRJHsKrys
+\restrict falniq9B5hlznsV4jzWtFugX1VphtAf5MFBOc58xvImzmaWy7uWzEsKoFeRNfmV
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -1194,7 +1194,7 @@ ALTER TABLE ONLY public.ruler_auth0_accounts
 -- PostgreSQL database dump complete
 --
 
-\unrestrict gKJnS9AzuCa9uBNjVjVsnGRDXjWb12V72KjfOX9Nwblgf4Vrggc1bTVRJHsKrys
+\unrestrict falniq9B5hlznsV4jzWtFugX1VphtAf5MFBOc58xvImzmaWy7uWzEsKoFeRNfmV
 
 SET search_path TO "$user", public;
 

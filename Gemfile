@@ -142,8 +142,7 @@ group :development, :test do
   # Development tools
   gem 'pry-rails', '~> 0.3.9'
   gem 'pry-byebug', '~> 3.10.1'
-  # gem "annotate", "~> 3.2.0" # Not compatible with Rails 8.0 yet
-  # Alternative: gem "annotaterb" # Rails 8 compatible fork
+  gem 'annotaterb'
 
   # Additional testing tools
   gem 'spring-commands-rspec', '~> 1.0.4'

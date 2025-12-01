@@ -1,5 +1,38 @@
 # typed: false
 
+# == Schema Information
+#
+# Table name: content_type_fields
+#
+#  id              :bigint           not null, primary key
+#  api_identifier  :text             not null
+#  description     :text             default(""), not null
+#  field_type      :integer          not null
+#  label           :text             not null
+#  position        :integer          default(0), not null
+#  required        :boolean          default(FALSE), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  content_type_id :uuid             not null
+#  media_asset_id  :integer
+#  richtext_id     :integer
+#  tenant_id       :citext           not null
+#  text_id         :integer
+#
+# Indexes
+#
+#  idx_on_content_type_id_api_identifier_0e95c10a8a           (content_type_id,api_identifier) UNIQUE
+#  idx_on_tenant_id_content_type_id_id_01457429a3             (tenant_id,content_type_id,id) UNIQUE
+#  idx_on_tenant_id_content_type_id_id_field_type_db01de1ec3  (tenant_id,content_type_id,id,field_type) UNIQUE
+#  index_content_type_fields_on_content_type_id_and_position  (content_type_id,position)
+#
+# Foreign Keys
+#
+#  fk_rails_...  ([tenant_id, content_type_id] => content_types[tenant_id, id])
+#  fk_rails_...  (media_asset_id => content_type_field_media_assets.id)
+#  fk_rails_...  (richtext_id => content_type_field_richtexts.id)
+#  fk_rails_...  (text_id => content_type_field_texts.id)
+#
 class ContentType::Field < ApplicationRecord
   include Multitenancy
 

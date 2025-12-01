@@ -1,5 +1,23 @@
 # typed: false
 
+# == Schema Information
+#
+# Table name: media_assets
+#
+#  id         :uuid             not null, primary key
+#  media_type :integer          not null
+#  metadata   :jsonb            not null
+#  mime_type  :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  tenant_id  :citext           not null
+#
+# Indexes
+#
+#  index_media_assets_on_id_and_media_type                (id,media_type) UNIQUE
+#  index_media_assets_on_tenant_id_and_id_and_media_type  (tenant_id,id,media_type) UNIQUE
+#  index_media_assets_on_tenant_id_and_media_type_and_id  (tenant_id,media_type,id) UNIQUE
+#
 class MediaAsset < ApplicationRecord
   include Multitenancy
 
