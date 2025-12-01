@@ -13,7 +13,9 @@ fi
 echo "=== Claude Code Web Session Setup ==="
 echo "Setting up development environment..."
 
-cd /home/user/tg_haguruma_haguruma
+# リポジトリのルートに移動（ハードコーディング回避）
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
+cd "$REPO_ROOT"
 
 # 環境変数を永続化
 if [ -n "$CLAUDE_ENV_FILE" ]; then
