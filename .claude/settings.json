@@ -22,5 +22,18 @@
       "MultiEdit(.claude/tmp/*)"
     ],
     "deny": []
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ]
   }
 }
