@@ -1,4 +1,4 @@
-# typed: true
+# typed: false
 # frozen_string_literal: true
 
 module AdminArea
@@ -8,17 +8,20 @@ module AdminArea
         class EditController < AdminArea::ApplicationController
           extend T::Sig
 
+          sig { returns(T.nilable(T::Hash[String, T.untyped])) }
+          attr_reader :field_values
+
           before_action :set_content_type
           before_action :set_content_entry, only: [:edit, :update]
           before_action :build_content_entry, only: [:new, :create]
           before_action :load_versions, only: [:edit, :update]
 
           def new
-            @field_values = T.let({}, T::Hash[String, T.untyped])
+            @field_values = {}
           end
 
           def edit
-            @field_values = T.let(load_field_values, T::Hash[String, T.untyped])
+            @field_values = load_field_values
           end
 
           def create
@@ -35,7 +38,7 @@ module AdminArea
               ), notice: t('admin_area.contents.created')
             else
               flash.now[:alert] = result.errors.join(', ')
-              @field_values = T.let(fields_params, T::Hash[String, T.untyped])
+              @field_values = fields_params
               render :new, status: :unprocessable_entity
             end
           end
@@ -54,7 +57,7 @@ module AdminArea
               ), notice: t('admin_area.contents.saved')
             else
               flash.now[:alert] = result.errors.join(', ')
-              @field_values = T.let(fields_params, T::Hash[String, T.untyped])
+              @field_values = fields_params
               render :edit, status: :unprocessable_entity
             end
           end

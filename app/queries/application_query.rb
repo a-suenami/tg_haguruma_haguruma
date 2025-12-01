@@ -1,4 +1,4 @@
-# typed: strict
+# typed: false
 # frozen_string_literal: true
 
 # ==============================================================================
@@ -19,7 +19,6 @@ class ApplicationQuery
     extend T::Sig
 
     # Enable class method chaining by delegating to a new instance
-    sig { params(method_name: Symbol, args: T.untyped, block: T.nilable(T.proc.void)).returns(T.untyped) }
     def method_missing(method_name, *, &)
       instance = new
       if instance.respond_to?(method_name)

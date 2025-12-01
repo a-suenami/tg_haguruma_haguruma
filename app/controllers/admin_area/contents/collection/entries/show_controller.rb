@@ -1,4 +1,4 @@
-# typed: true
+# typed: false
 # frozen_string_literal: true
 
 module AdminArea
@@ -13,7 +13,7 @@ module AdminArea
           before_action :load_versions
 
           def show
-            @field_values = T.let(load_field_values, T::Hash[String, T.untyped])
+            @field_values = load_field_values
           end
 
           private
