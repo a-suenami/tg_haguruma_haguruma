@@ -44,4 +44,5 @@ Rails.application.routes.draw do
 
   # API routes
   draw :'api/v1/auth'
+  draw :api
 end
