@@ -37,7 +37,7 @@
 ### テナント設定の方法
 | エリア | テナント ID 取得元 | 設定方法 |
 |--------|-------------------|----------|
-| API | `X-Tenant-ID` ヘッダー | `Tenant.current_id = tenant_id` |
+| API | `request.subdomain` | `Tenant.current_id = tenant_id` |
 | AdminArea | `session[:tenant_id]` | `Tenant.current_id = tenant_id` |
 | RulerArea | `params[:tenant_id]` or `params[:id]` | `Tenant.current_id = @tenant.id` |
 
