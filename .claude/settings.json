@@ -17,6 +17,10 @@
       "Bash(pwd)",
       "Bash(ruby -v)",
       "Bash(node -v)",
+      "Bash(gh pr *)",
+      "Bash(gh api *)",
+      "Bash(glab mr *)",
+      "Bash(glab api *)",
       "Write(.claude/tmp/*)",
       "Edit(.claude/tmp/*)",
       "MultiEdit(.claude/tmp/*)"
