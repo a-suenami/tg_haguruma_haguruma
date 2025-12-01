@@ -17,10 +17,10 @@ module Api
 
       sig { returns(T.nilable(Tenant)) }
       def set_tenant
-        tenant_id = request.headers['X-Tenant-ID']
+        tenant_id = request.subdomain.split('.').first
 
         unless tenant_id.present?
-          render json: { error: 'X-Tenant-ID header is required' }, status: :bad_request
+          render json: { error: 'Tenant subdomain is required' }, status: :bad_request
           return
         end
 
