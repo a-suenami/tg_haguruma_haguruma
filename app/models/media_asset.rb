@@ -1,6 +1,8 @@
 # typed: false
 
 class MediaAsset < ApplicationRecord
+  has_one_attached :file
+
   enum :media_type, {
     image: 1,
     video: 2,
@@ -12,4 +14,37 @@ class MediaAsset < ApplicationRecord
   validates :media_type, presence: true
   validates :mime_type, presence: true
   validates :metadata, presence: true
+
+  # マルチテナント対応
+  default_scope { where(tenant_id: Tenant.current_id) if Tenant.current_id.present? }
+
+  scope :images, -> { where(media_type: :image) }
+  scope :videos, -> { where(media_type: :video) }
+  scope :audios, -> { where(media_type: :audio) }
+  scope :documents, -> { where(media_type: :document) }
+
+  def filename
+    metadata&.dig('filename') || file.filename.to_s
+  end
+
+  def file_size
+    metadata&.dig('file_size') || file.byte_size
+  end
+
+  def content_type
+    mime_type
+  end
+
+  def self.detect_media_type(mime_type)
+    case mime_type
+    when /^image\//
+      :image
+    when /^video\//
+      :video
+    when /^audio\//
+      :audio
+    else
+      :document
+    end
+  end
 end

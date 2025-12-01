@@ -1,0 +1,51 @@
+<%= form_with model: [@content_type, @field], url: @field.new_record? ? admin_area_content_type_fields_path(@content_type) : admin_area_content_type_field_path(@content_type, @field), local: true, class: 'content-form' do |form| %>
+  <% if @field.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% @field.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field-group">
+    <%= form.label :label, 'ラベル', class: 'field-label' %>
+    <%= form.text_field :label, class: 'field-input', required: true, placeholder: '例: タイトル' %>
+    <p class="field-description">管理画面で表示されるフィールド名です</p>
+  </div>
+
+  <div class="field-group">
+    <%= form.label :api_identifier, 'API識別子', class: 'field-label' %>
+    <%= form.text_field :api_identifier, class: 'field-input', required: true, placeholder: '例: title', pattern: '[a-z][a-z0-9_]*' %>
+    <p class="field-description">APIで使用される一意の識別子です（英小文字・数字・アンダースコアのみ）</p>
+  </div>
+
+  <div class="field-group">
+    <%= form.label :field_type, 'フィールドタイプ', class: 'field-label' %>
+    <%= form.select :field_type, [
+      ['テキスト (単行)', 'text'],
+      ['リッチテキスト (HTML)', 'richtext'],
+      ['メディアアセット', 'media_asset']
+    ], {}, { class: 'field-select', required: true } %>
+    <p class="field-description">フィールドの入力形式を選択します</p>
+  </div>
+
+  <div class="field-group">
+    <%= form.label :description, '説明', class: 'field-label' %>
+    <%= form.text_area :description, class: 'field-input', rows: 2, placeholder: 'このフィールドの説明（任意）' %>
+    <p class="field-description">編集画面でヘルプテキストとして表示されます</p>
+  </div>
+
+  <div class="field-group">
+    <label class="checkbox-label">
+      <%= form.check_box :required, class: 'checkbox-input' %>
+      <span class="checkbox-text">必須フィールド</span>
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit @field.new_record? ? 'フィールドを追加' : 'フィールドを更新', class: 'btn btn-primary' %>
+    <%= link_to 'キャンセル', admin_area_content_type_path(@content_type), class: 'btn btn-secondary' %>
+  </div>
+<% end %>

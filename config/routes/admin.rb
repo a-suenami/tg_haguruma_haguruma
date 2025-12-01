@@ -25,6 +25,7 @@ namespace :admin_area, path: :admin do
         resources :entries, only: :show, controller: 'entries/show'
 
         post 'entries/:content_entry_id/publication', to: 'publications#create', as: :entry_publication
+        delete 'entries/:content_entry_id/publication', to: 'publications#destroy'
       end
 
       scope module: :singleton, as: :singleton do
@@ -36,6 +37,16 @@ namespace :admin_area, path: :admin do
     end
   end
 
-  resources :media, only: [:index]
-  resources :categories, only: [:index]
+  resources :media, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+    collection do
+      post :upload
+    end
+  end
+  resources :categories, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+
+  # ContentType management
+  resources :content_types do
+    resources :fields, controller: 'content_types/fields', except: [:index, :show]
+    post 'fields/sort', to: 'content_types/fields#sort', as: :sort_fields
+  end
 end
