@@ -4,5 +4,7 @@
 # config - routes - api
 # ==============================================================================
 namespace :api do
-  resources :contents, only: [:index, :show]
+  namespace :v1 do
+    resources :contents, only: [:index, :show]
+  end
 end
