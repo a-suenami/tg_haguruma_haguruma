@@ -57,15 +57,15 @@
               <% end %>
             </div>
             <div class="media-info">
-              <p class="media-filename" title="<%= media.filename %>">
-                <%= truncate(media.filename, length: 25) %>
+              <p class="media-filename" title="<%= media.original_filename %>">
+                <%= truncate(media.original_filename, length: 25) %>
               </p>
               <p class="media-meta">
                 <span class="media-type-badge media-type-<%= media.media_type %>">
                   <%= media.media_type %>
                 </span>
                 <span class="media-size">
-                  <%= number_to_human_size(media.file_size) rescue '-' %>
+                  <%= number_to_human_size(media.file_size_bytes) rescue '-' %>
                 </span>
               </p>
             </div>

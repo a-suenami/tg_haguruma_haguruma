@@ -207,11 +207,10 @@ module MediaStorage
         tenant_id:,
         mime_type: file.content_type,
         media_type: MediaAsset.detect_media_type(file.content_type),
+        file_size_bytes: file.size,
+        s3_object_path:,
         metadata: {
-          filename: file.original_filename,
-          file_size: file.size,
-          s3_object_path:,
-          uploaded_at: Time.current.iso8601,
+          original_filename: file.original_filename,
         },
       )
     end

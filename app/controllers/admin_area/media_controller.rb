@@ -37,10 +37,10 @@ class AdminArea::MediaController < AdminArea::ApplicationController
       file = params[:media_asset][:file]
       @media_asset.mime_type = file.content_type
       @media_asset.media_type = MediaAsset.detect_media_type(file.content_type)
+      @media_asset.file_size_bytes = file.size
+      @media_asset.s3_object_path = generate_s3_object_path(file)
       @media_asset.metadata = {
-        filename: file.original_filename,
-        file_size: file.size,
-        uploaded_at: Time.current.iso8601,
+        original_filename: file.original_filename,
       }
       @media_asset.file.attach(file)
     end
@@ -88,7 +88,7 @@ class AdminArea::MediaController < AdminArea::ApplicationController
       id: result[:media_asset].id,
       url: result[:url],
       s3_object_path: result[:s3_object_path],
-      filename: result[:media_asset].filename,
+      original_filename: result[:media_asset].original_filename,
       media_type: result[:media_asset].media_type,
     }
   rescue StandardError => e
@@ -111,5 +111,14 @@ class AdminArea::MediaController < AdminArea::ApplicationController
   sig { returns(ActionController::Parameters) }
   def media_asset_update_params
     params.require(:media_asset).permit(:metadata)
+  end
+
+  sig { params(file: ActionDispatch::Http::UploadedFile).returns(String) }
+  def generate_s3_object_path(file)
+    timestamp = Time.current.strftime('%Y/%m/%d')
+    uuid = SecureRandom.uuid
+    extension = File.extname(file.original_filename)
+
+    "#{Tenant.current_id}/#{timestamp}/#{uuid}#{extension}"
   end
 end
