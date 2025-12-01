@@ -19,7 +19,7 @@ RSpec.describe 'Api::V1::Auth::Idp', type: :request do
   end
 
   before do
-    Tenant.current_id = tenant.id
+    host! "#{tenant.id}.example.com"
   end
 
   path '/api/v1/auth/idp/provider' do
@@ -28,12 +28,7 @@ RSpec.describe 'Api::V1::Auth::Idp', type: :request do
       description 'Returns the information necessary for the OAuth client to construct the Authorization URL'
       produces 'application/json'
 
-      parameter name: 'X-Tenant-Id', in: :header, type: :string, required: true,
-                description: 'Tenant ID'
-
       response '200', 'successful' do
-        let(:'X-Tenant-Id') { tenant.id }
-
         schema type: :object,
                properties: {
                  data: {
@@ -66,8 +61,6 @@ RSpec.describe 'Api::V1::Auth::Idp', type: :request do
       end
 
       response '401', 'unauthorized when tenant has no oauth provider' do
-        let(:'X-Tenant-Id') { tenant.id }
-
         schema type: :object,
                properties: {
                  error: {
@@ -92,8 +85,6 @@ RSpec.describe 'Api::V1::Auth::Idp', type: :request do
       consumes 'application/json'
       produces 'application/json'
 
-      parameter name: 'X-Tenant-Id', in: :header, type: :string, required: true,
-                description: 'Tenant ID'
       parameter name: :body, in: :body, schema: {
         type: :object,
         properties: {
@@ -103,7 +94,6 @@ RSpec.describe 'Api::V1::Auth::Idp', type: :request do
       }
 
       response '200', 'successful' do
-        let(:'X-Tenant-Id') { tenant.id }
         let(:body) { { id_token: 'valid-jwt-token' } }
         let(:user_uid) { 'user-123' }
 
@@ -148,7 +138,6 @@ RSpec.describe 'Api::V1::Auth::Idp', type: :request do
       end
 
       response '401', 'unauthorized with invalid token' do
-        let(:'X-Tenant-Id') { tenant.id }
         let(:body) { { id_token: 'invalid-jwt-token' } }
 
         schema type: :object,
