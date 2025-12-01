@@ -12,6 +12,14 @@ module UserQueries
 
     EntityType = type_member { { fixed: ContentEntry } }
 
+    class ContentAuthorizationError < StandardError; end
+
+    sig { void }
+    def initialize
+      super
+      @user = T.let(nil, T.nilable(User))
+    end
+
     # Filter by content type
     sig { params(content_type_id: T.nilable(String)).returns(T.self_type) }
     def by_content_type(content_type_id)
@@ -26,11 +34,58 @@ module UserQueries
       chain(@scope.joins(:versions).merge(ContentEntry::Version.published).distinct)
     end
 
+    # Filter by authorization for a user
+    # Content without tags is accessible to all
+    # Content with tags requires user to have at least one matching tag
+    sig { params(user: T.nilable(User)).returns(T.self_type) }
+    def authorized_for(user)
+      @user = user
+      self
+    end
+
+    # Override resolve to apply authorization filtering
+    sig { override.returns(T::Array[EntityType]) }
+    def resolve
+      entries = T.unsafe(call.to_a)
+      return entries if @user.nil? && !authorization_filtering_enabled?
+
+      entries.select { |entry| authorized_entry?(entry) }
+    end
+
+    # Raise ContentAuthorizationError if entry is not authorized
+    sig { params(entry: ContentEntry).void }
+    def authorize!(entry)
+      raise ContentAuthorizationError unless authorized_entry?(entry)
+    end
+
     private
 
     sig { override.returns(ActiveRecord::Relation) }
     def base_scope
       ContentEntry.includes(:content_type, versions: { fields: [:content_type_field, :text, :richtext, :media_asset] })
+    end
+
+    sig { returns(T::Boolean) }
+    def authorization_filtering_enabled?
+      # Authorization filtering is enabled when authorized_for was called
+      defined?(@user)
+    end
+
+    sig { params(entry: ContentEntry).returns(T::Boolean) }
+    def authorized_entry?(entry)
+      published_version = entry.versions.find(&:published?)
+      return false unless published_version
+
+      content_tags = published_version.content_authorization_tags
+
+      # Content without tags is accessible to all
+      return true if content_tags.empty?
+
+      # Content with tags requires authenticated user with matching tag
+      return false if @user.nil?
+
+      user_tags = @user.content_authorization_tags
+      (user_tags.pluck(:id) & content_tags.pluck(:id)).any?
     end
   end
 end

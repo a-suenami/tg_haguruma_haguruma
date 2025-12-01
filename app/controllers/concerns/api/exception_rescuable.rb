@@ -25,7 +25,7 @@ module Api
       rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
 
       # Content authorization errors
-      rescue_from ContentAuthorizationQuery::ContentAuthorizationError, with: :handle_content_authorization_error
+      rescue_from UserQueries::ContentEntriesQuery::ContentAuthorizationError, with: :handle_content_authorization_error
 
       # JWT verification errors
       rescue_from JWT::DecodeError,           with: :handle_jwt_decode_error
@@ -80,7 +80,7 @@ module Api
     end
 
     # Content authorization error handler
-    sig { params(_exception: ContentAuthorizationQuery::ContentAuthorizationError).void }
+    sig { params(_exception: UserQueries::ContentEntriesQuery::ContentAuthorizationError).void }
     def handle_content_authorization_error(_exception)
       forbidden(
         message: I18n.t('errors.messages.content_authorization_denied', default: 'Access to this content is not authorized'),

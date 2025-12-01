@@ -39,7 +39,7 @@
 
 ### 認可ロジック実装
 - [x] コンテンツ取得時の認可チェック（ユーザーのタグとコンテンツのタグを比較）
-- [x] 認可チェック用クエリクラス（`ContentAuthorizationQuery`）
+- [x] 認可チェックを `UserQueries::ContentEntriesQuery` に統合（`authorized_for`, `authorize!`）
 - [x] 認可失敗時のエラーハンドリング（403 Forbidden）
 - [x] ContentsController への認可チェック組み込み
 
@@ -103,8 +103,10 @@ source env.sh && tapioca dsl
 - `app/controllers/api/v1/user_tags_controller.rb`
 - `app/controllers/api/v1/content_entry_authorizations_controller.rb`
 
-### クエリ
-- `app/queries/content_authorization_query.rb`
+### クエリ（認可ロジック統合）
+- `app/queries/user_queries/content_entries_query.rb`
+  - `authorized_for(user)` - 認可フィルタリング
+  - `authorize!(entry)` - 認可チェック（失敗時 403）
 
 ### ルーティング
 - `config/routes/api.rb`
@@ -113,7 +115,6 @@ source env.sh && tapioca dsl
 - `spec/models/content_authorization_tag_spec.rb`
 - `spec/models/user_tag_spec.rb`
 - `spec/models/content_entry_authorization_spec.rb`
-- `spec/queries/content_authorization_query_spec.rb`
 - `spec/requests/api/v1/content_authorization_tags_spec.rb`
 - `spec/requests/api/v1/user_tags_spec.rb`
 - `spec/requests/api/v1/content_entry_authorizations_spec.rb`
