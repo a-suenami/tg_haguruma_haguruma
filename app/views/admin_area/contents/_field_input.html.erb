@@ -1,13 +1,34 @@
 <%# Renders a single field input based on field type %>
-<%# Local variables: field (ContentType::Field), value (current value), form (form builder) %>
+<%# Local variables: field (ContentType::Field), value (current value), content_type (optional), content_entry (optional) %>
 
-<div class="field-group">
-  <label for="fields_<%= field.api_identifier %>" class="field-label">
-    <%= field.label %>
-    <% if field.required %>
-      <span class="required-mark">*</span>
+<%
+  # Build autosave URL if content_type and content_entry are provided
+  autosave_url = if defined?(content_type) && defined?(content_entry) && content_type && content_entry&.persisted?
+    admin_area_contents_collection_entry_field_path(
+      content_type_id: content_type.id,
+      entry_id: content_entry.id,
+      api_identifier: field.api_identifier,
+    )
+  end
+%>
+
+<div class="field-group"
+     <% if autosave_url %>
+     data-controller="autosave-field"
+     data-autosave-field-url-value="<%= autosave_url %>"
+     data-autosave-field-debounce-ms-value="1000"
+     <% end %>>
+  <div class="field-label-row">
+    <label for="fields_<%= field.api_identifier %>" class="field-label">
+      <%= field.label %>
+      <% if field.required %>
+        <span class="required-mark">*</span>
+      <% end %>
+    </label>
+    <% if autosave_url %>
+      <span data-autosave-field-target="status" class="autosave-status autosave-status--idle"></span>
     <% end %>
-  </label>
+  </div>
   <% if field.description.present? %>
     <p class="field-description"><%= field.description %></p>
   <% end %>
@@ -19,6 +40,7 @@
            id="fields_<%= field.api_identifier %>"
            value="<%= value %>"
            class="field-input"
+           data-autosave-field-target="input"
            <%= 'required' if field.required %>>
 
   <% when 'richtext' %>
@@ -30,14 +52,16 @@
     <input type="hidden"
            name="fields[<%= field.api_identifier %>]"
            id="fields_<%= field.api_identifier %>"
-           value="<%= value %>">
+           value="<%= value %>"
+           data-autosave-field-target="input">
 
   <% when 'media_asset' %>
     <div class="media-asset-field">
       <input type="hidden"
              name="fields[<%= field.api_identifier %>]"
              id="fields_<%= field.api_identifier %>"
-             value="<%= value %>">
+             value="<%= value %>"
+             data-autosave-field-target="input">
       <% if value.present? %>
         <div class="media-preview" id="media_preview_<%= field.api_identifier %>">
           <span class="media-selected">メディアが選択されています</span>

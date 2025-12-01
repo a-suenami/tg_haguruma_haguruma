@@ -63,12 +63,7 @@
       </div>
     <% end %>
 
-    <div data-controller="autosave-form"
-         data-autosave-form-url-value="<%= autosave_admin_area_contents_collection_entry_path(content_type_id: @content_type.id, id: @content_entry.id) %>">
-      <div class="autosave-status-container">
-        <span data-autosave-form-target="status" class="autosave-status autosave-status--idle"></span>
-      </div>
-    <%= form_with url: admin_area_contents_collection_entry_path(content_type_id: @content_type.id, id: @content_entry.id), method: :patch, class: 'content-form', local: true, id: 'content-entry-form', data: { autosave_form_target: 'form' } do %>
+    <%= form_with url: admin_area_contents_collection_entry_path(content_type_id: @content_type.id, id: @content_entry.id), method: :patch, class: 'content-form', local: true, id: 'content-entry-form' do %>
       <div class="content-detail-layout">
         <!-- メインコンテンツエリア -->
         <div class="content-main-area">
@@ -77,7 +72,9 @@
               <% @content_type.fields.each do |field| %>
                 <%= render 'admin_area/contents/field_input',
                            field: field,
-                           value: @field_values[field.api_identifier] %>
+                           value: @field_values[field.api_identifier],
+                           content_type: @content_type,
+                           content_entry: @content_entry %>
               <% end %>
             <% else %>
               <div class="empty-fields-message">
@@ -160,6 +157,5 @@
         </div>
       </div>
     <% end %>
-    </div>
   </main>
 </div>

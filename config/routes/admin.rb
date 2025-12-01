@@ -22,9 +22,7 @@ namespace :admin_area, path: :admin do
 
       scope module: :collection, as: :collection do
         resources :entries, only: [:new, :create, :edit, :update], controller: 'entries/edit' do
-          member do
-            patch :autosave
-          end
+          resources :fields, only: [:update], controller: 'entries/fields', param: :api_identifier
         end
         resources :entries, only: :show, controller: 'entries/show'
 
