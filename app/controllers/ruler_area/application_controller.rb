@@ -29,11 +29,6 @@ module RulerArea
 
     private
 
-    def set_tenant
-      @tenant = Tenant.find(params[:tenant_id])
-      Tenant.current_id = @tenant.id
-    end
-
     # TODO: Add activity logging when ActivityLog model is available
     # def log_activity
     #   should_log = request.method != 'GET' && response.status < 400

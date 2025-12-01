@@ -3,6 +3,8 @@
 
 module RulerArea
   class OauthProvidersController < ApplicationController
+    include RulerArea::TenantSettable
+
     before_action :set_tenant
     before_action :set_oauth_provider, only: [:edit, :update, :destroy]
 

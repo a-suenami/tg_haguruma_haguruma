@@ -3,6 +3,8 @@
 
 module RulerArea
   class AdminsController < ApplicationController
+    include RulerArea::TenantSettable
+
     before_action :set_tenant
     before_action :set_admin, only: [:edit, :update, :destroy]
 
