@@ -38,7 +38,7 @@
 | エリア | テナント ID 取得元 | 設定方法 |
 |--------|-------------------|----------|
 | API | `request.subdomain` | `Tenant.current_id = tenant_id` |
-| AdminArea | `session[:tenant_id]` | `Tenant.current_id = tenant_id` |
+| AdminArea | `request.subdomain` | `Tenant.current_id = tenant_id` |
 | RulerArea | `params[:tenant_id]` or `params[:id]` | `Tenant.current_id = @tenant.id` |
 
 ### 確認済みの正常動作
