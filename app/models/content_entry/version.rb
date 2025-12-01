@@ -1,6 +1,8 @@
 # typed: false
 
 class ContentEntry::Version < ApplicationRecord
+  include Multitenancy
+
   STATUSES = {
     draft: 1,
     preview: 2,
@@ -13,8 +15,6 @@ class ContentEntry::Version < ApplicationRecord
     primary_key: [:tenant_id, :content_type_id, :content_entry_id, :version],
     dependent: :destroy,
     inverse_of: false
-
-  validates :tenant_id, presence: true
   validates :content_type_id, presence: true
   validates :content_entry_id, presence: true
   validates :version, presence: true, numericality: { greater_than: 0 }

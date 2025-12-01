@@ -2,8 +2,7 @@
 
 class Admin < ApplicationRecord
   extend T::Sig
-
-  belongs_to :tenant
+  include Multitenancy
 
   has_one :admin_auth0_account, class_name: 'Admin::Auth0Account', dependent: :destroy
   has_one :auth0_account, through: :admin_auth0_account
