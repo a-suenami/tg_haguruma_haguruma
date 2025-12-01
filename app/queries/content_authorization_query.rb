@@ -2,10 +2,10 @@
 # frozen_string_literal: true
 
 # ==============================================================================
-# app - services - content authorization service
+# app - queries - content authorization query
 # ==============================================================================
 #
-# ユーザーがコンテンツバージョンにアクセス可能かを判定するサービスクラス
+# ユーザーがコンテンツバージョンにアクセス可能かを判定するクエリクラス
 #
 # 認可ルール:
 # - コンテンツに認可タグが設定されていない場合 → 全員アクセス可能
@@ -13,7 +13,7 @@
 #   - ユーザーのタグ ∩ コンテンツのタグ ≠ ∅ → アクセス許可
 #   - 上記以外 → アクセス拒否
 #
-class ContentAuthorizationService
+class ContentAuthorizationQuery
   extend T::Sig
 
   sig { params(user: T.nilable(User), content_entry_version: ContentEntry::Version).void }
@@ -36,11 +36,6 @@ class ContentAuthorizationService
 
     # ユーザーのタグとコンテンツのタグに共通するものがあればアクセス許可
     (user_tags.pluck(:id) & content_tags.pluck(:id)).any?
-  end
-
-  sig { void }
-  def authorize!
-    raise ContentAuthorizationError unless authorized?
   end
 
   class ContentAuthorizationError < StandardError; end

@@ -21,7 +21,7 @@ module Api
           published_version = entry.versions.find(&:published?)
           next false unless published_version
 
-          ContentAuthorizationService.new(user: current_user, content_entry_version: published_version).authorized?
+          ContentAuthorizationQuery.new(user: current_user, content_entry_version: published_version).authorized?
         end
 
         render json: ContentEntriesSerializer.new(authorized_entries).as_json
@@ -33,7 +33,8 @@ module Api
         published_version = content_entry.versions.find(&:published?)
 
         if published_version
-          ContentAuthorizationService.new(user: current_user, content_entry_version: published_version).authorize!
+          authorized = ContentAuthorizationQuery.new(user: current_user, content_entry_version: published_version).authorized?
+          raise ContentAuthorizationQuery::ContentAuthorizationError unless authorized
         end
 
         render json: ContentEntrySerializer.new(content_entry).as_json
