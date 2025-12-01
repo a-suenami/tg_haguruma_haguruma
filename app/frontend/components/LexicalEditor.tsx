@@ -1,4 +1,3 @@
-import type { FC } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
@@ -21,61 +20,76 @@ import { AutoEmbedNode } from "./AutoEmbedNode";
 import FileDragDropPlugin from "./FileDragDropPlugin";
 import AutoEmbedPluginComponent from "./AutoEmbedPluginComponent";
 import DraggableBlockPlugin from "./DraggableBlockPlugin";
+import HiddenFieldSyncPlugin from "./HiddenFieldSyncPlugin";
 
 // Markdown transformers
 import {
   TRANSFORMERS,
 } from "@lexical/markdown";
 
-const initialConfig = {
-  namespace: "RichTextEditor",
-  theme: {
-    text: {
-      bold: "editor-text-bold",
-      italic: "editor-text-italic",
-      underline: "editor-text-underline",
-      strikethrough: "editor-text-strikethrough",
-      code: "editor-text-code",
-    },
-    heading: {
-      h1: "editor-heading-h1",
-      h2: "editor-heading-h2",
-      h3: "editor-heading-h3",
-      h4: "editor-heading-h4",
-      h5: "editor-heading-h5",
-      h6: "editor-heading-h6",
-    },
-    list: {
-      nested: {
-        listitem: "editor-nested-listitem",
-      },
-      ol: "editor-list-ol",
-      ul: "editor-list-ul",
-      listitem: "editor-listitem",
-    },
-    quote: "editor-quote",
-    code: "editor-code",
-    image: "editor-image",
-    video: "editor-video",
+export interface LexicalEditorProps {
+  initialContent?: string;
+  placeholder?: string;
+  hiddenFieldId?: string;
+}
+
+const theme = {
+  text: {
+    bold: "editor-text-bold",
+    italic: "editor-text-italic",
+    underline: "editor-text-underline",
+    strikethrough: "editor-text-strikethrough",
+    code: "editor-text-code",
   },
-  nodes: [
-    HeadingNode,
-    QuoteNode,
-    CodeNode,
-    ListNode,
-    ListItemNode,
-    LinkNode,
-    AutoLinkNode,
-    ImageNode,
-    VideoNode,
-    AutoEmbedNode,
-  ],
-  onError: (error: Error) => {
-    console.error(error);
+  heading: {
+    h1: "editor-heading-h1",
+    h2: "editor-heading-h2",
+    h3: "editor-heading-h3",
+    h4: "editor-heading-h4",
+    h5: "editor-heading-h5",
+    h6: "editor-heading-h6",
   },
+  list: {
+    nested: {
+      listitem: "editor-nested-listitem",
+    },
+    ol: "editor-list-ol",
+    ul: "editor-list-ul",
+    listitem: "editor-listitem",
+  },
+  quote: "editor-quote",
+  code: "editor-code",
+  image: "editor-image",
+  video: "editor-video",
 };
 
-export default function LexicalEditor() {
+const nodes = [
+  HeadingNode,
+  QuoteNode,
+  CodeNode,
+  ListNode,
+  ListItemNode,
+  LinkNode,
+  AutoLinkNode,
+  ImageNode,
+  VideoNode,
+  AutoEmbedNode,
+];
+
+export default function LexicalEditor({
+  initialContent,
+  placeholder = "Enter some rich text...",
+  hiddenFieldId,
+}: LexicalEditorProps) {
+  const initialConfig = {
+    namespace: "RichTextEditor",
+    theme,
+    nodes,
+    onError: (error: Error) => {
+      console.error(error);
+    },
+  };
+
   return (
     <div className="editor-container">
       <LexicalComposer initialConfig={initialConfig}>
@@ -87,7 +101,7 @@ export default function LexicalEditor() {
             }
             placeholder={
               <div className="editor-placeholder">
-                Enter some rich text...
+                {placeholder}
               </div>
             }
             ErrorBoundary={LexicalErrorBoundary}
@@ -99,9 +113,11 @@ export default function LexicalEditor() {
           <FileDragDropPlugin />
           <AutoEmbedPluginComponent />
           <DraggableBlockPlugin />
+          {hiddenFieldId && (
+            <HiddenFieldSyncPlugin hiddenFieldId={hiddenFieldId} />
+          )}
         </div>
       </LexicalComposer>
     </div>
   );
-};
-
+}

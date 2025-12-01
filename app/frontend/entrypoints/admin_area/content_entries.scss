@@ -1059,13 +1059,47 @@
     margin-bottom: 25px;
 }
 
+.field-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
 .field-group .field-label {
     display: block;
     font-size: 13px;
     font-weight: 600;
     color: #374151;
-    margin-bottom: 8px;
     text-transform: lowercase;
+}
+
+/* オートセーブステータス */
+.autosave-status {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.autosave-status--idle {
+    color: transparent;
+}
+
+.autosave-status--saving {
+    color: #6b7280;
+    background: #f3f4f6;
+}
+
+.autosave-status--saved {
+    color: #059669;
+    background: #d1fae5;
+}
+
+.autosave-status--error {
+    color: #dc2626;
+    background: #fee2e2;
 }
 
 .field-value-display {

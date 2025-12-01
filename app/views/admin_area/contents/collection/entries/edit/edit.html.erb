@@ -72,7 +72,9 @@
               <% @content_type.fields.each do |field| %>
                 <%= render 'admin_area/contents/field_input',
                            field: field,
-                           value: @field_values[field.api_identifier] %>
+                           value: @field_values[field.api_identifier],
+                           content_type: @content_type,
+                           content_entry: @content_entry %>
               <% end %>
             <% else %>
               <div class="empty-fields-message">
