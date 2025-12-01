@@ -10,14 +10,21 @@ module Api
 
     sig { void }
     def index
-      content_entries = ContentEntriesQuery.new(content_type_id: params[:content_type_id]).call
+      content_entries = User::ContentEntriesQuery.new
+                                                 .with_associations
+                                                 .by_content_type(params[:content_type_id])
+                                                 .published
+                                                 .call
 
       render json: ContentEntriesSerializer.new(content_entries).as_json
     end
 
     sig { void }
     def show
-      content_entry = ContentEntry.find(params[:id])
+      content_entry = User::ContentEntriesQuery.new
+                                               .with_associations
+                                               .published
+                                               .find(params[:id])
 
       render json: ContentEntrySerializer.new(content_entry).as_json
     end
