@@ -1,0 +1,53 @@
+<%# Renders a single field input based on field type %>
+<%# Local variables: field (ContentType::Field), value (current value), form (form builder) %>
+
+<div class="field-group">
+  <label for="fields_<%= field.api_identifier %>" class="field-label">
+    <%= field.label %>
+    <% if field.required %>
+      <span class="required-mark">*</span>
+    <% end %>
+  </label>
+  <% if field.description.present? %>
+    <p class="field-description"><%= field.description %></p>
+  <% end %>
+
+  <% case field.field_type %>
+  <% when 'text' %>
+    <input type="text"
+           name="fields[<%= field.api_identifier %>]"
+           id="fields_<%= field.api_identifier %>"
+           value="<%= value %>"
+           class="field-input"
+           <%= 'required' if field.required %>>
+
+  <% when 'richtext' %>
+    <div data-controller="react-lexical"
+         data-react-lexical-initial-content-value="<%= html_escape(value.to_s) %>"
+         data-react-lexical-placeholder-value="内容を入力してください..."
+         data-react-lexical-hidden-field-id-value="fields_<%= field.api_identifier %>">
+    </div>
+    <input type="hidden"
+           name="fields[<%= field.api_identifier %>]"
+           id="fields_<%= field.api_identifier %>"
+           value="<%= value %>">
+
+  <% when 'media_asset' %>
+    <div class="media-asset-field">
+      <input type="hidden"
+             name="fields[<%= field.api_identifier %>]"
+             id="fields_<%= field.api_identifier %>"
+             value="<%= value %>">
+      <% if value.present? %>
+        <div class="media-preview" id="media_preview_<%= field.api_identifier %>">
+          <span class="media-selected">メディアが選択されています</span>
+        </div>
+      <% end %>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="alert('メディアライブラリは準備中です')">
+        <i class="fas fa-image icon-prefix"></i>
+        メディアを選択
+      </button>
+    </div>
+
+  <% end %>
+</div>

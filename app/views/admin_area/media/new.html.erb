@@ -1,0 +1,183 @@
+<% content_for :title, 'メディアアップロード' %>
+
+<div class="custom-container">
+  <%= render 'admin_area/contents/sidebar' %>
+
+  <main class="custom-main">
+    <div class="breadcrumb">
+      <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <%= link_to 'メディアライブラリ', admin_area_media_index_path, class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">アップロード</span>
+    </div>
+
+    <header class="main-header">
+      <h2>メディアをアップロード</h2>
+    </header>
+
+    <% if @media_asset.errors.any? %>
+      <div class="alert alert-danger">
+        <ul>
+          <% @media_asset.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-container">
+      <%= form_with model: [:admin_area, @media_asset], local: true, multipart: true, class: 'content-form' do |form| %>
+        <div class="upload-area" id="upload-area">
+          <div class="upload-icon">
+            <i class="fas fa-cloud-upload-alt fa-4x"></i>
+          </div>
+          <p class="upload-text">ファイルをドラッグ＆ドロップ<br>または</p>
+          <%= form.file_field :file, class: 'file-input', id: 'file-input', accept: 'image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx' %>
+          <label for="file-input" class="btn btn-primary">
+            <i class="fas fa-folder-open icon-prefix"></i>
+            ファイルを選択
+          </label>
+          <p class="upload-hint">対応形式: 画像、動画、音声、PDF、Office文書</p>
+        </div>
+
+        <div id="file-preview" style="display: none;">
+          <div class="preview-card">
+            <div class="preview-info">
+              <p class="preview-filename" id="preview-filename"></p>
+              <p class="preview-meta" id="preview-meta"></p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="clearFile()">
+              <i class="fas fa-times"></i>
+              キャンセル
+            </button>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <%= form.submit 'アップロード', class: 'btn btn-primary', id: 'submit-btn', disabled: true %>
+          <%= link_to 'キャンセル', admin_area_media_index_path, class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+    </div>
+  </main>
+</div>
+
+<style>
+.upload-area {
+  border: 2px dashed var(--border-color, #e2e8f0);
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  background: var(--background-secondary, #f8fafc);
+  transition: border-color 0.2s, background-color 0.2s;
+  margin-bottom: 1.5rem;
+}
+
+.upload-area.dragover {
+  border-color: var(--primary-color, #3b82f6);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.upload-icon {
+  color: var(--text-muted, #94a3b8);
+  margin-bottom: 1rem;
+}
+
+.upload-text {
+  color: var(--text-muted, #64748b);
+  margin-bottom: 1rem;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted, #94a3b8);
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.preview-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: var(--card-background, #fff);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.preview-filename {
+  font-weight: 500;
+  margin: 0 0 0.25rem 0;
+}
+
+.preview-meta {
+  font-size: 0.875rem;
+  color: var(--text-muted, #64748b);
+  margin: 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const uploadArea = document.getElementById('upload-area');
+  const fileInput = document.getElementById('file-input');
+  const filePreview = document.getElementById('file-preview');
+  const previewFilename = document.getElementById('preview-filename');
+  const previewMeta = document.getElementById('preview-meta');
+  const submitBtn = document.getElementById('submit-btn');
+
+  // Drag and drop
+  uploadArea.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+  });
+
+  uploadArea.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+  });
+
+  uploadArea.addEventListener('drop', function(e) {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    if (e.dataTransfer.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      showPreview(e.dataTransfer.files[0]);
+    }
+  });
+
+  // File input change
+  fileInput.addEventListener('change', function() {
+    if (this.files.length) {
+      showPreview(this.files[0]);
+    }
+  });
+
+  function showPreview(file) {
+    previewFilename.textContent = file.name;
+    previewMeta.textContent = formatFileSize(file.size) + ' - ' + file.type;
+    uploadArea.style.display = 'none';
+    filePreview.style.display = 'block';
+    submitBtn.disabled = false;
+  }
+
+  window.clearFile = function() {
+    fileInput.value = '';
+    uploadArea.style.display = 'block';
+    filePreview.style.display = 'none';
+    submitBtn.disabled = true;
+  };
+
+  function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+});
+</script>
