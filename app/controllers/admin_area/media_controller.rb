@@ -71,33 +71,28 @@ class AdminArea::MediaController < AdminArea::ApplicationController
     redirect_to admin_area_media_index_path, notice: 'メディアを削除しました'
   end
 
-  # AJAX endpoint for file upload from editor
+  # AJAX endpoint for file upload from editor (uploads to S3 and returns CloudFront URL)
+  sig { void }
   def upload
     file = params[:file]
     return render json: { error: 'ファイルが必要です' }, status: :bad_request unless file
 
-    media_asset = MediaAsset.new(
+    uploader = MediaStorage::Uploader.new
+    result = uploader.upload(
+      file: file,
       tenant_id: Tenant.current_id,
-      mime_type: file.content_type,
-      media_type: MediaAsset.detect_media_type(file.content_type),
-      metadata: {
-        filename: file.original_filename,
-        file_size: file.size,
-        uploaded_at: Time.current.iso8601,
-      },
     )
-    media_asset.file.attach(file)
 
-    if media_asset.save
-      render json: {
-        id: media_asset.id,
-        url: url_for(media_asset.file),
-        filename: media_asset.filename,
-        media_type: media_asset.media_type,
-      }
-    else
-      render json: { errors: media_asset.errors.full_messages }, status: :unprocessable_entity
-    end
+    render json: {
+      id: result[:media_asset].id,
+      url: result[:url],
+      s3_object_path: result[:s3_object_path],
+      filename: result[:media_asset].filename,
+      media_type: result[:media_asset].media_type,
+    }
+  rescue StandardError => e
+    Rails.logger.error("Media upload failed: #{e.message}")
+    render json: { error: 'アップロードに失敗しました' }, status: :internal_server_error
   end
 
   private

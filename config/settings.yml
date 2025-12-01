@@ -30,7 +30,7 @@ aws:
       key_pair:
         private:
           public_key_id: <%= ENV['AWS_CLOUDFRONT_MEDIA_KEY_PAIR_PRIVATE_PUBLIC_KEY_ID'] %>
-          # private_key: 定義しない
+          private_key: <%= ENV['AWS_CLOUDFRONT_MEDIA_KEY_PAIR_PRIVATE_PRIVATE_KEY'] %>
   dynamodb:
     access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
     app_constant:
