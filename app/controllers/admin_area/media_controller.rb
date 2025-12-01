@@ -78,7 +78,7 @@ class AdminArea::MediaController < AdminArea::ApplicationController
     file = params[:file]
     return render json: { error: 'ファイルが必要です' }, status: :bad_request unless file
 
-    uploader = MediaStorage::Uploader.new
+    uploader = MediaAsset::Uploader.new
     result = uploader.upload(
       file:,
       tenant_id: T.must(Tenant.current_id),

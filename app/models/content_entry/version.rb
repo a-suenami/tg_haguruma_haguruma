@@ -40,6 +40,12 @@ class ContentEntry::Version < ApplicationRecord
     primary_key: [:tenant_id, :content_type_id, :content_entry_id, :version],
     dependent: :destroy,
     inverse_of: false
+  has_many :content_entry_authorizations,
+    foreign_key: [:content_entry_id, :version],
+    primary_key: [:content_entry_id, :version],
+    dependent: :destroy,
+    inverse_of: :content_entry_version
+  has_many :content_authorization_tags, through: :content_entry_authorizations
   validates :content_type_id, presence: true
   validates :content_entry_id, presence: true
   validates :version, presence: true, numericality: { greater_than: 0 }

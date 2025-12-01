@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 # ==============================================================================
@@ -14,7 +14,7 @@ module UserQueries
 
     # Filter by content type
     sig { params(content_type_id: T.nilable(String)).returns(T.self_type) }
-    def self.by_content_type(content_type_id)
+    def by_content_type(content_type_id)
       return self if content_type_id.blank?
 
       chain(@scope.where(content_type_id:))
