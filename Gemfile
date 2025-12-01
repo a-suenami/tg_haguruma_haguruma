@@ -152,6 +152,9 @@ group :development, :test do
   gem 'parallel_tests', '~> 4.3.0'
   gem 'bundler-audit', '~> 0.9.1'
   gem 'knapsack_pro', '~> 5.7.0'
+
+  # OpenAPI / Swagger specs
+  gem 'rswag-specs'
 end
 
 group :development do
@@ -176,7 +179,3 @@ end
 # OpenAPI / Swagger
 gem 'rswag-api'
 gem 'rswag-ui'
-
-group :development, :test do
-  gem 'rswag-specs'
-end

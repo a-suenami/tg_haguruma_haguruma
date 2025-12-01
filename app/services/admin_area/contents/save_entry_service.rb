@@ -29,7 +29,7 @@ module AdminArea
           save_field_values(entry, version)
 
           if @errors.empty?
-            Result.new(success: true, content_entry: entry, version: version, errors: [])
+            Result.new(success: true, content_entry: entry, version:, errors: [])
           else
             raise ActiveRecord::Rollback
           end

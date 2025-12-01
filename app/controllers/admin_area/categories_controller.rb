@@ -19,20 +19,21 @@ class AdminArea::CategoriesController < AdminArea::ApplicationController
     # @category = Category.new
   end
 
-  def create
-    # TODO: カテゴリーモデル作成後に実装
-    redirect_to admin_area_categories_path, alert: 'カテゴリー機能は準備中です'
-  end
-
   def edit
     redirect_to admin_area_categories_path
   end
 
+  def create
+    # TODO: カテゴリーモデル作成後に実装
+    redirect_to admin_area_categories_path, alert: t('admin_area.categories.feature_in_progress')
+  end
+
+
   def update
-    redirect_to admin_area_categories_path, alert: 'カテゴリー機能は準備中です'
+    redirect_to admin_area_categories_path, alert: t('admin_area.categories.feature_in_progress')
   end
 
   def destroy
-    redirect_to admin_area_categories_path, alert: 'カテゴリー機能は準備中です'
+    redirect_to admin_area_categories_path, alert: t('admin_area.categories.feature_in_progress')
   end
 end

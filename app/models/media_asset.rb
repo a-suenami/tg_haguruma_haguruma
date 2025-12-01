@@ -35,11 +35,11 @@ class MediaAsset < ApplicationRecord
 
   def self.detect_media_type(mime_type)
     case mime_type
-    when /^image\//
+    when %r{^image/}
       :image
-    when /^video\//
+    when %r{^video/}
       :video
-    when /^audio\//
+    when %r{^audio/}
       :audio
     else
       :document

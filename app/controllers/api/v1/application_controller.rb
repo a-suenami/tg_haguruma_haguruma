@@ -19,7 +19,7 @@ module Api
       def set_tenant
         tenant_id = request.subdomain.split('.').first
 
-        unless tenant_id.present?
+        if tenant_id.blank?
           render json: { error: 'Tenant subdomain is required' }, status: :bad_request
           return
         end

@@ -38,7 +38,7 @@ module AdminArea
           field = save_field(version)
 
           if @errors.empty?
-            Result.new(success: true, field: field, errors: [])
+            Result.new(success: true, field:, errors: [])
           else
             raise ActiveRecord::Rollback
           end

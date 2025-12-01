@@ -3,7 +3,7 @@
 class ContentType < ApplicationRecord
   include Multitenancy
 
-  has_many :fields, -> { order(:position) }, dependent: :destroy
+  has_many :fields, -> { order(:position) }, dependent: :destroy, inverse_of: :content_type
   has_many :content_entries, dependent: :destroy
 
   accepts_nested_attributes_for :fields, allow_destroy: true, reject_if: :all_blank

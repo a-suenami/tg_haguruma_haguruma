@@ -25,14 +25,14 @@ module AdminArea
             result = AdminArea::Contents::SaveEntryService.new(
               content_type: T.must(@content_type),
               content_entry: @content_entry,
-              fields_params: fields_params,
+              fields_params:,
             ).call
 
             if result.success
               redirect_to edit_admin_area_contents_collection_entry_path(
                 content_type_id: T.must(@content_type).id,
                 id: T.must(result.content_entry).id,
-              ), notice: 'コンテンツを作成しました'
+              ), notice: t('admin_area.contents.created')
             else
               flash.now[:alert] = result.errors.join(', ')
               @field_values = T.let(fields_params, T::Hash[String, T.untyped])
@@ -44,14 +44,14 @@ module AdminArea
             result = AdminArea::Contents::SaveEntryService.new(
               content_type: T.must(@content_type),
               content_entry: @content_entry,
-              fields_params: fields_params,
+              fields_params:,
             ).call
 
             if result.success
               redirect_to edit_admin_area_contents_collection_entry_path(
                 content_type_id: T.must(@content_type).id,
                 id: T.must(@content_entry).id,
-              ), notice: '保存しました'
+              ), notice: t('admin_area.contents.saved')
             else
               flash.now[:alert] = result.errors.join(', ')
               @field_values = T.let(fields_params, T::Hash[String, T.untyped])

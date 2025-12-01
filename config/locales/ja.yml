@@ -67,6 +67,26 @@ ja:
       tenant_not_found: テナントが見つかりませんでした
       session_expired: セッションの有効期限が切れました。再度ログインしてください
       authentication_failed: '認証に失敗しました: %{error}'
+    categories:
+      feature_in_progress: カテゴリー機能は準備中です
+    content_types:
+      created: コンテンツタイプを作成しました
+      updated: コンテンツタイプを更新しました
+      destroyed: コンテンツタイプを削除しました
+      cannot_delete_with_contents: コンテンツが存在するため削除できません
+      fields:
+        created: フィールドを追加しました
+        updated: フィールドを更新しました
+        destroyed: フィールドを削除しました
+    contents:
+      created: コンテンツを作成しました
+      saved: 保存しました
+      published: コンテンツを公開しました
+      unpublished: 公開を取り消しました
+    media:
+      uploaded: メディアをアップロードしました
+      updated: メディア情報を更新しました
+      destroyed: メディアを削除しました
     admins:
       created: 管理者を作成しました
       updated: 管理者を更新しました

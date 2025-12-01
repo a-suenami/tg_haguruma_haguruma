@@ -67,7 +67,7 @@ class ApplicationQuery
   # Finds entity by id, returns nil if not found
   sig { params(id: T.untyped).returns(T.nilable(EntityType)) }
   def resolve_find_by_id(id)
-    T.unsafe(call.find_by(id: id))
+    T.unsafe(call.find_by(id:))
   end
 
   private

@@ -20,7 +20,7 @@ module AdminArea
             redirect_to admin_area_contents_collection_entry_path(
               content_type_id: T.must(@content_type).id,
               id: T.must(@content_entry).id,
-            ), notice: 'コンテンツを公開しました'
+            ), notice: t('admin_area.contents.published')
           else
             redirect_to edit_admin_area_contents_collection_entry_path(
               content_type_id: T.must(@content_type).id,
@@ -36,7 +36,7 @@ module AdminArea
             redirect_to admin_area_contents_collection_entry_path(
               content_type_id: T.must(@content_type).id,
               id: T.must(@content_entry).id,
-            ), notice: '公開を取り消しました'
+            ), notice: t('admin_area.contents.unpublished')
           else
             redirect_to admin_area_contents_collection_entry_path(
               content_type_id: T.must(@content_type).id,

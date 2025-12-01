@@ -11,7 +11,7 @@ module Api
 
       sig { void }
       def index
-        content_entries = User::ContentEntriesQuery
+        content_entries = UserQueries::ContentEntriesQuery
                             .by_content_type(params[:content_type_id])
                             .published
                             .resolve
@@ -21,7 +21,7 @@ module Api
 
       sig { void }
       def show
-        content_entry = User::ContentEntriesQuery.published.resolve_find(params[:id])
+        content_entry = UserQueries::ContentEntriesQuery.published.resolve_find(params[:id])
 
         render json: ContentEntrySerializer.new(content_entry).as_json
       end

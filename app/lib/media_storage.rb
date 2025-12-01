@@ -10,7 +10,7 @@ module MediaStorage
       @client ||= T.let(
         Aws::S3::Client.new(
           region: Settings.aws.s3.media.region,
-          credentials: credentials,
+          credentials:,
         ),
         T.nilable(Aws::S3::Client),
       )
@@ -25,9 +25,9 @@ module MediaStorage
     def upload(key:, body:, content_type:)
       client.put_object(
         bucket: bucket_name,
-        key: key,
-        body: body,
-        content_type: content_type,
+        key:,
+        body:,
+        content_type:,
       )
       key
     end
@@ -36,7 +36,7 @@ module MediaStorage
     def delete(key:)
       client.delete_object(
         bucket: bucket_name,
-        key: key,
+        key:,
       )
     end
 
@@ -69,7 +69,7 @@ module MediaStorage
 
     sig { params(s3_object_path: String, purpose: Purpose, media_type: T.nilable(Symbol)).returns(String) }
     def signed_url(s3_object_path, purpose: :admin, media_type: nil)
-      expiration = determine_expiration(purpose: purpose, media_type: media_type)
+      expiration = determine_expiration(purpose:, media_type:)
       signer.signed_url(
         url(s3_object_path),
         expires: Time.current + expiration,
@@ -122,8 +122,8 @@ module MediaStorage
     def signer
       @signer ||= T.let(
         Aws::CloudFront::UrlSigner.new(
-          key_pair_id: key_pair_id,
-          private_key: private_key,
+          key_pair_id:,
+          private_key:,
         ),
         T.nilable(Aws::CloudFront::UrlSigner),
       )
@@ -146,7 +146,7 @@ module MediaStorage
       ).returns({ s3_object_path: String, url: String, media_asset: MediaAsset })
     end
     def upload(file:, tenant_id:)
-      s3_object_path = generate_s3_path(file: file, tenant_id: tenant_id)
+      s3_object_path = generate_s3_path(file:, tenant_id:)
 
       # S3にアップロード
       @s3_client.upload(
@@ -158,18 +158,18 @@ module MediaStorage
 
       # MediaAssetを作成
       media_asset = create_media_asset(
-        file: file,
-        tenant_id: tenant_id,
-        s3_object_path: s3_object_path,
+        file:,
+        tenant_id:,
+        s3_object_path:,
       )
 
       # CloudFront URLを生成
       url = @cloudfront_signer.signed_url(s3_object_path)
 
       {
-        s3_object_path: s3_object_path,
-        url: url,
-        media_asset: media_asset,
+        s3_object_path:,
+        url:,
+        media_asset:,
       }
     end
 
@@ -181,7 +181,7 @@ module MediaStorage
       ).returns(String)
     end
     def url_for(s3_object_path, purpose: :admin, media_type: nil)
-      @cloudfront_signer.signed_url(s3_object_path, purpose: purpose, media_type: media_type)
+      @cloudfront_signer.signed_url(s3_object_path, purpose:, media_type:)
     end
 
     private
@@ -204,13 +204,13 @@ module MediaStorage
     end
     def create_media_asset(file:, tenant_id:, s3_object_path:)
       MediaAsset.create!(
-        tenant_id: tenant_id,
+        tenant_id:,
         mime_type: file.content_type,
         media_type: MediaAsset.detect_media_type(file.content_type),
         metadata: {
           filename: file.original_filename,
           file_size: file.size,
-          s3_object_path: s3_object_path,
+          s3_object_path:,
           uploaded_at: Time.current.iso8601,
         },
       )

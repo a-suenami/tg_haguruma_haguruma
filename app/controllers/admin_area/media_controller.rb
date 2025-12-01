@@ -27,6 +27,8 @@ class AdminArea::MediaController < AdminArea::ApplicationController
     @media_asset = MediaAsset.new
   end
 
+  def edit; end
+
   def create
     @media_asset = MediaAsset.new(media_asset_params)
     @media_asset.tenant_id = Tenant.current_id
@@ -45,7 +47,7 @@ class AdminArea::MediaController < AdminArea::ApplicationController
 
     if @media_asset.save
       respond_to do |format|
-        format.html { redirect_to admin_area_media_index_path, notice: 'メディアをアップロードしました' }
+        format.html { redirect_to admin_area_media_index_path, notice: t('admin_area.media.uploaded') }
         format.json { render json: { id: @media_asset.id, url: url_for(@media_asset.file) }, status: :created }
       end
     else
@@ -56,11 +58,10 @@ class AdminArea::MediaController < AdminArea::ApplicationController
     end
   end
 
-  def edit; end
 
   def update
     if @media_asset.update(media_asset_update_params)
-      redirect_to admin_area_media_index_path, notice: 'メディア情報を更新しました'
+      redirect_to admin_area_media_index_path, notice: t('admin_area.media.updated')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -68,7 +69,7 @@ class AdminArea::MediaController < AdminArea::ApplicationController
 
   def destroy
     @media_asset.destroy
-    redirect_to admin_area_media_index_path, notice: 'メディアを削除しました'
+    redirect_to admin_area_media_index_path, notice: t('admin_area.media.destroyed')
   end
 
   # AJAX endpoint for file upload from editor (uploads to S3 and returns CloudFront URL)
@@ -79,7 +80,7 @@ class AdminArea::MediaController < AdminArea::ApplicationController
 
     uploader = MediaStorage::Uploader.new
     result = uploader.upload(
-      file: file,
+      file:,
       tenant_id: Tenant.current_id,
     )
 
