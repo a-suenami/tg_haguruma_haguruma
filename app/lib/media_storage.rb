@@ -58,13 +58,21 @@ module MediaStorage
   class CloudFrontSigner
     extend T::Sig
 
-    SIGNED_URL_EXPIRATION = 10.minutes
+    # 用途別の有効期限
+    EXPIRATION_ADMIN = 1.day
+    EXPIRATION_PUBLIC_IMAGE = 10.minutes
+    EXPIRATION_PUBLIC_VIDEO = 30.minutes
 
-    sig { params(s3_object_path: String).returns(String) }
-    def signed_url(s3_object_path)
+    # 用途の種類
+    Purpose = T.type_alias { T.any(Symbol, String) }
+    PURPOSES = T.let(%i[admin public].freeze, T::Array[Symbol])
+
+    sig { params(s3_object_path: String, purpose: Purpose, media_type: T.nilable(Symbol)).returns(String) }
+    def signed_url(s3_object_path, purpose: :admin, media_type: nil)
+      expiration = determine_expiration(purpose: purpose, media_type: media_type)
       signer.signed_url(
         url(s3_object_path),
-        expires: Time.current + SIGNED_URL_EXPIRATION,
+        expires: Time.current + expiration,
       )
     end
 
@@ -74,6 +82,23 @@ module MediaStorage
     end
 
     private
+
+    sig { params(purpose: Purpose, media_type: T.nilable(Symbol)).returns(ActiveSupport::Duration) }
+    def determine_expiration(purpose:, media_type:)
+      case purpose.to_sym
+      when :admin
+        EXPIRATION_ADMIN
+      when :public
+        case media_type
+        when :video
+          EXPIRATION_PUBLIC_VIDEO
+        else
+          EXPIRATION_PUBLIC_IMAGE
+        end
+      else
+        EXPIRATION_ADMIN
+      end
+    end
 
     sig { returns(String) }
     def host
@@ -148,9 +173,15 @@ module MediaStorage
       }
     end
 
-    sig { params(s3_object_path: String).returns(String) }
-    def url_for(s3_object_path)
-      @cloudfront_signer.signed_url(s3_object_path)
+    sig do
+      params(
+        s3_object_path: String,
+        purpose: CloudFrontSigner::Purpose,
+        media_type: T.nilable(Symbol),
+      ).returns(String)
+    end
+    def url_for(s3_object_path, purpose: :admin, media_type: nil)
+      @cloudfront_signer.signed_url(s3_object_path, purpose: purpose, media_type: media_type)
     end
 
     private
