@@ -54,10 +54,6 @@ module RulerArea
 
     private
 
-    def set_tenant
-      @tenant = Tenant.find(params[:tenant_id])
-    end
-
     def set_admin
       @admin = @tenant.admins.find(params[:id])
     rescue ActiveRecord::RecordNotFound

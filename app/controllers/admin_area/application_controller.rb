@@ -42,8 +42,8 @@ class AdminArea::ApplicationController < ApplicationController
       return
     end
 
-    # Set current tenant in RequestStore for tenant-scoped queries
-    RequestStore.store[:current_tenant] = tenant_id.to_sym
+    # Set current tenant using Tenant.current_id= for consistency
+    Tenant.current_id = tenant_id
     tenant = Tenant.find_by(id: tenant_id)
 
     unless tenant

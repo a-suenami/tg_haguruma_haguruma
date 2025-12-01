@@ -41,10 +41,6 @@ module RulerArea
 
     private
 
-    def set_tenant
-      @tenant = Tenant.find(params[:tenant_id])
-    end
-
     def set_oauth_provider
       @oauth_provider = @tenant.oauth_provider
       redirect_to ruler_area_tenant_oauth_providers_path(@tenant), alert: t('ruler_area.oauth_providers.not_found') unless @oauth_provider
