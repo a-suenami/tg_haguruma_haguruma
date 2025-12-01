@@ -2,43 +2,41 @@
 # frozen_string_literal: true
 
 module RulerArea
-  module Admins
-    # Create Admin with Auth0 account linkage
+  module Rulers
+    # Create Ruler with Auth0 account linkage
     #
     # This service:
     # 1. Search for existing Auth0 user by email
     #    - If exists: Reuse Auth0 user (no new Auth0 user created)
     #    - If not exists: Create new Auth0 user
     # 2. Find or create Auth0Account record
-    # 3. Check if admin already exists in this tenant with this email
+    # 3. Check if ruler already exists with this email
     #    - If exists: Return error
-    # 4. Create Admin record
-    # 5. Link Admin to Auth0Account via Admin::Auth0Account join table
+    # 4. Create Ruler record
+    # 5. Link Ruler to Auth0Account via Ruler::Auth0Account join table
     #
     # Usage:
-    #   service = RulerArea::Admins::CreateService.new(
-    #     tenant: tenant,
-    #     email: 'admin@example.com',
-    #     name: 'Admin Name'
+    #   service = RulerArea::Rulers::CreateService.new(
+    #     email: 'ruler@example.com',
+    #     name: 'Ruler Name'
     #   )
     #   result = service.execute
     #
     #   if result.is_a?(Mangrove::Result::Ok)
-    #     admin = result.unwrap
+    #     ruler = result.unwrap
     #   else
     #     errors = result.unwrap_err
     #   end
     class CreateService
       extend T::Sig
 
-      sig { params(tenant: Tenant, email: String, name: String).void }
-      def initialize(tenant:, email:, name:)
-        @tenant = tenant
+      sig { params(email: String, name: String).void }
+      def initialize(email:, name:)
         @email = email
         @name = name
       end
 
-      sig { returns(Mangrove::Result[Admin, T::Array[String]]) }
+      sig { returns(Mangrove::Result[Ruler, T::Array[String]]) }
       def execute
         # Step 1: Search or create Auth0 user (outside transaction - external API call)
         auth0_user_result = find_or_create_auth0_user
@@ -47,29 +45,27 @@ module RulerArea
         # Step 2: Find or create Auth0Account record (idempotent, can be outside transaction)
         auth0_account = find_or_create_auth0_account(auth0_user_result[:data])
 
-        # Step 3: Check if admin already exists in this tenant (before transaction)
-        if admin_exists_in_tenant?(auth0_account)
-          return Mangrove::Result::Err.new(T.let([I18n.t('ruler_area.admins.errors.email_already_exists_in_tenant')], T::Array[String]))
+        # Step 3: Check if ruler already exists (before transaction)
+        if ruler_exists?(auth0_account)
+          return Mangrove::Result::Err.new(T.let([I18n.t('ruler_area.rulers.errors.email_already_exists')], T::Array[String]))
         end
 
         # Step 4 & 5: Database operations only (in transaction)
-        admin = T.let(nil, T.nilable(Admin))
+        ruler = T.let(nil, T.nilable(Ruler))
         ActiveRecord::Base.transaction do
-          # Create Admin record
-          admin = Admin.create!(
-            tenant: @tenant,
+          # Create Ruler record
+          ruler = Ruler.create!(
             name: @name,
           )
 
-          # Link Admin to Auth0Account
-          Admin::Auth0Account.create!(
-            admin:,
+          # Link Ruler to Auth0Account
+          Ruler::Auth0Account.create!(
+            ruler:,
             auth0_account:,
-            tenant: @tenant,
           )
         end
 
-        Mangrove::Result::Ok.new(T.must(admin))
+        Mangrove::Result::Ok.new(T.must(ruler))
       rescue ActiveRecord::RecordInvalid => e
         # Return validation errors with i18n from model
         errors = if e.record.respond_to?(:errors)
@@ -83,10 +79,9 @@ module RulerArea
       private
 
       sig { params(auth0_account: Auth0Account).returns(T::Boolean) }
-      def admin_exists_in_tenant?(auth0_account)
-        # Check if this tenant already has an admin linked to this Auth0 account
-        Admin::Auth0Account.exists?(
-          tenant: @tenant,
+      def ruler_exists?(auth0_account)
+        # Check if a ruler already linked to this Auth0 account exists
+        Ruler::Auth0Account.exists?(
           auth0_account:,
         )
       end

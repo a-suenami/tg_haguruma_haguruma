@@ -1,0 +1,41 @@
+<% if @error_message.present? %>
+  <div class="uk-alert-danger" uk-alert>
+    <a href="#" class="uk-alert-close" uk-close></a>
+    <p><%= @error_message %></p>
+  </div>
+<% end %>
+
+<%= form_with(url: form_url, method: form_method, scope: :ruler, local: true) do |form| %>
+  <div class="uk-margin">
+    <%= form.label :email, 'メールアドレス', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <% if defined?(is_edit) && is_edit %>
+        <!-- Edit mode: Email is read-only (stored in Auth0Account, not editable) -->
+        <%= form.email_field :email, value: @ruler.email, class: "uk-input", placeholder: 'ruler@example.com', disabled: true %>
+        <div class="uk-text-muted uk-text-small">※ メールアドレスは変更できません（Auth0アカウントに紐付いています）</div>
+      <% else %>
+        <!-- Create mode: Email is editable (used to create Auth0 user) -->
+        <% email_value = @ruler.instance_variable_get(:@_form_email) || @ruler.email %>
+        <%= form.email_field :email, value: email_value, class: "uk-input #{'uk-form-danger' if @ruler.errors[:email].any?}", placeholder: 'ruler@example.com', required: true %>
+        <% if @ruler.errors[:email].any? %>
+          <div class="uk-text-danger uk-text-small"><%= @ruler.errors[:email].join(', ') %></div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.label :name, '名前', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.text_field :name, value: @ruler.name, class: "uk-input #{'uk-form-danger' if @ruler.errors[:name].any?}", placeholder: 'Ruler名', required: true %>
+      <% if @ruler.errors[:name].any? %>
+        <div class="uk-text-danger uk-text-small"><%= @ruler.errors[:name].join(', ') %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.submit submit_label, class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_rulers_path, class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>

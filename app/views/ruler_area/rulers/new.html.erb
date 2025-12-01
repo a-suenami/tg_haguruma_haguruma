@@ -1,0 +1,9 @@
+<div class="am-page-header">
+  <h3>Ruler新規作成</h3>
+</div>
+
+<%= render 'form',
+    form_url: ruler_area_rulers_path,
+    form_method: :post,
+    submit_label: '作成',
+    is_edit: false %>

@@ -13,7 +13,6 @@ cache: &cache
       - Gemfile.lock
   paths:
     - vendor/bundle
-    - public/vite
     - tmp/cache/vite
     - tmp/rubocop_cache
 
@@ -225,6 +224,7 @@ assets:precompile:
     expire_in: 1d
     paths:
       - public/vite
+      - public/assets
   only:
     - /^deploy-.*$/
   except:
