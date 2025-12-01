@@ -1,4 +1,4 @@
-\restrict falniq9B5hlznsV4jzWtFugX1VphtAf5MFBOc58xvImzmaWy7uWzEsKoFeRNfmV
+\restrict p8CrQvTf1ilaab9GPfj36kRzrzRdx0IP3dSWoNf5sMoytZljgYUSQwzK5GVDpV1
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -416,6 +416,8 @@ CREATE TABLE public.media_assets (
     tenant_id public.citext NOT NULL,
     media_type integer NOT NULL,
     mime_type character varying NOT NULL,
+    file_size_bytes bigint NOT NULL,
+    s3_object_path character varying NOT NULL,
     metadata jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -1194,7 +1196,7 @@ ALTER TABLE ONLY public.ruler_auth0_accounts
 -- PostgreSQL database dump complete
 --
 
-\unrestrict falniq9B5hlznsV4jzWtFugX1VphtAf5MFBOc58xvImzmaWy7uWzEsKoFeRNfmV
+\unrestrict p8CrQvTf1ilaab9GPfj36kRzrzRdx0IP3dSWoNf5sMoytZljgYUSQwzK5GVDpV1
 
 SET search_path TO "$user", public;
 

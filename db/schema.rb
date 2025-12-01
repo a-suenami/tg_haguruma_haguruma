@@ -144,6 +144,8 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.citext "tenant_id", null: false
     t.integer "media_type", null: false
     t.string "mime_type", null: false
+    t.bigint "file_size_bytes", null: false
+    t.string "s3_object_path", null: false
     t.jsonb "metadata", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

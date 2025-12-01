@@ -721,6 +721,51 @@ class MediaAsset
     sig { void }
     def created_at_will_change!; end
 
+    sig { returns(::Integer) }
+    def file_size_bytes; end
+
+    sig { params(value: ::Integer).returns(::Integer) }
+    def file_size_bytes=(value); end
+
+    sig { returns(T::Boolean) }
+    def file_size_bytes?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def file_size_bytes_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def file_size_bytes_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def file_size_bytes_came_from_user?; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def file_size_bytes_change; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def file_size_bytes_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def file_size_bytes_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def file_size_bytes_in_database; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def file_size_bytes_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def file_size_bytes_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def file_size_bytes_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def file_size_bytes_was; end
+
+    sig { void }
+    def file_size_bytes_will_change!; end
+
     sig { returns(::String) }
     def id; end
 
@@ -950,6 +995,9 @@ class MediaAsset
     def restore_created_at!; end
 
     sig { void }
+    def restore_file_size_bytes!; end
+
+    sig { void }
     def restore_id!; end
 
     sig { void }
@@ -965,16 +1013,70 @@ class MediaAsset
     def restore_mime_type!; end
 
     sig { void }
+    def restore_s3_object_path!; end
+
+    sig { void }
     def restore_tenant_id!; end
 
     sig { void }
     def restore_updated_at!; end
+
+    sig { returns(::String) }
+    def s3_object_path; end
+
+    sig { params(value: ::String).returns(::String) }
+    def s3_object_path=(value); end
+
+    sig { returns(T::Boolean) }
+    def s3_object_path?; end
+
+    sig { returns(T.nilable(::String)) }
+    def s3_object_path_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def s3_object_path_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def s3_object_path_came_from_user?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def s3_object_path_change; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def s3_object_path_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def s3_object_path_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def s3_object_path_in_database; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def s3_object_path_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def s3_object_path_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def s3_object_path_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def s3_object_path_was; end
+
+    sig { void }
+    def s3_object_path_will_change!; end
 
     sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
     def saved_change_to_created_at; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def saved_change_to_file_size_bytes; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_file_size_bytes?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_id; end
@@ -1005,6 +1107,12 @@ class MediaAsset
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_mime_type?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def saved_change_to_s3_object_path; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_s3_object_path?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_tenant_id; end
@@ -1112,6 +1220,9 @@ class MediaAsset
     def will_save_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_file_size_bytes?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -1125,6 +1236,9 @@ class MediaAsset
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_mime_type?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_s3_object_path?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end

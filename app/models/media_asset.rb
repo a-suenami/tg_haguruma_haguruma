@@ -4,13 +4,15 @@
 #
 # Table name: media_assets
 #
-#  id         :uuid             not null, primary key
-#  media_type :integer          not null
-#  metadata   :jsonb            not null
-#  mime_type  :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  tenant_id  :citext           not null
+#  id              :uuid             not null, primary key
+#  file_size_bytes :bigint           not null
+#  media_type      :integer          not null
+#  metadata        :jsonb            not null
+#  mime_type       :string           not null
+#  s3_object_path  :string           not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  tenant_id       :citext           not null
 #
 # Indexes
 #
@@ -32,6 +34,8 @@ class MediaAsset < ApplicationRecord
 
   validates :media_type, presence: true
   validates :mime_type, presence: true
+  validates :file_size_bytes, presence: true
+  validates :s3_object_path, presence: true
   validates :metadata, presence: true
 
   scope :images, -> { where(media_type: :image) }
@@ -39,12 +43,8 @@ class MediaAsset < ApplicationRecord
   scope :audios, -> { where(media_type: :audio) }
   scope :documents, -> { where(media_type: :document) }
 
-  def filename
-    metadata&.dig('filename') || file.filename.to_s
-  end
-
-  def file_size
-    metadata&.dig('file_size') || file.byte_size
+  def original_filename
+    metadata&.dig('original_filename') || file.filename.to_s
   end
 
   def content_type
