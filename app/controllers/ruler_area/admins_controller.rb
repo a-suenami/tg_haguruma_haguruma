@@ -3,6 +3,8 @@
 
 module RulerArea
   class AdminsController < ApplicationController
+    include RulerArea::TenantSettable
+
     before_action :set_tenant
     before_action :set_admin, only: [:edit, :update, :destroy]
 
@@ -53,10 +55,6 @@ module RulerArea
     end
 
     private
-
-    def set_tenant
-      @tenant = Tenant.find(params[:tenant_id])
-    end
 
     def set_admin
       @admin = @tenant.admins.find(params[:id])
