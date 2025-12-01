@@ -10,6 +10,8 @@ module User
   class ContentEntriesQuery < ApplicationQuery
     extend T::Sig
 
+    EntityType = type_member { { fixed: ContentEntry } }
+
     # Filter by content type
     sig { params(content_type_id: T.nilable(String)).returns(T.self_type) }
     def by_content_type(content_type_id)

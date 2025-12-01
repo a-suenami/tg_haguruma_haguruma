@@ -9,8 +9,11 @@
 class ApplicationQuery
   extend T::Sig
   extend T::Helpers
+  extend T::Generic
 
   abstract!
+
+  EntityType = type_member { { upper: ActiveRecord::Base } }
 
   class << self
     extend T::Sig
@@ -43,24 +46,28 @@ class ApplicationQuery
     @scope
   end
 
-  # Delegate common ActiveRecord methods
-  sig { returns(T::Array[T.untyped]) }
-  delegate :to_a, to: :call
-
-  sig { returns(T.untyped) }
-  delegate :first, to: :call
-
-  sig { params(id: T.untyped).returns(T.untyped) }
-  delegate :find, to: :call
-
-  sig { params(id: T.untyped).returns(T.untyped) }
-  def find_by_id(id)
-    call.find_by(id: id)
+  # Returns typed array of entities
+  sig { returns(T::Array[EntityType]) }
+  def resolve
+    T.unsafe(call.to_a)
   end
 
-  sig { params(block: T.proc.params(record: T.untyped).void).void }
-  def each(&)
-    call.each(&)
+  # Returns first entity with proper type
+  sig { returns(T.nilable(EntityType)) }
+  def resolve_first
+    T.unsafe(call.first)
+  end
+
+  # Finds entity by id with proper type
+  sig { params(id: T.untyped).returns(EntityType) }
+  def resolve_find(id)
+    T.unsafe(call.find(id))
+  end
+
+  # Finds entity by id, returns nil if not found
+  sig { params(id: T.untyped).returns(T.nilable(EntityType)) }
+  def resolve_find_by_id(id)
+    T.unsafe(call.find_by(id: id))
   end
 
   private
