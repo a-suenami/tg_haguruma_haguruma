@@ -22,5 +22,29 @@
       "MultiEdit(.claude/tmp/*)"
     ],
     "deny": []
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/post-edit-ruby.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/pre-commit.sh"
+          }
+        ]
+      }
+    ]
   }
 }
