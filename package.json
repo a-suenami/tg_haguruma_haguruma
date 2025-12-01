@@ -33,7 +33,7 @@
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-vue": "^4.4.0",
     "@wizardhealth/stimulus-multiselect": "^1.0.0",
-    "axios": "^0.27.2",
+    "axios": "^0.30.2",
     "jsonapi-serializer": "^3.6.9",
     "lexical": "0.35.0",
     "pug": "^3.0.2",

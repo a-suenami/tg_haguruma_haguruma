@@ -3,6 +3,8 @@
 
 module RulerArea
   class OauthProvidersController < ApplicationController
+    include RulerArea::TenantSettable
+
     before_action :set_tenant
     before_action :set_oauth_provider, only: [:edit, :update, :destroy]
 
@@ -40,10 +42,6 @@ module RulerArea
     end
 
     private
-
-    def set_tenant
-      @tenant = Tenant.find(params[:tenant_id])
-    end
 
     def set_oauth_provider
       @oauth_provider = @tenant.oauth_provider

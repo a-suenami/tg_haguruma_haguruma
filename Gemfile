@@ -62,6 +62,7 @@ gem 'sentry-ruby', '~> 5.13.0'
 gem 'sentry-sidekiq', '~> 5.13.0'
 
 # AWS SDK
+gem 'aws-sdk-cloudfront', '~> 1.89.0'
 gem 'aws-sdk-eventbridge', '~> 1.57.0'
 gem 'aws-sdk-s3', '~> 1.136.0'
 gem 'aws-sdk-sqs', '~> 1.70'
@@ -141,8 +142,7 @@ group :development, :test do
   # Development tools
   gem 'pry-rails', '~> 0.3.9'
   gem 'pry-byebug', '~> 3.10.1'
-  # gem "annotate", "~> 3.2.0" # Not compatible with Rails 8.0 yet
-  # Alternative: gem "annotaterb" # Rails 8 compatible fork
+  gem 'annotaterb'
 
   # Additional testing tools
   gem 'spring-commands-rspec', '~> 1.0.4'
@@ -151,6 +151,9 @@ group :development, :test do
   gem 'parallel_tests', '~> 4.3.0'
   gem 'bundler-audit', '~> 0.9.1'
   gem 'knapsack_pro', '~> 5.7.0'
+
+  # OpenAPI / Swagger specs
+  gem 'rswag-specs'
 end
 
 group :development do
@@ -171,3 +174,7 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
 end
+
+# OpenAPI / Swagger
+gem 'rswag-api'
+gem 'rswag-ui'

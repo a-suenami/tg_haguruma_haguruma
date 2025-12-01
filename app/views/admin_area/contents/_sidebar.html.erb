@@ -1,48 +1,73 @@
 <!-- カスタムサイドバー -->
 <aside class="custom-sidebar">
-    <div class="sidebar-content">
-        <!-- コンテンツセクション -->
-        <div class="sidebar-section">
-            <ul class="tree-nav">
-                <!-- すべて表示 -->
-                <li class="tree-item">
-                    <%= link_to admin_area_contents_all_path, class: "tree-item-header #{@show_all ? 'active' : ''}" do %>
-                        <span class="tree-toggle" style="visibility: hidden;"></span>
-                        <span class="tree-label">すべて表示</span>
-                        <span class="tree-count"><%= @content_entries&.count || ContentEntry.count %></span>
-                    <% end %>
-                </li>
+  <div class="sidebar-content">
+    <!-- コンテンツセクション -->
+    <div class="sidebar-section">
+      <ul class="tree-nav">
+        <!-- すべて表示 -->
+        <li class="tree-item">
+          <%= link_to admin_area_contents_all_path, class: "tree-item-header #{@show_all ? 'active' : ''}" do %>
+            <span class="tree-toggle" style="visibility: hidden;"></span>
+            <span class="tree-label">すべて表示</span>
+            <span class="tree-count"><%= @content_entries&.count || ContentEntry.count %></span>
+          <% end %>
+        </li>
 
-                <!-- 区切り線 -->
-                <div class="tree-section-divider"></div>
+        <!-- 区切り線 -->
+        <div class="tree-section-divider"></div>
 
-                <!-- Collection Types -->
-                <% content_types = @content_types || ContentType.all %>
-                <% content_types.where(is_collection: true).each do |content_type| %>
-                    <li class="tree-item">
-                        <%= link_to admin_area_contents_by_content_type_path(content_type_id: content_type.id),
-                            class: "tree-item-header #{@content_type&.id == content_type.id ? 'active' : ''}",
-                            data: { model: content_type.unique_name } do %>
-                            <span class="tree-label"><%= content_type.display_name %></span>
-                            <span class="tree-count"><%= content_type.content_entries.count %></span>
-                        <% end %>
-                    </li>
-                <% end %>
+        <!-- Collection Types -->
+        <% content_types = @content_types || ContentType.all %>
+        <% content_types.where(is_collection: true).each do |content_type| %>
+          <li class="tree-item">
+            <%= link_to admin_area_contents_by_content_type_path(content_type_id: content_type.id),
+                class: "tree-item-header #{@content_type&.id == content_type.id ? 'active' : ''}",
+                data: { model: content_type.unique_name } do %>
+              <span class="tree-icon"><i class="fas fa-file-alt"></i></span>
+              <span class="tree-label"><%= content_type.display_name %></span>
+              <span class="tree-count"><%= content_type.content_entries.count %></span>
+            <% end %>
+          </li>
+        <% end %>
 
-                <!-- 区切り線 -->
-                <div class="tree-section-divider"></div>
+        <!-- 区切り線 -->
+        <div class="tree-section-divider"></div>
 
-                <!-- Singleton Types -->
-                <% content_types.where(is_collection: false).each do |content_type| %>
-                    <li class="tree-item">
-                        <%= link_to admin_area_contents_singleton_entry_path(content_type_id: content_type.id), class: 'tree-item-header' do %>
-                            <span class="tree-icon"><%= content_type.icon %></span>
-                            <span class="tree-label"><%= content_type.display_name %></span>
-                        <% end %>
-                    </li>
-                <% end %>
+        <!-- Singleton Types -->
+        <% content_types.where(is_collection: false).each do |content_type| %>
+          <li class="tree-item">
+            <%= link_to admin_area_contents_singleton_entry_path(content_type_id: content_type.id), class: 'tree-item-header' do %>
+              <span class="tree-icon"><i class="fas fa-file"></i></span>
+              <span class="tree-label"><%= content_type.display_name %></span>
+            <% end %>
+          </li>
+        <% end %>
 
-            </ul>
-        </div>
+        <!-- 区切り線 -->
+        <div class="tree-section-divider"></div>
+
+        <!-- 管理メニュー -->
+        <li class="tree-item">
+          <%= link_to admin_area_content_types_path, class: "tree-item-header" do %>
+            <span class="tree-icon"><i class="fas fa-cog"></i></span>
+            <span class="tree-label">コンテンツタイプ管理</span>
+          <% end %>
+        </li>
+
+        <li class="tree-item">
+          <%= link_to admin_area_media_index_path, class: "tree-item-header" do %>
+            <span class="tree-icon"><i class="fas fa-images"></i></span>
+            <span class="tree-label">メディア</span>
+          <% end %>
+        </li>
+
+        <li class="tree-item">
+          <%= link_to admin_area_categories_path, class: "tree-item-header" do %>
+            <span class="tree-icon"><i class="fas fa-tags"></i></span>
+            <span class="tree-label">カテゴリー</span>
+          <% end %>
+        </li>
+      </ul>
     </div>
+  </div>
 </aside>

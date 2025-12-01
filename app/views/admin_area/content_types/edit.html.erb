@@ -1,0 +1,25 @@
+<% content_for :title, "#{@content_type.display_name}を編集" %>
+
+<div class="custom-container">
+  <%= render 'admin_area/contents/sidebar' %>
+
+  <main class="custom-main">
+    <div class="breadcrumb">
+      <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <%= link_to 'コンテンツタイプ管理', admin_area_content_types_path, class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <%= link_to @content_type.display_name, admin_area_content_type_path(@content_type), class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">編集</span>
+    </div>
+
+    <header class="main-header">
+      <h2><%= @content_type.display_name %>を編集</h2>
+    </header>
+
+    <div class="form-container">
+      <%= render 'form' %>
+    </div>
+  </main>
+</div>

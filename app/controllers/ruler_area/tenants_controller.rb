@@ -59,6 +59,7 @@ module RulerArea
 
     def set_tenant
       @tenant = Tenant.find(params[:id])
+      Tenant.current_id = @tenant.id
     end
 
     def tenant_params
