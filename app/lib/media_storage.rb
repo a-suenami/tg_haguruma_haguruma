@@ -163,6 +163,11 @@ module MediaStorage
         s3_object_path: s3_object_path,
       )
 
+      # 動画の場合はCloudflare Streamへの同期Jobをエンキュー
+      if media_asset.video?
+        enqueue_cloudflare_sync(media_asset)
+      end
+
       # CloudFront URLを生成
       url = @cloudfront_signer.signed_url(s3_object_path)
 
@@ -203,16 +208,33 @@ module MediaStorage
       ).returns(MediaAsset)
     end
     def create_media_asset(file:, tenant_id:, s3_object_path:)
+      media_type = MediaAsset.detect_media_type(file.content_type)
+
+      metadata = {
+        filename: file.original_filename,
+        file_size: file.size,
+        s3_object_path: s3_object_path,
+        uploaded_at: Time.current.iso8601,
+      }
+
+      # 動画の場合はCloudflare同期ステータスを追加
+      if media_type == :video
+        metadata[:cloudflare_sync_status] = CloudflareStream::SyncStatus::PENDING
+      end
+
       MediaAsset.create!(
         tenant_id: tenant_id,
         mime_type: file.content_type,
-        media_type: MediaAsset.detect_media_type(file.content_type),
-        metadata: {
-          filename: file.original_filename,
-          file_size: file.size,
-          s3_object_path: s3_object_path,
-          uploaded_at: Time.current.iso8601,
-        },
+        media_type: media_type,
+        metadata: metadata,
+      )
+    end
+
+    sig { params(media_asset: MediaAsset).void }
+    def enqueue_cloudflare_sync(media_asset)
+      CloudflareStream::SyncVideoJob.perform_later(media_asset.id)
+      Rails.logger.info(
+        "[MediaStorage::Uploader] Enqueued Cloudflare sync job for media_asset_id=#{media_asset.id}",
       )
     end
   end

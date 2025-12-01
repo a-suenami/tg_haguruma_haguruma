@@ -12,8 +12,23 @@
 # - creator フィールドに tenant_id を設定
 # - GraphQL Analytics API でテナント別・動画別の使用量を取得可能
 #
+# 非同期アップロードフロー:
+# 1. クライアント → S3 にアップロード（既存フロー）
+# 2. MediaAsset 作成（cloudflare_sync_status: 'pending'）
+# 3. SyncToCloudflareJob をエンキュー
+# 4. Job が S3 から取得して Cloudflare Stream にアップロード
+# 5. 成功時: cloudflare_sync_status: 'completed', cloudflare_uid を保存
+# 6. 失敗時: 自動リトライ（最大5回）、その後 'failed'
+#
 # @see https://developers.cloudflare.com/stream/
 module CloudflareStream
+  # 同期ステータス
+  module SyncStatus
+    PENDING = 'pending'
+    PROCESSING = 'processing'
+    COMPLETED = 'completed'
+    FAILED = 'failed'
+  end
   # Cloudflare Stream APIクライアント
   class Client
     extend T::Sig
@@ -104,6 +119,26 @@ module CloudflareStream
     sig { params(creator_id: String).returns(T::Hash[String, T.untyped]) }
     def list_videos_by_creator(creator_id)
       list_videos(creator: creator_id)
+    end
+
+    # URL経由で動画をアップロード（S3の署名付きURLなどから）
+    # @see https://developers.cloudflare.com/api/resources/stream/subresources/copy/methods/create/
+    sig do
+      params(
+        url: String,
+        creator_id: String,
+        meta: T::Hash[Symbol, T.untyped],
+      ).returns(T::Hash[String, T.untyped])
+    end
+    def upload_from_url(url:, creator_id:, meta: {})
+      post(
+        "/accounts/#{@account_id}/stream/copy",
+        {
+          url: url,
+          creator: creator_id,
+          meta: meta,
+        },
+      )
     end
 
     # GraphQL クエリを実行
@@ -405,15 +440,57 @@ module CloudflareStream
   end
 
   # 動画アップローダー（既存のMediaStorageと統合）
+  # S3にアップロード済みの動画を非同期でCloudflare Streamに転送
   class Uploader
     extend T::Sig
 
     sig { void }
     def initialize
       @client = T.let(Client.new, Client)
+      @s3_client = T.let(MediaStorage::S3Client.new, MediaStorage::S3Client)
+      @cloudfront_signer = T.let(MediaStorage::CloudFrontSigner.new, MediaStorage::CloudFrontSigner)
     end
 
-    # 動画アップロード用URLを生成
+    # S3にアップロード済みの動画をCloudflare Streamに転送
+    # S3の署名付きURLを使ってCloudflareにコピー
+    # @param media_asset [MediaAsset] 転送対象のMediaAsset
+    # @return [Hash] { success:, cloudflare_uid:, errors: }
+    sig { params(media_asset: MediaAsset).returns(T::Hash[Symbol, T.untyped]) }
+    def sync_to_cloudflare(media_asset)
+      s3_object_path = media_asset.metadata['s3_object_path']
+      return { success: false, errors: ['s3_object_path not found'] } unless s3_object_path
+
+      # S3の署名付きURLを生成（Cloudflareがフェッチできるように長めの有効期限）
+      s3_signed_url = generate_s3_presigned_url(s3_object_path)
+
+      meta = {
+        media_asset_id: media_asset.id,
+        filename: media_asset.metadata['filename'],
+        tenant_id: media_asset.tenant_id,
+        original_s3_path: s3_object_path,
+      }
+
+      result = @client.upload_from_url(
+        url: s3_signed_url,
+        creator_id: media_asset.tenant_id,
+        meta: meta,
+      )
+
+      if result['success']
+        cloudflare_uid = result.dig('result', 'uid')
+        {
+          success: true,
+          cloudflare_uid: cloudflare_uid,
+        }
+      else
+        {
+          success: false,
+          errors: result['errors'],
+        }
+      end
+    end
+
+    # 動画アップロード用URLを生成（クライアント直接アップロード用）
     # @param tenant_id [String] テナントID（課金追跡用）
     # @param filename [String] ファイル名
     # @param file_size [Integer] ファイルサイズ（バイト）
@@ -462,32 +539,6 @@ module CloudflareStream
       end
     end
 
-    # アップロード完了後にMediaAssetを作成
-    sig do
-      params(
-        tenant_id: String,
-        cloudflare_uid: String,
-        filename: String,
-        file_size: Integer,
-        duration_seconds: T.nilable(Float),
-      ).returns(MediaAsset)
-    end
-    def create_media_asset(tenant_id:, cloudflare_uid:, filename:, file_size:, duration_seconds: nil)
-      MediaAsset.create!(
-        tenant_id: tenant_id,
-        media_type: :video,
-        mime_type: 'video/mp4', # Cloudflare Stream は MP4/HLS/DASH で配信
-        metadata: {
-          filename: filename,
-          file_size: file_size,
-          cloudflare_uid: cloudflare_uid,
-          duration_seconds: duration_seconds,
-          storage_type: 'cloudflare_stream',
-          uploaded_at: Time.current.iso8601,
-        },
-      )
-    end
-
     # Cloudflare Stream の埋め込みURLを取得
     sig { params(cloudflare_uid: String).returns(String) }
     def embed_url(cloudflare_uid)
@@ -500,6 +551,32 @@ module CloudflareStream
     def iframe_url(cloudflare_uid)
       customer_subdomain = Settings.cloudflare.stream.customer_subdomain
       "https://customer-#{customer_subdomain}.cloudflarestream.com/#{cloudflare_uid}/iframe"
+    end
+
+    # 動画の再生URLを取得（Cloudflare優先、フォールバックでCloudFront）
+    sig { params(media_asset: MediaAsset).returns(String) }
+    def playback_url(media_asset)
+      cloudflare_uid = media_asset.metadata['cloudflare_uid']
+      if cloudflare_uid.present?
+        embed_url(cloudflare_uid)
+      else
+        # Cloudflare未同期の場合はCloudFrontから配信
+        s3_object_path = media_asset.metadata['s3_object_path']
+        @cloudfront_signer.signed_url(s3_object_path, purpose: :public, media_type: :video)
+      end
+    end
+
+    private
+
+    sig { params(s3_object_path: String).returns(String) }
+    def generate_s3_presigned_url(s3_object_path)
+      signer = Aws::S3::Presigner.new(client: @s3_client.client)
+      signer.presigned_url(
+        :get_object,
+        bucket: @s3_client.bucket_name,
+        key: s3_object_path,
+        expires_in: 1.hour.to_i, # Cloudflareがフェッチする時間を考慮
+      )
     end
   end
 

@@ -38,87 +38,166 @@ Cloudflare Stream には **`creator` フィールド** があり、これを使�
 
 ## アーキテクチャ提案
 
+### 非同期アップロードフロー
+
+S3を信頼のソースとして、Cloudflareへは非同期で転送する設計です。
+これにより、Cloudflareへのアップロード失敗時もデータ不整合が発生しません。
+
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                        フロントエンド                              │
+│                     アップロードフロー                            │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│  ┌────────────┐    ┌────────────────┐    ┌──────────────────┐   │
-│  │ 動画選択   │───▶│ アップロードURL │───▶│ Cloudflare Stream │   │
-│  │            │    │ 取得API        │    │ 直接アップロード  │   │
-│  └────────────┘    └────────────────┘    └──────────────────┘   │
-│                                                                  │
-│  ┌────────────┐                          ┌──────────────────┐   │
-│  │ 動画再生   │◀─────────────────────────│ HLS/DASH配信     │   │
-│  │            │                          │ (Cloudflare CDN) │   │
-│  └────────────┘                          └──────────────────┘   │
+│  1. クライアント                                                  │
+│     │                                                            │
+│     ▼                                                            │
+│  2. S3にアップロード（既存フロー）                                 │
+│     │                                                            │
+│     ▼                                                            │
+│  3. MediaAsset作成                                               │
+│     metadata: { cloudflare_sync_status: 'pending' }              │
+│     │                                                            │
+│     ▼                                                            │
+│  4. SyncVideoJob をエンキュー ─────────────────┐                 │
+│     │                                         │                 │
+│     ▼                                         ▼                 │
+│  5. レスポンス返却（即座）              6. Sidekiq Worker         │
+│     ※この時点では CloudFront で配信        │                     │
+│                                             ▼                    │
+│                                       7. S3から署名付きURL生成    │
+│                                             │                    │
+│                                             ▼                    │
+│                                       8. Cloudflare Stream API   │
+│                                          (copy from URL)         │
+│                                             │                    │
+│                                     ┌───────┴───────┐            │
+│                                     ▼               ▼            │
+│                                  成功            失敗            │
+│                                     │               │            │
+│                                     ▼               ▼            │
+│                              status:         リトライ (最大5回)   │
+│                              'completed'           │            │
+│                              cloudflare_uid        ▼            │
+│                              保存            status: 'failed'    │
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘
+```
 
+### 再生時のフォールバック
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                       動画再生フロー                              │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  CloudflareStream::Uploader#playback_url(media_asset)            │
+│     │                                                            │
+│     ▼                                                            │
+│  cloudflare_uid あり?                                            │
+│     │                                                            │
+│     ├─── Yes ──▶ Cloudflare Stream HLS URL                      │
+│     │           (テナント別課金対象)                              │
+│     │                                                            │
+│     └─── No ───▶ CloudFront 署名付きURL                         │
+│                 (同期完了まで or 同期失敗時のフォールバック)       │
+│                                                                  │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+### システム構成図
+
+```
 ┌──────────────────────────────────────────────────────────────────┐
 │                         バックエンド                              │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │  ┌─────────────────────┐    ┌──────────────────────────────┐    │
-│  │ CloudflareStream::  │    │ MediaAsset                   │    │
-│  │ Uploader            │───▶│ (cloudflare_uid in metadata) │    │
-│  └─────────────────────┘    └──────────────────────────────┘    │
+│  │ MediaStorage::      │    │ MediaAsset                   │    │
+│  │ Uploader            │───▶│ metadata:                    │    │
+│  │ (S3アップロード)     │    │   - s3_object_path           │    │
+│  └─────────────────────┘    │   - cloudflare_sync_status   │    │
+│           │                 │   - cloudflare_uid           │    │
+│           │ 動画の場合       └──────────────────────────────┘    │
+│           ▼                                                      │
+│  ┌─────────────────────┐                                        │
+│  │ CloudflareStream::  │                                        │
+│  │ SyncVideoJob        │──── S3 → Cloudflare Stream             │
+│  │ (Sidekiq)           │     (リトライ可能)                      │
+│  └─────────────────────┘                                        │
 │                                                                  │
 │  ┌─────────────────────┐    ┌──────────────────────────────┐    │
 │  │ CloudflareStream::  │───▶│ 月次課金レポート             │    │
 │  │ BillingCalculator   │    │ (テナント別コスト集計)       │    │
 │  └─────────────────────┘    └──────────────────────────────┘    │
 │                                                                  │
-│  ┌─────────────────────┐                                        │
-│  │ CloudflareStream::  │──── GraphQL API ────▶ Cloudflare       │
-│  │ Analytics           │                                        │
-│  └─────────────────────┘                                        │
-│                                                                  │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
 ## サンプル実装
 
-### 1. 動画アップロードフロー
+### 1. 動画アップロードフロー（既存フローを拡張）
+
+既存の `MediaStorage::Uploader#upload` を使用するだけで、自動的に Cloudflare 同期がエンキューされます。
 
 ```ruby
-# コントローラー
-class VideoUploadsController < ApplicationController
-  def create
-    uploader = CloudflareStream::Uploader.new
-    result = uploader.create_upload_url(
-      tenant_id: current_tenant.id,
-      filename: params[:filename],
-      file_size: params[:file_size].to_i,
-    )
+# 既存のアップロード処理（変更不要）
+uploader = MediaStorage::Uploader.new
+result = uploader.upload(file: uploaded_file, tenant_id: current_tenant.id)
 
-    if result[:success]
-      render json: {
-        upload_url: result[:upload_url],
-        video_uid: result[:video_uid],
-      }
-    else
-      render json: { errors: result[:errors] }, status: :unprocessable_entity
-    end
-  end
+# 返却される MediaAsset には以下の metadata が含まれる:
+# - s3_object_path: S3上のパス
+# - cloudflare_sync_status: 'pending' (動画の場合)
+#
+# バックグラウンドで CloudflareStream::SyncVideoJob が実行され、
+# 成功すると cloudflare_uid が設定される
+```
 
-  # アップロード完了後のコールバック
-  def complete
-    uploader = CloudflareStream::Uploader.new
-    media_asset = uploader.create_media_asset(
-      tenant_id: current_tenant.id,
-      cloudflare_uid: params[:video_uid],
-      filename: params[:filename],
-      file_size: params[:file_size].to_i,
-      duration_seconds: params[:duration],
-    )
+### 2. 同期ステータスの確認
 
-    render json: { media_asset_id: media_asset.id }
-  end
+```ruby
+media_asset = MediaAsset.find(id)
+
+case media_asset.metadata['cloudflare_sync_status']
+when CloudflareStream::SyncStatus::PENDING
+  # まだ同期開始前
+when CloudflareStream::SyncStatus::PROCESSING
+  # 同期処理中
+when CloudflareStream::SyncStatus::COMPLETED
+  # 同期完了 - Cloudflare Stream から配信可能
+  cloudflare_uid = media_asset.metadata['cloudflare_uid']
+when CloudflareStream::SyncStatus::FAILED
+  # 同期失敗 - CloudFront からのフォールバック配信
+  error = media_asset.metadata['cloudflare_sync_error']
 end
 ```
 
-### 2. テナント別課金レポート生成
+### 3. 動画再生URL取得（フォールバック付き）
+
+```ruby
+uploader = CloudflareStream::Uploader.new
+playback_url = uploader.playback_url(media_asset)
+
+# cloudflare_uid があれば Cloudflare Stream HLS URL
+# なければ CloudFront 署名付きURL（フォールバック）
+```
+
+### 4. 手動リトライ
+
+```ruby
+# 失敗した同期を手動でリトライ
+media_asset = MediaAsset.find(id)
+if media_asset.metadata['cloudflare_sync_status'] == CloudflareStream::SyncStatus::FAILED
+  # ステータスをリセットしてジョブを再エンキュー
+  media_asset.update!(
+    metadata: media_asset.metadata.merge(
+      'cloudflare_sync_status' => CloudflareStream::SyncStatus::PENDING,
+    ),
+  )
+  CloudflareStream::SyncVideoJob.perform_later(media_asset.id)
+end
+```
+
+### 5. テナント別課金レポート生成
 
 ```ruby
 # 月次課金レポートJob
