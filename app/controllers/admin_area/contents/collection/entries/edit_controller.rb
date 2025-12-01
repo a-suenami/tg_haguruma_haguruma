@@ -9,9 +9,9 @@ module AdminArea
           extend T::Sig
 
           before_action :set_content_type
-          before_action :set_content_entry, only: [:edit, :update]
+          before_action :set_content_entry, only: [:edit, :update, :autosave]
           before_action :build_content_entry, only: [:new, :create]
-          before_action :load_versions, only: [:edit, :update]
+          before_action :load_versions, only: [:edit, :update, :autosave]
 
           def new
             @field_values = T.let({}, T::Hash[String, T.untyped])
@@ -56,6 +56,29 @@ module AdminArea
               flash.now[:alert] = result.errors.join(', ')
               @field_values = T.let(fields_params, T::Hash[String, T.untyped])
               render :edit, status: :unprocessable_entity
+            end
+          end
+
+          # オートセーブ用エンドポイント（JSON API）
+          sig { void }
+          def autosave
+            result = AdminArea::Contents::SaveEntryService.new(
+              content_type: T.must(@content_type),
+              content_entry: @content_entry,
+              fields_params: fields_params,
+            ).call
+
+            if result.success
+              render json: {
+                success: true,
+                saved_at: Time.current.iso8601,
+                version: result.content_entry&.versions&.find(&:draft?)&.version,
+              }
+            else
+              render json: {
+                success: false,
+                errors: result.errors,
+              }, status: :unprocessable_entity
             end
           end
 

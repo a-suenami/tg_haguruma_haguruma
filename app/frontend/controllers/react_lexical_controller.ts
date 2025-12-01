@@ -7,7 +7,7 @@ export default class extends Controller {
   static values = {
     initialContent: String,
     placeholder: String,
-    hiddenFieldId: String
+    hiddenFieldId: String,
   };
 
   declare readonly initialContentValue: string;
@@ -34,7 +34,7 @@ export default class extends Controller {
       React.createElement(LexicalEditor, {
         initialContent: this.initialContentValue || '',
         placeholder: this.placeholderValue || '記事の内容を入力してください...',
-        hiddenFieldId: this.hiddenFieldIdValue || undefined
+        hiddenFieldId: this.hiddenFieldIdValue || undefined,
       })
     );
   }

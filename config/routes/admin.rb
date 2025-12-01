@@ -21,7 +21,11 @@ namespace :admin_area, path: :admin do
       root to: 'list#by_content_type', as: :by_content_type
 
       scope module: :collection, as: :collection do
-        resources :entries, only: [:new, :create, :edit, :update], controller: 'entries/edit'
+        resources :entries, only: [:new, :create, :edit, :update], controller: 'entries/edit' do
+          member do
+            patch :autosave
+          end
+        end
         resources :entries, only: :show, controller: 'entries/show'
 
         post 'entries/:content_entry_id/publication', to: 'publications#create', as: :entry_publication
