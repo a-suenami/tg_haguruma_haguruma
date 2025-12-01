@@ -899,6 +899,51 @@ class ContentEntry::Version
     sig { void }
     def id_will_change!; end
 
+    sig { returns(T::Boolean) }
+    def is_public; end
+
+    sig { params(value: T::Boolean).returns(T::Boolean) }
+    def is_public=(value); end
+
+    sig { returns(T::Boolean) }
+    def is_public?; end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def is_public_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def is_public_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def is_public_came_from_user?; end
+
+    sig { returns(T.nilable([T::Boolean, T::Boolean])) }
+    def is_public_change; end
+
+    sig { returns(T.nilable([T::Boolean, T::Boolean])) }
+    def is_public_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def is_public_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def is_public_in_database; end
+
+    sig { returns(T.nilable([T::Boolean, T::Boolean])) }
+    def is_public_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def is_public_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def is_public_previously_was; end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def is_public_was; end
+
+    sig { void }
+    def is_public_will_change!; end
+
     sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
     def published_at; end
 
@@ -960,6 +1005,9 @@ class ContentEntry::Version
     def restore_id_value!; end
 
     sig { void }
+    def restore_is_public!; end
+
+    sig { void }
     def restore_published_at!; end
 
     sig { void }
@@ -1003,6 +1051,12 @@ class ContentEntry::Version
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T::Boolean, T::Boolean])) }
+    def saved_change_to_is_public; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_is_public?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
     def saved_change_to_published_at; end
@@ -1228,6 +1282,9 @@ class ContentEntry::Version
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_is_public?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_published_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end

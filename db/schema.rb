@@ -90,10 +90,13 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.uuid "content_entry_id", null: false
     t.integer "version", default: 1, null: false
     t.integer "status", null: false
+    t.boolean "is_public", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "published_at"
     t.datetime "unpublished_at"
+    t.index ["content_entry_id", "version"], name: "index_content_entry_versions_on_entry_version", unique: true
     t.index ["tenant_id", "content_type_id", "content_entry_id", "version"], name: "index_content_entry_versions_on_tenant_type_entry_version", unique: true
+    t.index ["tenant_id", "is_public"], name: "index_content_entry_versions_on_tenant_is_public"
   end
 
   create_table "content_type_field_media_assets", force: :cascade do |t|
@@ -116,7 +119,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.integer "media_asset_id"
     t.text "description", default: "", null: false
     t.boolean "required", default: false, null: false
-    t.integer "position", null: false
+    t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_type_id", "api_identifier"], name: "idx_on_content_type_id_api_identifier_0e95c10a8a", unique: true
@@ -128,14 +131,13 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   create_table "content_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
     t.boolean "is_collection", default: true, null: false
-    t.text "display_name", null: false
-    t.text "unique_name", default: "", null: false
-    t.text "description", default: "", null: false
+    t.text "display_name"
+    t.text "unique_name"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id", "tenant_id"], name: "index_content_types_on_id_and_tenant_id", unique: true
     t.index ["tenant_id", "id"], name: "index_content_types_on_tenant_id_and_id", unique: true
-    t.index ["tenant_id", "unique_name"], name: "index_content_types_on_tenant_id_and_unique_name", unique: true
   end
 
   create_table "media_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -641,6 +641,96 @@ class ContentType
     sig { void }
     def created_at_will_change!; end
 
+    sig { returns(T.nilable(::String)) }
+    def description; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def description=(value); end
+
+    sig { returns(T::Boolean) }
+    def description?; end
+
+    sig { returns(T.nilable(::String)) }
+    def description_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def description_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def description_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def description_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def description_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def description_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def description_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def description_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def description_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def description_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def description_was; end
+
+    sig { void }
+    def description_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def display_name; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def display_name=(value); end
+
+    sig { returns(T::Boolean) }
+    def display_name?; end
+
+    sig { returns(T.nilable(::String)) }
+    def display_name_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def display_name_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def display_name_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def display_name_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def display_name_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def display_name_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def display_name_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def display_name_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def display_name_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def display_name_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def display_name_was; end
+
+    sig { void }
+    def display_name_will_change!; end
+
     sig { returns(::String) }
     def id; end
 
@@ -780,6 +870,12 @@ class ContentType
     def restore_created_at!; end
 
     sig { void }
+    def restore_description!; end
+
+    sig { void }
+    def restore_display_name!; end
+
+    sig { void }
     def restore_id!; end
 
     sig { void }
@@ -792,6 +888,9 @@ class ContentType
     def restore_tenant_id!; end
 
     sig { void }
+    def restore_unique_name!; end
+
+    sig { void }
     def restore_updated_at!; end
 
     sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
@@ -799,6 +898,18 @@ class ContentType
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_description; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_description?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_display_name; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_display_name?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_id; end
@@ -823,6 +934,12 @@ class ContentType
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_unique_name; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_unique_name?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
     def saved_change_to_updated_at; end
@@ -875,6 +992,51 @@ class ContentType
     sig { void }
     def tenant_id_will_change!; end
 
+    sig { returns(T.nilable(::String)) }
+    def unique_name; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def unique_name=(value); end
+
+    sig { returns(T::Boolean) }
+    def unique_name?; end
+
+    sig { returns(T.nilable(::String)) }
+    def unique_name_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def unique_name_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def unique_name_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def unique_name_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def unique_name_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def unique_name_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def unique_name_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def unique_name_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def unique_name_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def unique_name_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def unique_name_was; end
+
+    sig { void }
+    def unique_name_will_change!; end
+
     sig { returns(::ActiveSupport::TimeWithZone) }
     def updated_at; end
 
@@ -924,6 +1086,12 @@ class ContentType
     def will_save_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_description?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_display_name?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -934,6 +1102,9 @@ class ContentType
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_unique_name?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_updated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
