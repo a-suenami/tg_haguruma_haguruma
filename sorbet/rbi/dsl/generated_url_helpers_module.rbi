@@ -19,6 +19,24 @@ module GeneratedUrlHelpersModule
   def admin_area_categories_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_category_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_type_field_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_type_fields_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_type_sort_fields_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_type_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_types_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_all_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -28,10 +46,22 @@ module GeneratedUrlHelpersModule
   def admin_area_contents_collection_entries_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_media_asset_field_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_publication_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_richtext_field_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_text_field_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_mobile_url(*args); end
@@ -55,6 +85,9 @@ module GeneratedUrlHelpersModule
   def admin_area_media_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_medium_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_profiles_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -70,10 +103,28 @@ module GeneratedUrlHelpersModule
   def api_v1_auth_session_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def api_v1_content_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def api_v1_contents_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_category_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_content_type_field_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_content_type_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_contents_collection_entry_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_contents_singleton_entry_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_medium_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_profiles_url(*args); end
@@ -94,7 +145,19 @@ module GeneratedUrlHelpersModule
   def edit_ruler_area_tenant_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def new_admin_area_category_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_admin_area_content_type_field_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_admin_area_content_type_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def new_admin_area_contents_collection_entry_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_admin_area_medium_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_rails_conductor_inbound_email_source_url(*args); end
@@ -199,6 +262,12 @@ module GeneratedUrlHelpersModule
   def rails_storage_redirect_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def rswag_api_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def rswag_ui_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_auth_auth0_callback_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -257,4 +326,7 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def update_rails_disk_service_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def upload_admin_area_media_url(*args); end
 end

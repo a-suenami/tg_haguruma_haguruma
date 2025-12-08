@@ -6,10 +6,17 @@
 
 
 class MediaAsset
+  include GeneratedAssociationMethods
   include GeneratedAttributeMethods
   include EnumMethodsModule
   extend CommonRelationMethods
   extend GeneratedRelationMethods
+
+  sig { returns(ActiveStorage::Attached::One) }
+  def file; end
+
+  sig { params(attachable: T.untyped).returns(T.untyped) }
+  def file=(attachable); end
 
   private
 
@@ -413,6 +420,77 @@ class MediaAsset
     def video?; end
   end
 
+  module GeneratedAssociationMethods
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Attachment) }
+    def build_file_attachment(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Blob) }
+    def build_file_blob(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def build_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Attachment) }
+    def create_file_attachment(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Attachment) }
+    def create_file_attachment!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Blob) }
+    def create_file_blob(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Blob) }
+    def create_file_blob!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant!(*args, &blk); end
+
+    sig { returns(T.nilable(::ActiveStorage::Attachment)) }
+    def file_attachment; end
+
+    sig { params(value: T.nilable(::ActiveStorage::Attachment)).void }
+    def file_attachment=(value); end
+
+    sig { returns(T.nilable(::ActiveStorage::Blob)) }
+    def file_blob; end
+
+    sig { params(value: T.nilable(::ActiveStorage::Blob)).void }
+    def file_blob=(value); end
+
+    sig { returns(T.nilable(::ActiveStorage::Attachment)) }
+    def reload_file_attachment; end
+
+    sig { returns(T.nilable(::ActiveStorage::Blob)) }
+    def reload_file_blob; end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def reload_tenant; end
+
+    sig { void }
+    def reset_file_attachment; end
+
+    sig { void }
+    def reset_file_blob; end
+
+    sig { void }
+    def reset_tenant; end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def tenant; end
+
+    sig { params(value: T.nilable(::Tenant)).void }
+    def tenant=(value); end
+
+    sig { returns(T::Boolean) }
+    def tenant_changed?; end
+
+    sig { returns(T::Boolean) }
+    def tenant_previously_changed?; end
+  end
+
   module GeneratedAssociationRelationMethods
     sig { returns(PrivateAssociationRelation) }
     def all; end
@@ -430,6 +508,9 @@ class MediaAsset
     def audio(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def audios(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def create_with(*args, &blk); end
 
     sig { params(value: T::Boolean).returns(PrivateAssociationRelation) }
@@ -437,6 +518,9 @@ class MediaAsset
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def document(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def documents(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def eager_load(*args, &blk); end
@@ -464,6 +548,9 @@ class MediaAsset
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def image(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def images(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def in_order_of(*args, &blk); end
@@ -568,12 +655,18 @@ class MediaAsset
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def video(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def videos(*args, &blk); end
+
     sig { returns(PrivateAssociationRelationWhereChain) }
     sig { params(args: T.untyped).returns(PrivateAssociationRelation) }
     def where(*args); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def with(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def with_attached_file(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def with_recursive(*args, &blk); end
@@ -627,6 +720,51 @@ class MediaAsset
 
     sig { void }
     def created_at_will_change!; end
+
+    sig { returns(::Integer) }
+    def file_size_bytes; end
+
+    sig { params(value: ::Integer).returns(::Integer) }
+    def file_size_bytes=(value); end
+
+    sig { returns(T::Boolean) }
+    def file_size_bytes?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def file_size_bytes_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def file_size_bytes_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def file_size_bytes_came_from_user?; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def file_size_bytes_change; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def file_size_bytes_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def file_size_bytes_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def file_size_bytes_in_database; end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def file_size_bytes_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def file_size_bytes_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def file_size_bytes_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def file_size_bytes_was; end
+
+    sig { void }
+    def file_size_bytes_will_change!; end
 
     sig { returns(::String) }
     def id; end
@@ -857,6 +995,9 @@ class MediaAsset
     def restore_created_at!; end
 
     sig { void }
+    def restore_file_size_bytes!; end
+
+    sig { void }
     def restore_id!; end
 
     sig { void }
@@ -872,16 +1013,70 @@ class MediaAsset
     def restore_mime_type!; end
 
     sig { void }
+    def restore_s3_object_path!; end
+
+    sig { void }
     def restore_tenant_id!; end
 
     sig { void }
     def restore_updated_at!; end
+
+    sig { returns(::String) }
+    def s3_object_path; end
+
+    sig { params(value: ::String).returns(::String) }
+    def s3_object_path=(value); end
+
+    sig { returns(T::Boolean) }
+    def s3_object_path?; end
+
+    sig { returns(T.nilable(::String)) }
+    def s3_object_path_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def s3_object_path_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def s3_object_path_came_from_user?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def s3_object_path_change; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def s3_object_path_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def s3_object_path_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def s3_object_path_in_database; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def s3_object_path_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def s3_object_path_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def s3_object_path_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def s3_object_path_was; end
+
+    sig { void }
+    def s3_object_path_will_change!; end
 
     sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
     def saved_change_to_created_at; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::Integer, ::Integer])) }
+    def saved_change_to_file_size_bytes; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_file_size_bytes?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_id; end
@@ -912,6 +1107,12 @@ class MediaAsset
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_mime_type?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def saved_change_to_s3_object_path; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_s3_object_path?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_tenant_id; end
@@ -1019,6 +1220,9 @@ class MediaAsset
     def will_save_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_file_size_bytes?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -1032,6 +1236,9 @@ class MediaAsset
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_mime_type?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_s3_object_path?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
@@ -1057,6 +1264,9 @@ class MediaAsset
     def audio(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def audios(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def create_with(*args, &blk); end
 
     sig { params(value: T::Boolean).returns(PrivateRelation) }
@@ -1064,6 +1274,9 @@ class MediaAsset
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def document(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def documents(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def eager_load(*args, &blk); end
@@ -1091,6 +1304,9 @@ class MediaAsset
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def image(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def images(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def in_order_of(*args, &blk); end
@@ -1195,12 +1411,18 @@ class MediaAsset
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def video(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def videos(*args, &blk); end
+
     sig { returns(PrivateRelationWhereChain) }
     sig { params(args: T.untyped).returns(PrivateRelation) }
     def where(*args); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def with(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def with_attached_file(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def with_recursive(*args, &blk); end

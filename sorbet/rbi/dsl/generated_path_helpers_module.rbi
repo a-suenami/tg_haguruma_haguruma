@@ -19,6 +19,24 @@ module GeneratedPathHelpersModule
   def admin_area_categories_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_category_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_type_field_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_type_fields_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_type_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_type_sort_fields_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_content_types_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_all_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -28,10 +46,22 @@ module GeneratedPathHelpersModule
   def admin_area_contents_collection_entries_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_media_asset_field_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_publication_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_richtext_field_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_text_field_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_mobile_path(*args); end
@@ -55,6 +85,9 @@ module GeneratedPathHelpersModule
   def admin_area_media_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_medium_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_profiles_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -70,10 +103,28 @@ module GeneratedPathHelpersModule
   def api_v1_auth_session_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def api_v1_content_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def api_v1_contents_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_category_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_content_type_field_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_content_type_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_contents_collection_entry_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_contents_singleton_entry_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_admin_area_medium_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_profiles_path(*args); end
@@ -94,7 +145,19 @@ module GeneratedPathHelpersModule
   def edit_ruler_area_tenant_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def new_admin_area_category_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_admin_area_content_type_field_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_admin_area_content_type_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def new_admin_area_contents_collection_entry_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_admin_area_medium_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_rails_conductor_inbound_email_path(*args); end
@@ -199,6 +262,12 @@ module GeneratedPathHelpersModule
   def rails_storage_redirect_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def rswag_api_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def rswag_ui_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_auth_auth0_callback_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -257,4 +326,7 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def update_rails_disk_service_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def upload_admin_area_media_path(*args); end
 end

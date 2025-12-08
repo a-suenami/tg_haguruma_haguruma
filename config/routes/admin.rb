@@ -21,10 +21,15 @@ namespace :admin_area, path: :admin do
       root to: 'list#by_content_type', as: :by_content_type
 
       scope module: :collection, as: :collection do
-        resources :entries, only: [:new, :create, :edit, :update], controller: 'entries/edit'
+        resources :entries, only: [:new, :create, :edit, :update], controller: 'entries/edit' do
+          resources :text_fields, only: [:update], controller: 'entries/text_fields', param: :api_identifier
+          resources :richtext_fields, only: [:update], controller: 'entries/richtext_fields', param: :api_identifier
+          resources :media_asset_fields, only: [:update], controller: 'entries/media_asset_fields', param: :api_identifier
+        end
         resources :entries, only: :show, controller: 'entries/show'
 
         post 'entries/:content_entry_id/publication', to: 'publications#create', as: :entry_publication
+        delete 'entries/:content_entry_id/publication', to: 'publications#destroy'
       end
 
       scope module: :singleton, as: :singleton do
@@ -36,6 +41,16 @@ namespace :admin_area, path: :admin do
     end
   end
 
-  resources :media, only: [:index]
-  resources :categories, only: [:index]
+  resources :media, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+    collection do
+      post :upload
+    end
+  end
+  resources :categories, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+
+  # ContentType management
+  resources :content_types do
+    resources :fields, controller: 'content_types/fields', except: [:index, :show]
+    post 'fields/sort', to: 'content_types/fields#sort', as: :sort_fields
+  end
 end

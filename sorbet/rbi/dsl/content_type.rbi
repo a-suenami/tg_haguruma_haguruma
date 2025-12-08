@@ -385,6 +385,9 @@ class ContentType
   end
 
   module GeneratedAssociationMethods
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def build_tenant(*args, &blk); end
+
     # This method is created by ActiveRecord on the `ContentType` class because it declared `has_many :content_entries`.
     # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
     sig { returns(::ContentEntry::PrivateCollectionProxy) }
@@ -398,6 +401,12 @@ class ContentType
 
     sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
     def content_entry_ids=(ids); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant!(*args, &blk); end
 
     sig { returns(T::Array[T.untyped]) }
     def field_ids; end
@@ -415,6 +424,24 @@ class ContentType
 
     sig { params(attributes: T.untyped).returns(T.untyped) }
     def fields_attributes=(attributes); end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def reload_tenant; end
+
+    sig { void }
+    def reset_tenant; end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def tenant; end
+
+    sig { params(value: T.nilable(::Tenant)).void }
+    def tenant=(value); end
+
+    sig { returns(T::Boolean) }
+    def tenant_changed?; end
+
+    sig { returns(T::Boolean) }
+    def tenant_previously_changed?; end
   end
 
   module GeneratedAssociationRelationMethods
@@ -614,10 +641,10 @@ class ContentType
     sig { void }
     def created_at_will_change!; end
 
-    sig { returns(::String) }
+    sig { returns(T.nilable(::String)) }
     def description; end
 
-    sig { params(value: ::String).returns(::String) }
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
     def description=(value); end
 
     sig { returns(T::Boolean) }
@@ -632,10 +659,10 @@ class ContentType
     sig { returns(T::Boolean) }
     def description_came_from_user?; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def description_change; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def description_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -644,7 +671,7 @@ class ContentType
     sig { returns(T.nilable(::String)) }
     def description_in_database; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def description_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -659,10 +686,10 @@ class ContentType
     sig { void }
     def description_will_change!; end
 
-    sig { returns(::String) }
+    sig { returns(T.nilable(::String)) }
     def display_name; end
 
-    sig { params(value: ::String).returns(::String) }
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
     def display_name=(value); end
 
     sig { returns(T::Boolean) }
@@ -677,10 +704,10 @@ class ContentType
     sig { returns(T::Boolean) }
     def display_name_came_from_user?; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def display_name_change; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def display_name_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -689,7 +716,7 @@ class ContentType
     sig { returns(T.nilable(::String)) }
     def display_name_in_database; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def display_name_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -872,13 +899,13 @@ class ContentType
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def saved_change_to_description; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_description?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def saved_change_to_display_name; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -908,7 +935,7 @@ class ContentType
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def saved_change_to_unique_name; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -965,10 +992,10 @@ class ContentType
     sig { void }
     def tenant_id_will_change!; end
 
-    sig { returns(::String) }
+    sig { returns(T.nilable(::String)) }
     def unique_name; end
 
-    sig { params(value: ::String).returns(::String) }
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
     def unique_name=(value); end
 
     sig { returns(T::Boolean) }
@@ -983,10 +1010,10 @@ class ContentType
     sig { returns(T::Boolean) }
     def unique_name_came_from_user?; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def unique_name_change; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def unique_name_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -995,7 +1022,7 @@ class ContentType
     sig { returns(T.nilable(::String)) }
     def unique_name_in_database; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def unique_name_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }

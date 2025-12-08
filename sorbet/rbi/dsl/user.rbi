@@ -338,11 +338,20 @@ class User
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def build_oauth_provider(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def build_tenant(*args, &blk); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def create_oauth_provider(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def create_oauth_provider!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant!(*args, &blk); end
 
     sig { returns(T.nilable(::OauthProvider)) }
     def oauth_provider; end
@@ -359,8 +368,14 @@ class User
     sig { returns(T.nilable(::OauthProvider)) }
     def reload_oauth_provider; end
 
+    sig { returns(T.nilable(::Tenant)) }
+    def reload_tenant; end
+
     sig { void }
     def reset_oauth_provider; end
+
+    sig { void }
+    def reset_tenant; end
 
     sig { returns(T::Array[T.untyped]) }
     def session_token_ids; end
@@ -375,6 +390,18 @@ class User
 
     sig { params(value: T::Enumerable[::SessionToken]).void }
     def session_tokens=(value); end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def tenant; end
+
+    sig { params(value: T.nilable(::Tenant)).void }
+    def tenant=(value); end
+
+    sig { returns(T::Boolean) }
+    def tenant_changed?; end
+
+    sig { returns(T::Boolean) }
+    def tenant_previously_changed?; end
   end
 
   module GeneratedAssociationRelationMethods

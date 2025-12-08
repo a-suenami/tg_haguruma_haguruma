@@ -9,7 +9,7 @@ create_table :content_type_fields, force: :cascade do |t|
   t.integer :media_asset_id
   t.text :description, null: false, default: ''
   t.boolean :required, null: false, default: false
-  t.integer :position, null: false
+  t.integer :position, null: false, default: 0
 
   t.timestamps null: false
 end
