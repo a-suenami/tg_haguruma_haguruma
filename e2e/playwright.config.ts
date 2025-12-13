@@ -72,11 +72,12 @@ export default defineConfig({
     },
   ],
 
-  /* Run your local dev server before starting the tests (CI only) */
-  webServer: process.env.CI ? {
+  /* Run your local dev server before starting the tests (local only) */
+  /* In CI, the server is started manually in the workflow */
+  webServer: process.env.CI ? undefined : {
     command: 'bin/rails server -p 3000',
     url: 'http://localhost:3000/health_check',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
     timeout: 120 * 1000,
-  } : undefined,
+  },
 });
