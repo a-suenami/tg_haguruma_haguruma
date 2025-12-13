@@ -175,6 +175,58 @@ sorbet:
     key: ${CI_JOB_IMAGE}-test
     policy: pull-push
 
+e2e-smoke:
+  image: ${RUBY_IMAGE}
+  stage: test
+  cache:
+    <<: *cache
+    policy: pull
+  services:
+    - ${POSTGRES_IMAGE}
+    - name: ${REDIS_IMAGE}
+      alias: redis
+  variables:
+    RAILS_ENV: test
+    DATABASE_URL: 'postgres://postgres:postgres@postgres:5432/haguruma_test'
+    POSTGRES_HOST: postgres
+    POSTGRES_TEST_HOST: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    REDIS_URL: redis://redis:6379/0
+    SECRET_KEY_BASE: d5a4673d2c4b02366ae8cc60e2bac02234866f11722cc8ba096a7f05841ef2c849cc58cc956c4a128acaa6d105b40159bc6c48f02450b7b885d62cb33961b3d8
+    ALLOW_AUTH_BYPASS: 'true'
+    AUTH_BYPASS: 'true'
+    TEST_TENANT_ID: 'sample'
+    BASE_URL: 'http://localhost:3000'
+    CI: 'true'
+  before_script:
+    - apt-get update && apt-get install -y libjq-dev
+    - /bin/sh docker/scripts/bundle_install.sh
+    - npm ci
+    - npx playwright install chromium --with-deps
+    - bundle exec rails db:create
+    - bundle exec rails ridgepole:apply
+    - bundle exec rails db:seed
+    - bundle exec rails assets:precompile
+  script:
+    - bundle exec rails server -p 3000 -d -e test
+    - sleep 5
+    - |
+      for i in $(seq 1 30); do
+        curl -s http://localhost:3000/health_check && break
+        sleep 1
+      done
+    - cd e2e && npx playwright test --project=ci tests/smoke/
+  artifacts:
+    when: always
+    paths:
+      - e2e/playwright-report/
+      - e2e/test-results/
+    expire_in: 7 days
+  except:
+    - /^deploy-.*$/
+    - schedules
+
 check-shims:
   tags:
     - x86_64-linux
