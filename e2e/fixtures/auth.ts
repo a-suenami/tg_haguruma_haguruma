@@ -17,17 +17,41 @@ export interface AuthOptions {
 async function authenticateWithBypass(page: Page, options: AuthOptions): Promise<void> {
   const { area, tenantId } = options;
 
+  let bypassUrl: string;
   if (area === 'admin') {
     if (!tenantId) {
       throw new Error('tenantId is required for admin area authentication');
     }
-    await page.goto(`/test/auth/bypass?area=admin&tenant_id=${tenantId}`);
+    bypassUrl = `/test/auth/bypass?area=admin&tenant_id=${tenantId}`;
   } else {
-    await page.goto('/test/auth/bypass?area=ruler');
+    bypassUrl = '/test/auth/bypass?area=ruler';
   }
 
-  // Wait for redirect to complete
-  await page.waitForURL(area === 'admin' ? '**/admin/**' : '**/ruler/**');
+  // Navigate and wait for response
+  const response = await page.goto(bypassUrl, { waitUntil: 'networkidle' });
+
+  // Check if we got a redirect (successful auth) or an error
+  const currentUrl = page.url();
+  const expectedPattern = area === 'admin' ? /\/admin/ : /\/ruler/;
+
+  if (!expectedPattern.test(currentUrl)) {
+    // Auth bypass failed - get error details
+    const status = response?.status() ?? 'unknown';
+    const body = await page.content();
+
+    // Try to extract error message from JSON response
+    let errorMessage = `Auth bypass failed. Status: ${status}, URL: ${currentUrl}`;
+    try {
+      const jsonMatch = body.match(/"error"\s*:\s*"([^"]+)"/);
+      if (jsonMatch) {
+        errorMessage += `, Error: ${jsonMatch[1]}`;
+      }
+    } catch {
+      // Ignore JSON parsing errors
+    }
+
+    throw new Error(errorMessage);
+  }
 }
 
 /**
