@@ -22,10 +22,11 @@ module Api
 
       sig { void }
       def show
-        query = UserQueries::ContentEntriesQuery.new.published.authorized_for(current_user)
-        content_entry = query.resolve_find(params[:id])
+        content_entry = UserQueries::ContentEntriesQuery.new.published.resolve_find(params[:id])
 
-        query.authorize!(content_entry)
+        unless UserQueries::ContentEntriesQuery.authorized?(content_entry, user: current_user)
+          raise UserQueries::ContentEntriesQuery::ContentAuthorizationError
+        end
 
         render json: ContentEntrySerializer.new(content_entry).as_json
       end
