@@ -1,0 +1,237 @@
+name: E2E Tests
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+# Cancel in-progress runs for the same PR
+concurrency:
+  group: e2e-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+env:
+  RAILS_ENV: test
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/haguruma_test
+  ALLOW_AUTH_BYPASS: 'true'
+  AUTH_BYPASS: 'true'
+  TEST_TENANT_ID: 'test-tenant'
+
+jobs:
+  e2e-smoke:
+    name: E2E Smoke Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: haguruma_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Setup database
+        run: |
+          bundle exec rails db:create
+          bundle exec rails ridgepole:apply
+          bundle exec rails db:seed
+
+      - name: Build assets
+        run: |
+          npm run build
+          bundle exec rails assets:precompile
+        env:
+          RAILS_ENV: test
+
+      - name: Start Rails server
+        run: |
+          bundle exec rails server -p 3000 -d
+          sleep 5
+        env:
+          RAILS_ENV: test
+          ALLOW_AUTH_BYPASS: 'true'
+
+      - name: Wait for server
+        run: |
+          for i in {1..30}; do
+            curl -s http://localhost:3000/health_check && exit 0
+            sleep 1
+          done
+          echo "Server failed to start"
+          exit 1
+
+      - name: Run E2E smoke tests
+        run: npx playwright test --project=ci tests/smoke/
+        working-directory: e2e
+        env:
+          BASE_URL: http://localhost:3000
+          AUTH_BYPASS: 'true'
+          TEST_TENANT_ID: 'test-tenant'
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-smoke
+          path: e2e/playwright-report/
+          retention-days: 7
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-artifacts-smoke
+          path: |
+            e2e/test-results/
+          retention-days: 7
+
+  e2e-full:
+    name: E2E Full Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    # Only run full tests on main branch
+    if: github.ref == 'refs/heads/main'
+    needs: e2e-smoke
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: haguruma_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Setup database
+        run: |
+          bundle exec rails db:create
+          bundle exec rails ridgepole:apply
+          bundle exec rails db:seed
+
+      - name: Build assets
+        run: |
+          npm run build
+          bundle exec rails assets:precompile
+        env:
+          RAILS_ENV: test
+
+      - name: Start Rails server
+        run: |
+          bundle exec rails server -p 3000 -d
+          sleep 5
+        env:
+          RAILS_ENV: test
+          ALLOW_AUTH_BYPASS: 'true'
+
+      - name: Wait for server
+        run: |
+          for i in {1..30}; do
+            curl -s http://localhost:3000/health_check && exit 0
+            sleep 1
+          done
+          echo "Server failed to start"
+          exit 1
+
+      - name: Run all E2E tests
+        run: npx playwright test --project=ci
+        working-directory: e2e
+        env:
+          BASE_URL: http://localhost:3000
+          AUTH_BYPASS: 'true'
+          TEST_TENANT_ID: 'test-tenant'
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-full
+          path: e2e/playwright-report/
+          retention-days: 7
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-artifacts-full
+          path: |
+            e2e/test-results/
+          retention-days: 7
