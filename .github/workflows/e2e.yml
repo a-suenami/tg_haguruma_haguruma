@@ -16,7 +16,7 @@ env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/haguruma_test
   ALLOW_AUTH_BYPASS: 'true'
   AUTH_BYPASS: 'true'
-  TEST_TENANT_ID: 'test-tenant'
+  TEST_TENANT_ID: 'sample'
 
 jobs:
   e2e-smoke:
@@ -105,7 +105,7 @@ jobs:
         env:
           BASE_URL: http://localhost:3000
           AUTH_BYPASS: 'true'
-          TEST_TENANT_ID: 'test-tenant'
+          TEST_TENANT_ID: 'sample'
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -213,7 +213,7 @@ jobs:
         env:
           BASE_URL: http://localhost:3000
           AUTH_BYPASS: 'true'
-          TEST_TENANT_ID: 'test-tenant'
+          TEST_TENANT_ID: 'sample'
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
