@@ -43,8 +43,7 @@ module RulerArea
     end
 
     def admin_area
-      # TODO: Enable when Admin model is available
-      # Admin.find_or_create_by(tenant_id: @tenant.id, auth0_account_id: current_ruler.auth0_account_id)
+      ensure_ruler_registered_as_admin
 
       url = if Rails.env.development?
         "http://#{@tenant.id}.#{request.host}:#{request.port}/admin"
@@ -56,6 +55,28 @@ module RulerArea
     end
 
     private
+
+    def ensure_ruler_registered_as_admin
+      auth0_account = current_ruler.auth0_account
+      return if auth0_account.nil?
+
+      # Check if Admin already exists for this auth0_account in this tenant
+      existing_link = Admin::Auth0Account.find_by(auth0_account_id: auth0_account.id, tenant_id: @tenant.id)
+      return if existing_link.present?
+
+      # Create Admin and link to Auth0Account
+      ActiveRecord::Base.transaction do
+        admin = Admin.create!(
+          tenant_id: @tenant.id,
+          name: current_ruler.name || auth0_account.email,
+        )
+        Admin::Auth0Account.create!(
+          admin:,
+          auth0_account:,
+          tenant_id: @tenant.id,
+        )
+      end
+    end
 
     def set_tenant
       @tenant = Tenant.find(params[:id])
