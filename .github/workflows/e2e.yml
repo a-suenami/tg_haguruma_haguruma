@@ -78,9 +78,7 @@ jobs:
           bundle exec rails db:seed
 
       - name: Build assets
-        run: |
-          npm run build
-          bundle exec rails assets:precompile
+        run: bundle exec rails assets:precompile
         env:
           RAILS_ENV: test
 
@@ -188,9 +186,7 @@ jobs:
           bundle exec rails db:seed
 
       - name: Build assets
-        run: |
-          npm run build
-          bundle exec rails assets:precompile
+        run: bundle exec rails assets:precompile
         env:
           RAILS_ENV: test
 
