@@ -42,5 +42,9 @@
     {
       "name": "AUTH0_M2M_DOMAIN",
       "value": "haguruma-prod.jp.auth0.com"
+    },
+    {
+      "name": "ADMIN_DOMAIN",
+      "value": "admin.app.haguruma.io"
     }
 ]
