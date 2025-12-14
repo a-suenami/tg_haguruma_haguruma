@@ -21,6 +21,7 @@ import FileDragDropPlugin from "./FileDragDropPlugin";
 import AutoEmbedPluginComponent from "./AutoEmbedPluginComponent";
 import DraggableBlockPlugin from "./DraggableBlockPlugin";
 import HiddenFieldSyncPlugin from "./HiddenFieldSyncPlugin";
+import InitialContentPlugin from "./InitialContentPlugin";
 
 // Markdown transformers
 import {
@@ -115,6 +116,9 @@ export default function LexicalEditor({
           <DraggableBlockPlugin />
           {hiddenFieldId && (
             <HiddenFieldSyncPlugin hiddenFieldId={hiddenFieldId} />
+          )}
+          {initialContent && (
+            <InitialContentPlugin content={initialContent} />
           )}
         </div>
       </LexicalComposer>
