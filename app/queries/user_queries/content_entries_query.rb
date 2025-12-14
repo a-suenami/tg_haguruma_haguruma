@@ -84,7 +84,7 @@ module UserQueries
 
     sig { returns(T::Boolean) }
     def authorization_filtering_enabled?
-      defined?(@user)
+      !@user.nil?
     end
   end
 end
