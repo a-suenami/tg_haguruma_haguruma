@@ -42,31 +42,6 @@
             <% end %>
           </li>
         <% end %>
-
-        <!-- 区切り線 -->
-        <div class="tree-section-divider"></div>
-
-        <!-- 管理メニュー -->
-        <li class="tree-item">
-          <%= link_to admin_area_content_types_path, class: "tree-item-header" do %>
-            <span class="tree-icon"><i class="fas fa-cog"></i></span>
-            <span class="tree-label">コンテンツタイプ管理</span>
-          <% end %>
-        </li>
-
-        <li class="tree-item">
-          <%= link_to admin_area_media_path, class: "tree-item-header" do %>
-            <span class="tree-icon"><i class="fas fa-images"></i></span>
-            <span class="tree-label">メディア</span>
-          <% end %>
-        </li>
-
-        <li class="tree-item">
-          <%= link_to admin_area_categories_path, class: "tree-item-header" do %>
-            <span class="tree-icon"><i class="fas fa-tags"></i></span>
-            <span class="tree-label">カテゴリー</span>
-          <% end %>
-        </li>
       </ul>
     </div>
   </div>
