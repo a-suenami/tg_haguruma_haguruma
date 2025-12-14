@@ -1,367 +1,148 @@
-<% content_for :title, @is_single ? 'コンテンツ詳細' : 'コンテンツ詳細' %>
+<% content_for :title, "#{@content_type.display_name}詳細" %>
+
+<%
+  # Determine current status
+  current_status = if @published_version
+    '公開中'
+  elsif @draft_version
+    '下書き'
+  else
+    '未保存'
+  end
+%>
 
 <div class="custom-container">
-    <%= render 'admin_area/contents/sidebar' %>
+  <%= render 'admin_area/contents/sidebar' %>
 
-    <!-- メインコンテンツ -->
-    <main class="custom-main">
+  <main class="custom-main">
     <!-- パンくずリスト -->
     <div class="breadcrumb">
-        <% if @is_single %>
-            <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
-            <span class="breadcrumb-separator">/</span>
-            <span class="breadcrumb-current">会社概要</span>
-        <% else %>
-            <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
-            <span class="breadcrumb-separator">/</span>
-            <%= link_to '記事一覧', admin_area_contents_all_path, class: 'breadcrumb-link' %>
-            <span class="breadcrumb-separator">/</span>
-            <span class="breadcrumb-current">2024年の技術トレンド予測</span>
-        <% end %>
+      <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current"><%= @content_type.display_name %></span>
     </div>
 
-    <% if @is_single %>
-        <!-- シングルトンコンテンツの詳細表示 -->
-        <header class="content-detail-header">
-            <div class="content-detail-title-section">
-                <div class="content-type-badge single-content-badge">
-                    <span class="content-type-icon">📄</span>
-                    <span class="content-type-text">シングルページ</span>
-                </div>
-                <h1 class="content-detail-title">会社概要</h1>
-            </div>
-        </header>
-
-        <div class="content-versions">
-            <!-- 公開中バージョン -->
-            <div class="content-version-card">
-                <div class="version-header">
-                    <div class="version-status">
-                        <span class="status-tag status-tag-published">公開中</span>
-                        <span class="version-date">2024-01-10 09:15 に公開</span>
-                    </div>
-                    <div class="version-actions">
-                        <%= link_to '#', class: 'btn btn-sm btn-external', target: '_blank' do %>
-                            <i class="fas fa-globe icon-prefix"></i>
-                            公開ページ
-                            <i class="fas fa-external-link-alt icon-suffix"></i>
-                        <% end %>
-                        <button class="btn btn-sm btn-edit">
-                            <i class="fas fa-edit icon-prefix"></i>
-                            編集用コピーを作成
-                        </button>
-                    </div>
-                </div>
-                <div class="version-content">
-                    <div class="content-body">
-                        <h3>本文</h3>
-                        <div class="rich-content">
-                            <h2>企業理念</h2>
-                            <p>私たちの会社は、革新的な技術ソリューションを提供することを使命として、<strong>2010年</strong>に設立されました。</p>
-                            
-                            <h3>サービス内容</h3>
-                            <ul>
-                                <li>クラウドソリューション</li>
-                                <li>システム開発・運用</li>
-                                <li>デジタル変革支援</li>
-                                <li>AI・機械学習コンサルティング</li>
-                            </ul>
-                            
-                            <h3>会社沿革</h3>
-                            <ol>
-                                <li><strong>2010年</strong>: 会社設立</li>
-                                <li><strong>2015年</strong>: クラウド事業開始</li>
-                                <li><strong>2020年</strong>: AI部門新設</li>
-                                <li><strong>2024年</strong>: 新オフィス開設</li>
-                            </ol>
-                        </div>
-                    </div>
-                    <div class="content-fields">
-                        <div class="field-row">
-                            <span class="field-label">設立年:</span>
-                            <div class="field-value">2010年</div>
-                        </div>
-                        <div class="field-row">
-                            <span class="field-label">従業員数:</span>
-                            <div class="field-value">150名</div>
-                        </div>
-                        <div class="field-row">
-                            <span class="field-label">所在地:</span>
-                            <div class="field-value">東京都渋谷区</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 編集中バージョン -->
-            <div class="content-version-card">
-                <div class="version-header" onclick="toggleVersionCard(this)">
-                    <div class="version-status">
-                        <span class="status-tag status-tag-draft">編集中</span>
-                        <span class="version-date">2024-01-16 14:30 に更新</span>
-                    </div>
-                    <div class="version-header-right">
-                        <div class="version-actions">
-                            <%= link_to '#', class: 'btn btn-sm btn-edit', onclick: 'event.stopPropagation()' do %>
-                                <i class="fas fa-edit icon-prefix"></i>
-                                編集
-                            <% end %>
-                            <%= link_to '#', class: 'btn btn-sm btn-preview', target: '_blank', onclick: 'event.stopPropagation()' do %>
-                                <i class="fas fa-check-double icon-prefix"></i>
-                                プレビュー
-                                <i class="fas fa-external-link-alt icon-suffix"></i>
-                            <% end %>
-                        </div>
-                        <div class="version-toggle">
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="version-content" style="display: none;">
-                    <div class="content-body">
-                        <h3>本文</h3>
-                        <div class="rich-content">
-                            <h2>企業理念（更新版）</h2>
-                            <p>私たちの会社は、革新的な技術ソリューションと<strong>AIを活用したサービス</strong>を提供することを使命として、2010年に設立されました。</p>
-                            
-                            <div class="content-note">
-                                <h4>🔄 変更点</h4>
-                                <p>AI活用に関する記述を追加し、最新のサービス内容を反映しました。</p>
-                            </div>
-                            
-                            <h3>サービス内容（拡充）</h3>
-                            <ul>
-                                <li>クラウドソリューション</li>
-                                <li>システム開発・運用</li>
-                                <li>デジタル変革支援</li>
-                                <li><strong>AI・機械学習コンサルティング</strong> <span class="content-change-highlight">拡充</span></li>
-                                <li><strong>生成AIソリューション</strong> <span class="content-change-highlight">新規</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="content-fields">
-                        <div class="field-row">
-                            <span class="field-label">設立年:</span>
-                            <div class="field-value">2010年</div>
-                        </div>
-                        <div class="field-row">
-                            <span class="field-label">従業員数:</span>
-                            <div class="field-value">165名</div>
-                        </div>
-                        <div class="field-row">
-                            <span class="field-label">所在地:</span>
-                            <div class="field-value">東京都渋谷区（本社）、大阪府大阪市（関西支社）</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- シングルトンコンテンツの詳細表示 -->
+    <header class="content-detail-header">
+      <div class="content-detail-title-section">
+        <div class="content-title-with-back">
+          <%= link_to admin_area_contents_all_path, class: 'back-to-list-btn' do %>
+            <i class="fas fa-arrow-left"></i>
+          <% end %>
+          <h1 class="content-detail-title"><%= @content_type.display_name %></h1>
         </div>
+      </div>
+    </header>
 
-    <% else %>
-        <!-- コレクションコンテンツの詳細表示 -->
-        <header class="content-detail-header">
-            <div class="content-detail-title-section">
-                <div class="content-title-with-back">
-                    <%= link_to admin_area_contents_all_path, class: 'back-to-list-btn' do %>
-                        <i class="fas fa-arrow-left"></i>
-                    <% end %>
-                    <h1 class="content-detail-title">2024年の技術トレンド予測</h1>
-                </div>
-            </div>
-        </header>
+    <!-- バージョンタブ -->
+    <div class="version-tabs">
+      <%= link_to edit_admin_area_contents_singleton_entry_path(content_type_id: @content_type.id), class: "version-tab #{'disabled' unless @draft_version || @content_entry}" do %>
+        編集中
+      <% end %>
+      <%= link_to admin_area_contents_singleton_entry_path(content_type_id: @content_type.id), class: 'version-tab active' do %>
+        公開中
+      <% end %>
+    </div>
 
-        <!-- バージョンタブ -->
-        <div class="version-tabs">
-            <%= link_to edit_admin_area_contents_singleton_entry_path(content_type_id: params[:content_type_id]), class: 'version-tab' do %>
-                編集中
-            <% end %>
-            <%= link_to admin_area_contents_singleton_entry_path(content_type_id: params[:content_type_id]), class: 'version-tab active' do %>
-                公開中
-            <% end %>
-        </div>
-
-        <div class="content-detail-layout">
-            <!-- メインコンテンツエリア -->
-            <div class="content-main-area">
-
-                <!-- コンテンツフィールド（公開中バージョン - disabled form） -->
-                <div class="content-form-area">
-                    <form class="content-form">
-                        <div class="field-group">
-                            <label class="field-label" for="title">title</label>
-                            <input type="text" id="title" name="title" class="field-input" value="2024年の技術トレンド予測" disabled>
-                        </div>
-
-                        <div class="field-group">
-                            <label class="field-label" for="content">content</label>
-                            <div class="rich-editor-container">
-                                <div class="rich-editor disabled" contenteditable="false">
-                                    <h2>AIの現状と課題</h2>
-                                    <p>2024年は人工知能（AI）技術の飛躍的な進歩が期待される年です。特に<strong>生成AI</strong>の分野では、より高精度で実用的なモデルが続々と登場し、ビジネスの様々な場面での活用が加速しています。</p>
-                                    
-                                    <h3>注目すべき技術トレンド</h3>
-                                    <ul>
-                                        <li><strong>マルチモーダルAI</strong>: テキスト、画像、音声を統合的に処理</li>
-                                        <li><strong>エッジAI</strong>: デバイス上での軽量AI処理</li>
-                                        <li><strong>説明可能AI（XAI）</strong>: AI判断の透明性向上</li>
-                                        <li><strong>AI倫理とガバナンス</strong>: 責任あるAI開発</li>
-                                    </ul>
-                                    
-                                    <blockquote>
-                                        <p>「AIは道具であり、重要なのはそれをどう活用するかです。技術の進歩と同時に、人間中心の設計思想を忘れてはいけません。」</p>
-                                        <cite>— AI研究者 田中博士</cite>
-                                    </blockquote>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field-group">
-                            <label class="field-label" for="author">author</label>
-                            <input type="text" id="author" name="author" class="field-input" value="山田太郎" disabled>
-                        </div>
-
-                        <div class="field-group">
-                            <label class="field-label" for="category">category</label>
-                            <select id="category" name="category" class="field-select" disabled>
-                                <option value="technology" selected>技術</option>
-                                <option value="business">ビジネス</option>
-                                <option value="design">デザイン</option>
-                            </select>
-                        </div>
-
-                        <div class="field-group">
-                            <label class="field-label" for="tags">tags</label>
-                            <input type="text" id="tags" name="tags" class="field-input" value="AI, 技術トレンド, 2024年" disabled>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- 右側アクションパネル -->
-            <div class="content-action-panel">
-                <div class="action-section">
-                    <h4 class="action-section-title">ENTRY</h4>
-                    <div class="action-buttons">
-                        <%= link_to edit_admin_area_contents_singleton_entry_path(content_type_id: params[:content_type_id]), class: 'btn btn-primary action-btn' do %>
-                            <i class="fas fa-edit icon-prefix"></i>
-                            編集用コピーを作成
-                        <% end %>
-                    </div>
-                </div>
-
-                <div class="action-section">
-                    <h4 class="action-section-title">PREVIEW</h4>
-                    <div class="action-buttons">
-                        <%= link_to '#', class: 'btn btn-secondary action-btn', target: '_blank' do %>
-                            <i class="fas fa-globe icon-prefix"></i>
-                            公開ページ
-                            <i class="fas fa-external-link-alt icon-suffix"></i>
-                        <% end %>
-                    </div>
-                </div>
-
-                <div class="action-section">
-                    <h4 class="action-section-title">META</h4>
-                    <div class="meta-info">
-                        <div class="meta-item">
-                            <span class="meta-key">ステータス:</span>
-                            <span class="action-panel-meta-value">公開中</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-key">公開日:</span>
-                            <span class="action-panel-meta-value">2024-01-15</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-key">作成者:</span>
-                            <span class="action-panel-meta-value">山田太郎</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success">
+        <%= flash[:notice] %>
+      </div>
     <% end %>
-    </main>
+
+    <% if flash[:alert].present? %>
+      <div class="alert alert-danger">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <% if @published_version || @draft_version %>
+      <div class="content-detail-layout">
+        <!-- メインコンテンツエリア -->
+        <div class="content-main-area">
+          <div class="content-form-area">
+            <% if @content_type.fields.any? %>
+              <% @content_type.fields.each do |field| %>
+                <%= render 'admin_area/contents/field_display',
+                           field: field,
+                           value: @field_values[field.api_identifier] %>
+              <% end %>
+            <% else %>
+              <div class="empty-fields-message">
+                <p>このコンテンツタイプにはフィールドが定義されていません。</p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- 右側アクションパネル -->
+        <div class="content-action-panel">
+          <div class="action-section">
+            <h4 class="action-section-title">ENTRY</h4>
+            <div class="action-buttons">
+              <%= link_to edit_admin_area_contents_singleton_entry_path(content_type_id: @content_type.id), class: 'btn btn-primary action-btn' do %>
+                <i class="fas fa-edit icon-prefix"></i>
+                編集
+              <% end %>
+            </div>
+          </div>
+
+          <div class="action-section">
+            <h4 class="action-section-title">PREVIEW</h4>
+            <div class="action-buttons">
+              <%= link_to '#', class: 'btn btn-secondary action-btn', target: '_blank' do %>
+                <i class="fas fa-globe icon-prefix"></i>
+                公開ページ
+                <i class="fas fa-external-link-alt icon-suffix"></i>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="action-section">
+            <h4 class="action-section-title">META</h4>
+            <div class="meta-info">
+              <div class="meta-item">
+                <span class="meta-key">ステータス:</span>
+                <span class="action-panel-meta-value"><%= current_status %></span>
+              </div>
+              <% if @published_version&.published_at %>
+                <div class="meta-item">
+                  <span class="meta-key">公開日:</span>
+                  <span class="action-panel-meta-value">
+                    <%= @published_version.published_at.strftime('%Y-%m-%d %H:%M') %>
+                  </span>
+                </div>
+              <% end %>
+              <% if @content_entry %>
+                <div class="meta-item">
+                  <span class="meta-key">作成日:</span>
+                  <span class="action-panel-meta-value">
+                    <%= @content_entry.created_at&.strftime('%Y-%m-%d %H:%M') || '-' %>
+                  </span>
+                </div>
+              <% end %>
+              <div class="meta-item">
+                <span class="meta-key">コンテンツタイプ:</span>
+                <span class="action-panel-meta-value"><%= @content_type.display_name %></span>
+              </div>
+              <% if @published_version %>
+                <div class="meta-item">
+                  <span class="meta-key">バージョン:</span>
+                  <span class="action-panel-meta-value">v<%= @published_version.version %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="empty-content-message">
+        <p>このコンテンツにはまだ公開されたバージョンがありません。</p>
+        <%= link_to edit_admin_area_contents_singleton_entry_path(content_type_id: @content_type.id), class: 'btn btn-primary' do %>
+          <i class="fas fa-edit icon-prefix"></i>
+          編集を開始
+        <% end %>
+      </div>
+    <% end %>
+  </main>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const treeHeaders = document.querySelectorAll('.tree-item-header');
-
-        treeHeaders.forEach(header => {
-            header.addEventListener('click', function() {
-                const toggle = this.querySelector('.tree-toggle');
-                const submenu = this.nextElementSibling;
-                
-                // サブメニューの展開/折りたたみ
-                if (submenu && submenu.classList.contains('tree-submenu')) {
-                    toggle.classList.toggle('expanded');
-                    submenu.classList.toggle('expanded');
-                }
-
-                // アクティブ状態の切り替え
-                treeHeaders.forEach(item => item.classList.remove('active'));
-                this.classList.add('active');
-
-                // コンテンツの更新
-                const model = this.dataset.model;
-                const type = this.dataset.type;
-                
-                // data-model がない場合はスキップ
-                if (!model) return;
-                
-                // シングルコンテンツの場合は詳細ページに遷移
-                if (type === 'single') {
-                    window.location.href = `/admin/content_entries/1?single=true&model=${model}`;
-                    return;
-                }
-                
-                // コレクションコンテンツの場合は一覧ページに遷移
-                window.location.href = '/admin/content_entries';
-            });
-        });
-
-    });
-
-    // バージョンタブ切り替え
-    function switchVersionTab(tab, version) {
-        // タブのアクティブ状態切り替え
-        document.querySelectorAll('.version-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        
-        // コンテンツエリアの表示切り替え
-        document.querySelectorAll('.version-content-area').forEach(area => {
-            area.classList.remove('active');
-            area.style.display = 'none';
-        });
-        
-        const targetContent = document.getElementById(version + '-content');
-        if (targetContent) {
-            targetContent.classList.add('active');
-            targetContent.style.display = 'block';
-        }
-        
-        // 右パネルのボタン表示切り替え
-        const editBtn = document.getElementById('edit-btn');
-        const publishBtn = document.getElementById('publish-btn');
-        const previewBtn = document.getElementById('preview-btn');
-        const liveBtn = document.getElementById('live-btn');
-        const currentStatus = document.getElementById('current-status');
-        const currentDate = document.getElementById('current-date');
-        
-        if (version === 'draft') {
-            editBtn.style.display = 'block';
-            publishBtn.style.display = 'block';
-            previewBtn.style.display = 'block';
-            liveBtn.style.display = 'none';
-            currentStatus.textContent = '編集中';
-            currentDate.textContent = '2024-01-16 10:30';
-        } else {
-            editBtn.style.display = 'none';
-            publishBtn.style.display = 'none';
-            previewBtn.style.display = 'none';
-            liveBtn.style.display = 'block';
-            currentStatus.textContent = '公開中';
-            currentDate.textContent = '2024-01-15 14:20';
-        }
-    }
-</script>

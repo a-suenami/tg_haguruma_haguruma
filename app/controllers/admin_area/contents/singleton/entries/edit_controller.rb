@@ -8,28 +8,135 @@ module AdminArea
         class EditController < AdminArea::ApplicationController
           extend T::Sig
 
+          sig { returns(T.nilable(T::Hash[String, T.untyped])) }
+          attr_reader :field_values
+
+          before_action :set_content_type
+          before_action :set_or_build_content_entry
+          before_action :load_versions
+          before_action :ensure_draft_version, only: [:edit]
+
           def edit
-            @content_type = ContentType.find(params[:content_type_id])
-            @content_entry = @content_type.content_entries.first_or_initialize
+            @field_values = load_field_values
           end
 
           def update
-            @content_type = ContentType.find(params[:content_type_id])
-            @content_entry = @content_type.content_entries.first_or_initialize
+            result = AdminArea::Contents::SaveEntryService.new(
+              content_type: T.must(@content_type),
+              content_entry: @content_entry,
+              fields_params:,
+            ).call
 
-            if @content_entry.update(content_entry_params)
-              redirect_to admin_area_contents_singleton_entry_path(
-                content_type_id: @content_type.id,
-              )
+            if result.success
+              redirect_to edit_admin_area_contents_singleton_entry_path(
+                content_type_id: T.must(@content_type).id,
+              ), notice: t('admin_area.contents.saved')
             else
-              render :edit
+              flash.now[:alert] = result.errors.join(', ')
+              @field_values = fields_params
+              render :edit, status: :unprocessable_entity
             end
           end
 
           private
 
-          def content_entry_params
-            params.require(:content_entry).permit(:tenant_id, :content_type_id)
+          sig { void }
+          def set_content_type
+            @content_type = T.let(ContentType.find(params[:content_type_id]), T.nilable(ContentType))
+          end
+
+          sig { void }
+          def set_or_build_content_entry
+            @content_entry = T.let(
+              T.must(@content_type).content_entries.first_or_initialize,
+              T.nilable(ContentEntry),
+            )
+          end
+
+          sig { void }
+          def load_versions
+            @draft_version = T.let(
+              ContentEntry::Version.find_by(
+                tenant_id: Tenant.current_id,
+                content_type_id: T.must(@content_type).id,
+                content_entry_id: @content_entry&.id,
+                status: ContentEntry::Version::STATUSES[:draft],
+              ),
+              T.nilable(ContentEntry::Version),
+            )
+
+            @published_version = T.let(
+              ContentEntry::Version.find_by(
+                tenant_id: Tenant.current_id,
+                content_type_id: T.must(@content_type).id,
+                content_entry_id: @content_entry&.id,
+                status: ContentEntry::Version::STATUSES[:published],
+              ),
+              T.nilable(ContentEntry::Version),
+            )
+          end
+
+          sig { void }
+          def ensure_draft_version
+            return if @draft_version.present?
+            return if @published_version.blank?
+
+            result = AdminArea::Contents::CreateDraftFromPublishedService.new(
+              content_type: T.must(@content_type),
+              content_entry: T.must(@content_entry),
+              published_version: T.must(@published_version),
+            ).call
+
+            if result.success
+              @draft_version = result.draft_version
+            else
+              flash.now[:alert] = result.errors.join(', ')
+            end
+          end
+
+          sig { returns(T::Hash[String, T.untyped]) }
+          def fields_params
+            return {} unless params[:fields]
+
+            params[:fields].permit!.to_h
+          end
+
+          sig { returns(T::Hash[String, T.untyped]) }
+          def load_field_values
+            version = @draft_version || @published_version
+            return {} unless version
+
+            field_values = {}
+
+            T.must(@content_type).fields.each do |content_type_field|
+              field = ContentEntry::Field.find_by(
+                tenant_id: Tenant.current_id,
+                content_type_id: T.must(@content_type).id,
+                content_entry_id: T.must(@content_entry).id,
+                version: version.version,
+                content_type_field_id: content_type_field.id,
+              )
+
+              next unless field
+
+              field_values[content_type_field.api_identifier] = extract_field_value(field)
+            end
+
+            field_values
+          end
+
+          sig { params(field: ContentEntry::Field).returns(T.untyped) }
+          def extract_field_value(field)
+            case field.field_type
+            when 'text'
+              field.text&.value
+            when 'richtext'
+              # Return JSON string for Lexical editor
+              value = field.richtext&.value
+              value.is_a?(Hash) ? value.to_json : value
+            when 'media_asset'
+              field.media_asset&.media_asset_id
+            end
           end
         end
       end
