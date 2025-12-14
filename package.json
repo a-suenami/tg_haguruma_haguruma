@@ -1,9 +1,16 @@
 {
   "scripts": {
     "lint": "eslint app/frontend --ext .ts,.tsx,.js,.jsx",
-    "lint:fix": "eslint app/frontend --ext .ts,.tsx,.js,.jsx --fix"
+    "lint:fix": "eslint app/frontend --ext .ts,.tsx,.js,.jsx --fix",
+    "e2e": "playwright test --config=e2e/playwright.config.ts",
+    "e2e:smoke": "playwright test --config=e2e/playwright.config.ts tests/smoke/",
+    "e2e:ci": "playwright test --config=e2e/playwright.config.ts --project=ci",
+    "e2e:staging": "playwright test --config=e2e/playwright.config.ts --project=staging",
+    "e2e:ui": "playwright test --config=e2e/playwright.config.ts --ui",
+    "e2e:report": "playwright show-report e2e/playwright-report"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@types/jsonapi-serializer": "^3.6.7",
     "@types/uikit": "^3.14.3",
     "@typescript-eslint/eslint-plugin": "^6.0.0",

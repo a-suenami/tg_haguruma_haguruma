@@ -316,6 +316,9 @@ module GeneratedUrlHelpersModule
   def ruler_area_tenants_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def test_auth_bypass_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def turbo_recede_historical_location_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
