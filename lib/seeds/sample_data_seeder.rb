@@ -9,12 +9,6 @@ module Seeds
     ARTICLE_CONTENT_TYPE_ID = '10000000-0000-0000-0000-000000000001'
 
     class << self
-      def seed_all
-        seed_tenant
-        seed_article_content_type
-        seed_article_entries
-      end
-
       # Tenant creation (idempotent)
       def seed_tenant
         return if Tenant.exists?(id: TENANT_ID)
