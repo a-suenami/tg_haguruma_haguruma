@@ -18,6 +18,7 @@ services:
       - redis
     env_file:
       - .env.local
+      - secrets.env
     environment:
       LANG: 'C.UTF-8'
       POSTGRES_HOST: postgres

@@ -49,4 +49,11 @@ Rails.application.routes.draw do
   # API routes
   draw :'api/v1/auth'
   draw :api
+
+  # Test routes (only available in test environment or when ALLOW_AUTH_BYPASS is enabled)
+  if Rails.env.test? || Rails.env.development? || ENV['ALLOW_AUTH_BYPASS'] == 'true'
+    namespace :test do
+      get 'auth/bypass', to: 'auth#bypass'
+    end
+  end
 end

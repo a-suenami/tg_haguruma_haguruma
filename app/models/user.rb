@@ -28,6 +28,8 @@ class User < ApplicationRecord
 
   belongs_to :oauth_provider
   has_many :session_tokens
+  has_many :user_tags, dependent: :destroy
+  has_many :content_authorization_tags, through: :user_tags
 
   validates :uid, presence: true
 end

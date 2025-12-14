@@ -44,6 +44,17 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["uid"], name: "idx_auth0_accounts_uid_uniq", unique: true
   end
 
+  create_table "content_authorization_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.citext "tenant_id", null: false
+    t.uuid "remote_id", comment: "External system ID for synchronization"
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "id"], name: "index_content_authorization_tags_on_tenant_id_and_id", unique: true
+    t.index ["tenant_id", "name"], name: "index_content_authorization_tags_on_tenant_id_and_name", unique: true
+    t.index ["tenant_id", "remote_id"], name: "index_content_authorization_tags_on_tenant_id_and_remote_id", unique: true, where: "(remote_id IS NOT NULL)"
+  end
+
   create_table "content_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
     t.uuid "content_type_id", null: false
@@ -51,6 +62,18 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.datetime "updated_at", null: false
     t.index ["tenant_id", "content_type_id", "id"], name: "index_content_entries_on_tenant_id_and_content_type_id_and_id", unique: true
     t.index ["tenant_id", "id"], name: "index_content_entries_on_tenant_id_and_id", unique: true
+  end
+
+  create_table "content_entry_authorizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.citext "tenant_id", null: false
+    t.uuid "content_entry_id", null: false
+    t.integer "version", null: false
+    t.uuid "content_authorization_tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_authorization_tag_id"], name: "index_content_entry_authorizations_on_tag"
+    t.index ["tenant_id", "content_entry_id", "version", "content_authorization_tag_id"], name: "index_content_entry_authorizations_unique", unique: true
+    t.index ["tenant_id", "id"], name: "index_content_entry_authorizations_on_tenant_id_and_id", unique: true
   end
 
   create_table "content_entry_field_media_assets", force: :cascade do |t|
@@ -204,6 +227,17 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.citext "tenant_id", null: false
+    t.uuid "user_id", null: false
+    t.uuid "content_authorization_tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_authorization_tag_id"], name: "index_user_tags_on_tag"
+    t.index ["tenant_id", "id"], name: "index_user_tags_on_tenant_id_and_id", unique: true
+    t.index ["tenant_id", "user_id", "content_authorization_tag_id"], name: "index_user_tags_unique", unique: true
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
     t.uuid "oauth_provider_id", null: false
@@ -220,7 +254,11 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "admin_auth0_accounts", "auth0_accounts", name: "fk_admin_auth0_accounts_auth0_accounts"
   add_foreign_key "admin_auth0_accounts", "tenants", name: "fk_admin_auth0_accounts_tenants"
   add_foreign_key "admins", "tenants", name: "fk_admins_tenants"
+  add_foreign_key "content_authorization_tags", "tenants"
   add_foreign_key "content_entries", "content_types", column: ["tenant_id", "content_type_id"], primary_key: ["tenant_id", "id"]
+  add_foreign_key "content_entry_authorizations", "content_authorization_tags"
+  add_foreign_key "content_entry_authorizations", "content_entry_versions", column: ["content_entry_id", "version"], primary_key: ["content_entry_id", "version"], name: "fk_content_entry_authorizations_versions"
+  add_foreign_key "content_entry_authorizations", "tenants"
   add_foreign_key "content_entry_field_media_assets", "media_assets", column: ["tenant_id", "media_type", "media_asset_id"], primary_key: ["tenant_id", "media_type", "id"], name: "fk_content_entry_field_media_assets_media_assets"
   add_foreign_key "content_entry_fields", "content_entry_field_media_assets", column: ["tenant_id", "media_asset_id"], primary_key: ["tenant_id", "id"], name: "fk_content_entry_fields_media_assets"
   add_foreign_key "content_entry_fields", "content_entry_field_richtexts", column: "richtext_id"
@@ -238,6 +276,9 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "ruler_auth0_accounts", "rulers", name: "fk_ruler_auth0_accounts_rulers"
   add_foreign_key "session_tokens", "tenants"
   add_foreign_key "session_tokens", "users"
+  add_foreign_key "user_tags", "content_authorization_tags"
+  add_foreign_key "user_tags", "tenants"
+  add_foreign_key "user_tags", "users", column: ["tenant_id", "user_id"], primary_key: ["tenant_id", "id"], name: "fk_user_tags_users"
   add_foreign_key "users", "oauth_providers"
   add_foreign_key "users", "tenants"
 end

@@ -53,6 +53,35 @@ bin/rails c        # Shorthand for console
 bin/kamal          # Deploy using Kamal
 ```
 
+## Git Commit Convention
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/).
+
+### Format
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+- `feat`: 新機能
+- `fix`: バグ修正
+- `docs`: ドキュメントのみの変更
+- `style`: コードの意味に影響しない変更（空白、フォーマット等）
+- `refactor`: バグ修正でも機能追加でもないコード変更
+- `test`: テストの追加・修正
+- `chore`: ビルドプロセスやツールの変更
+
+### Examples
+```
+feat(auth): add login with Google
+fix(api): handle null response from payment service
+refactor(media): update application code for new schema
+```
+
 ## Architecture Overview
 
 ### Core Stack
