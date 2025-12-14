@@ -15,6 +15,7 @@ module AdminArea
           before_action :set_content_entry, only: [:edit, :update]
           before_action :build_content_entry, only: [:new, :create]
           before_action :load_versions, only: [:edit, :update]
+          before_action :ensure_draft_version, only: [:edit]
 
           def new
             @field_values = {}
@@ -106,6 +107,24 @@ module AdminArea
               ),
               T.nilable(ContentEntry::Version),
             )
+          end
+
+          sig { void }
+          def ensure_draft_version
+            return if @draft_version.present?
+            return if @published_version.blank?
+
+            result = AdminArea::Contents::CreateDraftFromPublishedService.new(
+              content_type: T.must(@content_type),
+              content_entry: T.must(@content_entry),
+              published_version: T.must(@published_version),
+            ).call
+
+            if result.success
+              @draft_version = result.draft_version
+            else
+              flash.now[:alert] = result.errors.join(', ')
+            end
           end
 
           sig { returns(T::Hash[String, T.untyped]) }
