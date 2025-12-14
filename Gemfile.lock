@@ -260,9 +260,8 @@ GEM
     jmespath (1.6.2)
     jp_prefecture (1.1.2)
     json (2.13.0)
-    json-schema (6.0.0)
-      addressable (~> 2.8)
-      bigdecimal (~> 3.1)
+    json-schema (4.3.1)
+      addressable (>= 2.8)
     jwt (2.7.1)
     kamal (2.7.0)
       activesupport (>= 7.0)
@@ -753,6 +752,7 @@ DEPENDENCIES
   ffaker (~> 2.23.0)
   jbuilder
   jp_prefecture (~> 1.1.1)
+  json-schema (~> 4.3.1)
   jwt (~> 2.7.1)
   kamal
   knapsack_pro (~> 5.7.0)

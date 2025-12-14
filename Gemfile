@@ -92,6 +92,9 @@ gem 'datadog', '~> 2.18.0'
 gem 'phonelib', '~> 0.10.6'
 # gem 'ruby-jq', '~> 0.2.1' # Complex build dependencies, optional gem
 
+# JSON Schema validation
+gem 'json-schema', '~> 4.3.1'
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
