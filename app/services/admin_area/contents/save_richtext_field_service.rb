@@ -15,7 +15,12 @@ module AdminArea
 
       sig { override.params(field: ContentEntry::Field).void }
       def save_field_value(field)
-        richtext_value = @value.is_a?(String) ? { html: @value } : @value
+        # Parse JSON string to hash for storage
+        richtext_value = if @value.is_a?(String)
+                           JSON.parse(@value)
+                         else
+                           @value
+                         end
 
         if field.richtext
           T.must(field.richtext).update!(value: richtext_value)

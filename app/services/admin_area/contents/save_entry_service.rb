@@ -148,8 +148,12 @@ module AdminArea
 
       sig { params(field: ContentEntry::Field, value: T.untyped).void }
       def save_richtext_field(field, value)
-        # Richtext value should be JSON/HTML content from Lexical editor
-        richtext_value = value.is_a?(String) ? { html: value } : value
+        # Richtext value should be Lexical JSON from editor
+        richtext_value = if value.is_a?(String)
+                           JSON.parse(value)
+                         else
+                           value
+                         end
 
         if field.richtext
           T.must(field.richtext).update!(value: richtext_value)
