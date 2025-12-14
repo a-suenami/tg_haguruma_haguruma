@@ -19,9 +19,20 @@ class AdminArea::MediaController < AdminArea::ApplicationController
     if params[:q].present?
       @media_assets = @media_assets.where("metadata->>'filename' ILIKE ?", "%#{params[:q]}%")
     end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @media_assets.map { |m| media_asset_json(m) } }
+    end
   end
 
-  def show; end
+  sig { void }
+  def show
+    respond_to do |format|
+      format.html
+      format.json { render json: media_asset_json(T.must(@media_asset)) }
+    end
+  end
 
   def new
     @media_asset = MediaAsset.new
@@ -120,5 +131,19 @@ class AdminArea::MediaController < AdminArea::ApplicationController
     extension = File.extname(file.original_filename)
 
     "#{Tenant.current_id}/#{timestamp}/#{uuid}#{extension}"
+  end
+
+  sig { params(media_asset: MediaAsset).returns(T::Hash[Symbol, T.untyped]) }
+  def media_asset_json(media_asset)
+    uploader = MediaAsset::Uploader.new
+    {
+      id: media_asset.id,
+      url: uploader.url_for(media_asset.s3_object_path),
+      filename: media_asset.original_filename,
+      media_type: media_asset.media_type,
+      file_size_bytes: media_asset.file_size_bytes,
+      mime_type: media_asset.mime_type,
+      created_at: media_asset.created_at.iso8601,
+    }
   end
 end
