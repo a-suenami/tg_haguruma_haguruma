@@ -1038,6 +1038,16 @@
     background: #6366f1;
 }
 
+.version-tab.disabled {
+    color: #cbd5e1;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.version-tab.disabled:hover {
+    color: #cbd5e1;
+}
+
 /* コンテンツフィールドエリア */
 .content-form-area {
     background: white;

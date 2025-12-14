@@ -13,6 +13,8 @@ module AdminArea
           before_action :load_versions
 
           def show
+            render_not_found and return unless @published_version
+
             @field_values = load_field_values
           end
 

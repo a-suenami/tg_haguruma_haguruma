@@ -41,4 +41,9 @@ class AdminArea::ApplicationController < ApplicationController
   def mobile_request?
     request.user_agent&.match?(/Mobile|Android|iPhone|iPad/i) || false
   end
+
+  sig { void }
+  def render_not_found
+    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+  end
 end
