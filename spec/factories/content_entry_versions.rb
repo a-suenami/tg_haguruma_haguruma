@@ -28,9 +28,15 @@
 #
 FactoryBot.define do
   factory :content_entry_version, class: 'ContentEntry::Version' do
-    tenant
-    content_type { association :content_type, tenant: }
-    content_entry { association :content_entry, tenant:, content_type: }
+    transient do
+      tenant { association :tenant }
+      content_type { association :content_type, tenant: }
+      content_entry { association :content_entry, tenant:, content_type: }
+    end
+
+    tenant_id { tenant.id }
+    content_type_id { content_type.id }
+    content_entry_id { content_entry.id }
     version { 1 }
     status { :draft }
   end

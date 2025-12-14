@@ -40,14 +40,14 @@ describe ContentAuthorizationTag do
     it 'requires a name' do
       tag = build(:content_authorization_tag, tenant_id: tenant.id, name: nil)
       expect(tag).not_to be_valid
-      expect(tag.errors[:name]).to include("can't be blank")
+      expect(tag.errors[:name]).to include('を入力してください')
     end
 
     it 'requires unique name within tenant' do
       create(:content_authorization_tag, tenant_id: tenant.id, name: 'Premium')
       tag = build(:content_authorization_tag, tenant_id: tenant.id, name: 'Premium')
       expect(tag).not_to be_valid
-      expect(tag.errors[:name]).to include('has already been taken')
+      expect(tag.errors[:name]).to include('はすでに存在します')
     end
 
     it 'allows same name in different tenants' do
@@ -69,7 +69,7 @@ describe ContentAuthorizationTag do
       create(:content_authorization_tag, tenant_id: tenant.id, remote_id: remote_uuid)
       tag = build(:content_authorization_tag, tenant_id: tenant.id, remote_id: remote_uuid)
       expect(tag).not_to be_valid
-      expect(tag.errors[:remote_id]).to include('has already been taken')
+      expect(tag.errors[:remote_id]).to include('はすでに存在します')
     end
   end
 

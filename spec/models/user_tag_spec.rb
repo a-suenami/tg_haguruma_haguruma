@@ -45,7 +45,7 @@ describe UserTag do
       create(:user_tag, tenant_id: tenant.id, user:, content_authorization_tag: tag)
       user_tag = build(:user_tag, tenant_id: tenant.id, user:, content_authorization_tag: tag)
       expect(user_tag).not_to be_valid
-      expect(user_tag.errors[:user_id]).to include('has already been taken')
+      expect(user_tag.errors[:user_id]).to include('はすでに存在します')
     end
 
     it 'allows same user to have different tags' do

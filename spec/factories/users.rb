@@ -27,7 +27,7 @@
 FactoryBot.define do
   factory :user do
     tenant
-    oauth_provider { association :oauth_provider, tenant: }
+    oauth_provider { OauthProvider.find_by(tenant_id: tenant.id, kind: 'user') || association(:oauth_provider, tenant:) }
     sequence(:uid) { |n| "user-uid-#{n}" }
   end
 end

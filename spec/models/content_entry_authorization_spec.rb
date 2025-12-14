@@ -31,7 +31,7 @@ describe ContentEntryAuthorization do
   let(:tenant) { create(:tenant, id: 'sample') }
   let(:content_type) { create(:content_type, tenant_id: tenant.id) }
   let(:content_entry) { create(:content_entry, tenant_id: tenant.id, content_type:) }
-  let(:content_entry_version) { create(:content_entry_version, tenant_id: tenant.id, content_type:, content_entry:) }
+  let(:content_entry_version) { create(:content_entry_version, tenant:, content_type:, content_entry:) }
   let(:tag) { create(:content_authorization_tag, tenant_id: tenant.id) }
 
   before do
@@ -59,7 +59,7 @@ describe ContentEntryAuthorization do
         content_authorization_tag: tag,
       )
       expect(authorization).not_to be_valid
-      expect(authorization.errors[:content_entry_id]).to include("can't be blank")
+      expect(authorization.errors[:content_entry_id]).to include('を入力してください')
     end
 
     it 'requires version' do
@@ -71,7 +71,7 @@ describe ContentEntryAuthorization do
         content_authorization_tag: tag,
       )
       expect(authorization).not_to be_valid
-      expect(authorization.errors[:version]).to include("can't be blank")
+      expect(authorization.errors[:version]).to include('を入力してください')
     end
 
     it 'requires version to be greater than 0' do
@@ -83,7 +83,7 @@ describe ContentEntryAuthorization do
         content_authorization_tag: tag,
       )
       expect(authorization).not_to be_valid
-      expect(authorization.errors[:version]).to include('must be greater than 0')
+      expect(authorization.errors[:version]).to include('は0より大きい値にしてください')
     end
 
     it 'requires unique tag per version within tenant' do
@@ -102,13 +102,13 @@ describe ContentEntryAuthorization do
         content_authorization_tag: tag,
       )
       expect(authorization).not_to be_valid
-      expect(authorization.errors[:content_authorization_tag_id]).to include('has already been taken')
+      expect(authorization.errors[:content_authorization_tag_id]).to include('はすでに存在します')
     end
 
     it 'allows same tag on different versions' do
       other_version = create(
         :content_entry_version,
-        tenant_id: tenant.id,
+        tenant:,
         content_type:,
         content_entry:,
         version: 2,
