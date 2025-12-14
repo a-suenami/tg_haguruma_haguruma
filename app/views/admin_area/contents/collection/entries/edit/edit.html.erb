@@ -94,10 +94,9 @@
                 <i class="fas fa-save icon-prefix"></i>
                 保存
               </button>
-              <%= button_to admin_area_contents_collection_entry_publication_path(content_type_id: @content_type.id, content_entry_id: @content_entry.id),
-                            method: :post,
-                            class: 'btn btn-success action-btn',
-                            form: { style: 'display: inline;' } do %>
+              <%= link_to admin_area_contents_collection_entry_publication_path(content_type_id: @content_type.id, content_entry_id: @content_entry.id),
+                          class: 'btn btn-success action-btn',
+                          data: { turbo_method: :post } do %>
                 <i class="fas fa-upload icon-prefix"></i>
                 公開
               <% end %>
