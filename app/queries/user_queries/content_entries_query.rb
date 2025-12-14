@@ -35,7 +35,7 @@ module UserQueries
 
         user_tag_ids = user.content_authorization_tags.pluck(:id)
         content_tag_ids = content_tags.pluck(:id)
-        (user_tag_ids & content_tag_ids).any?
+        user_tag_ids.intersect?(content_tag_ids)
       end
     end
 

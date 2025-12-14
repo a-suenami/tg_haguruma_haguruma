@@ -69,9 +69,9 @@ describe ContentAuthorizationTag do
     it 'destroys user_tags when destroyed' do
       tag = create(:content_authorization_tag, tenant_id: tenant.id)
       user = create(:user, tenant_id: tenant.id)
-      create(:user_tag, tenant_id: tenant.id, user: user, content_authorization_tag: tag)
+      create(:user_tag, tenant_id: tenant.id, user:, content_authorization_tag: tag)
 
-      expect { tag.destroy }.to change(UserTag, :count).by(-1)
+      expect { tag.destroy }.to change { UserTag.count }.by(-1)
     end
   end
 end

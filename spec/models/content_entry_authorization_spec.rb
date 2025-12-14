@@ -4,8 +4,8 @@
 describe ContentEntryAuthorization do
   let(:tenant) { create(:tenant, id: 'sample') }
   let(:content_type) { create(:content_type, tenant_id: tenant.id) }
-  let(:content_entry) { create(:content_entry, tenant_id: tenant.id, content_type: content_type) }
-  let(:content_entry_version) { create(:content_entry_version, tenant_id: tenant.id, content_entry: content_entry) }
+  let(:content_entry) { create(:content_entry, tenant_id: tenant.id, content_type:) }
+  let(:content_entry_version) { create(:content_entry_version, tenant_id: tenant.id, content_entry:) }
   let(:tag) { create(:content_authorization_tag, tenant_id: tenant.id) }
 
   before do
@@ -83,7 +83,7 @@ describe ContentEntryAuthorization do
       other_version = create(
         :content_entry_version,
         tenant_id: tenant.id,
-        content_entry: content_entry,
+        content_entry:,
         version: 2,
       )
       create(

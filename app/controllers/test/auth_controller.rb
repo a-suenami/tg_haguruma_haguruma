@@ -48,7 +48,7 @@ module Test
     def bypass_admin_auth
       tenant_id = params[:tenant_id]
 
-      unless tenant_id.present?
+      if tenant_id.blank?
         render json: { error: 'tenant_id is required for admin area' }, status: :bad_request
         return
       end
@@ -62,10 +62,10 @@ module Test
 
       # Find admin - use specific ID or first admin for tenant
       admin = if params[:admin_id].present?
-                Admin.find_by(id: params[:admin_id], tenant_id: tenant_id)
-              else
-                Admin.find_by(tenant_id: tenant_id)
-              end
+        Admin.find_by(id: params[:admin_id], tenant_id:)
+      else
+        Admin.find_by(tenant_id:)
+      end
 
       unless admin
         render json: { error: "No admin found for tenant: #{tenant_id}" }, status: :not_found
@@ -84,10 +84,10 @@ module Test
     def bypass_ruler_auth
       # Find ruler - use specific ID or first ruler
       ruler = if params[:ruler_id].present?
-                Ruler.find_by(id: params[:ruler_id])
-              else
-                Ruler.first
-              end
+        Ruler.find_by(id: params[:ruler_id])
+      else
+        Ruler.first
+      end
 
       unless ruler
         render json: { error: 'No ruler found' }, status: :not_found
