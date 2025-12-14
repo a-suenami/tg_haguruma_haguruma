@@ -164,7 +164,7 @@ module AdminArea
             when 'text'
               field.text&.value
             when 'richtext'
-              field.richtext&.value&.dig('html') || field.richtext&.value
+              field.richtext&.value
             when 'media_asset'
               field.media_asset&.media_asset_id
             end
