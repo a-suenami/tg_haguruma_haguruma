@@ -1,11 +1,37 @@
 # typed: false
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: content_entry_authorizations
+#
+#  id                           :uuid             not null, primary key
+#  version                      :integer          not null
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#  content_authorization_tag_id :uuid             not null
+#  content_entry_id             :uuid             not null
+#  tenant_id                    :citext           not null
+#
+# Indexes
+#
+#  index_content_entry_authorizations_on_tag               (content_authorization_tag_id)
+#  index_content_entry_authorizations_on_tenant_id_and_id  (tenant_id,id) UNIQUE
+#  index_content_entry_authorizations_unique               (tenant_id,content_entry_id,version,content_authorization_tag_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_content_entry_authorizations_versions  ([content_entry_id, version] => content_entry_versions[content_entry_id, version])
+#  fk_rails_...                              (content_authorization_tag_id => content_authorization_tags.id)
+#  fk_rails_...                              (tenant_id => tenants.id)
+#
+require 'rails_helper'
+
 describe ContentEntryAuthorization do
   let(:tenant) { create(:tenant, id: 'sample') }
   let(:content_type) { create(:content_type, tenant_id: tenant.id) }
   let(:content_entry) { create(:content_entry, tenant_id: tenant.id, content_type:) }
-  let(:content_entry_version) { create(:content_entry_version, tenant_id: tenant.id, content_entry:) }
+  let(:content_entry_version) { create(:content_entry_version, tenant_id: tenant.id, content_type:, content_entry:) }
   let(:tag) { create(:content_authorization_tag, tenant_id: tenant.id) }
 
   before do
@@ -83,6 +109,7 @@ describe ContentEntryAuthorization do
       other_version = create(
         :content_entry_version,
         tenant_id: tenant.id,
+        content_type:,
         content_entry:,
         version: 2,
       )

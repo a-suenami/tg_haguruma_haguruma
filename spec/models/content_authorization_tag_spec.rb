@@ -1,6 +1,29 @@
 # typed: false
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: content_authorization_tags
+#
+#  id                                                :uuid             not null, primary key
+#  name                                              :string           not null
+#  created_at                                        :datetime         not null
+#  updated_at                                        :datetime         not null
+#  remote_id(External system ID for synchronization) :uuid
+#  tenant_id                                         :citext           not null
+#
+# Indexes
+#
+#  index_content_authorization_tags_on_tenant_id_and_id         (tenant_id,id) UNIQUE
+#  index_content_authorization_tags_on_tenant_id_and_name       (tenant_id,name) UNIQUE
+#  index_content_authorization_tags_on_tenant_id_and_remote_id  (tenant_id,remote_id) UNIQUE WHERE (remote_id IS NOT NULL)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (tenant_id => tenants.id)
+#
+require 'rails_helper'
+
 describe ContentAuthorizationTag do
   let(:tenant) { create(:tenant, id: 'sample') }
 
@@ -68,7 +91,7 @@ describe ContentAuthorizationTag do
 
     it 'destroys user_tags when destroyed' do
       tag = create(:content_authorization_tag, tenant_id: tenant.id)
-      user = create(:user, tenant_id: tenant.id)
+      user = create(:user, tenant:)
       create(:user_tag, tenant_id: tenant.id, user:, content_authorization_tag: tag)
 
       expect { tag.destroy }.to change { UserTag.count }.by(-1)

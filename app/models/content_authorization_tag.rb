@@ -4,12 +4,12 @@
 #
 # Table name: content_authorization_tags
 #
-#  id         :uuid             not null, primary key
-#  name       :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  remote_id  :uuid
-#  tenant_id  :citext           not null
+#  id                                                :uuid             not null, primary key
+#  name                                              :string           not null
+#  created_at                                        :datetime         not null
+#  updated_at                                        :datetime         not null
+#  remote_id(External system ID for synchronization) :uuid
+#  tenant_id                                         :citext           not null
 #
 # Indexes
 #
