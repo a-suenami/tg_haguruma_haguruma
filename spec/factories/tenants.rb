@@ -13,7 +13,7 @@
 #
 FactoryBot.define do
   factory :tenant do
-    id { 'sample' }
-    name { 'Sample Tenant' }
+    sequence(:id) { |n| "test-tenant-#{n}" }
+    sequence(:name) { |n| "Test Tenant #{n}" }
   end
 end
