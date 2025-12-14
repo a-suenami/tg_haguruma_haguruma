@@ -27,7 +27,7 @@
     <% end %>
 
     <!-- フィルター -->
-    <%= form_with url: admin_area_media_index_path, method: :get, local: true, class: 'content-filters' do %>
+    <%= form_with url: admin_area_media_path, method: :get, local: true, class: 'content-filters' do %>
       <input type="search" name="q" placeholder="ファイル名で検索..." class="search-input" value="<%= params[:q] %>">
       <select name="type" class="filter-select" onchange="this.form.submit()">
         <option value="">すべて</option>
