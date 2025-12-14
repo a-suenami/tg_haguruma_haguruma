@@ -12,10 +12,9 @@
            disabled>
 
   <% when 'richtext' %>
-    <div class="rich-editor-container">
-      <div class="rich-editor disabled" contenteditable="false">
-        <%= raw(value.to_s) %>
-      </div>
+    <div data-controller="react-lexical"
+         data-react-lexical-initial-content-value="<%= html_escape(value.to_json) %>"
+         data-react-lexical-editable-value="false">
     </div>
 
   <% when 'media_asset' %>
