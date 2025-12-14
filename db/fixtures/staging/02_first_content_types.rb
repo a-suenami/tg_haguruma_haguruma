@@ -1,6 +1,6 @@
 # typed: false
 # frozen_string_literal: true
 
-require_relative '../../../lib/seeds/sample_data_seeder'
+require Rails.root.join('db/fixtures/support/first_content_type')
 
-Seeds::SampleDataSeeder.seed_article_content_type
+Seeds::FirstContentType.seed

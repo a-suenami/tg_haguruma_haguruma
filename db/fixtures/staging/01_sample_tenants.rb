@@ -1,6 +1,6 @@
 # typed: false
 # frozen_string_literal: true
 
-require_relative '../../../lib/seeds/sample_data_seeder'
+require Rails.root.join('db/fixtures/support/sample_tenant')
 
-Seeds::SampleDataSeeder.seed_tenant
+Seeds::SampleTenant.seed
