@@ -36,7 +36,7 @@
 
     <!-- バージョンタブ -->
     <div class="version-tabs">
-      <%= link_to edit_admin_area_contents_singleton_entry_path(content_type_id: @content_type.id), class: "version-tab #{'disabled' unless @draft_version || @content_entry}" do %>
+      <%= link_to edit_admin_area_contents_singleton_entry_path(content_type_id: @content_type.id), class: 'version-tab' do %>
         編集中
       <% end %>
       <%= link_to admin_area_contents_singleton_entry_path(content_type_id: @content_type.id), class: 'version-tab active' do %>
