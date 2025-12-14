@@ -46,5 +46,9 @@
     {
       "name": "ADMIN_DOMAIN",
       "value": "admin.app.haguruma.io"
+    },
+    {
+      "name": "RULER_DOMAIN",
+      "value": "ruler.app.haguruma.io"
     }
 ]
