@@ -4,7 +4,6 @@
 module Seeds
   module FirstContentType
     TENANT_ID = 'sample'
-    ARTICLE_CONTENT_TYPE_ID = '10000000-0000-0000-0000-000000000001'
 
     FIELDS_CONFIG = [
       { api_identifier: 'title', label: 'タイトル', field_type: :text, required: true, description: '記事のタイトル' },
@@ -25,8 +24,8 @@ module Seeds
 
       def find_or_create_content_type
         content_type = ContentType.find_or_initialize_by(
-          id: ARTICLE_CONTENT_TYPE_ID,
           tenant_id: TENANT_ID,
+          unique_name: 'article',
         )
 
         if content_type.new_record?

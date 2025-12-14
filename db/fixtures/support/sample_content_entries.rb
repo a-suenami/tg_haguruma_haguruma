@@ -4,7 +4,6 @@
 module Seeds
   module SampleContentEntries
     TENANT_ID = 'sample'
-    ARTICLE_CONTENT_TYPE_ID = '10000000-0000-0000-0000-000000000001'
 
     ARTICLES_DATA = [
       { title: 'はじめてのRuby on Rails', body: 'Ruby on Railsの基本的な使い方を解説します。MVCアーキテクチャの理解から始めましょう。', publish: true },
@@ -22,7 +21,7 @@ module Seeds
     class << self
       def seed
         Tenant.current_id = TENANT_ID
-        content_type = ContentType.find(ARTICLE_CONTENT_TYPE_ID)
+        content_type = ContentType.find_by!(tenant_id: TENANT_ID, unique_name: 'article')
 
         ARTICLES_DATA.each do |article|
           create_article_entry(content_type, article)
