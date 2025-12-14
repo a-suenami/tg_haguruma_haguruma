@@ -316,6 +316,9 @@ module GeneratedPathHelpersModule
   def ruler_area_tenants_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def test_auth_bypass_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def turbo_recede_historical_location_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }

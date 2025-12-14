@@ -455,6 +455,34 @@ class ContentEntry::Version
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def build_tenant(*args, &blk); end
 
+    sig { returns(T::Array[T.untyped]) }
+    def content_authorization_tag_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def content_authorization_tag_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `ContentEntry::Version` class because it declared `has_many :content_authorization_tags, through: :content_entry_authorizations`.
+    # 🔗 [Rails guide for `has_many_through` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association)
+    sig { returns(::ContentAuthorizationTag::PrivateCollectionProxy) }
+    def content_authorization_tags; end
+
+    sig { params(value: T::Enumerable[::ContentAuthorizationTag]).void }
+    def content_authorization_tags=(value); end
+
+    sig { returns(T::Array[T.untyped]) }
+    def content_entry_authorization_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def content_entry_authorization_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `ContentEntry::Version` class because it declared `has_many :content_entry_authorizations`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::ContentEntryAuthorization::PrivateCollectionProxy) }
+    def content_entry_authorizations; end
+
+    sig { params(value: T::Enumerable[::ContentEntryAuthorization]).void }
+    def content_entry_authorizations=(value); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def create_tenant(*args, &blk); end
 
