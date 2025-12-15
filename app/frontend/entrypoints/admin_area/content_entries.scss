@@ -8,6 +8,14 @@
     position: relative;
 }
 
+/* サイドバーなしのレイアウト */
+.custom-container-no-sidebar {
+    .custom-main {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
 /* ハンバーガーメニューボタン（モバイル用） */
 .mobile-menu-toggle {
     display: none;
