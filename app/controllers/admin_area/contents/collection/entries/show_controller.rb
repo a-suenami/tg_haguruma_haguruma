@@ -14,7 +14,10 @@ module AdminArea
           before_action :load_versions
 
           def show
-            render_not_found and return unless @published_version
+            unless @published_version
+              render_not_found
+              return
+            end
 
             @field_values = load_field_values
             load_selected_authorization_tags
