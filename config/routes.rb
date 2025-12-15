@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
   # Swagger UI and API docs
-  mount Rswag::Ui::Engine => '/api-docs'
-  mount Rswag::Api::Engine => '/api-docs'
+  # - Development/Test: always accessible
+  # - Production: only accessible from ruler.* subdomain
+  if Rails.env.development? || Rails.env.test?
+    mount Rswag::Ui::Engine => '/api-docs'
+    mount Rswag::Api::Engine => '/api-docs'
+  else
+    constraints subdomain: /\Aruler\./ do
+      mount Rswag::Ui::Engine => '/api-docs'
+      mount Rswag::Api::Engine => '/api-docs'
+    end
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

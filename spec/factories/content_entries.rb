@@ -24,5 +24,16 @@ FactoryBot.define do
   factory :content_entry do
     tenant
     content_type { association :content_type, tenant: }
+
+    trait :published do
+      after(:create) do |content_entry|
+        create(:content_entry_version,
+               tenant: content_entry.tenant,
+               content_type: content_entry.content_type,
+               content_entry: content_entry,
+               status: :published,
+               published_at: Time.current)
+      end
+    end
   end
 end

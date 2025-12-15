@@ -5,18 +5,16 @@ info:
   version: v1
   description: API documentation for Haguruma
 paths:
-  "/api/v1/auth/idp/provider":
+  "/api/v1/contents":
     get:
-      summary: Get OAuth provider information
+      summary: List published content entries
       tags:
-      - Authentication
-      description: Returns the information necessary for the OAuth client to construct
-        the Authorization URL
+      - Contents
       parameters:
-      - name: X-Tenant-Id
-        in: header
-        required: true
-        description: Tenant ID
+      - name: content_type
+        in: query
+        required: false
+        description: Filter by content type unique_name (e.g., "article", "announcement")
         schema:
           type: string
       responses:
@@ -27,80 +25,186 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  provider_type:
-                    type: string
-                  client_id:
-                    type: string
-                  authorization_endpoint:
-                    type: string
-                  scope:
-                    type: string
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/ContentEntry"
                 required:
-                - id
-                - name
-                - provider_type
-                - client_id
-                - authorization_endpoint
-        '401':
-          description: unauthorized
-  "/api/v1/auth/idp/session":
-    post:
-      summary: Create session with ID token
+                - data
+  "/api/v1/contents/{id}":
+    get:
+      summary: Get a published content entry
       tags:
-      - Authentication
-      description: Verifies the ID token and creates a session
+      - Contents
       parameters:
-      - name: X-Tenant-Id
-        in: header
+      - name: id
+        in: path
+        format: uuid
         required: true
-        description: Tenant ID
+        description: Content entry ID
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id_token:
-                  type: string
-                  description: JWT ID token from IdP
-              required:
-              - id_token
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  access_token:
-                    type: string
-                  token_type:
-                    type: string
-                  expires_in:
-                    type: integer
-                required:
-                - access_token
-                - token_type
-                - expires_in
-        '401':
-          description: unauthorized
+                "$ref": "#/components/schemas/ContentEntryResponse"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
 servers:
-- url: "{protocol}://{defaultHost}"
+- url: "{protocol}://{tenant}.{domain}"
+  description: Multi-tenant API server (tenant identified by subdomain)
   variables:
     protocol:
       default: https
-    defaultHost:
-      default: localhost:3000
+      enum:
+      - https
+      - http
+      description: Protocol scheme
+    tenant:
+      default: your-tenant-id
+      description: Tenant subdomain identifier
+    domain:
+      default: example.com
+      description: Base domain
 components:
   securitySchemes:
     bearer_auth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  schemas:
+    ContentType:
+      type: object
+      properties:
+        unique_name:
+          type: string
+          example: article
+        display_name:
+          type: string
+          example: 記事
+        is_collection:
+          type: boolean
+          example: true
+      required:
+      - unique_name
+      - display_name
+      - is_collection
+    FieldMetadata:
+      type: object
+      properties:
+        unique_name:
+          type: string
+          example: title
+        display_name:
+          type: string
+          example: タイトル
+      required:
+      - unique_name
+      - display_name
+    TextAttribute:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+        field:
+          "$ref": "#/components/schemas/FieldMetadata"
+        text:
+          type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+      required:
+      - type
+      - field
+      - text
+    RichtextAttribute:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - richtext
+        field:
+          "$ref": "#/components/schemas/FieldMetadata"
+        richtext:
+          type: object
+          properties:
+            json_value:
+              type: object
+              nullable: true
+              description: Lexical editor JSON format
+      required:
+      - type
+      - field
+      - richtext
+    MediaAssetAttribute:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - media_asset
+        field:
+          "$ref": "#/components/schemas/FieldMetadata"
+        media_asset:
+          type: object
+          properties:
+            media_type:
+              type: string
+              example: image
+            s3_object_path:
+              type: string
+              example: tenant/2025/01/01/uuid.jpg
+      required:
+      - type
+      - field
+      - media_asset
+    ContentEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content_type:
+          "$ref": "#/components/schemas/ContentType"
+        attributes:
+          type: object
+          additionalProperties:
+            oneOf:
+            - "$ref": "#/components/schemas/TextAttribute"
+            - "$ref": "#/components/schemas/RichtextAttribute"
+            - "$ref": "#/components/schemas/MediaAssetAttribute"
+        version:
+          type: integer
+          example: 1
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - id
+      - content_type
+      - attributes
+      - version
+    ContentEntryResponse:
+      type: object
+      properties:
+        data:
+          "$ref": "#/components/schemas/ContentEntry"
+      required:
+      - data
+    Error:
+      type: object
+      properties:
+        error:
+          type: string

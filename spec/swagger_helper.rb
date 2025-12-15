@@ -53,6 +53,101 @@ RSpec.configure do |config|
             bearerFormat: :JWT,
           },
         },
+        schemas: {
+          ContentType: {
+            type: :object,
+            properties: {
+              unique_name: { type: :string, example: 'article' },
+              display_name: { type: :string, example: '記事' },
+              is_collection: { type: :boolean, example: true },
+            },
+            required: %w[unique_name display_name is_collection],
+          },
+          FieldMetadata: {
+            type: :object,
+            properties: {
+              unique_name: { type: :string, example: 'title' },
+              display_name: { type: :string, example: 'タイトル' },
+            },
+            required: %w[unique_name display_name],
+          },
+          TextAttribute: {
+            type: :object,
+            properties: {
+              type: { type: :string, enum: ['text'] },
+              field: { '$ref' => '#/components/schemas/FieldMetadata' },
+              text: {
+                type: :object,
+                properties: {
+                  value: { type: :string, nullable: true },
+                },
+              },
+            },
+            required: %w[type field text],
+          },
+          RichtextAttribute: {
+            type: :object,
+            properties: {
+              type: { type: :string, enum: ['richtext'] },
+              field: { '$ref' => '#/components/schemas/FieldMetadata' },
+              richtext: {
+                type: :object,
+                properties: {
+                  json_value: { type: :object, nullable: true, description: 'Lexical editor JSON format' },
+                },
+              },
+            },
+            required: %w[type field richtext],
+          },
+          MediaAssetAttribute: {
+            type: :object,
+            properties: {
+              type: { type: :string, enum: ['media_asset'] },
+              field: { '$ref' => '#/components/schemas/FieldMetadata' },
+              media_asset: {
+                type: :object,
+                properties: {
+                  media_type: { type: :string, example: 'image' },
+                  s3_object_path: { type: :string, example: 'tenant/2025/01/01/uuid.jpg' },
+                },
+              },
+            },
+            required: %w[type field media_asset],
+          },
+          ContentEntry: {
+            type: :object,
+            properties: {
+              id: { type: :string, format: :uuid },
+              content_type: { '$ref' => '#/components/schemas/ContentType' },
+              attributes: {
+                type: :object,
+                additionalProperties: {
+                  oneOf: [
+                    { '$ref' => '#/components/schemas/TextAttribute' },
+                    { '$ref' => '#/components/schemas/RichtextAttribute' },
+                    { '$ref' => '#/components/schemas/MediaAssetAttribute' },
+                  ],
+                },
+              },
+              version: { type: :integer, example: 1 },
+              published_at: { type: :string, format: 'date-time', nullable: true },
+            },
+            required: %w[id content_type attributes version],
+          },
+          ContentEntryResponse: {
+            type: :object,
+            properties: {
+              data: { '$ref' => '#/components/schemas/ContentEntry' },
+            },
+            required: ['data'],
+          },
+          Error: {
+            type: :object,
+            properties: {
+              error: { type: :string },
+            },
+          },
+        },
       },
     },
   }
