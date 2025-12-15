@@ -2,8 +2,6 @@
 
 ## 進行中
 
-- [ ] API の認証と認可
-
 - [ ] 認可に Pundit を使うかどうか検討
 
 - [ ] admin管理画面で認可タグの設定をできるようにする
@@ -13,6 +11,13 @@
 - プレビュー機能
 
 ## 完了
+
+- [x] API の認証と認可
+  - Bearer トークン認証を `Api::V1::ApplicationController` に実装
+  - `current_user` メソッドでセッショントークンからユーザーを取得
+  - 認可フィルタリングを修正（一覧でも制限コンテンツを非表示に）
+  - OpenAPI ドキュメントにセキュリティスキームと認証エンドポイントを追加
+  - テスト用のサンプルデータ（ユーザー、トークン、認可タグ）を seed に追加
 
 - [x] コンテンツ一覧 /api/v1/contents で published_at が NULL のコンテンツが返される問題を修正
   - `ContentEntry::Version.published` スコープに `.where.not(published_at: nil)` を追加
