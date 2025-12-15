@@ -4,7 +4,7 @@ html lang="ja"
     meta charset="UTF-8"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
     title
-      = "CMS - #{yield(:title) || 'Admin'}"
+      = "Haguruma - #{yield(:title) || 'Admin'}"
     link rel="icon" type="image/svg+xml" href="/admin/favicon.svg"
     = csrf_meta_tags
     = csp_meta_tag
@@ -20,7 +20,7 @@ html lang="ja"
     .layout
       aside.sidebar
         .sidebar-header
-          h1.logo CMS
+          h1.logo Haguruma
         nav.sidebar-nav
           ul
             / li class=('active' if controller_name == 'dashboard')
