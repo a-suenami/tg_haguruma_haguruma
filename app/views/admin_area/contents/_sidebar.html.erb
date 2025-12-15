@@ -35,15 +35,8 @@
 
         <!-- Singleton Types -->
         <% content_types.where(is_collection: false).each do |content_type| %>
-          <%
-            entry = content_type.content_entries.first
-            has_published = entry&.versions&.exists?(status: 'published')
-            singleton_path = has_published ?
-              admin_area_contents_singleton_entry_path(content_type_id: content_type.id) :
-              edit_admin_area_contents_singleton_entry_path(content_type_id: content_type.id)
-          %>
           <li class="tree-item">
-            <%= link_to singleton_path, class: 'tree-item-header' do %>
+            <%= link_to admin_area_contents_singleton_entry_path(content_type_id: content_type.id), class: 'tree-item-header' do %>
               <span class="tree-icon"><i class="fas fa-file"></i></span>
               <span class="tree-label"><%= content_type.display_name %></span>
             <% end %>
