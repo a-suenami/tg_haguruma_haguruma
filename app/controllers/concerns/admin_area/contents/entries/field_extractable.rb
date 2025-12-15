@@ -113,10 +113,64 @@ module AdminArea
           T.must(@content_entry).id
         end
 
-        # Override this method in Show controllers to prioritize published version
         sig { returns(T.nilable(ContentEntry::Version)) }
         def version_for_field_values
           @draft_version || @published_version
+        end
+
+        sig { void }
+        def load_authorization_tags
+          @authorization_tags = T.let(
+            ContentAuthorizationTag.all.to_a,
+            T.nilable(T::Array[ContentAuthorizationTag]),
+          )
+        end
+
+        sig { void }
+        def load_selected_authorization_tag_ids
+          version = version_for_field_values
+          @selected_authorization_tag_ids = T.let(
+            version&.content_authorization_tags&.pluck(:id) || [],
+            T.nilable(T::Array[String]),
+          )
+        end
+
+        sig { void }
+        def load_selected_authorization_tag_id
+          version = version_for_field_values
+          @selected_authorization_tag_id = T.let(
+            version&.content_authorization_tags&.first&.id,
+            T.nilable(String),
+          )
+        end
+
+        sig { void }
+        def load_selected_authorization_tags
+          version = version_for_field_values
+          @selected_authorization_tags = T.let(
+            version&.content_authorization_tags&.to_a || [],
+            T.nilable(T::Array[ContentAuthorizationTag]),
+          )
+        end
+
+        sig { void }
+        def load_is_public
+          version = version_for_field_values
+          is_public_value = version&.is_public
+          @is_public = T.let(
+            is_public_value.nil? ? true : is_public_value,
+            T.nilable(T::Boolean),
+          )
+        end
+
+        sig { returns(T::Array[String]) }
+        def authorization_tag_ids_params
+          Array(params[:authorization_tag_ids]).reject(&:blank?)
+        end
+
+        sig { returns(T::Boolean) }
+        def is_public_param
+          params[:is_public] == '1'
         end
       end
     end

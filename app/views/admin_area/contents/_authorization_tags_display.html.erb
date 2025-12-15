@@ -1,0 +1,24 @@
+<% selected_tags ||= [] %>
+<% is_public = local_assigns.fetch(:is_public, true) %>
+
+<div class="action-section">
+  <h4 class="action-section-title">ACCESS CONTROL</h4>
+  <div class="authorization-tags-display">
+    <% if is_public %>
+      <span class="authorization-status-badge public">
+        <i class="fas fa-check-circle"></i> 公開
+      </span>
+    <% else %>
+      <span class="authorization-status-badge private">
+        <i class="fas fa-lock"></i> 制限
+      </span>
+      <% if selected_tags.any? %>
+        <div class="authorization-tags-pills">
+          <% selected_tags.each do |tag| %>
+            <span class="authorization-tag-pill-readonly"><%= tag.name %></span>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

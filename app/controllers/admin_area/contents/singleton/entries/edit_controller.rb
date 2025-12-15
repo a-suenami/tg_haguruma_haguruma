@@ -16,9 +16,12 @@ module AdminArea
           before_action :set_or_build_content_entry
           before_action :load_versions
           before_action :ensure_draft_version, only: [:edit]
+          before_action :load_authorization_tags
 
           def edit
             @field_values = load_field_values
+            load_selected_authorization_tag_id
+            load_is_public
           end
 
           def update
@@ -26,6 +29,8 @@ module AdminArea
               content_type: T.must(@content_type),
               content_entry: @content_entry,
               fields_params:,
+              authorization_tag_ids: authorization_tag_ids_params,
+              is_public: is_public_param,
             ).call
 
             if result.success
@@ -35,6 +40,8 @@ module AdminArea
             else
               flash.now[:alert] = result.errors.join(', ')
               @field_values = fields_params
+              @selected_authorization_tag_ids = authorization_tag_ids_params
+              @is_public = is_public_param
               render :edit, status: :unprocessable_entity
             end
           end

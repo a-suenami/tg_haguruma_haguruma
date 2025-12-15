@@ -114,6 +114,12 @@
             </div>
           </div>
 
+          <%= render 'admin_area/contents/authorization_tags',
+                     authorization_tags: @authorization_tags,
+                     selected_tag_id: @selected_authorization_tag_id,
+                     is_public: @is_public,
+                     save_url: admin_area_contents_collection_entry_authorization_path(content_type_id: @content_type.id, entry_id: @content_entry.id) %>
+
           <div class="action-section">
             <h4 class="action-section-title">META</h4>
             <div class="meta-info">

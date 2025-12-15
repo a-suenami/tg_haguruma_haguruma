@@ -1838,3 +1838,329 @@
         justify-content: center;
     }
 }
+
+/* =================================
+   Authorization Tags Styles
+   ================================= */
+
+.authorization-tags-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.authorization-tags-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.authorization-tag-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--background-secondary, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.authorization-tag-item:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.authorization-tag-item:has(.authorization-tag-checkbox:checked) {
+    background: #ede9fe;
+    border-color: #a78bfa;
+}
+
+.authorization-tag-checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: #6366f1;
+    cursor: pointer;
+}
+
+.authorization-tag-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.authorization-tags-help {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.4;
+}
+
+.authorization-tags-empty {
+    margin: 0;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.authorization-tags-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.authorization-tag-selected {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.authorization-tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: #ede9fe;
+    border: 1px solid #a78bfa;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #5b21b6;
+}
+
+.authorization-tag-pill-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #7c3aed;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background: #ddd6fe;
+    }
+}
+
+.authorization-tag-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 10px;
+    min-height: 38px;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 6px;
+    background: var(--background-secondary, #f8fafc);
+    cursor: text;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus-within {
+        border-color: #a78bfa;
+        box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+    }
+
+    &.has-selection {
+        .authorization-tag-input {
+            display: none;
+        }
+
+        &:focus-within .authorization-tag-input {
+            display: block;
+        }
+
+        &:focus-within .authorization-tag-selected {
+            display: none;
+        }
+    }
+}
+
+.authorization-tag-selected {
+    display: flex;
+    align-items: center;
+}
+
+.authorization-tag-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: #ede9fe;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5b21b6;
+
+    .authorization-tag-pill-remove {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 14px;
+        height: 14px;
+        padding: 0;
+        margin-left: 2px;
+        border: none;
+        background: transparent;
+        color: #7c3aed;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 50%;
+        line-height: 1;
+
+        &:hover {
+            background: #ddd6fe;
+        }
+    }
+}
+
+.authorization-tag-input {
+    flex: 1;
+    min-width: 80px;
+    padding: 2px 0;
+    font-size: 13px;
+    border: none;
+    background: transparent;
+    outline: none;
+
+    &::placeholder {
+        color: #94a3b8;
+    }
+}
+
+.authorization-tag-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    background: white;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+
+    &.show {
+        display: block;
+    }
+}
+
+.authorization-tag-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 13px;
+    color: #374151;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.15s;
+
+    &:hover {
+        background: #f1f5f9;
+    }
+
+    &:not(:last-child) {
+        border-bottom: 1px solid #f1f5f9;
+    }
+}
+
+.authorization-tags-display {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.authorization-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+
+    &.public {
+        background: #dcfce7;
+        color: #166534;
+
+        i {
+            color: #22c55e;
+        }
+    }
+
+    &.private {
+        background: #ede9fe;
+        color: #5b21b6;
+
+        i {
+            color: #6366f1;
+        }
+    }
+}
+
+.authorization-tags-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.authorization-tag-pill-readonly {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    background: #ede9fe;
+    border: 1px solid #a78bfa;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5b21b6;
+    text-align: center;
+}
+
+.authorization-tag-selector {
+    margin-top: 8px;
+}
+
+.authorization-save-button-wrapper {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color, #e2e8f0);
+}
+
+.authorization-save-btn {
+    width: 100%;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &.has-changes {
+        background: #6366f1;
+        border-color: #6366f1;
+        color: white;
+
+        &:hover:not(:disabled) {
+            background: #4f46e5;
+            border-color: #4f46e5;
+        }
+    }
+}

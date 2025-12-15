@@ -98,6 +98,10 @@
             </div>
           </div>
 
+          <%= render 'admin_area/contents/authorization_tags_display',
+                     selected_tags: @selected_authorization_tags,
+                     is_public: @is_public %>
+
           <div class="action-section">
             <h4 class="action-section-title">META</h4>
             <div class="meta-info">

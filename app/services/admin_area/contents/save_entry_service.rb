@@ -13,11 +13,21 @@ module AdminArea
         const :errors, T::Array[String]
       end
 
-      sig { params(content_type: ContentType, content_entry: T.nilable(ContentEntry), fields_params: T::Hash[String, T.untyped]).void }
-      def initialize(content_type:, content_entry: nil, fields_params: {})
+      sig do
+        params(
+          content_type: ContentType,
+          content_entry: T.nilable(ContentEntry),
+          fields_params: T::Hash[String, T.untyped],
+          authorization_tag_ids: T::Array[String],
+          is_public: T::Boolean,
+        ).void
+      end
+      def initialize(content_type:, content_entry: nil, fields_params: {}, authorization_tag_ids: [], is_public: true)
         @content_type = content_type
         @content_entry = content_entry
         @fields_params = fields_params
+        @authorization_tag_ids = authorization_tag_ids
+        @is_public = is_public
         @errors = T.let([], T::Array[String])
       end
 
@@ -27,6 +37,7 @@ module AdminArea
           entry = create_or_find_entry
           version = create_or_update_draft_version(entry)
           save_field_values(entry, version)
+          save_authorization_tags(entry, version)
 
           if @errors.empty?
             Result.new(success: true, content_entry: entry, version:, errors: [])
@@ -71,6 +82,7 @@ module AdminArea
         )
 
         if existing_draft
+          existing_draft.update!(is_public: @is_public)
           @saved_version = T.let(existing_draft, T.nilable(ContentEntry::Version))
           existing_draft
         else
@@ -87,6 +99,7 @@ module AdminArea
             content_entry_id: entry.id,
             version: max_version + 1,
             status: :draft,
+            is_public: @is_public,
           )
 
           unless version.save
@@ -166,7 +179,6 @@ module AdminArea
 
       sig { params(field: ContentEntry::Field, value: T.untyped).void }
       def save_media_asset_field(field, value)
-        # Media asset field expects a media_asset_id
         return if value.blank?
 
         media_asset = MediaAsset.find_by(id: value)
@@ -186,6 +198,17 @@ module AdminArea
           field.media_asset = field_media_asset
         end
         field.save!
+      end
+
+      sig { params(entry: ContentEntry, version: ContentEntry::Version).void }
+      def save_authorization_tags(entry, version)
+        result = SetAuthorizationTagsService.new(
+          content_entry: entry,
+          version:,
+          authorization_tag_ids: @authorization_tag_ids,
+        ).call
+
+        @errors.concat(result.errors) unless result.success
       end
     end
   end

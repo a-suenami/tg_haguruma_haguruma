@@ -17,6 +17,8 @@ module AdminArea
             render_not_found and return unless @published_version
 
             @field_values = load_field_values
+            load_selected_authorization_tags
+            load_is_public
           end
 
           # Override: Show prioritizes published version
