@@ -20,8 +20,15 @@ module AdminArea
           # Collection type: show entries list
           @content_entries = @content_type.content_entries
         else
-          # Singleton type: redirect to entry edit page
-          redirect_to edit_admin_area_contents_singleton_entry_path(content_type_id: @content_type.id)
+          # Singleton type: redirect to show (published) or edit (draft/new)
+          entry = @content_type.content_entries.first
+          has_published = entry&.versions&.exists?(status: 'published')
+
+          if has_published
+            redirect_to admin_area_contents_singleton_entry_path(content_type_id: @content_type.id)
+          else
+            redirect_to edit_admin_area_contents_singleton_entry_path(content_type_id: @content_type.id)
+          end
         end
       end
     end
