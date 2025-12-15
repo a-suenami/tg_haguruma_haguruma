@@ -12,7 +12,7 @@ module Api
       sig { void }
       def index
         content_entries = UserQueries::ContentEntriesQuery.new
-                            .by_content_type(params[:content_type_id])
+                            .by_content_type(params[:content_type])
                             .published
                             .authorized_for(current_user)
                             .resolve

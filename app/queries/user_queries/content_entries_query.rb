@@ -45,12 +45,15 @@ module UserQueries
       @user = T.let(nil, T.nilable(User))
     end
 
-    # Filter by content type
-    sig { params(content_type_id: T.nilable(String)).returns(T.self_type) }
-    def by_content_type(content_type_id)
-      return self if content_type_id.blank?
+    # Filter by content type unique_name
+    sig { params(content_type_unique_name: T.nilable(String)).returns(T.self_type) }
+    def by_content_type(content_type_unique_name)
+      return self if content_type_unique_name.blank?
 
-      chain(@scope.where(content_type_id:))
+      content_type = ContentType.find_by(unique_name: content_type_unique_name)
+      return chain(@scope.none) if content_type.nil?
+
+      chain(@scope.where(content_type_id: content_type.id))
     end
 
     # Filter to only published entries
