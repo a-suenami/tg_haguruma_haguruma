@@ -4,11 +4,19 @@
 
 - [ ] API の認証と認可
 
+- [ ] 認可に Pundit を使うかどうか検討
+
+- [ ] admin管理画面で認可タグの設定をできるようにする
+
 - [ ] 「メディアライブラリから選択」が動いてない
 
 - プレビュー機能
 
 ## 完了
+
+- [x] コンテンツ一覧 /api/v1/contents で published_at が NULL のコンテンツが返される問題を修正
+  - `ContentEntry::Version.published` スコープに `.where.not(published_at: nil)` を追加
+  - `status = published` だけでなく `published_at` も必須条件に
 
 - [x] API の動作確認
   - OpenAPI スペックを追加（`swagger/v1/swagger.yaml`）

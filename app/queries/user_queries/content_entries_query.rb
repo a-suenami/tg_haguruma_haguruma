@@ -70,11 +70,12 @@ module UserQueries
     end
 
     # Override resolve to apply authorization filtering
+    # Always filters content based on authorization:
+    # - Public content (no tags): accessible to all
+    # - Restricted content (with tags): only accessible to users with matching tags
     sig { override.returns(T::Array[EntityType]) }
     def resolve
       entries = T.unsafe(call.to_a)
-      return entries unless @user || authorization_filtering_enabled?
-
       entries.select { |entry| self.class.authorized?(entry, user: @user) }
     end
 
@@ -83,11 +84,6 @@ module UserQueries
     sig { override.returns(ActiveRecord::Relation) }
     def base_scope
       ContentEntry.includes(:content_type, versions: { fields: [:content_type_field, :text, :richtext, :media_asset] })
-    end
-
-    sig { returns(T::Boolean) }
-    def authorization_filtering_enabled?
-      !@user.nil?
     end
   end
 end

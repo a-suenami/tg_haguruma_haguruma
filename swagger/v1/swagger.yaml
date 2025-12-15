@@ -8,8 +8,15 @@ paths:
   "/api/v1/contents":
     get:
       summary: List published content entries
+      description: |
+        Returns a list of published content entries.
+        - Public content (no authorization tags): accessible without authentication
+        - Protected content (with authorization tags): requires Bearer token authentication
       tags:
       - Contents
+      security:
+      - {}
+      - bearer_auth: []
       parameters:
       - name: content_type
         in: query
@@ -34,8 +41,15 @@ paths:
   "/api/v1/contents/{id}":
     get:
       summary: Get a published content entry
+      description: |
+        Returns a single published content entry.
+        - Public content (no authorization tags): accessible without authentication
+        - Protected content (with authorization tags): requires Bearer token authentication
       tags:
       - Contents
+      security:
+      - {}
+      - bearer_auth: []
       parameters:
       - name: id
         in: path
@@ -51,8 +65,60 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ContentEntryResponse"
+        '403':
+          description: forbidden - authentication required for protected content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/api/v1/auth/idp/provider":
+    get:
+      summary: Get OAuth provider configuration
+      description: Returns the information necessary for the OAuth client to construct the Authorization URL.
+      tags:
+      - Authentication
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OauthProviderResponse"
+  "/api/v1/auth/idp/session":
+    post:
+      summary: Exchange ID token for session token
+      description: |
+        Verifies the ID token from the OAuth provider and issues a session token.
+        The session token can be used as a Bearer token for subsequent API requests.
+      tags:
+      - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_token:
+                  type: string
+                  description: JWT ID token from OAuth provider
+              required:
+              - id_token
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SessionTokenResponse"
+        '401':
+          description: invalid or expired token
           content:
             application/json:
               schema:
@@ -78,7 +144,10 @@ components:
     bearer_auth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
+      bearerFormat: SessionToken
+      description: |
+        Session token obtained from POST /api/v1/auth/idp/session.
+        Use the token value in the Authorization header: "Bearer {token}"
   schemas:
     ContentType:
       type: object
@@ -203,8 +272,85 @@ components:
           "$ref": "#/components/schemas/ContentEntry"
       required:
       - data
+    OauthProvider:
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: OAuth client ID
+        endpoint_base:
+          type: string
+          description: OAuth provider endpoint base URL
+          example: https://id-platform.net
+        scopes:
+          type: string
+          description: Space-separated OAuth scopes
+          example: openid profile email
+      required:
+      - client_id
+      - endpoint_base
+      - scopes
+    OauthProviderResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            attributes:
+              "$ref": "#/components/schemas/OauthProvider"
+          required:
+          - id
+          - attributes
+      required:
+      - data
+    SessionToken:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+      required:
+      - created_at
+      - expires_at
+    SessionTokenResponse:
+      type: object
+      description: |
+        The session token response. Use the `data.id` value as the Bearer token
+        in the Authorization header for subsequent API requests.
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Session token value (use this as Bearer token)
+            attributes:
+              "$ref": "#/components/schemas/SessionToken"
+          required:
+          - id
+          - attributes
+      required:
+      - data
     Error:
       type: object
       properties:
         error:
-          type: string
+          oneOf:
+          - type: string
+          - type: object
+            properties:
+              type:
+                type: string
+                example: authentication_error
+              code:
+                type: string
+                example: token_expired
+              message:
+                type: string
+                example: Token has expired

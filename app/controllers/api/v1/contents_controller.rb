@@ -31,14 +31,6 @@ module Api
         render json: ContentEntrySerializer.new(content_entry).as_json
       end
 
-      private
-
-      # Returns the current authenticated user, or nil if not authenticated.
-      # TODO: Implement actual user authentication when available.
-      sig { returns(T.nilable(User)) }
-      def current_user
-        nil
-      end
     end
   end
 end
