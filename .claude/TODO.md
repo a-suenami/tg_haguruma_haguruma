@@ -2,13 +2,17 @@
 
 ## 進行中
 
-- [ ] API の動作確認
+- [ ] API の認証と認可
 
 - [ ] 「メディアライブラリから選択」が動いてない
 
 - プレビュー機能
 
 ## 完了
+
+- [x] API の動作確認
+  - OpenAPI スペックを追加（`swagger/v1/swagger.yaml`）
+  - API ドキュメントへのアクセス制限を設定
 
 - [x] MediaAsset のフィールド型の値を公開タブで開くとプレビュー表示
   - `_media_preview.html.erb` パーシャルを新規作成（DRY化）
@@ -74,6 +78,13 @@
   - Propshaft CSS を Vite SCSS に統合
   - `stylesheet_link_tag` をレイアウトから削除
   - `app/assets/stylesheets/ruler_area/` を削除
+
+- [x] Propshaft を削除して Vite に完全統一
+  - Gemfile から `gem 'propshaft'` を削除
+  - `app/views/layouts/application.html.erb` を Vite 用に更新
+  - ロゴ画像を `public/images/ruler_area/` に移動し、直接パスで参照
+  - `config/initializers/assets.rb` から Propshaft 設定を削除
+  - `app/assets/stylesheets/` ディレクトリを削除
 
 - [x] ナビゲーションにコンテンツタイプ名が表示されない問題を修正（seed再実行で解決）
 
