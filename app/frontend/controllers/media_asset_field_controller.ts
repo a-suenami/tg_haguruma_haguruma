@@ -150,7 +150,7 @@ export default class extends Controller {
         this.thumbnailTarget.innerHTML = `<img src="${url}" alt="${filename}" />`;
       } else {
         const icon = this.getIconForMediaType(mediaType);
-        this.thumbnailTarget.innerHTML = `<i class="fas ${icon} fa-2x"></i>`;
+        this.thumbnailTarget.innerHTML = `<i class="fas ${icon}"></i>`;
       }
     }
 
@@ -160,11 +160,21 @@ export default class extends Controller {
     }
 
     if (this.hasTypeBadgeTarget) {
-      this.typeBadgeTarget.textContent = mediaType;
+      this.typeBadgeTarget.textContent = this.getMediaTypeLabel(mediaType);
       this.typeBadgeTarget.className = `media-type-badge media-type-${mediaType}`;
     }
 
     console.log('Preview updated successfully');
+  }
+
+  private getMediaTypeLabel(mediaType: string): string {
+    const labels: Record<string, string> = {
+      image: '画像',
+      video: '動画',
+      audio: '音声',
+      document: 'ドキュメント',
+    };
+    return labels[mediaType] || mediaType;
   }
 
   private clearPreview() {
@@ -359,7 +369,7 @@ export default class extends Controller {
           </div>
           <div class="media-library-item-info">
             <span class="media-library-item-name" title="${media.filename}">${this.truncateFilename(media.filename)}</span>
-            <span class="media-type-badge media-type-${media.media_type}">${media.media_type}</span>
+            <span class="media-type-badge media-type-${media.media_type}">${this.getMediaTypeLabel(media.media_type)}</span>
           </div>
         </div>
       `,

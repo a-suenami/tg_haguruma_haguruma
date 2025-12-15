@@ -93,15 +93,17 @@
           <div class="media-preview-thumbnail" data-media-asset-field-target="thumbnail">
             <!-- Dynamically populated based on media type -->
           </div>
-          <div class="media-preview-info">
-            <span class="media-filename" data-media-asset-field-target="filename"></span>
-            <span class="media-type-badge" data-media-asset-field-target="typeBadge"></span>
+          <div class="media-preview-footer">
+            <div class="media-preview-info">
+              <span class="media-filename" data-media-asset-field-target="filename"></span>
+              <span class="media-type-badge" data-media-asset-field-target="typeBadge"></span>
+            </div>
+            <button type="button"
+                    class="btn btn-xs btn-danger media-remove-btn"
+                    data-action="media-asset-field#removeMedia">
+              <i class="fas fa-times"></i>
+            </button>
           </div>
-          <button type="button"
-                  class="btn btn-xs btn-danger media-remove-btn"
-                  data-action="media-asset-field#removeMedia">
-            <i class="fas fa-times"></i>
-          </button>
         </div>
       </div>
 

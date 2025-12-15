@@ -20,7 +20,12 @@
   <% when 'media_asset' %>
     <div class="media-asset-display">
       <% if value.present? %>
-        <span class="media-selected">メディアが設定されています (ID: <%= value %>)</span>
+        <% media = MediaAsset.find_by(id: value) %>
+        <% if media %>
+          <%= render 'admin_area/contents/media_preview', media: media, show_remove_button: false %>
+        <% else %>
+          <span class="no-media">メディアが見つかりません (ID: <%= value %>)</span>
+        <% end %>
       <% else %>
         <span class="no-media">メディアが設定されていません</span>
       <% end %>
