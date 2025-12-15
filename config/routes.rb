@@ -23,7 +23,14 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  # Redirect based on subdomain: ruler.* -> /ruler, admin.* -> /admin
+  constraints subdomain: /\Aruler\./ do
+    root to: redirect('/ruler')
+  end
+
+  constraints subdomain: /\Aadmin\./ do
+    root to: redirect('/admin')
+  end
 
   # Ruler Area routes
   namespace :ruler_area, path: :ruler do

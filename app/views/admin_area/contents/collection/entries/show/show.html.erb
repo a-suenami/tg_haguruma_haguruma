@@ -43,11 +43,11 @@
 
     <!-- バージョンタブ -->
     <div class="version-tabs">
-      <%= link_to edit_admin_area_contents_collection_entry_path(content_type_id: @content_type.id, id: @content_entry.id), class: 'version-tab' do %>
-        編集中
-      <% end %>
       <%= link_to admin_area_contents_collection_entry_path(content_type_id: @content_type.id, id: @content_entry.id), class: 'version-tab active' do %>
         公開中
+      <% end %>
+      <%= link_to edit_admin_area_contents_collection_entry_path(content_type_id: @content_type.id, id: @content_entry.id), class: 'version-tab' do %>
+        編集中
       <% end %>
     </div>
 
