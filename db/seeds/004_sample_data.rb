@@ -74,7 +74,7 @@ Rails.logger.debug '📄 Creating Content Entries...'
 def create_article(content_type:, title:, body:, authorization_tags: [])
   entry = ContentEntry.create!(content_type:)
 
-  version = ContentEntry::Version.create!(
+  ContentEntry::Version.create!(
     content_entry_id: entry.id,
     content_type_id: content_type.id,
     version: 1,
@@ -187,7 +187,7 @@ member_token = SessionToken.find_or_create_by!(id: 'test-member-token') do |t|
 end
 Rails.logger.debug { "  ✅ Member User: #{member_user.id}" }
 Rails.logger.debug { "    Token: #{member_token.id}" }
-Rails.logger.debug { "    Tags: [member]" }
+Rails.logger.debug { '    Tags: [member]' }
 
 # Premium user (has 'premium' tag)
 premium_user = User.find_or_create_by!(uid: 'test-premium-user', oauth_provider:)
@@ -199,7 +199,7 @@ premium_token = SessionToken.find_or_create_by!(id: 'test-premium-token') do |t|
 end
 Rails.logger.debug { "  ✅ Premium User: #{premium_user.id}" }
 Rails.logger.debug { "    Token: #{premium_token.id}" }
-Rails.logger.debug { "    Tags: [premium]" }
+Rails.logger.debug { '    Tags: [premium]' }
 
 # VIP user (has both 'member' and 'premium' tags)
 vip_user = User.find_or_create_by!(uid: 'test-vip-user', oauth_provider:)
@@ -212,7 +212,7 @@ vip_token = SessionToken.find_or_create_by!(id: 'test-vip-token') do |t|
 end
 Rails.logger.debug { "  ✅ VIP User: #{vip_user.id}" }
 Rails.logger.debug { "    Token: #{vip_token.id}" }
-Rails.logger.debug { "    Tags: [member, premium]" }
+Rails.logger.debug { '    Tags: [member, premium]' }
 
 Rails.logger.debug ''
 Rails.logger.debug '📋 Test Tokens Summary:'

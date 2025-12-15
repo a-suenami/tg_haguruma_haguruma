@@ -30,9 +30,9 @@ FactoryBot.define do
         create(:content_entry_version,
                tenant: content_entry.tenant,
                content_type: content_entry.content_type,
-               content_entry: content_entry,
+               content_entry:,
                status: :published,
-               published_at: Time.current)
+               published_at: Time.current,)
       end
     end
   end

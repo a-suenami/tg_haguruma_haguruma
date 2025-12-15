@@ -46,6 +46,9 @@ module GeneratedPathHelpersModule
   def admin_area_contents_collection_entries_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_authorization_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_media_asset_field_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -68,6 +71,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_root_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_authorization_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_singleton_entry_path(*args); end
@@ -260,6 +266,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def rails_storage_redirect_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def root_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def rswag_api_path(*args); end

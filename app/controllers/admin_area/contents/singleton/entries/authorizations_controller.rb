@@ -17,8 +17,8 @@ module AdminArea
             result = AdminArea::Contents::SetAuthorizationTagsService.new(
               content_entry: T.must(@content_entry),
               version: T.must(@draft_version),
-              authorization_tag_ids: authorization_tag_ids,
-              is_public: is_public_param,
+              authorization_tag_ids:,
+              is_public: public_param?,
             ).call
 
             if result.success
@@ -67,7 +67,7 @@ module AdminArea
           end
 
           sig { returns(T::Boolean) }
-          def is_public_param
+          def public_param?
             params[:is_public] == true || params[:is_public] == 'true' || params[:is_public] == '1'
           end
         end

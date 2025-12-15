@@ -144,7 +144,15 @@ RSpec.configure do |config|
           Error: {
             type: :object,
             properties: {
-              error: { type: :string },
+              error: {
+                type: :object,
+                properties: {
+                  type: { type: :string, example: 'authentication_error' },
+                  code: { type: :string, example: 'token_expired' },
+                  message: { type: :string, example: 'Token has expired' },
+                },
+                required: %w[type message],
+              },
             },
           },
         },

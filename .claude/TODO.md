@@ -7,6 +7,7 @@
 - [ ] 「メディアライブラリから選択」が動いてない
 
 - [ ] first published at をもたせて、それの降順にする
+- [ ] swagger の　URL が　example.com になってる
 
 - プレビュー機能
 

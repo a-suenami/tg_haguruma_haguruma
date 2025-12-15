@@ -37,7 +37,7 @@ module AdminArea
               content_entry: @content_entry,
               fields_params:,
               authorization_tag_ids: authorization_tag_ids_params,
-              is_public: is_public_param,
+              is_public: public_param?,
             ).call
 
             if result.success
@@ -49,7 +49,7 @@ module AdminArea
               flash.now[:alert] = result.errors.join(', ')
               @field_values = fields_params
               @selected_authorization_tag_ids = authorization_tag_ids_params
-              @is_public = is_public_param
+              @is_public = public_param?
               render :new, status: :unprocessable_entity
             end
           end
@@ -60,7 +60,7 @@ module AdminArea
               content_entry: @content_entry,
               fields_params:,
               authorization_tag_ids: authorization_tag_ids_params,
-              is_public: is_public_param,
+              is_public: public_param?,
             ).call
 
             if result.success
@@ -72,7 +72,7 @@ module AdminArea
               flash.now[:alert] = result.errors.join(', ')
               @field_values = fields_params
               @selected_authorization_tag_ids = authorization_tag_ids_params
-              @is_public = is_public_param
+              @is_public = public_param?
               render :edit, status: :unprocessable_entity
             end
           end

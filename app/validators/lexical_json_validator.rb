@@ -20,7 +20,7 @@ class LexicalJsonValidator < ActiveModel::EachValidator
       },
     },
     additionalProperties: true,
-  }.freeze, T::Hash[Symbol, T.untyped])
+  }.freeze, T::Hash[Symbol, T.untyped],)
 
   SCHEMA = T.let({
     type: 'object',
@@ -49,7 +49,7 @@ class LexicalJsonValidator < ActiveModel::EachValidator
     definitions: {
       node: LEXICAL_NODE_SCHEMA,
     },
-  }.freeze, T::Hash[Symbol, T.untyped])
+  }.freeze, T::Hash[Symbol, T.untyped],)
 
   # Allowed node types (Lexical built-in + custom nodes)
   ALLOWED_NODE_TYPES = T.let(%w[
@@ -75,7 +75,7 @@ class LexicalJsonValidator < ActiveModel::EachValidator
     image
     video
     auto-embed
-  ].freeze, T::Array[String])
+  ].freeze, T::Array[String],)
 
   # ProseMirror indicators (for rejection)
   PROSEMIRROR_INDICATORS = T.let(%w[doc content marks].freeze, T::Array[String])
@@ -112,8 +112,8 @@ class LexicalJsonValidator < ActiveModel::EachValidator
     return true if value['doc'].present?
     return true if value['type'] == 'doc'
 
-    if (root = value['root'])
-      return true if root['content'].is_a?(Array)
+    if (root = value['root']) && root['content'].is_a?(Array)
+      return true
     end
 
     false
@@ -131,7 +131,7 @@ class LexicalJsonValidator < ActiveModel::EachValidator
     return unless node.is_a?(Hash)
 
     node_type = node['type']
-    if node_type.present? && !ALLOWED_NODE_TYPES.include?(node_type)
+    if node_type.present? && ALLOWED_NODE_TYPES.exclude?(node_type)
       unknown_types.add(node_type)
     end
 

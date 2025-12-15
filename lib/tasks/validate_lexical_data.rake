@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 namespace :lexical do
@@ -33,7 +34,7 @@ namespace :lexical do
       end
     end
 
-    puts "\r" + (' ' * 50) + "\r" # Clear progress line
+    puts "\r#{' ' * 50}\r" # Clear progress line
     puts '=' * 60
     puts 'Validation Results'
     puts '=' * 60
@@ -84,7 +85,7 @@ namespace :lexical do
 
     ContentEntry::FieldRichtext.limit(5).each do |record|
       puts "ID: #{record.id}"
-      puts "Value:"
+      puts 'Value:'
       puts JSON.pretty_generate(record.value).lines.map { |l| "  #{l}" }.join
       puts '-' * 40
       puts

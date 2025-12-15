@@ -165,11 +165,11 @@ module AdminArea
 
         sig { returns(T::Array[String]) }
         def authorization_tag_ids_params
-          Array(params[:authorization_tag_ids]).reject(&:blank?)
+          Array(params[:authorization_tag_ids]).compact_blank
         end
 
         sig { returns(T::Boolean) }
-        def is_public_param
+        def public_param?
           params[:is_public] == '1'
         end
       end

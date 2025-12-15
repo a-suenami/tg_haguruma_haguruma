@@ -43,7 +43,7 @@ class AdminArea::MediaController < AdminArea::ApplicationController
   def create
     file = params[:media_asset][:file]
 
-    unless file.present?
+    if file.blank?
       @media_asset = MediaAsset.new
       @media_asset.errors.add(:file, 'を選択してください')
       respond_to do |format|

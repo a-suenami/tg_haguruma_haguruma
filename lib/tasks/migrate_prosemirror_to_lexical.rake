@@ -1,5 +1,7 @@
+# typed: false
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 namespace :richtext do
   desc 'Fix nested html format to proper Lexical format'
   task fix_nested_html: :environment do
@@ -19,9 +21,7 @@ namespace :richtext do
         parsed = JSON.parse(value['html'])
 
         # If it's still nested, unwrap again
-        while parsed.is_a?(Hash) && parsed['html'].is_a?(String)
-          parsed = JSON.parse(parsed['html'])
-        end
+        parsed = JSON.parse(parsed['html']) while parsed.is_a?(Hash) && parsed['html'].is_a?(String)
 
         # Check if we got valid Lexical format
         if parsed.is_a?(Hash) && parsed['root'].present?
@@ -280,3 +280,4 @@ namespace :richtext do
     node['content'].map { |child| extract_text_from_prosemirror(child) }.join
   end
 end
+# rubocop:enable Metrics/BlockLength

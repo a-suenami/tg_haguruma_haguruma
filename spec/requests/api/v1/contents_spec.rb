@@ -3,7 +3,8 @@
 
 require 'swagger_helper'
 
-RSpec.describe 'Api::V1::Contents', type: :request do
+# rubocop:disable RSpec/EmptyExampleGroup, RSpec/ScatteredSetup
+RSpec.describe 'Api::V1::Contents' do
   path '/api/v1/contents' do
     get 'List published content entries' do
       tags 'Contents'
@@ -51,8 +52,8 @@ RSpec.describe 'Api::V1::Contents', type: :request do
         schema '$ref' => '#/components/schemas/ContentEntryResponse'
 
         let(:tenant) { create(:tenant, id: 'test-tenant') }
-        let(:content_type) { create(:content_type, tenant: tenant) }
-        let(:content_entry) { create(:content_entry, :published, tenant: tenant, content_type: content_type) }
+        let(:content_type) { create(:content_type, tenant:) }
+        let(:content_entry) { create(:content_entry, :published, tenant:, content_type:) }
         let(:id) { content_entry.id }
 
         before do
@@ -79,3 +80,4 @@ RSpec.describe 'Api::V1::Contents', type: :request do
     end
   end
 end
+# rubocop:enable RSpec/EmptyExampleGroup, RSpec/ScatteredSetup
