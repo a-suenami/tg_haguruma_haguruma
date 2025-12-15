@@ -41,31 +41,36 @@ class AdminArea::MediaController < AdminArea::ApplicationController
   def edit; end
 
   def create
-    @media_asset = MediaAsset.new(media_asset_params)
-    @media_asset.tenant_id = T.must(Tenant.current_id)
+    file = params[:media_asset][:file]
 
-    if params[:media_asset][:file].present?
-      file = params[:media_asset][:file]
-      @media_asset.mime_type = file.content_type
-      @media_asset.media_type = MediaAsset.detect_media_type(file.content_type)
-      @media_asset.file_size_bytes = file.size
-      @media_asset.s3_object_path = generate_s3_object_path(file)
-      @media_asset.metadata = {
-        original_filename: file.original_filename,
-      }
-      @media_asset.file.attach(file)
-    end
-
-    if @media_asset.save
-      respond_to do |format|
-        format.html { redirect_to admin_area_media_path, notice: t('admin_area.media.uploaded') }
-        format.json { render json: { id: @media_asset.id, url: url_for(@media_asset.file) }, status: :created }
-      end
-    else
+    unless file.present?
+      @media_asset = MediaAsset.new
+      @media_asset.errors.add(:file, 'を選択してください')
       respond_to do |format|
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: { errors: @media_asset.errors.full_messages }, status: :unprocessable_entity }
       end
+      return
+    end
+
+    uploader = MediaAsset::Uploader.new
+    result = uploader.upload(
+      file:,
+      tenant_id: T.must(Tenant.current_id),
+    )
+    @media_asset = result[:media_asset]
+
+    respond_to do |format|
+      format.html { redirect_to admin_area_media_path, notice: t('admin_area.media.uploaded') }
+      format.json { render json: { id: @media_asset.id, url: result[:url] }, status: :created }
+    end
+  rescue StandardError => e
+    Rails.logger.error("Media upload failed: #{e.message}")
+    @media_asset = MediaAsset.new
+    @media_asset.errors.add(:base, 'アップロードに失敗しました')
+    respond_to do |format|
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: { errors: @media_asset.errors.full_messages }, status: :unprocessable_entity }
     end
   end
 
@@ -115,22 +120,8 @@ class AdminArea::MediaController < AdminArea::ApplicationController
   end
 
   sig { returns(ActionController::Parameters) }
-  def media_asset_params
-    params.require(:media_asset).permit(:file)
-  end
-
-  sig { returns(ActionController::Parameters) }
   def media_asset_update_params
     params.require(:media_asset).permit(:metadata)
-  end
-
-  sig { params(file: ActionDispatch::Http::UploadedFile).returns(String) }
-  def generate_s3_object_path(file)
-    timestamp = Time.current.strftime('%Y/%m/%d')
-    uuid = SecureRandom.uuid
-    extension = File.extname(file.original_filename)
-
-    "#{Tenant.current_id}/#{timestamp}/#{uuid}#{extension}"
   end
 
   sig { params(media_asset: MediaAsset).returns(T::Hash[Symbol, T.untyped]) }
