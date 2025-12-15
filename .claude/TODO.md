@@ -15,6 +15,8 @@
 - [ ] first published at をもたせて、それの降順にする
 - [ ] swagger の　URL が　example.com になってる
 
+- [ ] e2e テスト
+
 - プレビュー機能
 
 ## 完了
