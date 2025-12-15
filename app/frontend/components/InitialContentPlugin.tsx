@@ -50,17 +50,23 @@ export default function InitialContentPlugin({
       if (isLexicalFormat(parsed)) {
         // Lexical JSON format - parse directly
         const editorState = editor.parseEditorState(content);
-        editor.setEditorState(editorState);
+        // Use queueMicrotask to avoid flushSync warning during React render
+        queueMicrotask(() => {
+          editor.setEditorState(editorState);
+        });
       } else if (isProseMirrorFormat(parsed)) {
         // ProseMirror format - extract text and create simple content
         const textContent = extractTextFromProseMirror(parsed);
         if (textContent) {
-          editor.update(() => {
-            const root = $getRoot();
-            root.clear();
-            const paragraph = $createParagraphNode();
-            paragraph.append($createTextNode(textContent));
-            root.append(paragraph);
+          // Use queueMicrotask to avoid flushSync warning during React render
+          queueMicrotask(() => {
+            editor.update(() => {
+              const root = $getRoot();
+              root.clear();
+              const paragraph = $createParagraphNode();
+              paragraph.append($createTextNode(textContent));
+              root.append(paragraph);
+            });
           });
         }
       } else {
