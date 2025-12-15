@@ -31,7 +31,7 @@ en:
   activerecord:
     models:
       tenant: Tenant
-      content_type: Content Model
+      content_type: Content Type
       content_type/field: Field
     attributes:
       tenant:
@@ -45,12 +45,12 @@ en:
         unique_name: Identifier
         display_name: Name
         description: Description
-        is_collection: Content Model Type
+        is_collection: Type
         created_at: Created at
         updated_at: Updated at
       content_type/field:
         tenant_id: Tenant
-        content_type_id: Content Model
+        content_type_id: Content Type
         api_identifier: Identifier
         label: Name
         description: Description
@@ -73,10 +73,10 @@ en:
       no_ruler_access: You do not have Ruler access rights. Logged out from Auth0.
       logged_in: Successfully logged in
       authentication_failed: "Authentication failed: %{error}"
-    content_models:
-      created: Content model created successfully
-      updated: Content model updated successfully
-      content_type_identifier_label: "Content Model Identifier"
+    content_types:
+      created: Content type created successfully
+      updated: Content type updated successfully
+      content_type_identifier_label: "Content Type Identifier"
       field_identifier_label: "Field Identifier"
       field_label_prefix: "Name"
       type_labels:

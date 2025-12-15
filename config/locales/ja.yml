@@ -2,7 +2,7 @@ ja:
   activerecord:
     models:
       tenant: テナント
-      content_type: コンテンツモデル
+      content_type: コンテンツタイプ
       content_type/field: フィールド
     attributes:
       tenant:
@@ -16,12 +16,12 @@ ja:
         unique_name: 識別子
         display_name: 名前
         description: 説明
-        is_collection: コンテンツモデルタイプ
+        is_collection: タイプ
         created_at: 作成日時
         updated_at: 更新日時
       content_type/field:
         tenant_id: テナント
-        content_type_id: コンテンツモデル
+        content_type_id: コンテンツタイプ
         api_identifier: 識別子
         label: 名前
         description: 説明
@@ -44,10 +44,10 @@ ja:
       no_ruler_access: Rulerアクセス権がありません。Auth0からログアウトしました。
       logged_in: ログインしました
       authentication_failed: "認証に失敗しました: %{error}"
-    content_models:
-      created: コンテンツモデルを作成しました
-      updated: コンテンツモデルを更新しました
-      content_type_identifier_label: "コンテンツモデルの識別子"
+    content_types:
+      created: コンテンツタイプを作成しました
+      updated: コンテンツタイプを更新しました
+      content_type_identifier_label: "コンテンツタイプの識別子"
       field_identifier_label: "フィールドの識別子"
       field_label_prefix: "名前"
       type_labels:

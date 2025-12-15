@@ -178,7 +178,7 @@ module GeneratedPathHelpersModule
   def new_ruler_area_tenant_admin_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def new_ruler_area_tenant_content_model_path(*args); end
+  def new_ruler_area_tenant_content_type_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_oauth_provider_path(*args); end
@@ -307,10 +307,10 @@ module GeneratedPathHelpersModule
   def ruler_area_tenant_admins_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_content_model_path(*args); end
+  def ruler_area_tenant_content_type_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_content_models_path(*args); end
+  def ruler_area_tenant_content_types_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_provider_path(*args); end

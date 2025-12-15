@@ -19,7 +19,7 @@
 </div>
 
 <div class="uk-margin">
-  <%= f.label :is_collection, 'コンテンツモデルタイプ', class: 'uk-form-label' %>
+  <%= f.label :is_collection, 'コンテンツタイプ', class: 'uk-form-label' %>
   <div class="uk-form-controls">
     <%= f.select :is_collection,
                  [['Collection', true], ['Singleton', false]],
@@ -31,7 +31,7 @@
 <div class="uk-margin">
   <%= f.label :description, '説明', class: 'uk-form-label' %>
   <div class="uk-form-controls">
-    <%= f.text_area :description, class: 'uk-textarea', rows: 3, placeholder: 'このコンテンツモデルの説明を入力してください' %>
+    <%= f.text_area :description, class: 'uk-textarea', rows: 3, placeholder: 'このコンテンツタイプの説明を入力してください' %>
   </div>
 </div>
 
@@ -146,7 +146,7 @@
 
 <div class="uk-margin">
   <%= f.submit '保存', class: 'uk-button uk-button-primary' %>
-  <%= link_to 'キャンセル', ruler_area_tenant_content_models_path(@tenant), class: 'uk-button uk-button-default' %>
+  <%= link_to 'キャンセル', ruler_area_tenant_content_types_path(@tenant), class: 'uk-button uk-button-default' %>
 </div>
 
 <style>
