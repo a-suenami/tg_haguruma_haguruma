@@ -82,6 +82,10 @@ fix(api): handle null response from payment service
 refactor(media): update application code for new schema
 ```
 
+### Pre-commit Checklist
+- デバッグ用の `console.log`、`puts`、`p`、`pp` などを削除する
+- 不要なコメントアウトされたコードを削除する
+
 ## Architecture Overview
 
 ### Core Stack

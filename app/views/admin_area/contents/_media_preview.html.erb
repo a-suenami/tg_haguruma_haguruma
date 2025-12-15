@@ -1,0 +1,41 @@
+<%# Renders a media asset preview card %>
+<%# Local variables: media (MediaAsset), show_remove_button (boolean, default: false) %>
+
+<%
+  show_remove_button = local_assigns.fetch(:show_remove_button, false)
+  media_type_labels = {
+    'image' => '画像',
+    'video' => '動画',
+    'audio' => '音声',
+    'document' => 'ドキュメント',
+  }
+%>
+
+<div class="media-preview-area">
+  <div class="media-preview-card">
+    <div class="media-preview-thumbnail">
+      <% if media.image? %>
+        <img src="<%= media.url %>" alt="<%= media.original_filename %>">
+      <% elsif media.video? %>
+        <i class="fas fa-video"></i>
+      <% elsif media.audio? %>
+        <i class="fas fa-music"></i>
+      <% else %>
+        <i class="fas fa-file"></i>
+      <% end %>
+    </div>
+    <div class="media-preview-footer">
+      <div class="media-preview-info">
+        <span class="media-filename"><%= media.original_filename.presence || 'ファイル名なし' %></span>
+        <span class="media-type-badge media-type-<%= media.media_type %>"><%= media_type_labels[media.media_type] || media.media_type %></span>
+      </div>
+      <% if show_remove_button %>
+        <button type="button"
+                class="btn btn-xs btn-danger media-remove-btn"
+                data-action="media-asset-field#removeMedia">
+          <i class="fas fa-times"></i>
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>

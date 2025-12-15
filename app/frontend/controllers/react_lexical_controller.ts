@@ -8,11 +8,13 @@ export default class extends Controller {
     initialContent: String,
     placeholder: String,
     hiddenFieldId: String,
+    editable: { type: Boolean, default: true },
   };
 
   declare readonly initialContentValue: string;
   declare readonly placeholderValue: string;
   declare readonly hiddenFieldIdValue: string;
+  declare readonly editableValue: boolean;
 
   private root: any = null;
 
@@ -28,13 +30,14 @@ export default class extends Controller {
 
   private initializeReactLexicalEditor() {
     // Create React root and render the Lexical editor
-    this.root = createRoot(this.element);
+    this.root = createRoot(this.element as HTMLElement);
 
     this.root.render(
       React.createElement(LexicalEditor, {
         initialContent: this.initialContentValue || '',
         placeholder: this.placeholderValue || '記事の内容を入力してください...',
         hiddenFieldId: this.hiddenFieldIdValue || undefined,
+        editable: this.editableValue,
       })
     );
   }

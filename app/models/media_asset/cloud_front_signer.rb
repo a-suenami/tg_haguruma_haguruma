@@ -15,6 +15,9 @@ class MediaAsset::CloudFrontSigner
 
   sig { params(s3_object_path: String, purpose: Purpose, media_type: T.nilable(Symbol)).returns(String) }
   def signed_url(s3_object_path, purpose: :admin, media_type: nil)
+    # CloudFront設定がない場合はS3のpresigned URLを使用
+    return s3_presigned_url(s3_object_path, purpose:, media_type:) unless cloudfront_configured?
+
     expiration = determine_expiration(purpose:, media_type:)
     signer.signed_url(
       url(s3_object_path),
@@ -27,7 +30,25 @@ class MediaAsset::CloudFrontSigner
     "https://#{host}/#{s3_object_path}"
   end
 
+  sig { params(s3_object_path: String, purpose: Purpose, media_type: T.nilable(Symbol)).returns(String) }
+  def s3_presigned_url(s3_object_path, purpose: :admin, media_type: nil)
+    expiration = determine_expiration(purpose:, media_type:)
+    s3_client.presigned_url(s3_object_path, expires_in: expiration.to_i)
+  end
+
+  sig { returns(MediaAsset::S3Client) }
+  def s3_client
+    @s3_client ||= T.let(MediaAsset::S3Client.new, T.nilable(MediaAsset::S3Client))
+  end
+
   private
+
+  sig { returns(T::Boolean) }
+  def cloudfront_configured?
+    Settings.aws.cloudfront.media.host.present? &&
+      Settings.aws.cloudfront.media.key_pair.private.public_key_id.present? &&
+      Settings.aws.cloudfront.media.key_pair.private.private_key.present?
+  end
 
   sig { params(purpose: Purpose, media_type: T.nilable(Symbol)).returns(ActiveSupport::Duration) }
   def determine_expiration(purpose:, media_type:)

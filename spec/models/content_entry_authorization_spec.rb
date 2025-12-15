@@ -28,7 +28,7 @@
 require 'rails_helper'
 
 describe ContentEntryAuthorization do
-  let(:tenant) { create(:tenant, id: 'sample') }
+  let(:tenant) { create(:tenant) }
   let(:content_type) { create(:content_type, tenant_id: tenant.id) }
   let(:content_entry) { create(:content_entry, tenant_id: tenant.id, content_type:) }
   let(:content_entry_version) { create(:content_entry_version, tenant:, content_type:, content_entry:) }

@@ -4,11 +4,11 @@ html lang="ja"
     meta charset="UTF-8"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
     title
-      = "CMS - #{yield(:title) || 'Admin'}"
+      = "Haguruma - #{yield(:title) || 'Admin'}"
     link rel="icon" type="image/svg+xml" href="/admin/favicon.svg"
     = csrf_meta_tags
     = csp_meta_tag
-
+    = vite_stylesheet_tag 'entrypoints/admin_area/application.scss', skip_preload_tags: true
     = vite_client_tag
     = vite_typescript_tag 'entrypoints/admin_area/application'
     = yield(:head)
@@ -20,7 +20,7 @@ html lang="ja"
     .layout
       aside.sidebar
         .sidebar-header
-          h1.logo CMS
+          h1.logo Haguruma
         nav.sidebar-nav
           ul
             / li class=('active' if controller_name == 'dashboard')

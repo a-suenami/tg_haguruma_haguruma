@@ -1,7 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import { $generateHtmlFromNodes } from '@lexical/html';
 import type { EditorState, LexicalEditor } from 'lexical';
 
 interface HiddenFieldSyncPluginProps {
@@ -16,7 +15,7 @@ export default function HiddenFieldSyncPlugin({
   const [editor] = useLexicalComposerContext();
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const syncToHiddenField = useCallback((editorState: EditorState, editor: LexicalEditor) => {
+  const syncToHiddenField = useCallback((editorState: EditorState, _editor: LexicalEditor) => {
     // Clear pending timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -24,21 +23,20 @@ export default function HiddenFieldSyncPlugin({
 
     // Debounce the sync
     timeoutRef.current = setTimeout(() => {
-      editorState.read(() => {
-        const html = $generateHtmlFromNodes(editor, null);
-        const hiddenField = document.getElementById(hiddenFieldId) as HTMLInputElement | null;
+      // Serialize editor state to Lexical JSON
+      const json = JSON.stringify(editorState.toJSON());
+      const hiddenField = document.getElementById(hiddenFieldId) as HTMLInputElement | null;
 
-        if (hiddenField) {
-          hiddenField.value = html;
+      if (hiddenField) {
+        hiddenField.value = json;
 
-          // Dispatch custom event for autosave controller
-          const event = new CustomEvent('lexical:change', {
-            bubbles: true,
-            detail: { html },
-          });
-          hiddenField.dispatchEvent(event);
-        }
-      });
+        // Dispatch custom event for autosave controller
+        const event = new CustomEvent('lexical:change', {
+          bubbles: true,
+          detail: { json },
+        });
+        hiddenField.dispatchEvent(event);
+      }
     }, debounceMs);
   }, [hiddenFieldId, debounceMs]);
 

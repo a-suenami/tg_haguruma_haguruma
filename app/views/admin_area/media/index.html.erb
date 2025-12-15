@@ -46,8 +46,8 @@
         <% @media_assets.each do |media| %>
           <div class="media-card">
             <div class="media-preview">
-              <% if media.image? && media.file.attached? %>
-                <%= image_tag media.file, class: 'media-thumbnail' %>
+              <% if media.image? && media.s3_object_path.present? %>
+                <%= image_tag media.url, class: 'media-thumbnail' %>
               <% elsif media.video? %>
                 <div class="media-icon"><i class="fas fa-video fa-3x"></i></div>
               <% elsif media.audio? %>
@@ -70,8 +70,8 @@
               </p>
             </div>
             <div class="media-actions">
-              <% if media.file.attached? %>
-                <%= link_to rails_blob_path(media.file, disposition: 'attachment'), class: 'btn btn-xs btn-secondary', download: true do %>
+              <% if media.s3_object_path.present? %>
+                <%= link_to media.url, class: 'btn btn-xs btn-secondary', download: media.original_filename, target: '_blank' do %>
                   <i class="fas fa-download"></i>
                 <% end %>
               <% end %>

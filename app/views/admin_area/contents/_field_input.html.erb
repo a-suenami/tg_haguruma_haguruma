@@ -60,32 +60,86 @@
 
   <% when 'richtext' %>
     <div data-controller="react-lexical"
-         data-react-lexical-initial-content-value="<%= html_escape(value.to_s) %>"
+         data-react-lexical-initial-content-value="<%= html_escape(value.to_json) %>"
          data-react-lexical-placeholder-value="内容を入力してください..."
          data-react-lexical-hidden-field-id-value="fields_<%= field.api_identifier %>">
     </div>
     <input type="hidden"
            name="fields[<%= field.api_identifier %>]"
            id="fields_<%= field.api_identifier %>"
-           value="<%= value %>"
+           value="<%= value.to_json %>"
            data-autosave-field-target="input">
 
   <% when 'media_asset' %>
-    <div class="media-asset-field">
+    <div class="media-asset-field"
+         data-controller="media-asset-field"
+         data-media-asset-field-current-media-id-value="<%= value %>"
+         data-media-asset-field-upload-url-value="<%= upload_admin_area_media_path %>"
+         data-media-asset-field-library-url-value="<%= admin_area_media_path(format: :json) %>">
+
+      <!-- Hidden input for form submission -->
       <input type="hidden"
              name="fields[<%= field.api_identifier %>]"
              id="fields_<%= field.api_identifier %>"
              value="<%= value %>"
+             data-media-asset-field-target="hiddenInput"
              data-autosave-field-target="input">
-      <% if value.present? %>
-        <div class="media-preview" id="media_preview_<%= field.api_identifier %>">
-          <span class="media-selected">メディアが選択されています</span>
+
+      <!-- Preview area (shown when media is selected) -->
+      <div class="media-preview-area"
+           data-media-asset-field-target="preview"
+           style="<%= value.blank? ? 'display: none;' : '' %>">
+        <div class="media-preview-card">
+          <div class="media-preview-thumbnail" data-media-asset-field-target="thumbnail">
+            <!-- Dynamically populated based on media type -->
+          </div>
+          <div class="media-preview-footer">
+            <div class="media-preview-info">
+              <span class="media-filename" data-media-asset-field-target="filename"></span>
+              <span class="media-type-badge" data-media-asset-field-target="typeBadge"></span>
+            </div>
+            <button type="button"
+                    class="btn btn-xs btn-danger media-remove-btn"
+                    data-action="media-asset-field#removeMedia">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
         </div>
-      <% end %>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="alert('メディアライブラリは準備中です')">
-        <i class="fas fa-image icon-prefix"></i>
-        メディアを選択
-      </button>
+      </div>
+
+      <!-- Upload progress (hidden by default) -->
+      <div class="upload-progress"
+           data-media-asset-field-target="uploadProgress"
+           style="display: none;">
+        <div class="progress-bar">
+          <div class="progress-fill" data-media-asset-field-target="progressFill"></div>
+        </div>
+        <span class="progress-text">アップロード中...</span>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="media-asset-actions" data-media-asset-field-target="actions">
+        <!-- Hidden file input -->
+        <input type="file"
+               data-media-asset-field-target="fileInput"
+               data-action="change->media-asset-field#uploadFile"
+               accept="image/*,video/*,audio/*,.pdf,.doc,.docx"
+               style="display: none;">
+
+        <button type="button"
+                class="btn btn-secondary btn-sm"
+                data-action="media-asset-field#selectFile">
+          <i class="fas fa-upload icon-prefix"></i>
+          ファイルをアップロード
+        </button>
+
+        <button type="button"
+                class="btn btn-secondary btn-sm"
+                data-action="media-asset-field#openLibrary">
+          <i class="fas fa-images icon-prefix"></i>
+          メディアライブラリから選択
+        </button>
+      </div>
     </div>
 
   <% end %>

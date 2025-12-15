@@ -13,7 +13,7 @@
 #
 FactoryBot.define do
   factory :tenant do
-    sequence(:id) { |n| "test-tenant-#{n}" }
-    sequence(:name) { |n| "Test Tenant #{n}" }
+    id { "tenant-#{SecureRandom.uuid}" }
+    name { "Test Tenant #{id}" }
   end
 end

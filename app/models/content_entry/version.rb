@@ -55,6 +55,6 @@ class ContentEntry::Version < ApplicationRecord
 
   scope :drafts, -> { where(status: STATUSES[:draft]) }
   scope :previews, -> { where(status: STATUSES[:preview]) }
-  scope :published, -> { where(status: STATUSES[:published]) }
+  scope :published, -> { where(status: STATUSES[:published]).where.not(published_at: nil) }
   scope :unpublished, -> { where(status: STATUSES[:unpublished]) }
 end

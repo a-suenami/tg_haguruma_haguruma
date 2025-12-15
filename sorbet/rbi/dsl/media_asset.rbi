@@ -12,12 +12,6 @@ class MediaAsset
   extend CommonRelationMethods
   extend GeneratedRelationMethods
 
-  sig { returns(ActiveStorage::Attached::One) }
-  def file; end
-
-  sig { params(attachable: T.untyped).returns(T.untyped) }
-  def file=(attachable); end
-
   private
 
   sig { returns(NilClass) }
@@ -421,26 +415,8 @@ class MediaAsset
   end
 
   module GeneratedAssociationMethods
-    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Attachment) }
-    def build_file_attachment(*args, &blk); end
-
-    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Blob) }
-    def build_file_blob(*args, &blk); end
-
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def build_tenant(*args, &blk); end
-
-    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Attachment) }
-    def create_file_attachment(*args, &blk); end
-
-    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Attachment) }
-    def create_file_attachment!(*args, &blk); end
-
-    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Blob) }
-    def create_file_blob(*args, &blk); end
-
-    sig { params(args: T.untyped, blk: T.untyped).returns(::ActiveStorage::Blob) }
-    def create_file_blob!(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def create_tenant(*args, &blk); end
@@ -448,32 +424,8 @@ class MediaAsset
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def create_tenant!(*args, &blk); end
 
-    sig { returns(T.nilable(::ActiveStorage::Attachment)) }
-    def file_attachment; end
-
-    sig { params(value: T.nilable(::ActiveStorage::Attachment)).void }
-    def file_attachment=(value); end
-
-    sig { returns(T.nilable(::ActiveStorage::Blob)) }
-    def file_blob; end
-
-    sig { params(value: T.nilable(::ActiveStorage::Blob)).void }
-    def file_blob=(value); end
-
-    sig { returns(T.nilable(::ActiveStorage::Attachment)) }
-    def reload_file_attachment; end
-
-    sig { returns(T.nilable(::ActiveStorage::Blob)) }
-    def reload_file_blob; end
-
     sig { returns(T.nilable(::Tenant)) }
     def reload_tenant; end
-
-    sig { void }
-    def reset_file_attachment; end
-
-    sig { void }
-    def reset_file_blob; end
 
     sig { void }
     def reset_tenant; end
@@ -664,9 +616,6 @@ class MediaAsset
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def with(*args, &blk); end
-
-    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
-    def with_attached_file(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def with_recursive(*args, &blk); end
@@ -1420,9 +1369,6 @@ class MediaAsset
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def with(*args, &blk); end
-
-    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
-    def with_attached_file(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def with_recursive(*args, &blk); end
