@@ -46,6 +46,9 @@ module GeneratedUrlHelpersModule
   def admin_area_contents_collection_entries_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_authorization_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_media_asset_field_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -68,6 +71,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_root_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_authorization_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_singleton_entry_publication_url(*args); end
@@ -260,6 +266,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def rails_storage_redirect_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def root_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def rswag_api_url(*args); end

@@ -45,12 +45,15 @@ module UserQueries
       @user = T.let(nil, T.nilable(User))
     end
 
-    # Filter by content type
-    sig { params(content_type_id: T.nilable(String)).returns(T.self_type) }
-    def by_content_type(content_type_id)
-      return self if content_type_id.blank?
+    # Filter by content type unique_name
+    sig { params(content_type_unique_name: T.nilable(String)).returns(T.self_type) }
+    def by_content_type(content_type_unique_name)
+      return self if content_type_unique_name.blank?
 
-      chain(@scope.where(content_type_id:))
+      content_type = ContentType.find_by(unique_name: content_type_unique_name)
+      return chain(@scope.none) if content_type.nil?
+
+      chain(@scope.where(content_type_id: content_type.id))
     end
 
     # Filter to only published entries
@@ -67,11 +70,12 @@ module UserQueries
     end
 
     # Override resolve to apply authorization filtering
+    # Always filters content based on authorization:
+    # - Public content (no tags): accessible to all
+    # - Restricted content (with tags): only accessible to users with matching tags
     sig { override.returns(T::Array[EntityType]) }
     def resolve
       entries = T.unsafe(call.to_a)
-      return entries unless @user || authorization_filtering_enabled?
-
       entries.select { |entry| self.class.authorized?(entry, user: @user) }
     end
 
@@ -80,11 +84,6 @@ module UserQueries
     sig { override.returns(ActiveRecord::Relation) }
     def base_scope
       ContentEntry.includes(:content_type, versions: { fields: [:content_type_field, :text, :richtext, :media_asset] })
-    end
-
-    sig { returns(T::Boolean) }
-    def authorization_filtering_enabled?
-      !@user.nil?
     end
   end
 end

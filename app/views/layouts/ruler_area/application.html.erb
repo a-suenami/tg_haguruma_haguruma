@@ -9,8 +9,6 @@
     <%# UIKit CSS %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/css/uikit.min.css" />
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "ruler_area/application", "data-turbo-track": "reload" %>
     <%= vite_client_tag %>
     <%= vite_typescript_tag 'entrypoints/ruler_area/application' %>
     <%= vite_stylesheet_tag 'entrypoints/ruler_area/application.scss', skip_preload_tags: true %>
@@ -27,7 +25,7 @@
       <div class="navbar-inner">
         <div class="uk-navbar-left">
           <a href="<%= ruler_area_tenants_path %>" class="uk-navbar-item uk-logo">
-            <%= image_tag 'ruler_area/haguruma-logo.svg', alt: 'Haguruma', width: '120' %>
+            <img src="/images/ruler_area/haguruma-logo.svg" alt="Haguruma" width="120">
           </a>
           <ul class="uk-navbar-nav">
             <li class="<%= 'uk-active' if controller_name == 'tenants' && action_name == 'index' %>">

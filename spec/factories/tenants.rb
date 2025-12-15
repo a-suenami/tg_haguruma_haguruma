@@ -13,7 +13,7 @@
 #
 FactoryBot.define do
   factory :tenant do
-    id { 'sample' }
-    name { 'Sample Tenant' }
+    id { "tenant-#{SecureRandom.uuid}" }
+    name { "Test Tenant #{id}" }
   end
 end

@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
   # Swagger UI and API docs
-  mount Rswag::Ui::Engine => '/api-docs'
-  mount Rswag::Api::Engine => '/api-docs'
+  # - Development/Test: always accessible
+  # - Production: only accessible from ruler.* subdomain
+  if Rails.env.development? || Rails.env.test?
+    mount Rswag::Ui::Engine => '/api-docs'
+    mount Rswag::Api::Engine => '/api-docs'
+  else
+    constraints subdomain: /\Aruler\./ do
+      mount Rswag::Ui::Engine => '/api-docs'
+      mount Rswag::Api::Engine => '/api-docs'
+    end
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -14,7 +23,8 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  # Redirect based on subdomain: ruler.* -> /ruler, admin.* -> /admin
+  root to: 'root#index'
 
   # Ruler Area routes
   namespace :ruler_area, path: :ruler do

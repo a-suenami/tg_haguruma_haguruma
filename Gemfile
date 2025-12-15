@@ -4,8 +4,8 @@ ruby '~> 3.3.0'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 8.0.2'
-# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem 'propshaft'
+# Note: Using Vite instead of Propshaft for asset pipeline
+# gem 'propshaft'  # Removed - using vite_rails only
 # Use PostgreSQL as the database for Active Record
 gem 'pg', '~> 1.5.4'
 # Use the Puma web server [https://github.com/puma/puma]
@@ -91,6 +91,9 @@ gem 'reserved_subdomain', '~> 0.0.4'
 gem 'datadog', '~> 2.18.0'
 gem 'phonelib', '~> 0.10.6'
 # gem 'ruby-jq', '~> 0.2.1' # Complex build dependencies, optional gem
+
+# JSON Schema validation
+gem 'json-schema', '~> 4.3.1'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"

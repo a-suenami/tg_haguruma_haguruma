@@ -23,8 +23,6 @@
 class MediaAsset < ApplicationRecord
   include Multitenancy
 
-  has_one_attached :file
-
   enum :media_type, {
     image: 1,
     video: 2,
@@ -44,11 +42,18 @@ class MediaAsset < ApplicationRecord
   scope :documents, -> { where(media_type: :document) }
 
   def original_filename
-    metadata&.dig('original_filename') || file.filename.to_s
+    metadata&.dig('original_filename') || ''
   end
 
   def content_type
     mime_type
+  end
+
+  def url
+    return nil if s3_object_path.blank?
+
+    uploader = MediaAsset::Uploader.new
+    uploader.url_for(s3_object_path)
   end
 
   def self.detect_media_type(mime_type)

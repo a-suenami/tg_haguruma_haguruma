@@ -27,7 +27,7 @@
 require 'rails_helper'
 
 describe UserTag do
-  let(:tenant) { create(:tenant, id: 'sample') }
+  let(:tenant) { create(:tenant) }
   let(:user) { create(:user, tenant:) }
   let(:tag) { create(:content_authorization_tag, tenant_id: tenant.id) }
 

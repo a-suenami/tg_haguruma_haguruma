@@ -25,7 +25,7 @@
 require 'rails_helper'
 
 describe ContentAuthorizationTag do
-  let(:tenant) { create(:tenant, id: 'sample') }
+  let(:tenant) { create(:tenant) }
 
   before do
     Tenant.current_id = tenant.id
@@ -51,7 +51,7 @@ describe ContentAuthorizationTag do
     end
 
     it 'allows same name in different tenants' do
-      other_tenant = create(:tenant, id: 'other')
+      other_tenant = create(:tenant)
       create(:content_authorization_tag, tenant_id: tenant.id, name: 'Premium')
 
       Tenant.current_id = other_tenant.id

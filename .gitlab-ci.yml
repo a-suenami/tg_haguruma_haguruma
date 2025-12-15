@@ -92,7 +92,7 @@ rubocop:
     - schedules
 
 rspec:
-  parallel: 4
+  # parallel: 4  # TODO: Fix parallel test failures
   tags:
     - x86_64-linux
     - r1.2xlarge
@@ -111,11 +111,12 @@ rspec:
     REDIS_FOR_WORKER_URL: redis://redis:6379/0
     SECRET_KEY_BASE: d5a4673d2c4b02366ae8cc60e2bac02234866f11722cc8ba096a7f05841ef2c849cc58cc956c4a128acaa6d105b40159bc6c48f02450b7b885d62cb33961b3d8
     ALLOW_ORIGINS: '[]'
-    PARALLEL_SPLIT_TEST: 'true'
-    KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC: $KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC
-    KNAPSACK_PRO_FIXED_QUEUE_SPLIT: 'true'
-    KNAPSACK_PRO_RSPEC_SPLIT_BY_TEST_EXAMPLES: 'true'
-    KNAPSACK_PRO_LOG_LEVEL: 'info'
+    # Parallel test variables (disabled)
+    # PARALLEL_SPLIT_TEST: 'true'
+    # KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC: $KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC
+    # KNAPSACK_PRO_FIXED_QUEUE_SPLIT: 'true'
+    # KNAPSACK_PRO_RSPEC_SPLIT_BY_TEST_EXAMPLES: 'true'
+    # KNAPSACK_PRO_LOG_LEVEL: 'info'
     ACTIVE_RECORD_PRIMARY_KEY: 'dummy'
     ACTIVE_RECORD_KEY_DERIVATION_SALT: 'dummy'
     ACTIVE_RECORD_DETERMINISTIC_KEY: 'dummy'
@@ -128,18 +129,18 @@ rspec:
     - name: amazon/dynamodb-local:1.22.0
       alias: dynamodb
   before_script:
-    # - touch log/bullet.log
     - apt-get update && apt-get install -y libjq-dev
     - /bin/sh docker/scripts/bundle_install.sh
-    - bundle exec rake parallel:setup
+    # - bundle exec rake parallel:setup
+    - bundle exec rake db:create db:schema:load db:seed
     - bundle exec thor dynamodb:migrate
-  # after_script:
-  #   - cat log/bullet.log
   script:
-    - export PARALLEL_TESTS_CONCURRENCY=$(nproc)
-    - export KNAPSACK_PRO_CI_NODE_TOTAL=$CI_NODE_TOTAL
-    - export KNAPSACK_PRO_CI_NODE_INDEX=$(expr $CI_NODE_INDEX - 1)
-    - bundle exec parallel_rspec -n $PARALLEL_TESTS_CONCURRENCY -e './bin/parallel_tests'
+    # Parallel execution (disabled)
+    # - export PARALLEL_TESTS_CONCURRENCY=$(nproc)
+    # - export KNAPSACK_PRO_CI_NODE_TOTAL=$CI_NODE_TOTAL
+    # - export KNAPSACK_PRO_CI_NODE_INDEX=$(expr $CI_NODE_INDEX - 1)
+    # - bundle exec parallel_rspec -n $PARALLEL_TESTS_CONCURRENCY -e './bin/parallel_tests'
+    - bundle exec rspec
   except:
     - /^deploy-.*$/
     - schedules
