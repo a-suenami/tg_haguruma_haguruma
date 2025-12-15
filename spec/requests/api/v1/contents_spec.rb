@@ -25,7 +25,7 @@ RSpec.describe 'Api::V1::Contents' do
                },
                required: ['data']
 
-        let(:tenant) { create(:tenant, id: 'test-tenant') }
+        let(:tenant) { create(:tenant) }
 
         before do
           Tenant.current_id = tenant.id
@@ -51,7 +51,7 @@ RSpec.describe 'Api::V1::Contents' do
       response '200', 'successful' do
         schema '$ref' => '#/components/schemas/ContentEntryResponse'
 
-        let(:tenant) { create(:tenant, id: 'test-tenant') }
+        let(:tenant) { create(:tenant) }
         let(:content_type) { create(:content_type, tenant:) }
         let(:content_entry) { create(:content_entry, :published, tenant:, content_type:) }
         let(:id) { content_entry.id }
@@ -67,7 +67,7 @@ RSpec.describe 'Api::V1::Contents' do
       response '404', 'not found' do
         schema '$ref' => '#/components/schemas/Error'
 
-        let(:tenant) { create(:tenant, id: 'test-tenant') }
+        let(:tenant) { create(:tenant) }
         let(:id) { '00000000-0000-0000-0000-000000000000' }
 
         before do
