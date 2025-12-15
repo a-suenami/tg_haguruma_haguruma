@@ -24,13 +24,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # Redirect based on subdomain: ruler.* -> /ruler, admin.* -> /admin
-  constraints subdomain: /\Aruler\./ do
-    root to: redirect('/ruler')
-  end
-
-  constraints subdomain: /\Aadmin\./ do
-    root to: redirect('/admin')
-  end
+  root to: 'root#index'
 
   # Ruler Area routes
   namespace :ruler_area, path: :ruler do

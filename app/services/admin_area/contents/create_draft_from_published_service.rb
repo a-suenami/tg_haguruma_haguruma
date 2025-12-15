@@ -36,6 +36,9 @@ module AdminArea
 
           copy_fields_to_draft(T.must(draft_version))
           raise ActiveRecord::Rollback if @errors.any?
+
+          copy_authorization_tags(T.must(draft_version))
+          raise ActiveRecord::Rollback if @errors.any?
         end
 
         if @errors.any?
@@ -61,6 +64,7 @@ module AdminArea
           content_entry_id: @content_entry.id,
           version: max_version + 1,
           status: :draft,
+          is_public: @published_version.is_public,
         )
 
         unless version.save
@@ -107,7 +111,7 @@ module AdminArea
       def copy_text_field(published_field, new_field)
         return unless published_field.text
 
-        new_text = ContentEntry::FieldText.create!(value: published_field.text.value)
+        new_text = ContentEntry::FieldText.create!(value: T.must(published_field.text).value)
         new_field.text = new_text
       end
 
@@ -115,7 +119,7 @@ module AdminArea
       def copy_richtext_field(published_field, new_field)
         return unless published_field.richtext
 
-        new_richtext = ContentEntry::FieldRichtext.create!(value: published_field.richtext.value)
+        new_richtext = ContentEntry::FieldRichtext.create!(value: T.must(published_field.richtext).value)
         new_field.richtext = new_richtext
       end
 
@@ -126,10 +130,22 @@ module AdminArea
         # メディアアセットは同じものを参照するので、新しいFieldMediaAssetを作成して同じmedia_assetを参照
         new_media_asset = ContentEntry::FieldMediaAsset.create!(
           tenant_id: Tenant.current_id,
-          media_asset_id: published_field.media_asset.media_asset_id,
-          media_type: published_field.media_asset.media_type,
+          media_asset_id: T.must(published_field.media_asset).media_asset_id,
+          media_type: T.must(published_field.media_asset).media_type,
         )
         new_field.media_asset = new_media_asset
+      end
+
+      sig { params(draft_version: ContentEntry::Version).void }
+      def copy_authorization_tags(draft_version)
+        @published_version.content_authorization_tags.each do |tag|
+          ContentEntryAuthorization.create!(
+            tenant_id: Tenant.current_id,
+            content_entry_id: @content_entry.id,
+            version: draft_version.version,
+            content_authorization_tag_id: tag.id,
+          )
+        end
       end
     end
   end
