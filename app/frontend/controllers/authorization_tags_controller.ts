@@ -102,6 +102,7 @@ export default class extends Controller {
   }
 
   selectTag(event: Event) {
+    event.stopPropagation()
     const button = event.currentTarget as HTMLElement
     const tagId = button.dataset.tagId
     if (!tagId) return
@@ -112,6 +113,7 @@ export default class extends Controller {
 
     if (this.hasInputTarget) {
       this.inputTarget.value = ""
+      this.inputTarget.blur()
     }
     this.hideDropdown()
   }
@@ -123,6 +125,7 @@ export default class extends Controller {
     this.markDirty()
     if (this.hasInputTarget) {
       this.inputTarget.focus()
+      this.showFilteredTags("")
     }
   }
 
