@@ -2,10 +2,14 @@
 
 ## 進行中
 
-- [ ] Ruler にユーザー管理機能を実装（一覧、認可タグ、トークン作成）
+- [ ] Triple と oauth_provider テーブルを比較して差分を分析（必要なら修正）
+  - IDP を使った動作確認
+- [ ] ユーザー管理: oauth_provider_id を nullable にして認証プロバイダなしでも作成可能に
+  - スキーマ変更: `db/schemas/users.schema` で `null: false` を削除
+  - User モデル: `belongs_to :oauth_provider, optional: true` に変更
+  - コントローラー/ビュー: プロバイダなしの場合の表示対応
 - [ ] バリデーションが不適なときは公開できないようにする
 - [ ] 多言語化を disable
-- [ ] Triple と oauth_provider テーブルを比較して差分を分析（必要なら修正）
 - [ ] seed リファクタリング
 
 - [ ] 認可に Pundit を使うかどうか検討
@@ -24,6 +28,14 @@
 - プレビュー機能
 
 ## 完了
+
+- [x] Ruler にユーザー管理機能を実装（一覧、認可タグ、トークン作成）
+  - UsersController: 一覧・詳細・新規作成・削除
+  - UserTagsController: 認可タグの付与・削除
+  - SessionTokensController: トークン作成・一覧・無効化
+  - 手動作成ユーザー（last_authenticated_at = NULL）のみ削除可能
+  - トークン有効期限: 30/60/90/365日から選択可能
+  - UID は空欄の場合 UUID 自動生成
 
 - [x] 全公開と認証済みユーザーに公開を分ける（3段階visibility）
   - `is_public` boolean を `visibility` enum に変更
