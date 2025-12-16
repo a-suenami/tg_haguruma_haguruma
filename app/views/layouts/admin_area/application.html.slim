@@ -31,6 +31,8 @@ html lang="ja"
               = link_to 'メディア', admin_area_media_path
             li class=('active' if controller_name == 'categories')
               = link_to 'カテゴリー', admin_area_categories_path
+            li class=('active' if controller_name == 'authorization_tags')
+              = link_to '認可タグ', admin_area_authorization_tags_path
             / li class=('active' if controller_name == 'content_types')
             /   = link_to 'コンテンツタイプ', admin_area_content_types_path
             / li class=('active' if controller_name == 'setting')

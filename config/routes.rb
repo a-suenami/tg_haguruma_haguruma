@@ -50,6 +50,11 @@ Rails.application.routes.draw do
       resources :admins, except: [:show]
       resources :oauth_providers, except: [:show]
       resources :content_types, except: [:edit, :destroy]
+      resources :authorization_tags, except: [:show]
+      resources :users, only: [:index, :show, :new, :create, :destroy] do
+        resources :user_tags, only: [:create, :destroy]
+        resources :session_tokens, only: [:index, :create, :destroy]
+      end
     end
   end
 

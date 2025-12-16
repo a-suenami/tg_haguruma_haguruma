@@ -134,6 +134,26 @@ en:
         password_hint: Leave blank if you don't want to change your password
       errors:
         email_already_exists: This email address is already in use
+    authorization_tags:
+      created: Authorization tag created successfully
+      updated: Authorization tag updated successfully
+      destroyed: Authorization tag deleted successfully
+      not_found: Authorization tag not found
+      cannot_delete_external: Cannot delete externally registered tags
+    users:
+      created: User created successfully
+      destroyed: User deleted successfully
+      not_found: User not found
+      cannot_delete_authenticated: Authenticated users cannot be deleted
+    user_tags:
+      added: Authorization tag assigned successfully
+      removed: Authorization tag removed successfully
+      not_found: Authorization tag assignment not found
+    session_tokens:
+      created: Token created successfully
+      create_failed: Failed to create token
+      revoked: Token revoked successfully
+      not_found: Token not found
   admin_area:
     auth0:
       already_logged_in: You are already logged in
@@ -151,6 +171,10 @@ en:
       not_found: Admin not found
       errors:
         email_already_exists: This email address is already in use
+    authorization_tags:
+      created: Authorization tag created successfully
+      updated: Authorization tag updated successfully
+      destroyed: Authorization tag deleted successfully
     profiles:
       edit:
         title: Profile Settings

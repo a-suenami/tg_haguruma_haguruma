@@ -111,6 +111,26 @@ ja:
       updated: 認証プロバイダを更新しました
       destroyed: 認証プロバイダを削除しました
       not_found: 認証プロバイダが見つかりません
+    authorization_tags:
+      created: 認可タグを作成しました
+      updated: 認可タグを更新しました
+      destroyed: 認可タグを削除しました
+      not_found: 認可タグが見つかりません
+      cannot_delete_external: 外部連携で登録されたタグは削除できません
+    users:
+      created: ユーザーを作成しました
+      destroyed: ユーザーを削除しました
+      not_found: ユーザーが見つかりません
+      cannot_delete_authenticated: 認証済みユーザーは削除できません
+    user_tags:
+      added: 認可タグを付与しました
+      removed: 認可タグを削除しました
+      not_found: 認可タグの関連付けが見つかりません
+    session_tokens:
+      created: トークンを作成しました
+      create_failed: トークンの作成に失敗しました
+      revoked: トークンを無効化しました
+      not_found: トークンが見つかりません
   admin_area:
     auth0:
       already_logged_in: すでにログインしています
@@ -141,6 +161,10 @@ ja:
       uploaded: メディアをアップロードしました
       updated: メディア情報を更新しました
       destroyed: メディアを削除しました
+    authorization_tags:
+      created: 認可タグを作成しました
+      updated: 認可タグを更新しました
+      destroyed: 認可タグを削除しました
     admins:
       created: 管理者を作成しました
       updated: 管理者を更新しました
