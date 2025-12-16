@@ -81,10 +81,14 @@ export default class extends Controller {
   }
 
   private showFilteredTags(query: string) {
+    // Don't show dropdown if a tag is already selected
+    if (this.selectedValue) {
+      this.hideDropdown()
+      return
+    }
+
     const availableTags = this.tagsValue.filter(
-      (tag) =>
-        tag.id !== this.selectedValue &&
-        (query === "" || tag.name.toLowerCase().includes(query))
+      (tag) => query === "" || tag.name.toLowerCase().includes(query)
     )
 
     const tagsToShow = availableTags.slice(0, 5)
