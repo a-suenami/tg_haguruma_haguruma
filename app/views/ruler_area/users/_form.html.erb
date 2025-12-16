@@ -1,0 +1,42 @@
+<% if @error_message.present? %>
+  <div class="uk-alert-danger" uk-alert>
+    <a href="#" class="uk-alert-close" uk-close></a>
+    <p><%= @error_message %></p>
+  </div>
+<% end %>
+
+<%= form_with(url: form_url, method: form_method, scope: :user, local: true) do |form| %>
+  <div class="uk-margin">
+    <%= form.label :uid, 'UID', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.text_field :uid, value: @user.uid, class: "uk-input #{'uk-form-danger' if @user.errors[:uid].any?}", placeholder: '空欄の場合はUUIDが自動生成されます' %>
+      <% if @user.errors[:uid].any? %>
+        <div class="uk-text-danger uk-text-small"><%= @user.errors[:uid].join(', ') %></div>
+      <% end %>
+      <div class="uk-text-muted uk-text-small">空欄の場合はUUIDが自動生成されます</div>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <label class="uk-form-label">認証プロバイダ</label>
+    <div class="uk-form-controls">
+      <% if @oauth_providers.any? %>
+        <input type="text" class="uk-input" value="<%= @oauth_providers.first.client_id %>" disabled>
+        <div class="uk-text-muted uk-text-small">テナントに設定された認証プロバイダが使用されます</div>
+      <% else %>
+        <div class="uk-alert-warning" uk-alert>
+          <p>認証プロバイダが設定されていません。先に<%= link_to '認証プロバイダ', ruler_area_tenant_oauth_providers_path(@tenant), class: 'uk-link' %>を設定してください。</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <% if @oauth_providers.any? %>
+      <%= form.submit submit_label, class: 'uk-button uk-button-primary' %>
+    <% else %>
+      <button type="button" class="uk-button uk-button-primary" disabled>作成</button>
+    <% end %>
+    <%= link_to 'キャンセル', ruler_area_tenant_users_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>
