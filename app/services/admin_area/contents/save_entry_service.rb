@@ -19,15 +19,15 @@ module AdminArea
           content_entry: T.nilable(ContentEntry),
           fields_params: T::Hash[String, T.untyped],
           authorization_tag_ids: T::Array[String],
-          is_public: T::Boolean,
+          visibility: String,
         ).void
       end
-      def initialize(content_type:, content_entry: nil, fields_params: {}, authorization_tag_ids: [], is_public: true)
+      def initialize(content_type:, content_entry: nil, fields_params: {}, authorization_tag_ids: [], visibility: 'public')
         @content_type = content_type
         @content_entry = content_entry
         @fields_params = fields_params
         @authorization_tag_ids = authorization_tag_ids
-        @is_public = is_public
+        @visibility = visibility
         @errors = T.let([], T::Array[String])
       end
 
@@ -82,7 +82,7 @@ module AdminArea
         )
 
         if existing_draft
-          existing_draft.update!(is_public: @is_public)
+          existing_draft.update!(visibility: @visibility)
           @saved_version = T.let(existing_draft, T.nilable(ContentEntry::Version))
           existing_draft
         else
@@ -99,7 +99,7 @@ module AdminArea
             content_entry_id: entry.id,
             version: max_version + 1,
             status: :draft,
-            is_public: @is_public,
+            visibility: @visibility,
           )
 
           unless version.save
@@ -206,6 +206,7 @@ module AdminArea
           content_entry: entry,
           version:,
           authorization_tag_ids: @authorization_tag_ids,
+          visibility: @visibility,
         ).call
 
         @errors.concat(result.errors) unless result.success

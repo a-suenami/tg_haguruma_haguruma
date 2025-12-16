@@ -27,7 +27,6 @@ class RulerArea::ApplicationController
     include ::ActionController::Base::HelperMethods
     include ::RulerArea::ApplicationHelper
     include ::ApplicationHelper
-    include ::RulerArea::ContentModelsHelper
 
     sig { returns(T.untyped) }
     def current_ruler; end

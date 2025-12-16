@@ -76,11 +76,11 @@ class ContentType::Field < ApplicationRecord
   def field_type_label
     case field_type
     when 'text'
-      I18n.t('ruler_area.content_models.field_types.text')
+      I18n.t('ruler_area.content_types.field_types.text')
     when 'richtext'
-      I18n.t('ruler_area.content_models.field_types.richtext')
+      I18n.t('ruler_area.content_types.field_types.richtext')
     when 'media_asset'
-      I18n.t('ruler_area.content_models.field_types.media_asset')
+      I18n.t('ruler_area.content_types.field_types.media_asset')
     else
       field_type
     end

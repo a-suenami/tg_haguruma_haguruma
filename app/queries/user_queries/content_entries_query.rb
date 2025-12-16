@@ -17,25 +17,32 @@ module UserQueries
     class << self
       extend T::Sig
 
-      # Check if user is authorized to access the entry
-      # Content without tags is accessible to all
-      # Content with tags requires user to have at least one matching tag
+      # Check if user is authorized to access the entry based on visibility level
+      # - public: Anyone can access (including anonymous users)
+      # - authenticated: Only logged-in users can access
+      # - restricted: Only users with matching authorization tags can access
       sig { params(entry: ContentEntry, user: T.nilable(User)).returns(T::Boolean) }
       def authorized?(entry, user:)
         published_version = entry.versions.find(&:published?)
         return false unless published_version
 
-        content_tags = published_version.content_authorization_tags
+        case published_version.visibility
+        when 'public'
+          true
+        when 'authenticated'
+          user.present?
+        when 'restricted'
+          return false if user.nil?
 
-        # Content without tags is accessible to all
-        return true if content_tags.empty?
+          content_tags = published_version.content_authorization_tags
+          return false if content_tags.empty?
 
-        # Content with tags requires authenticated user with matching tag
-        return false if user.nil?
-
-        user_tag_ids = user.content_authorization_tags.pluck(:id)
-        content_tag_ids = content_tags.pluck(:id)
-        user_tag_ids.intersect?(content_tag_ids)
+          user_tag_ids = user.content_authorization_tags.pluck(:id)
+          content_tag_ids = content_tags.pluck(:id)
+          user_tag_ids.intersect?(content_tag_ids)
+        else
+          false
+        end
       end
     end
 
