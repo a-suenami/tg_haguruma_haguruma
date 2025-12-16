@@ -1,8 +1,9 @@
 # typed: true
 # frozen_string_literal: true
 
-class RulerArea::ContentModelsController < RulerArea::ApplicationController
+class RulerArea::ContentTypesController < RulerArea::ApplicationController
   extend T::Sig
+  include RulerArea::TenantSettable
   before_action :set_tenant
   before_action :set_content_type, only: [:show, :update]
 
@@ -27,7 +28,7 @@ class RulerArea::ContentModelsController < RulerArea::ApplicationController
     @content_type = ContentType.new(content_type_params)
 
     if @content_type.save
-      redirect_to ruler_area_tenant_content_model_path(@tenant, @content_type), notice: t('ruler_area.content_models.created')
+      redirect_to ruler_area_tenant_content_type_path(@tenant, @content_type), notice: t('ruler_area.content_types.created')
     else
       render :new, status: :unprocessable_entity
     end
@@ -36,7 +37,7 @@ class RulerArea::ContentModelsController < RulerArea::ApplicationController
   sig { void }
   def update
     if @content_type.update(content_type_params)
-      redirect_to ruler_area_tenant_content_model_path(@tenant, @content_type), notice: t('ruler_area.content_models.updated')
+      redirect_to ruler_area_tenant_content_type_path(@tenant, @content_type), notice: t('ruler_area.content_types.updated')
     else
       render :show, status: :unprocessable_entity
     end

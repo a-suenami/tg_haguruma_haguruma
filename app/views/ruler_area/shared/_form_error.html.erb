@@ -1,13 +1,11 @@
-<% all_errors = format_form_errors(target) %>
-
-<% if all_errors.any? %>
+<% if target.errors.any? %>
   <div class="uk-alert-danger" uk-alert>
     <a href class="uk-alert-close" uk-close></a>
     <h4 class="uk-margin-remove-bottom">
-      <%= pluralize(all_errors.count, "つのエラー") %>が発生しました
+      <%= target.errors.count %>件のエラーが発生しました
     </h4>
     <ul class="uk-list uk-margin-small-top">
-      <% all_errors.each do |message| %>
+      <% target.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     </ul>

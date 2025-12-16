@@ -16,23 +16,23 @@ module AdminArea
           content_entry: ContentEntry,
           version: ContentEntry::Version,
           authorization_tag_ids: T::Array[String],
-          is_public: T::Boolean,
+          visibility: String,
         ).void
       end
-      def initialize(content_entry:, version:, authorization_tag_ids:, is_public: true)
+      def initialize(content_entry:, version:, authorization_tag_ids:, visibility: 'public')
         @content_entry = content_entry
         @version = version
         @authorization_tag_ids = authorization_tag_ids
-        @is_public = is_public
+        @visibility = visibility
         @errors = T.let([], T::Array[String])
       end
 
       sig { returns(Result) }
       def call
         ActiveRecord::Base.transaction do
-          update_is_public
+          update_visibility
           clear_existing_authorizations
-          create_new_authorizations
+          create_new_authorizations if @visibility == 'restricted'
 
           raise ActiveRecord::Rollback if @errors.any?
         end
@@ -43,8 +43,8 @@ module AdminArea
       private
 
       sig { void }
-      def update_is_public
-        @version.update!(is_public: @is_public)
+      def update_visibility
+        @version.update!(visibility: @visibility)
       rescue ActiveRecord::RecordInvalid => e
         @errors << e.message
       end

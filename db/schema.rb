@@ -114,12 +114,14 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.integer "version", default: 1, null: false
     t.integer "status", null: false
     t.boolean "is_public", default: false, null: false
+    t.integer "visibility", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "published_at"
     t.datetime "unpublished_at"
     t.index ["content_entry_id", "version"], name: "index_content_entry_versions_on_entry_version", unique: true
     t.index ["tenant_id", "content_type_id", "content_entry_id", "version"], name: "index_content_entry_versions_on_tenant_type_entry_version", unique: true
     t.index ["tenant_id", "is_public"], name: "index_content_entry_versions_on_tenant_is_public"
+    t.index ["tenant_id", "visibility"], name: "index_content_entry_versions_on_tenant_visibility"
   end
 
   create_table "content_type_field_media_assets", force: :cascade do |t|

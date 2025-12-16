@@ -15,13 +15,17 @@ module AdminArea
 
           def show
             unless @published_version
-              render_not_found
+              # No published version - redirect to edit page
+              redirect_to edit_admin_area_contents_collection_entry_path(
+                content_type_id: T.must(@content_type).id,
+                id: T.must(@content_entry).id,
+              )
               return
             end
 
             @field_values = load_field_values
             load_selected_authorization_tags
-            load_is_public
+            load_visibility
           end
 
           # Override: Show prioritizes published version

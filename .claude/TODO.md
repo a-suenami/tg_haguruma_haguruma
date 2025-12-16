@@ -2,6 +2,16 @@
 
 ## 進行中
 
+- [ ] Triple と oauth_provider テーブルを比較して差分を分析（必要なら修正）
+  - IDP を使った動作確認
+- [ ] ユーザー管理: oauth_provider_id を nullable にして認証プロバイダなしでも作成可能に
+  - スキーマ変更: `db/schemas/users.schema` で `null: false` を削除
+  - User モデル: `belongs_to :oauth_provider, optional: true` に変更
+  - コントローラー/ビュー: プロバイダなしの場合の表示対応
+- [ ] バリデーションが不適なときは公開できないようにする
+- [ ] 多言語化を disable
+- [ ] seed リファクタリング
+
 - [ ] 認可に Pundit を使うかどうか検討
 
 - [ ] 「メディアライブラリから選択」が動いてない
@@ -9,9 +19,50 @@
 - [ ] first published at をもたせて、それの降順にする
 - [ ] swagger の　URL が　example.com になってる
 
+- [ ] e2e テスト
+
+- [ ] Cookie は Redis 使う？
+
+- rspec を並列に実行するとエラーになる（とりあえずパラレルテストをコメントアウトした）
+
 - プレビュー機能
 
 ## 完了
+
+- [x] Ruler にユーザー管理機能を実装（一覧、認可タグ、トークン作成）
+  - UsersController: 一覧・詳細・新規作成・削除
+  - UserTagsController: 認可タグの付与・削除
+  - SessionTokensController: トークン作成・一覧・無効化
+  - 手動作成ユーザー（last_authenticated_at = NULL）のみ削除可能
+  - トークン有効期限: 30/60/90/365日から選択可能
+  - UID は空欄の場合 UUID 自動生成
+
+- [x] 全公開と認証済みユーザーに公開を分ける（3段階visibility）
+  - `is_public` boolean を `visibility` enum に変更
+  - 3段階: public（全公開）, authenticated（認証済みユーザーのみ）, restricted（タグ制限）
+  - `ContentEntry::Version` モデルに `VISIBILITIES` 定数と enum 追加（`prefix: true`）
+  - `ContentEntriesQuery.authorized?` を3段階対応に修正
+  - 編集画面でラジオボタン3択のUI実装
+  - 関連サービス・コントローラーを全て更新
+
+- [x] 認可タグ管理機能
+  - Admin側: 一覧画面（閲覧のみ）、サイドバーに「認可タグ」メニュー追加
+  - Ruler側: CRUD機能（一覧・新規・編集・削除）
+  - Rulerの「開発・テスト（内部向け）」メニューに配置
+  - 外部連携（remote_id）タグは削除不可
+
+- [x] サイドバー調整
+  - メディアとカテゴリーページから2段目サイドバー（コンテンツタイプ一覧）を削除
+  - `custom-container-no-sidebar` クラスを追加してフル幅レイアウトに変更
+
+- [x] コンテンツタイプ管理画面 (ruler_area) がエラーになる問題を修正
+  - `content_models` → `content_types` へ名称統一
+  - URL、コントローラー、ビュー、翻訳ファイルを全てリネーム
+  - `TenantSettable` concern の include 漏れを修正
+
+- [x] シングルトン/コレクションで公開バージョンがない場合の404エラーを修正
+  - show コントローラーで公開バージョンがない場合は edit へリダイレクト
+  - コレクション・シングルトン両方で対応
 
 - [x] 「公開中」と「編集中」のタブを左右逆にする
   - 公開中を左、編集中を右に配置変更

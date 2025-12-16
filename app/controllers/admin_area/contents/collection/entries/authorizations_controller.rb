@@ -18,7 +18,7 @@ module AdminArea
               content_entry: T.must(@content_entry),
               version: T.must(@draft_version),
               authorization_tag_ids:,
-              is_public: public_param?,
+              visibility: visibility_param,
             ).call
 
             if result.success
@@ -64,9 +64,9 @@ module AdminArea
             tag_id.present? ? [tag_id] : []
           end
 
-          sig { returns(T::Boolean) }
-          def public_param?
-            params[:is_public] == true || params[:is_public] == 'true' || params[:is_public] == '1'
+          sig { returns(String) }
+          def visibility_param
+            params[:visibility] || 'public'
           end
         end
       end

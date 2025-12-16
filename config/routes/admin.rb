@@ -50,6 +50,7 @@ namespace :admin_area, path: :admin do
     end
   end
   resources :categories, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  resources :authorization_tags, only: [:index]
 
   # ContentType management
   resources :content_types do
