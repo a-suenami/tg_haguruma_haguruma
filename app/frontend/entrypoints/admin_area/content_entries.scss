@@ -1851,6 +1851,69 @@
    Authorization Tags Styles
    ================================= */
 
+/* Visibility Options (Radio Buttons) */
+.visibility-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.visibility-option {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 12px;
+    background: var(--background-secondary, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    &:has(input:checked) {
+        background: #ede9fe;
+        border-color: #a78bfa;
+    }
+
+    input[type="radio"] {
+        display: none;
+    }
+
+    .visibility-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+
+        i {
+            font-size: 14px;
+            color: #6b7280;
+        }
+    }
+
+    &:has(input:checked) .visibility-label {
+        color: #5b21b6;
+
+        i {
+            color: #6366f1;
+        }
+    }
+
+    .visibility-description {
+        display: block;
+        margin-top: 4px;
+        margin-left: 22px;
+        font-size: 11px;
+        color: #6b7280;
+    }
+}
+
 .authorization-tags-container {
     display: flex;
     flex-direction: column;
@@ -2105,6 +2168,15 @@
 
         i {
             color: #22c55e;
+        }
+    }
+
+    &.authenticated {
+        background: #dbeafe;
+        color: #1e40af;
+
+        i {
+            color: #3b82f6;
         }
     }
 

@@ -64,7 +64,7 @@ module AdminArea
           content_entry_id: @content_entry.id,
           version: max_version + 1,
           status: :draft,
-          is_public: @published_version.is_public,
+          visibility: @published_version.visibility,
         )
 
         unless version.save

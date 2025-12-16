@@ -1,6 +1,6 @@
 <% authorization_tags ||= ContentAuthorizationTag.all %>
 <% selected_tag_id ||= nil %>
-<% is_public = local_assigns.fetch(:is_public, true) %>
+<% visibility = local_assigns.fetch(:visibility, 'public') %>
 <% save_url = local_assigns[:save_url] %>
 <% standalone_mode = save_url.present? %>
 
@@ -14,24 +14,55 @@
      data-authorization-tags-tags-value="<%= tags_json %>"
      data-authorization-tags-selected-value="<%= selected_json %>"
      data-authorization-tags-save-url-value="<%= save_url %>"
-     data-authorization-tags-standalone-value="<%= standalone_mode %>">
+     data-authorization-tags-standalone-value="<%= standalone_mode %>"
+     data-authorization-tags-visibility-value="<%= visibility %>">
   <h4 class="action-section-title">ACCESS CONTROL</h4>
   <div class="authorization-tags-container">
-    <label class="authorization-tag-item is-public-item">
-      <input type="checkbox"
-             name="is_public"
-             value="1"
-             <%= 'checked' if is_public %>
-             class="authorization-tag-checkbox"
-             data-authorization-tags-target="isPublicCheckbox"
-             data-action="change->authorization-tags#onIsPublicChange">
-      <span class="authorization-tag-label">公開</span>
-    </label>
-    <p class="authorization-tags-help">
-      <small>チェックを外すと認可タグを持つユーザーのみアクセス可能になります。</small>
-    </p>
+    <div class="visibility-options">
+      <label class="visibility-option">
+        <input type="radio"
+               name="visibility"
+               value="public"
+               <%= 'checked' if visibility == 'public' %>
+               data-authorization-tags-target="visibilityRadio"
+               data-action="change->authorization-tags#onVisibilityChange">
+        <span class="visibility-label">
+          <i class="fas fa-globe"></i>
+          全公開
+        </span>
+        <small class="visibility-description">誰でもアクセス可能</small>
+      </label>
 
-    <div class="authorization-tag-selector" data-authorization-tags-target="tagSelector" style="<%= 'display: none;' if is_public %>">
+      <label class="visibility-option">
+        <input type="radio"
+               name="visibility"
+               value="authenticated"
+               <%= 'checked' if visibility == 'authenticated' %>
+               data-authorization-tags-target="visibilityRadio"
+               data-action="change->authorization-tags#onVisibilityChange">
+        <span class="visibility-label">
+          <i class="fas fa-user"></i>
+          認証済みユーザーのみ
+        </span>
+        <small class="visibility-description">ログインしているユーザーのみ</small>
+      </label>
+
+      <label class="visibility-option">
+        <input type="radio"
+               name="visibility"
+               value="restricted"
+               <%= 'checked' if visibility == 'restricted' %>
+               data-authorization-tags-target="visibilityRadio"
+               data-action="change->authorization-tags#onVisibilityChange">
+        <span class="visibility-label">
+          <i class="fas fa-lock"></i>
+          タグ制限
+        </span>
+        <small class="visibility-description">指定したタグを持つユーザーのみ</small>
+      </label>
+    </div>
+
+    <div class="authorization-tag-selector" data-authorization-tags-target="tagSelector" style="<%= 'display: none;' unless visibility == 'restricted' %>">
       <% if authorization_tags.any? %>
         <div class="authorization-tag-input-wrapper"
              data-authorization-tags-target="inputWrapper"

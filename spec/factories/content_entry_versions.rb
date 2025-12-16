@@ -11,6 +11,7 @@
 #  status           :integer          not null
 #  unpublished_at   :datetime
 #  version          :integer          default(1), not null
+#  visibility       :integer          default(0), not null
 #  created_at       :datetime         not null
 #  content_entry_id :uuid             not null
 #  content_type_id  :uuid             not null
@@ -21,6 +22,7 @@
 #  index_content_entry_versions_on_entry_version              (content_entry_id,version) UNIQUE
 #  index_content_entry_versions_on_tenant_is_public           (tenant_id,is_public)
 #  index_content_entry_versions_on_tenant_type_entry_version  (tenant_id,content_type_id,content_entry_id,version) UNIQUE
+#  index_content_entry_versions_on_tenant_visibility          (tenant_id,visibility)
 #
 # Foreign Keys
 #

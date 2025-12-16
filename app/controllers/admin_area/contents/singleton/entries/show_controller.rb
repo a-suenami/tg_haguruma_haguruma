@@ -24,7 +24,7 @@ module AdminArea
 
             @field_values = load_field_values
             load_selected_authorization_tags
-            load_is_public
+            load_visibility
           end
 
           # Override: Singleton may have nil content_entry
