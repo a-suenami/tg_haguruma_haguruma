@@ -22,6 +22,7 @@ module AdminArea
 
           def edit
             @field_values = load_field_values
+            @field_validation_errors = load_field_validation_errors
           end
 
           def create
@@ -58,6 +59,7 @@ module AdminArea
             else
               flash.now[:alert] = result.errors.join(', ')
               @field_values = fields_params
+              @field_validation_errors = load_field_validation_errors
               render :edit, status: :unprocessable_entity
             end
           end
@@ -149,6 +151,14 @@ module AdminArea
             when 'media_asset'
               field.media_asset&.media_asset_id
             end
+          end
+
+          sig { returns(T::Hash[String, T::Array[String]]) }
+          def load_field_validation_errors
+            version = @draft_version || @published_version
+            return {} unless version
+
+            version.field_validation_errors
           end
         end
       end

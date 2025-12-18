@@ -1,5 +1,5 @@
 <%# Renders a single field input based on field type %>
-<%# Local variables: field (ContentType::Field), value (current value), content_type (optional), content_entry (optional) %>
+<%# Local variables: field (ContentType::Field), value (current value), content_type (optional), content_entry (optional), field_errors (optional) %>
 
 <%
   # Build autosave URL if content_type and content_entry are provided
@@ -25,9 +25,13 @@
       )
     end
   end
+
+  # Get validation errors for this field
+  errors = defined?(field_errors) ? field_errors : []
+  has_errors = errors.any?
 %>
 
-<div class="field-group"
+<div class="field-group<%= ' field-group--error' if has_errors %>"
      <% if autosave_url %>
      data-controller="autosave-field"
      data-autosave-field-url-value="<%= autosave_url %>"
@@ -40,9 +44,17 @@
         <span class="required-mark">*</span>
       <% end %>
     </label>
-    <% if autosave_url %>
-      <span data-autosave-field-target="status" class="autosave-status autosave-status--idle"></span>
-    <% end %>
+    <div class="field-status-area">
+      <% if has_errors %>
+        <span class="field-validation-error">
+          <i class="fas fa-exclamation-circle"></i>
+          <%= errors.first %>
+        </span>
+      <% end %>
+      <% if autosave_url %>
+        <span data-autosave-field-target="status" class="autosave-status autosave-status--idle"></span>
+      <% end %>
+    </div>
   </div>
   <% if field.description.present? %>
     <p class="field-description"><%= field.description %></p>

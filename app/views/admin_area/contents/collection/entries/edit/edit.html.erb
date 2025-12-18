@@ -14,6 +14,9 @@
   else
     '未保存'
   end
+
+  # Check if publishable (no validation errors)
+  has_validation_errors = @field_validation_errors.present? && @field_validation_errors.any?
 %>
 
 <div class="custom-container">
@@ -74,7 +77,8 @@
                            field: field,
                            value: @field_values[field.api_identifier],
                            content_type: @content_type,
-                           content_entry: @content_entry %>
+                           content_entry: @content_entry,
+                           field_errors: @field_validation_errors[field.api_identifier] || [] %>
               <% end %>
             <% else %>
               <div class="empty-fields-message">
@@ -94,12 +98,19 @@
                 <i class="fas fa-save icon-prefix"></i>
                 保存
               </button>
-              <%= button_to admin_area_contents_collection_entry_publication_path(content_type_id: @content_type.id, content_entry_id: @content_entry.id),
-                            method: :post,
-                            class: 'btn btn-success action-btn',
-                            form: { style: 'display: inline;' } do %>
-                <i class="fas fa-upload icon-prefix"></i>
-                公開
+              <% if has_validation_errors %>
+                <button type="button" class="btn btn-success action-btn" disabled title="すべての必須フィールドを入力してください">
+                  <i class="fas fa-upload icon-prefix"></i>
+                  公開
+                </button>
+              <% else %>
+                <%= button_to admin_area_contents_collection_entry_publication_path(content_type_id: @content_type.id, content_entry_id: @content_entry.id),
+                              method: :post,
+                              class: 'btn btn-success action-btn',
+                              form: { style: 'display: inline;' } do %>
+                  <i class="fas fa-upload icon-prefix"></i>
+                  公開
+                <% end %>
               <% end %>
             </div>
           </div>

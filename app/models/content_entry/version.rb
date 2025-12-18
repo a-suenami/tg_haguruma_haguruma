@@ -35,6 +35,7 @@ class ContentEntry::Version < ApplicationRecord
     unpublished: 4,
   }.freeze
 
+  belongs_to :content_type
   has_many :fields, class_name: 'ContentEntry::Field',
     foreign_key: [:tenant_id, :content_type_id, :content_entry_id, :version],
     primary_key: [:tenant_id, :content_type_id, :content_entry_id, :version],
@@ -57,4 +58,39 @@ class ContentEntry::Version < ApplicationRecord
   scope :previews, -> { where(status: STATUSES[:preview]) }
   scope :published, -> { where(status: STATUSES[:published]) }
   scope :unpublished, -> { where(status: STATUSES[:unpublished]) }
+
+  # Returns validation errors grouped by field api_identifier
+  # @return [Hash<String, Array<String>>] { api_identifier => [error_messages] }
+  def field_validation_errors
+    errors_by_field = {}
+
+    content_type.fields.each do |content_type_field|
+      field = fields.find { |f| f.content_type_field_id == content_type_field.id }
+
+      field_errors = if field
+        field.validation_errors
+      elsif content_type_field.required
+        # Field doesn't exist but is required
+        ["#{content_type_field.label}は必須です"]
+      else
+        []
+      end
+
+      errors_by_field[content_type_field.api_identifier] = field_errors if field_errors.any?
+    end
+
+    errors_by_field
+  end
+
+  # Returns whether this version is valid for publishing
+  # @return [Boolean]
+  def publishable?
+    field_validation_errors.empty?
+  end
+
+  # Returns all validation errors as a flat array
+  # @return [Array<String>]
+  def all_validation_errors
+    field_validation_errors.values.flatten
+  end
 end

@@ -45,7 +45,81 @@ class ContentEntry::Field < ApplicationRecord
 
   enum :field_type, FIELD_TYPES
 
+  # Returns array of validation errors for this field (for publish validation)
+  # @return [Array<String>] validation error messages
+  def validation_errors
+    errors_list = []
+
+    if content_type_field.required && field_value_blank?
+      errors_list << "#{content_type_field.label}は必須です"
+    end
+
+    errors_list
+  end
+
+  # Returns whether this field is valid for publishing
+  # @return [Boolean]
+  def valid_for_publish?
+    validation_errors.empty?
+  end
+
+  # Returns the actual value of this field
+  # @return [Object, nil]
+  def field_value
+    case field_type
+    when 'text'
+      text&.value
+    when 'richtext'
+      richtext&.value
+    when 'media_asset'
+      media_asset&.media_asset_id
+    end
+  end
+
   private
+
+  # Returns whether the field value is blank
+  # @return [Boolean]
+  def field_value_blank?
+    case field_type
+    when 'text'
+      text.nil? || text.value.blank?
+    when 'richtext'
+      richtext.nil? || richtext_content_blank?
+    when 'media_asset'
+      media_asset.nil?
+    else
+      true
+    end
+  end
+
+  # Checks if richtext content is empty (handles Lexical JSON structure)
+  # @return [Boolean]
+  def richtext_content_blank?
+    return true if richtext.value.blank?
+
+    # Handle both formats: {"html": "..."} and raw Lexical JSON
+    value = richtext.value
+    if value.is_a?(Hash)
+      html_content = value['html'] || value[:html]
+      return html_content.blank? || html_content == '<p></p>' if html_content.present?
+
+      # Check Lexical JSON structure for empty content
+      root = value['root'] || value[:root]
+      return true if root.nil?
+
+      children = root['children'] || root[:children] || []
+      return true if children.empty?
+
+      # Check if all paragraph children are empty
+      children.all? do |child|
+        child_children = child['children'] || child[:children] || []
+        child_children.empty? || child_children.all? { |c| (c['text'] || c[:text]).to_s.strip.empty? }
+      end
+    else
+      value.to_s.blank?
+    end
+  end
 
   def exactly_one_field_value_set
     set_values = [text_id, richtext_id, media_asset_id].compact.size
