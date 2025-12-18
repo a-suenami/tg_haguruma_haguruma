@@ -341,6 +341,20 @@ class User
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def build_tenant(*args, &blk); end
 
+    sig { returns(T::Array[T.untyped]) }
+    def content_authorization_tag_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def content_authorization_tag_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `User` class because it declared `has_many :content_authorization_tags, through: :user_tags`.
+    # 🔗 [Rails guide for `has_many_through` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association)
+    sig { returns(::ContentAuthorizationTag::PrivateCollectionProxy) }
+    def content_authorization_tags; end
+
+    sig { params(value: T::Enumerable[::ContentAuthorizationTag]).void }
+    def content_authorization_tags=(value); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def create_oauth_provider(*args, &blk); end
 
@@ -402,6 +416,20 @@ class User
 
     sig { returns(T::Boolean) }
     def tenant_previously_changed?; end
+
+    sig { returns(T::Array[T.untyped]) }
+    def user_tag_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def user_tag_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `User` class because it declared `has_many :user_tags`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::UserTag::PrivateCollectionProxy) }
+    def user_tags; end
+
+    sig { params(value: T::Enumerable[::UserTag]).void }
+    def user_tags=(value); end
   end
 
   module GeneratedAssociationRelationMethods

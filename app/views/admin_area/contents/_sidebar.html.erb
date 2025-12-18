@@ -9,7 +9,7 @@
           <%= link_to admin_area_contents_all_path, class: "tree-item-header #{@show_all ? 'active' : ''}" do %>
             <span class="tree-toggle" style="visibility: hidden;"></span>
             <span class="tree-label">すべて表示</span>
-            <span class="tree-count"><%= @content_entries&.count || ContentEntry.count %></span>
+            <span class="tree-count"><%= ContentEntry.joins(:versions).distinct.count %></span>
           <% end %>
         </li>
 
@@ -25,7 +25,7 @@
                 data: { model: content_type.unique_name } do %>
               <span class="tree-icon"><i class="fas fa-file-alt"></i></span>
               <span class="tree-label"><%= content_type.display_name %></span>
-              <span class="tree-count"><%= content_type.content_entries.count %></span>
+              <span class="tree-count"><%= content_type.content_entries.joins(:versions).distinct.count %></span>
             <% end %>
           </li>
         <% end %>
@@ -42,31 +42,6 @@
             <% end %>
           </li>
         <% end %>
-
-        <!-- 区切り線 -->
-        <div class="tree-section-divider"></div>
-
-        <!-- 管理メニュー -->
-        <li class="tree-item">
-          <%= link_to admin_area_content_types_path, class: "tree-item-header" do %>
-            <span class="tree-icon"><i class="fas fa-cog"></i></span>
-            <span class="tree-label">コンテンツタイプ管理</span>
-          <% end %>
-        </li>
-
-        <li class="tree-item">
-          <%= link_to admin_area_media_index_path, class: "tree-item-header" do %>
-            <span class="tree-icon"><i class="fas fa-images"></i></span>
-            <span class="tree-label">メディア</span>
-          <% end %>
-        </li>
-
-        <li class="tree-item">
-          <%= link_to admin_area_categories_path, class: "tree-item-header" do %>
-            <span class="tree-icon"><i class="fas fa-tags"></i></span>
-            <span class="tree-label">カテゴリー</span>
-          <% end %>
-        </li>
       </ul>
     </div>
   </div>

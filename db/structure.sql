@@ -1,4 +1,4 @@
-\restrict p8CrQvTf1ilaab9GPfj36kRzrzRdx0IP3dSWoNf5sMoytZljgYUSQwzK5GVDpV1
+\restrict Vf7XQoJwOScLdZ9iHIFKQHNGsn0rrdaF6kOeyT9XPByEkFPjj3Svdix3BbZy8nB
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -87,6 +87,27 @@ CREATE TABLE public.auth0_accounts (
 
 
 --
+-- Name: content_authorization_tags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_authorization_tags (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id public.citext NOT NULL,
+    remote_id uuid,
+    name character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN content_authorization_tags.remote_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.content_authorization_tags.remote_id IS 'External system ID for synchronization';
+
+
+--
 -- Name: content_entries; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -94,6 +115,21 @@ CREATE TABLE public.content_entries (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id public.citext NOT NULL,
     content_type_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_entry_authorizations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_entry_authorizations (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id public.citext NOT NULL,
+    content_entry_id uuid NOT NULL,
+    version integer NOT NULL,
+    content_authorization_tag_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -241,6 +277,7 @@ CREATE TABLE public.content_entry_versions (
     version integer DEFAULT 1 NOT NULL,
     status integer NOT NULL,
     is_public boolean DEFAULT false NOT NULL,
+    visibility integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     published_at timestamp(6) without time zone,
     unpublished_at timestamp(6) without time zone
@@ -517,6 +554,20 @@ CREATE TABLE public.tenants (
 
 
 --
+-- Name: user_tags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_tags (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id public.citext NOT NULL,
+    user_id uuid NOT NULL,
+    content_authorization_tag_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -626,11 +677,27 @@ ALTER TABLE ONLY public.auth0_accounts
 
 
 --
+-- Name: content_authorization_tags content_authorization_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_authorization_tags
+    ADD CONSTRAINT content_authorization_tags_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: content_entries content_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.content_entries
     ADD CONSTRAINT content_entries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_entry_authorizations content_entry_authorizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_authorizations
+    ADD CONSTRAINT content_entry_authorizations_pkey PRIMARY KEY (id);
 
 
 --
@@ -762,6 +829,14 @@ ALTER TABLE ONLY public.tenants
 
 
 --
+-- Name: user_tags user_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_tags
+    ADD CONSTRAINT user_tags_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -868,6 +943,27 @@ CREATE INDEX index_admin_auth0_accounts_on_auth0_account_id ON public.admin_auth
 
 
 --
+-- Name: index_content_authorization_tags_on_tenant_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_authorization_tags_on_tenant_id_and_id ON public.content_authorization_tags USING btree (tenant_id, id);
+
+
+--
+-- Name: index_content_authorization_tags_on_tenant_id_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_authorization_tags_on_tenant_id_and_name ON public.content_authorization_tags USING btree (tenant_id, name);
+
+
+--
+-- Name: index_content_authorization_tags_on_tenant_id_and_remote_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_authorization_tags_on_tenant_id_and_remote_id ON public.content_authorization_tags USING btree (tenant_id, remote_id) WHERE (remote_id IS NOT NULL);
+
+
+--
 -- Name: index_content_entries_on_tenant_id_and_content_type_id_and_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -879,6 +975,27 @@ CREATE UNIQUE INDEX index_content_entries_on_tenant_id_and_content_type_id_and_i
 --
 
 CREATE UNIQUE INDEX index_content_entries_on_tenant_id_and_id ON public.content_entries USING btree (tenant_id, id);
+
+
+--
+-- Name: index_content_entry_authorizations_on_tag; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_entry_authorizations_on_tag ON public.content_entry_authorizations USING btree (content_authorization_tag_id);
+
+
+--
+-- Name: index_content_entry_authorizations_on_tenant_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_authorizations_on_tenant_id_and_id ON public.content_entry_authorizations USING btree (tenant_id, id);
+
+
+--
+-- Name: index_content_entry_authorizations_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_authorizations_unique ON public.content_entry_authorizations USING btree (tenant_id, content_entry_id, version, content_authorization_tag_id);
 
 
 --
@@ -907,6 +1024,13 @@ CREATE INDEX index_content_entry_versions_on_tenant_is_public ON public.content_
 --
 
 CREATE UNIQUE INDEX index_content_entry_versions_on_tenant_type_entry_version ON public.content_entry_versions USING btree (tenant_id, content_type_id, content_entry_id, version);
+
+
+--
+-- Name: index_content_entry_versions_on_tenant_visibility; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_entry_versions_on_tenant_visibility ON public.content_entry_versions USING btree (tenant_id, visibility);
 
 
 --
@@ -980,6 +1104,27 @@ CREATE INDEX index_session_tokens_on_user_id ON public.session_tokens USING btre
 
 
 --
+-- Name: index_user_tags_on_tag; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_tags_on_tag ON public.user_tags USING btree (content_authorization_tag_id);
+
+
+--
+-- Name: index_user_tags_on_tenant_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_tags_on_tenant_id_and_id ON public.user_tags USING btree (tenant_id, id);
+
+
+--
+-- Name: index_user_tags_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_tags_unique ON public.user_tags USING btree (tenant_id, user_id, content_authorization_tag_id);
+
+
+--
 -- Name: index_users_on_oauth_provider_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1030,6 +1175,14 @@ ALTER TABLE ONLY public.admin_auth0_accounts
 
 ALTER TABLE ONLY public.admins
     ADD CONSTRAINT fk_admins_tenants FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
+-- Name: content_entry_authorizations fk_content_entry_authorizations_versions; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_authorizations
+    ADD CONSTRAINT fk_content_entry_authorizations_versions FOREIGN KEY (content_entry_id, version) REFERENCES public.content_entry_versions(content_entry_id, version);
 
 
 --
@@ -1097,11 +1250,35 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: user_tags fk_rails_2f428c3efb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_tags
+    ADD CONSTRAINT fk_rails_2f428c3efb FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: content_type_fields fk_rails_56320489b5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.content_type_fields
     ADD CONSTRAINT fk_rails_56320489b5 FOREIGN KEY (richtext_id) REFERENCES public.content_type_field_richtexts(id);
+
+
+--
+-- Name: content_entry_authorizations fk_rails_656b6fcf2a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_authorizations
+    ADD CONSTRAINT fk_rails_656b6fcf2a FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
+-- Name: content_entry_authorizations fk_rails_666125a13a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_authorizations
+    ADD CONSTRAINT fk_rails_666125a13a FOREIGN KEY (content_authorization_tag_id) REFERENCES public.content_authorization_tags(id);
 
 
 --
@@ -1177,6 +1354,22 @@ ALTER TABLE ONLY public.content_entries
 
 
 --
+-- Name: content_authorization_tags fk_rails_da031a4616; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_authorization_tags
+    ADD CONSTRAINT fk_rails_da031a4616 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
+-- Name: user_tags fk_rails_da7acba150; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_tags
+    ADD CONSTRAINT fk_rails_da7acba150 FOREIGN KEY (content_authorization_tag_id) REFERENCES public.content_authorization_tags(id);
+
+
+--
 -- Name: ruler_auth0_accounts fk_ruler_auth0_accounts_auth0_accounts; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1193,10 +1386,18 @@ ALTER TABLE ONLY public.ruler_auth0_accounts
 
 
 --
+-- Name: user_tags fk_user_tags_users; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_tags
+    ADD CONSTRAINT fk_user_tags_users FOREIGN KEY (tenant_id, user_id) REFERENCES public.users(tenant_id, id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict p8CrQvTf1ilaab9GPfj36kRzrzRdx0IP3dSWoNf5sMoytZljgYUSQwzK5GVDpV1
+\unrestrict Vf7XQoJwOScLdZ9iHIFKQHNGsn0rrdaF6kOeyT9XPByEkFPjj3Svdix3BbZy8nB
 
 SET search_path TO "$user", public;
 

@@ -1,11 +1,37 @@
 # typed: false
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: content_entry_authorizations
+#
+#  id                           :uuid             not null, primary key
+#  version                      :integer          not null
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#  content_authorization_tag_id :uuid             not null
+#  content_entry_id             :uuid             not null
+#  tenant_id                    :citext           not null
+#
+# Indexes
+#
+#  index_content_entry_authorizations_on_tag               (content_authorization_tag_id)
+#  index_content_entry_authorizations_on_tenant_id_and_id  (tenant_id,id) UNIQUE
+#  index_content_entry_authorizations_unique               (tenant_id,content_entry_id,version,content_authorization_tag_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_content_entry_authorizations_versions  ([content_entry_id, version] => content_entry_versions[content_entry_id, version])
+#  fk_rails_...                              (content_authorization_tag_id => content_authorization_tags.id)
+#  fk_rails_...                              (tenant_id => tenants.id)
+#
+require 'rails_helper'
+
 describe ContentEntryAuthorization do
-  let(:tenant) { create(:tenant, id: 'sample') }
+  let(:tenant) { create(:tenant) }
   let(:content_type) { create(:content_type, tenant_id: tenant.id) }
-  let(:content_entry) { create(:content_entry, tenant_id: tenant.id, content_type: content_type) }
-  let(:content_entry_version) { create(:content_entry_version, tenant_id: tenant.id, content_entry: content_entry) }
+  let(:content_entry) { create(:content_entry, tenant_id: tenant.id, content_type:) }
+  let(:content_entry_version) { create(:content_entry_version, tenant:, content_type:, content_entry:) }
   let(:tag) { create(:content_authorization_tag, tenant_id: tenant.id) }
 
   before do
@@ -33,7 +59,7 @@ describe ContentEntryAuthorization do
         content_authorization_tag: tag,
       )
       expect(authorization).not_to be_valid
-      expect(authorization.errors[:content_entry_id]).to include("can't be blank")
+      expect(authorization.errors[:content_entry_id]).to include('を入力してください')
     end
 
     it 'requires version' do
@@ -45,7 +71,7 @@ describe ContentEntryAuthorization do
         content_authorization_tag: tag,
       )
       expect(authorization).not_to be_valid
-      expect(authorization.errors[:version]).to include("can't be blank")
+      expect(authorization.errors[:version]).to include('を入力してください')
     end
 
     it 'requires version to be greater than 0' do
@@ -57,7 +83,7 @@ describe ContentEntryAuthorization do
         content_authorization_tag: tag,
       )
       expect(authorization).not_to be_valid
-      expect(authorization.errors[:version]).to include('must be greater than 0')
+      expect(authorization.errors[:version]).to include('は0より大きい値にしてください')
     end
 
     it 'requires unique tag per version within tenant' do
@@ -76,14 +102,15 @@ describe ContentEntryAuthorization do
         content_authorization_tag: tag,
       )
       expect(authorization).not_to be_valid
-      expect(authorization.errors[:content_authorization_tag_id]).to include('has already been taken')
+      expect(authorization.errors[:content_authorization_tag_id]).to include('はすでに存在します')
     end
 
     it 'allows same tag on different versions' do
       other_version = create(
         :content_entry_version,
-        tenant_id: tenant.id,
-        content_entry: content_entry,
+        tenant:,
+        content_type:,
+        content_entry:,
         version: 2,
       )
       create(

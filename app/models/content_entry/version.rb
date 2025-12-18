@@ -10,6 +10,7 @@
 #  status           :integer          not null
 #  unpublished_at   :datetime
 #  version          :integer          default(1), not null
+#  visibility       :integer          default(0), not null
 #  created_at       :datetime         not null
 #  content_entry_id :uuid             not null
 #  content_type_id  :uuid             not null
@@ -20,6 +21,7 @@
 #  index_content_entry_versions_on_entry_version              (content_entry_id,version) UNIQUE
 #  index_content_entry_versions_on_tenant_is_public           (tenant_id,is_public)
 #  index_content_entry_versions_on_tenant_type_entry_version  (tenant_id,content_type_id,content_entry_id,version) UNIQUE
+#  index_content_entry_versions_on_tenant_visibility          (tenant_id,visibility)
 #
 # Foreign Keys
 #
@@ -33,6 +35,12 @@ class ContentEntry::Version < ApplicationRecord
     preview: 2,
     published: 3,
     unpublished: 4,
+  }.freeze
+
+  VISIBILITIES = {
+    public: 0,
+    authenticated: 1,
+    restricted: 2,
   }.freeze
 
   has_many :fields, class_name: 'ContentEntry::Field',
@@ -52,9 +60,10 @@ class ContentEntry::Version < ApplicationRecord
   validates :status, presence: true
 
   enum :status, STATUSES
+  enum :visibility, VISIBILITIES, prefix: true
 
   scope :drafts, -> { where(status: STATUSES[:draft]) }
   scope :previews, -> { where(status: STATUSES[:preview]) }
-  scope :published, -> { where(status: STATUSES[:published]) }
+  scope :published, -> { where(status: STATUSES[:published]).where.not(published_at: nil) }
   scope :unpublished, -> { where(status: STATUSES[:unpublished]) }
 end

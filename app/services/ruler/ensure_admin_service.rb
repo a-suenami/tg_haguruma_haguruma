@@ -31,11 +31,11 @@ class Ruler::EnsureAdminService
   sig { returns(Mangrove::Result[Admin, T::Array[String]]) }
   def execute
     auth0_account = @ruler.auth0_account
-    return Mangrove::Result::Err.new(['Auth0 account not found for ruler']) if auth0_account.nil?
+    return Mangrove::Result::Err.new(T.let(['Auth0 account not found for ruler'], T::Array[String])) if auth0_account.nil?
 
     # Check if Admin already exists for this auth0_account in this tenant
     existing_link = Admin::Auth0Account.find_by(auth0_account_id: auth0_account.id, tenant_id: @tenant.id)
-    return Mangrove::Result::Ok.new(existing_link.admin) if existing_link.present?
+    return Mangrove::Result::Ok.new(T.must(existing_link.admin)) if existing_link.present?
 
     # Create Admin and link to Auth0Account
     admin = T.let(nil, T.nilable(Admin))

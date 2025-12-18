@@ -25,6 +25,7 @@ namespace :admin_area, path: :admin do
           resources :text_fields, only: [:update], controller: 'entries/text_fields', param: :api_identifier
           resources :richtext_fields, only: [:update], controller: 'entries/richtext_fields', param: :api_identifier
           resources :media_asset_fields, only: [:update], controller: 'entries/media_asset_fields', param: :api_identifier
+          resource :authorization, only: [:update], controller: 'entries/authorizations'
         end
         resources :entries, only: :show, controller: 'entries/show'
 
@@ -33,7 +34,9 @@ namespace :admin_area, path: :admin do
       end
 
       scope module: :singleton, as: :singleton do
-        resource :entry, only: [:edit, :update], controller: 'entries/edit'
+        resource :entry, only: [:edit, :update], controller: 'entries/edit' do
+          resource :authorization, only: [:update], controller: 'entries/authorizations'
+        end
         resource :entry, only: :show, controller: 'entries/show'
 
         post 'entry/publication', to: 'publications#create', as: :entry_publication
@@ -47,6 +50,7 @@ namespace :admin_area, path: :admin do
     end
   end
   resources :categories, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  resources :authorization_tags, only: [:index]
 
   # ContentType management
   resources :content_types do

@@ -9,4 +9,5 @@
 #
 class ContentEntry::FieldRichtext < ApplicationRecord
   validates :value, presence: true
+  validates :value, lexical_json: true, if: -> { value.present? }
 end

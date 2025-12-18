@@ -1,0 +1,57 @@
+<ul class="uk-breadcrumb">
+  <li>
+    <%= link_to 'テナント', ruler_area_tenants_path %>
+  </li>
+  <li>
+    <%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %>
+  </li>
+  <li>
+    <%= link_to 'ユーザー', ruler_area_tenant_users_path(@tenant) %>
+  </li>
+  <li>
+    <span><%= @user.uid %></span>
+  </li>
+</ul>
+
+<div class="am-page-header">
+  <h3>ユーザー詳細</h3>
+  <div>
+    <% if @user.last_authenticated_at.nil? %>
+      <%= link_to '削除', ruler_area_tenant_user_path(@tenant, @user), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'uk-button uk-button-danger' %>
+    <% end %>
+  </div>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin-bottom">
+  <h4 class="uk-card-title">基本情報</h4>
+  <dl class="uk-description-list">
+    <dt>UID</dt>
+    <dd><%= @user.uid %></dd>
+    <dt>認証プロバイダ</dt>
+    <dd><%= @user.oauth_provider&.client_id || '-' %></dd>
+    <dt>最終認証日時</dt>
+    <dd>
+      <% if @user.last_authenticated_at %>
+        <%= @user.last_authenticated_at.strftime('%Y/%m/%d %H:%M:%S') %>
+      <% else %>
+        <span class="uk-text-muted">未認証（手動作成）</span>
+      <% end %>
+    </dd>
+    <dt>作成日時</dt>
+    <dd><%= @user.created_at.strftime('%Y/%m/%d %H:%M:%S') %></dd>
+    <dt>削除可否</dt>
+    <dd>
+      <% if @user.last_authenticated_at.nil? %>
+        <span class="uk-label uk-label-success">削除可能</span>
+        <span class="uk-text-muted uk-text-small uk-margin-small-left">手動作成ユーザーのため</span>
+      <% else %>
+        <span class="uk-label uk-label-warning">削除不可</span>
+        <span class="uk-text-muted uk-text-small uk-margin-small-left">認証済みユーザーのため</span>
+      <% end %>
+    </dd>
+  </dl>
+</div>
+
+<%= render 'user_tags' %>
+
+<%= render 'session_tokens' %>

@@ -1,0 +1,167 @@
+<%= render 'ruler_area/shared/form_error', target: f.object %>
+
+<%= f.hidden_field :tenant_id, value: @tenant.id %>
+
+<h4>メタデータ設定</h4>
+
+<div class="uk-margin">
+  <%= f.label :unique_name, '識別子', class: 'uk-form-label' %>
+  <div class="uk-form-controls">
+    <%= f.text_field :unique_name, required: true, class: 'uk-input', placeholder: '例: blog_post' %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= f.label :display_name, '名前', class: 'uk-form-label' %>
+  <div class="uk-form-controls">
+    <%= f.text_field :display_name, required: true, class: 'uk-input', placeholder: '例: ブログ記事' %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= f.label :is_collection, 'コンテンツタイプ', class: 'uk-form-label' %>
+  <div class="uk-form-controls">
+    <%= f.select :is_collection,
+                 [['Collection', true], ['Singleton', false]],
+                 {},
+                 { class: 'uk-select', style: 'max-width: 300px;' } %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= f.label :description, '説明', class: 'uk-form-label' %>
+  <div class="uk-form-controls">
+    <%= f.text_area :description, class: 'uk-textarea', rows: 3, placeholder: 'このコンテンツタイプの説明を入力してください' %>
+  </div>
+</div>
+
+<div class="uk-margin">
+  <%= f.label :multilingual_enabled, '多言語有効化', class: 'uk-form-label' %>
+  <div class="uk-form-controls">
+    <label>
+      <%= f.check_box :multilingual_enabled, disabled: true, class: 'uk-checkbox' %>
+      多言語配信を有効にする
+    </label>
+  </div>
+</div>
+
+<hr>
+
+<!-- Hidden inputs for existing fields -->
+<div id="hidden-fields-container" style="display: none;">
+  <%= f.fields_for :fields do |field_form| %>
+    <% unique_id = field_form.object.id || "new_#{field_form.object.object_id}" %>
+    <div data-field-id="<%= unique_id %>">
+      <%= field_form.hidden_field :id %>
+      <%= field_form.hidden_field :tenant_id, value: @tenant.id %>
+      <%= field_form.hidden_field :label %>
+      <%= field_form.hidden_field :api_identifier %>
+      <%= field_form.hidden_field :description %>
+      <%= field_form.hidden_field :field_type %>
+      <%= field_form.hidden_field :required %>
+      <%= field_form.hidden_field :position %>
+      <%= field_form.hidden_field :_destroy, class: 'field-destroy-input' %>
+    </div>
+  <% end %>
+</div>
+
+<!-- Fields display table -->
+<% if @content_type.fields.any? %>
+  <table class="uk-table uk-table-divider uk-table-small">
+    <thead>
+      <tr>
+        <th style="width: 40px;"></th>
+        <th>識別子</th>
+        <th>名前</th>
+        <th>種別</th>
+        <th style="width: 40px;"></th>
+      </tr>
+    </thead>
+    <tbody id="fields-table-body" uk-sortable="handle: .drag-handle">
+      <% @content_type.fields.sort_by { |f| f.position || 0 }.each do |field| %>
+        <% unique_id = field.id || "new_#{field.object_id}" %>
+        <tr data-field-id="<%= unique_id %>">
+          <td class="uk-text-center">
+            <a href="#" uk-icon="icon: menu" class="drag-handle" style="cursor: move;"></a>
+          </td>
+          <td>
+            <code><%= field.api_identifier %></code>
+            <% if field.required? %>
+              <span style="color: #f0506e; font-weight: bold; margin-left: 3px;">*</span>
+            <% end %>
+          </td>
+          <td>
+            <%= field.label %>
+            <% if field.description.present? %>
+              <br><small class="uk-text-muted"><%= field.description %></small>
+            <% end %>
+          </td>
+          <td>
+            <%
+              icon = case field.field_type
+                     when 'text' then 'pencil'
+                     when 'richtext' then 'file-edit'
+                     when 'media_asset' then 'image'
+                     else 'file'
+                     end
+            %>
+            <span uk-icon="icon: <%= icon %>"></span>
+            <%= field.field_type_label %>
+          </td>
+          <td class="uk-text-center">
+            <a href="#" uk-icon="icon: more-vertical"></a>
+            <div uk-dropdown="mode: click">
+              <ul class="uk-nav uk-dropdown-nav">
+                <li>
+                  <a href="#" onclick="editField(event, '<%= unique_id %>', '<%= field.field_type %>', '<%= j(field.api_identifier) %>', '<%= j(field.label) %>', '<%= j(field.description.to_s) %>', <%= field.required %>)">
+                    <span uk-icon="icon: pencil; ratio: 0.8"></span> 編集
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onclick="confirmRemoveField(event, '<%= unique_id %>')" style="color: #f0506e;">
+                    <span uk-icon="icon: trash; ratio: 0.8"></span> 削除
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div id="empty-fields-message" class="uk-text-center uk-text-muted uk-margin">
+    <p>フィールドがまだありません</p>
+    <p>「フィールドを追加」ボタンからフィールドを追加してください</p>
+  </div>
+<% end %>
+
+<div class="uk-margin">
+  <button type="button" class="uk-button uk-button-default" uk-toggle="target: #field-type-modal">
+    + 新しいフィールドを追加する
+  </button>
+</div>
+
+<hr>
+
+<div class="uk-margin">
+  <%= f.submit '保存', class: 'uk-button uk-button-primary' %>
+  <%= link_to 'キャンセル', ruler_area_tenant_content_types_path(@tenant), class: 'uk-button uk-button-default' %>
+</div>
+
+<style>
+  /* Fix for UIkit sortable on table rows */
+  #fields-table-body .uk-sortable-drag {
+    display: table;
+    width: 100%;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  }
+
+  #fields-table-body .uk-sortable-placeholder {
+    opacity: 0.3;
+  }
+</style>
+
+<%= render 'field_modal' %>
+<%= render 'field_metadata_modal' %>

@@ -16,6 +16,9 @@ module GeneratedPathHelpersModule
   def admin_area_auth_failure_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_authorization_tags_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_categories_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -46,6 +49,9 @@ module GeneratedPathHelpersModule
   def admin_area_contents_collection_entries_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_authorization_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_media_asset_field_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -68,6 +74,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_root_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_authorization_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_singleton_entry_path(*args); end
@@ -139,6 +148,9 @@ module GeneratedPathHelpersModule
   def edit_ruler_area_tenant_admin_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_authorization_tag_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_oauth_provider_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -172,13 +184,19 @@ module GeneratedPathHelpersModule
   def new_ruler_area_tenant_admin_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def new_ruler_area_tenant_content_model_path(*args); end
+  def new_ruler_area_tenant_authorization_tag_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_tenant_content_type_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_oauth_provider_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_tenant_user_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def rails_blob_path(*args); end
@@ -262,6 +280,9 @@ module GeneratedPathHelpersModule
   def rails_storage_redirect_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def root_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def rswag_api_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -298,10 +319,16 @@ module GeneratedPathHelpersModule
   def ruler_area_tenant_admins_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_content_model_path(*args); end
+  def ruler_area_tenant_authorization_tag_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_content_models_path(*args); end
+  def ruler_area_tenant_authorization_tags_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_content_type_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_content_types_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_provider_path(*args); end
@@ -313,7 +340,28 @@ module GeneratedPathHelpersModule
   def ruler_area_tenant_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_user_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_user_session_token_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_user_session_tokens_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_user_user_tag_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_user_user_tags_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_users_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenants_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def test_auth_bypass_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def turbo_recede_historical_location_path(*args); end

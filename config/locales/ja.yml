@@ -2,7 +2,7 @@ ja:
   activerecord:
     models:
       tenant: テナント
-      content_type: コンテンツモデル
+      content_type: コンテンツタイプ
       content_type/field: フィールド
     attributes:
       tenant:
@@ -16,12 +16,12 @@ ja:
         unique_name: 識別子
         display_name: 名前
         description: 説明
-        is_collection: コンテンツモデルタイプ
+        is_collection: タイプ
         created_at: 作成日時
         updated_at: 更新日時
       content_type/field:
         tenant_id: テナント
-        content_type_id: コンテンツモデル
+        content_type_id: コンテンツタイプ
         api_identifier: 識別子
         label: 名前
         description: 説明
@@ -44,10 +44,10 @@ ja:
       no_ruler_access: Rulerアクセス権がありません。Auth0からログアウトしました。
       logged_in: ログインしました
       authentication_failed: "認証に失敗しました: %{error}"
-    content_models:
-      created: コンテンツモデルを作成しました
-      updated: コンテンツモデルを更新しました
-      content_type_identifier_label: "コンテンツモデルの識別子"
+    content_types:
+      created: コンテンツタイプを作成しました
+      updated: コンテンツタイプを更新しました
+      content_type_identifier_label: "コンテンツタイプの識別子"
       field_identifier_label: "フィールドの識別子"
       field_label_prefix: "名前"
       type_labels:
@@ -111,6 +111,26 @@ ja:
       updated: 認証プロバイダを更新しました
       destroyed: 認証プロバイダを削除しました
       not_found: 認証プロバイダが見つかりません
+    authorization_tags:
+      created: 認可タグを作成しました
+      updated: 認可タグを更新しました
+      destroyed: 認可タグを削除しました
+      not_found: 認可タグが見つかりません
+      cannot_delete_external: 外部連携で登録されたタグは削除できません
+    users:
+      created: ユーザーを作成しました
+      destroyed: ユーザーを削除しました
+      not_found: ユーザーが見つかりません
+      cannot_delete_authenticated: 認証済みユーザーは削除できません
+    user_tags:
+      added: 認可タグを付与しました
+      removed: 認可タグを削除しました
+      not_found: 認可タグの関連付けが見つかりません
+    session_tokens:
+      created: トークンを作成しました
+      create_failed: トークンの作成に失敗しました
+      revoked: トークンを無効化しました
+      not_found: トークンが見つかりません
   admin_area:
     auth0:
       already_logged_in: すでにログインしています
@@ -141,6 +161,10 @@ ja:
       uploaded: メディアをアップロードしました
       updated: メディア情報を更新しました
       destroyed: メディアを削除しました
+    authorization_tags:
+      created: 認可タグを作成しました
+      updated: 認可タグを更新しました
+      destroyed: 認可タグを削除しました
     admins:
       created: 管理者を作成しました
       updated: 管理者を更新しました

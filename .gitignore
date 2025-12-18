@@ -73,3 +73,7 @@ bunfig.toml
 e2e/playwright-report/
 e2e/test-results/
 e2e/.env
+
+# mise
+mise.local.toml
+

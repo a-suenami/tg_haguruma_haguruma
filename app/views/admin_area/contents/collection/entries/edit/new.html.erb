@@ -63,6 +63,11 @@
             </div>
           </div>
 
+          <%= render 'admin_area/contents/authorization_tags',
+                     authorization_tags: @authorization_tags,
+                     selected_tag_id: nil,
+                     visibility: @visibility %>
+
           <div class="action-section">
             <h4 class="action-section-title">META</h4>
             <div class="meta-info">

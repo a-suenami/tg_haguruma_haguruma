@@ -1,0 +1,50 @@
+<% content_for :title, '認可タグ' %>
+
+<div class="custom-container custom-container-no-sidebar">
+  <main class="custom-main">
+    <div class="breadcrumb">
+      <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">認可タグ</span>
+    </div>
+
+    <header class="main-header">
+      <h2>認可タグ</h2>
+    </header>
+
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success"><%= flash[:notice] %></div>
+    <% end %>
+
+    <% if flash[:alert].present? %>
+      <div class="alert alert-danger"><%= flash[:alert] %></div>
+    <% end %>
+
+    <% if @authorization_tags.any? %>
+      <table class="table" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+        <thead>
+          <tr style="background-color: #f1f5f9 !important;">
+            <th style="padding: 12px 16px; font-weight: 600; color: #475569; background-color: #f1f5f9; border-bottom: 2px solid #e2e8f0;">タグ名</th>
+            <th style="padding: 12px 16px; font-weight: 600; color: #475569; background-color: #f1f5f9; border-bottom: 2px solid #e2e8f0;">ユーザー数</th>
+            <th style="padding: 12px 16px; font-weight: 600; color: #475569; background-color: #f1f5f9; border-bottom: 2px solid #e2e8f0;">コンテンツ数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @authorization_tags.each do |tag| %>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px 16px;"><%= tag.name %></td>
+              <td style="padding: 12px 16px;"><%= tag.user_tags.count %></td>
+              <td style="padding: 12px 16px;"><%= tag.content_entry_authorizations.select(:content_entry_id).distinct.count %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="empty-state">
+        <i class="fas fa-tags fa-4x" style="color: #94a3b8; margin-bottom: 1rem;"></i>
+        <p>認可タグがまだ作成されていません。</p>
+        <p class="text-muted">認可タグはRuler管理画面から作成できます。</p>
+      </div>
+    <% end %>
+  </main>
+</div>

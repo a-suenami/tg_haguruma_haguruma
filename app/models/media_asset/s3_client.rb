@@ -10,9 +10,21 @@ class MediaAsset::S3Client
       Aws::S3::Client.new(
         region: Settings.aws.s3.media.region,
         credentials:,
+        **client_options,
       ),
       T.nilable(Aws::S3::Client),
     )
+  end
+
+  sig { returns(T::Hash[Symbol, T.untyped]) }
+  def client_options
+    options = {}
+    endpoint = Settings.aws.s3.media.endpoint
+    options[:endpoint] = endpoint if endpoint.present?
+    # MinIO等のローカルストレージではパススタイルURLを使用
+    force_path_style = Settings.aws.s3.media.force_path_style
+    options[:force_path_style] = true if force_path_style.to_s == 'true' || force_path_style == true
+    options
   end
 
   sig { returns(String) }
@@ -37,6 +49,44 @@ class MediaAsset::S3Client
       bucket: bucket_name,
       key:,
     )
+  end
+
+  sig { params(key: String, expires_in: Integer).returns(String) }
+  def presigned_url(key, expires_in: 3600)
+    # presigned URLは外部公開用エンドポイントで署名する必要がある
+    signer = Aws::S3::Presigner.new(client: public_client)
+    signer.presigned_url(
+      :get_object,
+      bucket: bucket_name,
+      key:,
+      expires_in:,
+    )
+  end
+
+  # 外部公開用クライアント（presigned URL生成用）
+  sig { returns(Aws::S3::Client) }
+  def public_client
+    @public_client ||= T.let(
+      Aws::S3::Client.new(
+        region: Settings.aws.s3.media.region,
+        credentials:,
+        **public_client_options,
+      ),
+      T.nilable(Aws::S3::Client),
+    )
+  end
+
+  sig { returns(T::Hash[Symbol, T.untyped]) }
+  def public_client_options
+    options = {}
+    # 外部公開用エンドポイントがあればそれを使用、なければ内部エンドポイント
+    public_endpoint = Settings.aws.s3.media.public_endpoint
+    internal_endpoint = Settings.aws.s3.media.endpoint
+    endpoint = public_endpoint.presence || internal_endpoint
+    options[:endpoint] = endpoint if endpoint.present?
+    force_path_style = Settings.aws.s3.media.force_path_style
+    options[:force_path_style] = true if force_path_style.to_s == 'true' || force_path_style == true
+    options
   end
 
   private

@@ -14,9 +14,9 @@
 #
 # Indexes
 #
-#  index_content_entry_authorizations_on_tag     (content_authorization_tag_id)
+#  index_content_entry_authorizations_on_tag               (content_authorization_tag_id)
 #  index_content_entry_authorizations_on_tenant_id_and_id  (tenant_id,id) UNIQUE
-#  index_content_entry_authorizations_unique     (tenant_id,content_entry_id,version,content_authorization_tag_id) UNIQUE
+#  index_content_entry_authorizations_unique               (tenant_id,content_entry_id,version,content_authorization_tag_id) UNIQUE
 #
 # Foreign Keys
 #

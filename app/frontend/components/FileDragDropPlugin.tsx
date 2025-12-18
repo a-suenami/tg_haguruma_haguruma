@@ -1,5 +1,5 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { $insertNodes, $isRangeSelection, $getSelection } from 'lexical';
+import { $insertNodes, $isRangeSelection, $getSelection, $getRoot, $createParagraphNode } from 'lexical';
 import { useEffect } from 'react';
 import { $createImageNode } from './ImageNode';
 import { $createVideoNode } from './VideoNode';
@@ -37,20 +37,32 @@ export default function FileDragDropPlugin(): null {
           const result = await uploadMedia(file);
 
           editor.update(() => {
-            const selection = $getSelection();
-            if ($isRangeSelection(selection)) {
-              if (isImageFile(file)) {
-                const imageNode = $createImageNode({
-                  src: result.url,
-                  altText: file.name,
-                  maxWidth: 500,
-                });
-                $insertNodes([imageNode]);
-              } else if (isVideoFile(file)) {
-                const videoNode = $createVideoNode({
-                  src: result.url,
-                });
-                $insertNodes([videoNode]);
+            // 挿入するノードを作成
+            let nodeToInsert;
+            if (isImageFile(file)) {
+              nodeToInsert = $createImageNode({
+                src: result.url,
+                altText: file.name,
+                maxWidth: 500,
+              });
+            } else if (isVideoFile(file)) {
+              nodeToInsert = $createVideoNode({
+                src: result.url,
+              });
+            }
+
+            if (nodeToInsert) {
+              const selection = $getSelection();
+              if ($isRangeSelection(selection)) {
+                $insertNodes([nodeToInsert]);
+              } else {
+                // セレクションがない場合、ドキュメント末尾に挿入
+                const root = $getRoot();
+                root.append(nodeToInsert);
+                // 画像/動画の後に空のパラグラフを追加してカーソル位置を確保
+                const paragraph = $createParagraphNode();
+                root.append(paragraph);
+                paragraph.select();
               }
             }
           });
