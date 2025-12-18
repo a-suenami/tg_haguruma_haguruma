@@ -74,13 +74,20 @@ class ContentEntrySerializer < ApplicationSerializer
     end
   end
 
-  sig { params(media_asset: T.nilable(ContentEntry::FieldMediaAsset)).returns(T.nilable(T::Hash[Symbol, T.untyped])) }
-  def media_asset_hash(media_asset)
-    return nil if media_asset.nil?
+  sig { params(field_media_asset: T.nilable(ContentEntry::FieldMediaAsset)).returns(T.nilable(T::Hash[Symbol, T.untyped])) }
+  def media_asset_hash(field_media_asset)
+    return nil if field_media_asset.nil?
+
+    uploader = MediaAsset::Uploader.new
+    url = uploader.url_for(
+      field_media_asset.s3_object_path,
+      purpose: :public,
+      media_type: field_media_asset.media_type.to_sym,
+    )
 
     {
-      media_type: media_asset.media_type,
-      s3_object_path: media_asset.s3_object_path,
+      media_type: field_media_asset.media_type,
+      url:,
     }
   end
 end
