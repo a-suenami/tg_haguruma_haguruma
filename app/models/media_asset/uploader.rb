@@ -17,6 +17,9 @@ class MediaAsset::Uploader
     ).returns({ s3_object_path: String, url: String, media_asset: MediaAsset })
   end
   def upload(file:, tenant_id:)
+    # MIME タイプ検証（マジックナンバーチェック含む）
+    MimeTypeValidator.validate!(file)
+
     s3_object_path = generate_s3_path(file:, tenant_id:)
 
     # S3にアップロード

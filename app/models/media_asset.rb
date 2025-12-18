@@ -34,6 +34,7 @@ class MediaAsset < ApplicationRecord
 
   validates :media_type, presence: true
   validates :mime_type, presence: true
+  validate :validate_mime_type_allowed
   validates :file_size_bytes, presence: true
   validates :s3_object_path, presence: true
   validates :metadata, presence: true
@@ -62,5 +63,14 @@ class MediaAsset < ApplicationRecord
     else
       :document
     end
+  end
+
+  private
+
+  def validate_mime_type_allowed
+    return if mime_type.blank?
+    return if MimeTypeValidator.allowed?(mime_type)
+
+    errors.add(:mime_type, "は#{MimeTypeValidator.allowed_extensions.join(', ')}のみアップロードできます")
   end
 end

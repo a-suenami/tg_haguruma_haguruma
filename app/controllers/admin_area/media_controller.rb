@@ -35,6 +35,19 @@ class AdminArea::MediaController < AdminArea::ApplicationController
 
     if params[:media_asset][:file].present?
       file = params[:media_asset][:file]
+
+      # MIME タイプ検証（マジックナンバーチェック含む）
+      begin
+        MimeTypeValidator.validate!(file)
+      rescue MimeTypeValidator::InvalidMimeTypeError => e
+        @media_asset.errors.add(:file, e.message)
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: { errors: [e.message] }, status: :unprocessable_entity }
+        end
+        return
+      end
+
       @media_asset.mime_type = file.content_type
       @media_asset.media_type = MediaAsset.detect_media_type(file.content_type)
       @media_asset.file_size_bytes = file.size
@@ -91,6 +104,8 @@ class AdminArea::MediaController < AdminArea::ApplicationController
       original_filename: result[:media_asset].original_filename,
       media_type: result[:media_asset].media_type,
     }
+  rescue MimeTypeValidator::InvalidMimeTypeError => e
+    render json: { error: e.message }, status: :unprocessable_entity
   rescue StandardError => e
     Rails.logger.error("Media upload failed: #{e.message}")
     render json: { error: 'アップロードに失敗しました' }, status: :internal_server_error
