@@ -64,7 +64,7 @@ gem 'sentry-sidekiq', '~> 5.13.0'
 # AWS SDK
 gem 'aws-sdk-cloudfront', '~> 1.89.0'
 gem 'aws-sdk-eventbridge', '~> 1.57.0'
-gem 'aws-sdk-s3', '~> 1.136.0'
+gem 'aws-sdk-s3', '~> 1.208.0'
 gem 'aws-sdk-sqs', '~> 1.70'
 
 # Typing
