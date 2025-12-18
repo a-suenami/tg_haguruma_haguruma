@@ -106,10 +106,18 @@
                                 <i class="fas fa-edit icon-prefix"></i>
                                 編集
                             <% end %>
-                            <%= link_to '#', class: 'btn btn-sm btn-preview', target: '_blank', onclick: 'event.stopPropagation()' do %>
-                                <i class="fas fa-check-double icon-prefix"></i>
-                                プレビュー
-                                <i class="fas fa-external-link-alt icon-suffix"></i>
+                            <% if @content_entry && (url = preview_url(@content_entry)) %>
+                                <%= link_to url, class: 'btn btn-sm btn-preview', target: '_blank', rel: 'noopener', onclick: 'event.stopPropagation()' do %>
+                                    <i class="fas fa-check-double icon-prefix"></i>
+                                    プレビュー
+                                    <i class="fas fa-external-link-alt icon-suffix"></i>
+                                <% end %>
+                            <% else %>
+                                <span class="btn btn-sm btn-preview disabled">
+                                    <i class="fas fa-check-double icon-prefix"></i>
+                                    プレビュー
+                                    <i class="fas fa-external-link-alt icon-suffix"></i>
+                                </span>
                             <% end %>
                         </div>
                         <div class="version-toggle">

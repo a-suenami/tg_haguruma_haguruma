@@ -26,21 +26,39 @@
 class ContentEntrySerializer < ApplicationSerializer
   extend T::Sig
 
+  sig { params(resource: T.untyped, preview_mode: T::Boolean).void }
+  def initialize(resource, preview_mode: false)
+    super(resource)
+    @preview_mode = T.let(preview_mode, T::Boolean)
+  end
+
   sig { override.returns(T::Hash[Symbol, T.untyped]) }
   def serializable_hash
     content_entry = T.cast(@resource, ContentEntry)
-    published_version = content_entry.versions.find(&:published?)
+    version = target_version(content_entry)
 
     {
       content_type: content_type_hash(T.must(content_entry.content_type)),
-      fields: fields_hash(published_version),
-      published_at: published_version&.published_at,
+      fields: fields_hash(version),
+      published_at: version&.published_at,
+      is_preview: @preview_mode && !version&.published?,
       created_at: content_entry.created_at,
       updated_at: content_entry.updated_at,
     }
   end
 
   private
+
+  sig { params(content_entry: ContentEntry).returns(T.nilable(ContentEntry::Version)) }
+  def target_version(content_entry)
+    if @preview_mode
+      # In preview mode, return the latest version (draft, preview, or published)
+      content_entry.versions.order(version: :desc).first
+    else
+      # In normal mode, return the published version
+      content_entry.versions.find(&:published?)
+    end
+  end
 
   sig { params(content_type: ContentType).returns(T::Hash[Symbol, T.untyped]) }
   def content_type_hash(content_type)

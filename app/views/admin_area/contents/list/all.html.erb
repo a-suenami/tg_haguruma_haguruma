@@ -71,7 +71,13 @@
                                 <div class="card-action-buttons">
                                     <% if latest_version.draft? %>
                                         <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>編集</span>
-                                        <span class="btn btn-xs btn-preview"><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                                        <% if (url = preview_url(entry)) %>
+                                            <%= link_to url, class: 'btn btn-xs btn-preview', target: '_blank', rel: 'noopener', onclick: 'event.stopPropagation()' do %>
+                                                <i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i>
+                                            <% end %>
+                                        <% else %>
+                                            <span class="btn btn-xs btn-preview disabled"><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                                        <% end %>
                                     <% elsif latest_version.published? %>
                                         <span class="btn btn-xs btn-external"><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i></span>
                                         <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>新しいバージョンを作成して編集</span>

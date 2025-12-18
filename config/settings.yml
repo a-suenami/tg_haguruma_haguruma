@@ -106,6 +106,10 @@ sms_link:
   api:
     token: <%= ENV['SMS_LINK_API_TOKEN'] %>
     base_url: <%= ENV['SMS_LINK_BASE_URL'] %>
+preview:
+  frontend_url: <%= ENV['PREVIEW_FRONTEND_URL'] %>
+  secret_key: <%= ENV['PREVIEW_SECRET_KEY'] %>
+  expires_in: <%= ENV.fetch('PREVIEW_EXPIRES_IN', 3600).to_i %>
 twilio:
   account_sid: <%= ENV['TWILIO_ACCOUNT_SID'] %>
   api_key_sid: <%= ENV['TWILIO_API_KEY_SID'] %>
