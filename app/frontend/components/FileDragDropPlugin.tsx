@@ -41,13 +41,13 @@ export default function FileDragDropPlugin(): null {
             let nodeToInsert;
             if (isImageFile(file)) {
               nodeToInsert = $createImageNode({
-                src: result.url,
+                src: result.s3_object_path,
                 altText: file.name,
                 maxWidth: 500,
               });
             } else if (isVideoFile(file)) {
               nodeToInsert = $createVideoNode({
-                src: result.url,
+                src: result.s3_object_path,
               });
             }
 

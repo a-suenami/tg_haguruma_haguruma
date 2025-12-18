@@ -2,12 +2,16 @@
 
 ## 進行中
 
+- [ ] S3 のパスが返っているので CloudFront の URL にする
 - [ ] Triple と oauth_provider テーブルを比較して差分を分析（必要なら修正）
   - IDP を使った動作確認
+- [ ] Ruler の開発メニューを本番では非表示
 - [ ] ユーザー管理: oauth_provider_id を nullable にして認証プロバイダなしでも作成可能に
   - スキーマ変更: `db/schemas/users.schema` で `null: false` を削除
   - User モデル: `belongs_to :oauth_provider, optional: true` に変更
   - コントローラー/ビュー: プロバイダなしの場合の表示対応
+- [ ] seed を整理して、CI で自動実行するようにする
+- [ ] IDPからイベントを受け取る
 - [ ] バリデーションが不適なときは公開できないようにする
 - [ ] 多言語化を disable
 - [ ] seed リファクタリング
@@ -17,7 +21,7 @@
 - [ ] 「メディアライブラリから選択」が動いてない
 
 - [ ] first published at をもたせて、それの降順にする
-- [ ] swagger の　URL が　example.com になってる
+- [ ] swagger の URL が example.com になってる
 
 - [ ] e2e テスト
 
