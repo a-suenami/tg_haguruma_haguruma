@@ -76,7 +76,7 @@ class ContentEntrySerializer < ApplicationSerializer
     when 'text'
       base.merge(text: { value: field.text&.value })
     when 'richtext'
-      base.merge(richtext: { json_value: field.richtext&.value })
+      base.merge(richtext: { json_value: RichtextUrlTransformer.transform(field.richtext&.value) })
     when 'media_asset'
       base.merge(media_asset: media_asset_hash(field.media_asset))
     else
