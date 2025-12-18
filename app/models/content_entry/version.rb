@@ -10,7 +10,7 @@
 #  status           :integer          not null
 #  unpublished_at   :datetime
 #  version          :integer          default(1), not null
-#  visibility       :integer          default(0), not null
+#  visibility       :integer          default("public"), not null
 #  created_at       :datetime         not null
 #  content_entry_id :uuid             not null
 #  content_type_id  :uuid             not null
