@@ -1,4 +1,17 @@
 Rails.application.routes.draw do
+  # Swagger UI and API docs
+  # - Development/Test: always accessible
+  # - Production: only accessible from ruler.* subdomain
+  if Rails.env.development? || Rails.env.test?
+    mount Rswag::Ui::Engine => '/api-docs'
+    mount Rswag::Api::Engine => '/api-docs'
+  else
+    constraints subdomain: /\Aruler\./ do
+      mount Rswag::Ui::Engine => '/api-docs'
+      mount Rswag::Api::Engine => '/api-docs'
+    end
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /health_check that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -10,7 +23,8 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  # Redirect based on subdomain: ruler.* -> /ruler, admin.* -> /admin
+  root to: 'root#index'
 
   # Ruler Area routes
   namespace :ruler_area, path: :ruler do
@@ -25,6 +39,9 @@ Rails.application.routes.draw do
     # Profile management
     resource :profiles, only: [:edit, :update]
 
+    # Ruler management
+    resources :rulers, except: [:show]
+
     resources :tenants do
       member do
         get :admin_area
@@ -32,6 +49,12 @@ Rails.application.routes.draw do
 
       resources :admins, except: [:show]
       resources :oauth_providers, except: [:show]
+      resources :content_types, except: [:edit, :destroy]
+      resources :authorization_tags, except: [:show]
+      resources :users, only: [:index, :show, :new, :create, :destroy] do
+        resources :user_tags, only: [:create, :destroy]
+        resources :session_tokens, only: [:index, :create, :destroy]
+      end
     end
   end
 
@@ -40,4 +63,12 @@ Rails.application.routes.draw do
 
   # API routes
   draw :'api/v1/auth'
+  draw :api
+
+  # Test routes (only available in test environment or when ALLOW_AUTH_BYPASS is enabled)
+  if Rails.env.test? || Rails.env.development? || ENV['ALLOW_AUTH_BYPASS'] == 'true'
+    namespace :test do
+      get 'auth/bypass', to: 'auth#bypass'
+    end
+  end
 end

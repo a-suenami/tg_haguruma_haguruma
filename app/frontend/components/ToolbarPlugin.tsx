@@ -1,5 +1,6 @@
 import type { FC } from "react";
-import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND, $insertNodes } from "lexical";
+import { useState } from "react";
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND, $insertNodes, $getRoot, $createParagraphNode } from "lexical";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $setBlocksType } from "@lexical/selection";
 import { $createHeadingNode, $createQuoteNode } from "@lexical/rich-text";
@@ -10,9 +11,11 @@ import { $createVideoNode } from "./VideoNode";
 import { parseAnyEmbedUrl } from "./EmbedConfigs";
 import { $patchStyleText } from "@lexical/selection";
 import InlineColorPicker from "./InlineColorPicker";
+import { uploadMedia, isImageFile, isVideoFile, isSupportedMediaFile } from "../utils/mediaUpload";
 
 const ToolbarPlugin: FC = () => {
   const [editor] = useLexicalComposerContext();
+  const [isUploading, setIsUploading] = useState(false);
 
   const formatText = (format: 'bold' | 'italic' | 'underline' | 'strikethrough' | 'code') => {
     editor.dispatchCommand(FORMAT_TEXT_COMMAND, format);
@@ -53,40 +56,62 @@ const ToolbarPlugin: FC = () => {
     }
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      const reader = new FileReader();
-      
-      reader.onload = (e) => {
-        const src = e.target?.result as string;
-        
-        editor.update(() => {
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    if (!isSupportedMediaFile(file)) {
+      alert('画像または動画ファイルを選択してください');
+      event.target.value = '';
+      return;
+    }
+
+    setIsUploading(true);
+
+    try {
+      // Upload to S3 and get CloudFront URL
+      const result = await uploadMedia(file);
+
+      editor.update(() => {
+        // 挿入するノードを作成
+        let nodeToInsert;
+        if (isImageFile(file)) {
+          nodeToInsert = $createImageNode({
+            src: result.s3_object_path,
+            altText: file.name,
+            maxWidth: 500,
+          });
+        } else if (isVideoFile(file)) {
+          nodeToInsert = $createVideoNode({
+            src: result.s3_object_path,
+          });
+        }
+
+        if (nodeToInsert) {
+          // 有効なセレクションがあればそこに挿入、なければ末尾に追加
           const selection = $getSelection();
           if ($isRangeSelection(selection)) {
-            if (file.type.startsWith('image/')) {
-              const imageNode = $createImageNode({
-                src,
-                altText: file.name,
-                maxWidth: 500,
-              });
-              $insertNodes([imageNode]);
-            } else if (file.type.startsWith('video/')) {
-              const videoNode = $createVideoNode({
-                src,
-              });
-              $insertNodes([videoNode]);
-            }
+            $insertNodes([nodeToInsert]);
+          } else {
+            // セレクションがない場合、ドキュメント末尾に挿入
+            const root = $getRoot();
+            root.append(nodeToInsert);
+            // 画像/動画の後に空のパラグラフを追加してカーソル位置を確保
+            const paragraph = $createParagraphNode();
+            root.append(paragraph);
+            paragraph.select();
           }
-        });
-      };
-      
-      reader.readAsDataURL(file);
+        }
+      });
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('アップロードに失敗しました');
+    } finally {
+      setIsUploading(false);
+      // Reset input
+      event.target.value = '';
     }
-    
-    // Reset input
-    event.target.value = '';
   };
 
   const applyTextColor = (color: string) => {
@@ -201,12 +226,15 @@ const ToolbarPlugin: FC = () => {
 
       <div className="toolbar-divider" />
 
-      <label className="toolbar-item file-upload-button">
-        📁 Upload
+      <label
+        className={`toolbar-item file-upload-button ${isUploading ? 'uploading' : ''}`}
+      >
+        {isUploading ? '⏳ Uploading...' : '📁 Upload'}
         <input
           type="file"
           accept="image/*,video/*"
           onChange={handleFileUpload}
+          disabled={isUploading}
           style={{ display: 'none' }}
         />
       </label>

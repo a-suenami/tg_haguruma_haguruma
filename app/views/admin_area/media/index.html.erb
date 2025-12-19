@@ -1,23 +1,190 @@
-<% content_for :title, 'メディア' %>
+<% content_for :title, 'メディアライブラリ' %>
 
-<main class="main">
+<div class="custom-container custom-container-no-sidebar">
+  <main class="custom-main">
+    <div class="breadcrumb">
+      <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">メディアライブラリ</span>
+    </div>
+
     <header class="main-header">
-        <h2>メディア</h2>
-        <button class="btn btn-primary">アップロード</button>
+      <h2>メディアライブラリ</h2>
+      <%= link_to new_admin_area_medium_path, class: 'btn btn-primary' do %>
+        <i class="fas fa-upload icon-prefix"></i>
+        アップロード
+      <% end %>
     </header>
 
-    <div class="content-filters">
-        <input type="search" placeholder="検索..." class="search-input">
-        <select class="filter-select">
-            <option>すべて</option>
-            <option>画像</option>
-            <option>動画</option>
-            <option>ドキュメント</option>
-        </select>
-    </div>
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success"><%= flash[:notice] %></div>
+    <% end %>
 
-    <div style="padding: 40px; text-align: center; color: #94a3b8;">
-        <p style="font-size: 18px; margin-bottom: 10px;">メディアライブラリは準備中です</p>
-        <p>画像、動画、ドキュメントなどのファイルを管理できるようになります。</p>
-    </div>
-</main>
+    <% if flash[:alert].present? %>
+      <div class="alert alert-danger"><%= flash[:alert] %></div>
+    <% end %>
+
+    <!-- フィルター -->
+    <%= form_with url: admin_area_media_path, method: :get, local: true, class: 'content-filters' do %>
+      <input type="search" name="q" placeholder="ファイル名で検索..." class="search-input" value="<%= params[:q] %>">
+      <select name="type" class="filter-select" onchange="this.form.submit()">
+        <option value="">すべて</option>
+        <option value="image" <%= 'selected' if params[:type] == 'image' %>>画像</option>
+        <option value="video" <%= 'selected' if params[:type] == 'video' %>>動画</option>
+        <option value="audio" <%= 'selected' if params[:type] == 'audio' %>>音声</option>
+        <option value="document" <%= 'selected' if params[:type] == 'document' %>>ドキュメント</option>
+      </select>
+      <button type="submit" class="btn btn-secondary btn-sm">
+        <i class="fas fa-search"></i>
+      </button>
+    <% end %>
+
+    <% if @media_assets.any? %>
+      <div class="media-grid">
+        <% @media_assets.each do |media| %>
+          <div class="media-card">
+            <div class="media-preview">
+              <% if media.image? && media.s3_object_path.present? %>
+                <%= image_tag media.url, class: 'media-thumbnail' %>
+              <% elsif media.video? %>
+                <div class="media-icon"><i class="fas fa-video fa-3x"></i></div>
+              <% elsif media.audio? %>
+                <div class="media-icon"><i class="fas fa-music fa-3x"></i></div>
+              <% else %>
+                <div class="media-icon"><i class="fas fa-file fa-3x"></i></div>
+              <% end %>
+            </div>
+            <div class="media-info">
+              <p class="media-filename" title="<%= media.original_filename %>">
+                <%= truncate(media.original_filename, length: 25) %>
+              </p>
+              <p class="media-meta">
+                <span class="media-type-badge media-type-<%= media.media_type %>">
+                  <%= media.media_type %>
+                </span>
+                <span class="media-size">
+                  <%= number_to_human_size(media.file_size_bytes) rescue '-' %>
+                </span>
+              </p>
+            </div>
+            <div class="media-actions">
+              <% if media.s3_object_path.present? %>
+                <%= link_to media.url, class: 'btn btn-xs btn-secondary', download: media.original_filename, target: '_blank' do %>
+                  <i class="fas fa-download"></i>
+                <% end %>
+              <% end %>
+              <%= link_to edit_admin_area_medium_path(media), class: 'btn btn-xs btn-secondary' do %>
+                <i class="fas fa-edit"></i>
+              <% end %>
+              <%= button_to admin_area_medium_path(media),
+                            method: :delete,
+                            class: 'btn btn-xs btn-danger',
+                            form: { style: 'display: inline;' },
+                            data: { confirm: '本当に削除しますか？' } do %>
+                <i class="fas fa-trash"></i>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <i class="fas fa-images fa-4x" style="color: #94a3b8; margin-bottom: 1rem;"></i>
+        <p>メディアファイルがまだアップロードされていません。</p>
+        <%= link_to new_admin_area_medium_path, class: 'btn btn-primary' do %>
+          <i class="fas fa-upload icon-prefix"></i>
+          最初のファイルをアップロード
+        <% end %>
+      </div>
+    <% end %>
+  </main>
+</div>
+
+<style>
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.media-card {
+  background: var(--card-background, #fff);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.media-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.media-preview {
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-secondary, #f8fafc);
+  overflow: hidden;
+}
+
+.media-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-icon {
+  color: var(--text-muted, #94a3b8);
+}
+
+.media-info {
+  padding: 0.75rem;
+}
+
+.media-filename {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0 0 0.25rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.media-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted, #94a3b8);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.media-type-badge {
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.media-type-image { background: #dbeafe; color: #1e40af; }
+.media-type-video { background: #fce7f3; color: #be185d; }
+.media-type-audio { background: #fef3c7; color: #b45309; }
+.media-type-document { background: #e0e7ff; color: #4338ca; }
+
+.media-actions {
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--border-color, #e2e8f0);
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-muted, #94a3b8);
+}
+</style>

@@ -1,0 +1,83 @@
+<% content_for :title, 'コンテンツタイプ管理' %>
+
+<div class="custom-container">
+  <%= render 'admin_area/contents/sidebar' %>
+
+  <main class="custom-main">
+    <div class="breadcrumb">
+      <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">コンテンツタイプ管理</span>
+    </div>
+
+    <header class="main-header">
+      <h2>コンテンツタイプ管理</h2>
+      <%= link_to new_admin_area_content_type_path, class: 'btn btn-primary' do %>
+        <i class="fas fa-plus icon-prefix"></i>
+        新規作成
+      <% end %>
+    </header>
+
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success"><%= flash[:notice] %></div>
+    <% end %>
+
+    <% if flash[:alert].present? %>
+      <div class="alert alert-danger"><%= flash[:alert] %></div>
+    <% end %>
+
+    <div class="content-list">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>表示名</th>
+            <th>API識別子</th>
+            <th>タイプ</th>
+            <th>フィールド数</th>
+            <th>エントリー数</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @content_types.each do |content_type| %>
+            <tr>
+              <td>
+                <%= link_to content_type.display_name, admin_area_content_type_path(content_type) %>
+              </td>
+              <td><code><%= content_type.unique_name %></code></td>
+              <td>
+                <% if content_type.is_collection %>
+                  <span class="badge badge-info">コレクション</span>
+                <% else %>
+                  <span class="badge badge-secondary">シングルトン</span>
+                <% end %>
+              </td>
+              <td><%= content_type.fields.count %></td>
+              <td><%= content_type.content_entries.count %></td>
+              <td>
+                <%= link_to '編集', edit_admin_area_content_type_path(content_type), class: 'link' %>
+                <% if content_type.content_entries.empty? %>
+                  <%= button_to '削除', admin_area_content_type_path(content_type),
+                                method: :delete,
+                                class: 'link link-danger',
+                                form: { style: 'display: inline;' },
+                                data: { confirm: '本当に削除しますか？' } %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <% if @content_types.empty? %>
+        <div class="empty-state">
+          <p>コンテンツタイプがまだ作成されていません。</p>
+          <%= link_to new_admin_area_content_type_path, class: 'btn btn-primary' do %>
+            <i class="fas fa-plus icon-prefix"></i>
+            最初のコンテンツタイプを作成
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </main>
+</div>

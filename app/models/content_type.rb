@@ -1,38 +1,51 @@
 # typed: false
 
+# == Schema Information
+#
+# Table name: content_types
+#
+#  id            :uuid             not null, primary key
+#  description   :text
+#  display_name  :text
+#  is_collection :boolean          default(TRUE), not null
+#  unique_name   :text
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  tenant_id     :citext           not null
+#
+# Indexes
+#
+#  index_content_types_on_id_and_tenant_id  (id,tenant_id) UNIQUE
+#  index_content_types_on_tenant_id_and_id  (tenant_id,id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (tenant_id => tenants.id)
+#
 class ContentType < ApplicationRecord
-  has_many :fields, dependent: :destroy
+  include Multitenancy
+
+  has_many :fields, -> { order(:position) }, dependent: :destroy, inverse_of: :content_type
   has_many :content_entries, dependent: :destroy
 
-  validates :tenant_id, presence: true
-  validates :is_collection, inclusion: { in: [true, false] }
+  accepts_nested_attributes_for :fields, allow_destroy: true, reject_if: :all_blank
 
-  # マルチテナント対応
-  default_scope { where(tenant_id: Tenant.current_id) if Tenant.current_id.present? }
+  # TODO: Add unique index after data migration (see db/schemas/content_types.schema)
+  validates :unique_name, presence: true, length: { maximum: 32 }, uniqueness: { scope: :tenant_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :display_name, presence: true, length: { maximum: 255 }
+  validates :is_collection, inclusion: { in: [true, false] }
 
   scope :collections, -> { where(is_collection: true) }
   scope :singles, -> { where(is_collection: false) }
 
-  # 一時的な表示用メソッド（後でDBカラムに移行予定）
-  # TODO: display_name, api_identifier, icon カラムをスキーマに追加後、これらのメソッドを削除
-  CONTENT_TYPE_METADATA = {
-    '00000000-0000-0000-0000-000000000001' => { api_identifier: 'article', display_name: '記事', icon: '📝' },
-    '00000000-0000-0000-0000-000000000002' => { api_identifier: 'announcement', display_name: 'お知らせ', icon: '📢' },
-    '00000000-0000-0000-0000-000000000003' => { api_identifier: 'video', display_name: '動画', icon: '🎥' },
-    '00000000-0000-0000-0000-000000000010' => { api_identifier: 'terms', display_name: '利用規約', icon: '📋' },
-    '00000000-0000-0000-0000-000000000011' => { api_identifier: 'privacy', display_name: 'プライバシーポリシー', icon: '🔒' },
-  }.freeze
+  # Find conflicting content type for uniqueness validation
+  def conflicting_content_type
+    return nil unless errors[:unique_name].any?
+    return nil if unique_name.blank?
 
-  def api_identifier
-    # 仮実装: メタデータから取得、なければIDを使用
-    CONTENT_TYPE_METADATA.dig(id, :api_identifier) || id.to_s
-  end
-
-  def display_name
-    CONTENT_TYPE_METADATA.dig(id, :display_name) || 'コンテンツ'
-  end
-
-  def icon
-    CONTENT_TYPE_METADATA.dig(id, :icon) || '📄'
+    ContentType.unscoped
+               .where(tenant_id:, unique_name:)
+               .where.not(id:)
+               .first
   end
 end

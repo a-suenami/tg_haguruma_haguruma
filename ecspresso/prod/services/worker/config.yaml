@@ -1,6 +1,6 @@
 region: ap-northeast-1
-cluster: triple-worker-prod
-service: triple-main-service-worker-prod
+cluster: haguruma-worker-prod
+service: haguruma-main-service-worker-prod
 service_definition: ecs-service-def.json
 task_definition: ecs-task-def.jsonnet
-timeout: 10m0s
+timeout: "10m0s"

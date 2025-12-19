@@ -1,0 +1,9 @@
+<div class="am-page-header">
+  <h3>Ruler編集</h3>
+</div>
+
+<%= render 'form',
+    form_url: ruler_area_ruler_path(@ruler.id),
+    form_method: :patch,
+    submit_label: '更新',
+    is_edit: true %>

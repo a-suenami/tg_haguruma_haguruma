@@ -1,11 +1,17 @@
 create_table :content_types, force: :cascade, id: :uuid do |t|
   t.citext :tenant_id, null: false
   t.boolean :is_collection, null: false, default: true
+  # TODO: Add not-null constraint after data migration
+  t.text :display_name
+  t.text :unique_name
+  t.text :description
 
   t.timestamps null: false
 end
 
 add_index :content_types, [:id, :tenant_id], unique: true
 add_index :content_types, [:tenant_id, :id], unique: true
+# TODO: Add unique constraint after data migration
+# add_index :content_types, [:tenant_id, :unique_name], unique: true
 
 add_foreign_key :content_types, :tenants, column: :tenant_id, primary_key: :id

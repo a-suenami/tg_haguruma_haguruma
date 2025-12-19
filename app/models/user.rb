@@ -1,9 +1,35 @@
 # typed: false
 
+# == Schema Information
+#
+# Table name: users
+#
+#  id                        :uuid             not null, primary key
+#  last_authenticated_at     :datetime
+#  uid(IDP platform user ID) :string           not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  oauth_provider_id         :uuid             not null
+#  tenant_id                 :citext           not null
+#
+# Indexes
+#
+#  index_users_on_oauth_provider_id  (oauth_provider_id)
+#  index_users_on_tenant_id_and_id   (tenant_id,id) UNIQUE
+#  index_users_on_tenant_id_and_uid  (tenant_id,uid) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (oauth_provider_id => oauth_providers.id)
+#  fk_rails_...  (tenant_id => tenants.id)
+#
 class User < ApplicationRecord
+  include Multitenancy
+
   belongs_to :oauth_provider
   has_many :session_tokens
+  has_many :user_tags, dependent: :destroy
+  has_many :content_authorization_tags, through: :user_tags
 
-  validates :tenant_id, presence: true
   validates :uid, presence: true
 end

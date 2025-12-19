@@ -2,11 +2,32 @@ ja:
   activerecord:
     models:
       tenant: テナント
+      content_type: コンテンツタイプ
+      content_type/field: フィールド
     attributes:
       tenant:
         id: ID
         name: テナント名
         user_page_domain: ユーザー画面ドメイン
+        created_at: 作成日時
+        updated_at: 更新日時
+      content_type:
+        tenant_id: テナント
+        unique_name: 識別子
+        display_name: 名前
+        description: 説明
+        is_collection: タイプ
+        created_at: 作成日時
+        updated_at: 更新日時
+      content_type/field:
+        tenant_id: テナント
+        content_type_id: コンテンツタイプ
+        api_identifier: 識別子
+        label: 名前
+        description: 説明
+        field_type: 種別
+        required: 必須
+        position: 表示順
         created_at: 作成日時
         updated_at: 更新日時
     errors:
@@ -23,6 +44,22 @@ ja:
       no_ruler_access: Rulerアクセス権がありません。Auth0からログアウトしました。
       logged_in: ログインしました
       authentication_failed: "認証に失敗しました: %{error}"
+    content_types:
+      created: コンテンツタイプを作成しました
+      updated: コンテンツタイプを更新しました
+      content_type_identifier_label: "コンテンツタイプの識別子"
+      field_identifier_label: "フィールドの識別子"
+      field_label_prefix: "名前"
+      type_labels:
+        collection: Collection
+        singleton: Singleton
+      field_types:
+        text: ショートテキスト
+        richtext: リッチテキスト
+        media_asset: メディア
+      errors:
+        unique_name_taken: "この識別子は既に使用されています："
+        field_api_identifier_taken: "この識別子は既に使用されています："
     admins:
       title: 管理者管理
       list: 管理者一覧
@@ -41,6 +78,23 @@ ja:
       errors:
         email_already_exists: このメールアドレスは既に使用されています
         email_already_exists_in_tenant: このテナントには既にこのメールアドレスの管理者が存在します
+    rulers:
+      title: Ruler管理
+      list: Ruler一覧
+      new: 新規Ruler作成
+      edit: Ruler編集
+      show: Ruler詳細
+      email: メールアドレス
+      name: 名前
+      actions: 操作
+      created_at: 作成日時
+      confirm_delete: このRulerを削除してもよろしいですか？
+      created: Rulerを作成しました
+      updated: Rulerを更新しました
+      destroyed: Rulerを削除しました
+      not_found: Rulerが見つかりません
+      errors:
+        email_already_exists: このメールアドレスは既に使用されています
     profiles:
       edit:
         title: プロフィール編集
@@ -57,6 +111,26 @@ ja:
       updated: 認証プロバイダを更新しました
       destroyed: 認証プロバイダを削除しました
       not_found: 認証プロバイダが見つかりません
+    authorization_tags:
+      created: 認可タグを作成しました
+      updated: 認可タグを更新しました
+      destroyed: 認可タグを削除しました
+      not_found: 認可タグが見つかりません
+      cannot_delete_external: 外部連携で登録されたタグは削除できません
+    users:
+      created: ユーザーを作成しました
+      destroyed: ユーザーを削除しました
+      not_found: ユーザーが見つかりません
+      cannot_delete_authenticated: 認証済みユーザーは削除できません
+    user_tags:
+      added: 認可タグを付与しました
+      removed: 認可タグを削除しました
+      not_found: 認可タグの関連付けが見つかりません
+    session_tokens:
+      created: トークンを作成しました
+      create_failed: トークンの作成に失敗しました
+      revoked: トークンを無効化しました
+      not_found: トークンが見つかりません
   admin_area:
     auth0:
       already_logged_in: すでにログインしています
@@ -67,6 +141,30 @@ ja:
       tenant_not_found: テナントが見つかりませんでした
       session_expired: セッションの有効期限が切れました。再度ログインしてください
       authentication_failed: '認証に失敗しました: %{error}'
+    categories:
+      feature_in_progress: カテゴリー機能は準備中です
+    content_types:
+      created: コンテンツタイプを作成しました
+      updated: コンテンツタイプを更新しました
+      destroyed: コンテンツタイプを削除しました
+      cannot_delete_with_contents: コンテンツが存在するため削除できません
+      fields:
+        created: フィールドを追加しました
+        updated: フィールドを更新しました
+        destroyed: フィールドを削除しました
+    contents:
+      created: コンテンツを作成しました
+      saved: 保存しました
+      published: コンテンツを公開しました
+      unpublished: 公開を取り消しました
+    media:
+      uploaded: メディアをアップロードしました
+      updated: メディア情報を更新しました
+      destroyed: メディアを削除しました
+    authorization_tags:
+      created: 認可タグを作成しました
+      updated: 認可タグを更新しました
+      destroyed: 認可タグを削除しました
     admins:
       created: 管理者を作成しました
       updated: 管理者を更新しました

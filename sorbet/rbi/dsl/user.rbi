@@ -338,11 +338,34 @@ class User
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def build_oauth_provider(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def build_tenant(*args, &blk); end
+
+    sig { returns(T::Array[T.untyped]) }
+    def content_authorization_tag_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def content_authorization_tag_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `User` class because it declared `has_many :content_authorization_tags, through: :user_tags`.
+    # 🔗 [Rails guide for `has_many_through` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association)
+    sig { returns(::ContentAuthorizationTag::PrivateCollectionProxy) }
+    def content_authorization_tags; end
+
+    sig { params(value: T::Enumerable[::ContentAuthorizationTag]).void }
+    def content_authorization_tags=(value); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def create_oauth_provider(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def create_oauth_provider!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant!(*args, &blk); end
 
     sig { returns(T.nilable(::OauthProvider)) }
     def oauth_provider; end
@@ -359,8 +382,14 @@ class User
     sig { returns(T.nilable(::OauthProvider)) }
     def reload_oauth_provider; end
 
+    sig { returns(T.nilable(::Tenant)) }
+    def reload_tenant; end
+
     sig { void }
     def reset_oauth_provider; end
+
+    sig { void }
+    def reset_tenant; end
 
     sig { returns(T::Array[T.untyped]) }
     def session_token_ids; end
@@ -375,6 +404,32 @@ class User
 
     sig { params(value: T::Enumerable[::SessionToken]).void }
     def session_tokens=(value); end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def tenant; end
+
+    sig { params(value: T.nilable(::Tenant)).void }
+    def tenant=(value); end
+
+    sig { returns(T::Boolean) }
+    def tenant_changed?; end
+
+    sig { returns(T::Boolean) }
+    def tenant_previously_changed?; end
+
+    sig { returns(T::Array[T.untyped]) }
+    def user_tag_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def user_tag_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `User` class because it declared `has_many :user_tags`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::UserTag::PrivateCollectionProxy) }
+    def user_tags; end
+
+    sig { params(value: T::Enumerable[::UserTag]).void }
+    def user_tags=(value); end
   end
 
   module GeneratedAssociationRelationMethods

@@ -29,7 +29,7 @@ namespace :ridgepole do
         Rake::Task['db:schema:dump'].invoke
 
         system('FORCE_TEST_DATABASE=true bin/tapioca dsl', exception: true)
-        system('RAILS_ENV=test bundle exec annotate --models', exception: true)
+        system('RAILS_ENV=test bundle exec annotaterb models', exception: true)
       end
       puts 'done'
     end

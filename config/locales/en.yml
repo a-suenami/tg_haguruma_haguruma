@@ -31,11 +31,32 @@ en:
   activerecord:
     models:
       tenant: Tenant
+      content_type: Content Type
+      content_type/field: Field
     attributes:
       tenant:
         id: ID
         name: Name
         user_page_domain: User page domain
+        created_at: Created at
+        updated_at: Updated at
+      content_type:
+        tenant_id: Tenant
+        unique_name: Identifier
+        display_name: Name
+        description: Description
+        is_collection: Type
+        created_at: Created at
+        updated_at: Updated at
+      content_type/field:
+        tenant_id: Tenant
+        content_type_id: Content Type
+        api_identifier: Identifier
+        label: Name
+        description: Description
+        field_type: Type
+        required: Required
+        position: Position
         created_at: Created at
         updated_at: Updated at
     errors:
@@ -52,6 +73,22 @@ en:
       no_ruler_access: You do not have Ruler access rights. Logged out from Auth0.
       logged_in: Successfully logged in
       authentication_failed: "Authentication failed: %{error}"
+    content_types:
+      created: Content type created successfully
+      updated: Content type updated successfully
+      content_type_identifier_label: "Content Type Identifier"
+      field_identifier_label: "Field Identifier"
+      field_label_prefix: "Name"
+      type_labels:
+        collection: Collection
+        singleton: Singleton
+      field_types:
+        text: Short Text
+        richtext: Rich Text
+        media_asset: Media
+      errors:
+        unique_name_taken: "This identifier is already in use by:"
+        field_api_identifier_taken: "This identifier is already in use by:"
     admins:
       title: Admin Management
       list: Admin List
@@ -69,6 +106,23 @@ en:
       not_found: Admin not found
       errors:
         email_already_exists_in_tenant: An admin with this email address already exists in this tenant
+    rulers:
+      title: Ruler Management
+      list: Ruler List
+      new: Create New Ruler
+      edit: Edit Ruler
+      show: Ruler Details
+      email: Email Address
+      name: Name
+      actions: Actions
+      created_at: Created At
+      confirm_delete: Are you sure you want to delete this ruler?
+      created: Ruler created successfully
+      updated: Ruler updated successfully
+      destroyed: Ruler deleted successfully
+      not_found: Ruler not found
+      errors:
+        email_already_exists: A ruler with this email address already exists
     profiles:
       edit:
         title: Edit Profile
@@ -80,6 +134,26 @@ en:
         password_hint: Leave blank if you don't want to change your password
       errors:
         email_already_exists: This email address is already in use
+    authorization_tags:
+      created: Authorization tag created successfully
+      updated: Authorization tag updated successfully
+      destroyed: Authorization tag deleted successfully
+      not_found: Authorization tag not found
+      cannot_delete_external: Cannot delete externally registered tags
+    users:
+      created: User created successfully
+      destroyed: User deleted successfully
+      not_found: User not found
+      cannot_delete_authenticated: Authenticated users cannot be deleted
+    user_tags:
+      added: Authorization tag assigned successfully
+      removed: Authorization tag removed successfully
+      not_found: Authorization tag assignment not found
+    session_tokens:
+      created: Token created successfully
+      create_failed: Failed to create token
+      revoked: Token revoked successfully
+      not_found: Token not found
   admin_area:
     auth0:
       already_logged_in: You are already logged in
@@ -97,6 +171,10 @@ en:
       not_found: Admin not found
       errors:
         email_already_exists: This email address is already in use
+    authorization_tags:
+      created: Authorization tag created successfully
+      updated: Authorization tag updated successfully
+      destroyed: Authorization tag deleted successfully
     profiles:
       edit:
         title: Profile Settings

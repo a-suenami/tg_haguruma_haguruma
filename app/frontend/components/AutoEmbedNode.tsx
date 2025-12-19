@@ -5,6 +5,7 @@ import type {
   EditorConfig,
   LexicalNode,
   NodeKey,
+  SerializedLexicalNode,
   Spread,
 } from 'lexical';
 
@@ -39,7 +40,7 @@ function convertEmbedElement(domNode: Node): null | DOMConversionOutput {
 
 export type SerializedAutoEmbedNode = Spread<
   {
-    type: string;
+    embedType: string;
     url: string;
     id: string;
     data?: any;
@@ -67,8 +68,8 @@ export class AutoEmbedNode extends DecoratorNode<JSX.Element> {
   }
 
   static importJSON(serializedNode: SerializedAutoEmbedNode): AutoEmbedNode {
-    const { type, url, id, data } = serializedNode;
-    const node = $createAutoEmbedNode({ type, url, id, data });
+    const { embedType, url, id, data } = serializedNode;
+    const node = $createAutoEmbedNode({ type: embedType, url, id, data });
     return node;
   }
 
@@ -113,7 +114,7 @@ export class AutoEmbedNode extends DecoratorNode<JSX.Element> {
     return {
       type: 'auto-embed',
       version: 1,
-      type: this.__type,
+      embedType: this.__type,
       url: this.__url,
       id: this.__id,
       data: this.__data,
@@ -248,5 +249,3 @@ function AutoEmbedComponent({ type, url, id, data, nodeKey }: AutoEmbedComponent
     </div>
   );
 }
-
-import type { SerializedLexicalNode } from 'lexical';

@@ -1,0 +1,35 @@
+<%# Renders a single field display (read-only) based on field type %>
+<%# Local variables: field (ContentType::Field), value (current value) %>
+
+<div class="field-group">
+  <label class="field-label"><%= field.label %></label>
+
+  <% case field.field_type %>
+  <% when 'text' %>
+    <input type="text"
+           class="field-input"
+           value="<%= value %>"
+           disabled>
+
+  <% when 'richtext' %>
+    <div data-controller="react-lexical"
+         data-react-lexical-initial-content-value="<%= html_escape(value.to_json) %>"
+         data-react-lexical-editable-value="false">
+    </div>
+
+  <% when 'media_asset' %>
+    <div class="media-asset-display">
+      <% if value.present? %>
+        <% media = MediaAsset.find_by(id: value) %>
+        <% if media %>
+          <%= render 'admin_area/contents/media_preview', media: media, show_remove_button: false %>
+        <% else %>
+          <span class="no-media">メディアが見つかりません (ID: <%= value %>)</span>
+        <% end %>
+      <% else %>
+        <span class="no-media">メディアが設定されていません</span>
+      <% end %>
+    </div>
+
+  <% end %>
+</div>

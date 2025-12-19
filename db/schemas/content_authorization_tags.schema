@@ -1,0 +1,13 @@
+create_table :content_authorization_tags, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
+  t.citext :tenant_id, null: false
+  t.uuid :remote_id, comment: 'External system ID for synchronization'
+  t.string :name, null: false
+
+  t.timestamps null: false
+end
+
+add_index :content_authorization_tags, [:tenant_id, :id], unique: true
+add_index :content_authorization_tags, [:tenant_id, :remote_id], unique: true, where: 'remote_id IS NOT NULL'
+add_index :content_authorization_tags, [:tenant_id, :name], unique: true
+
+add_foreign_key :content_authorization_tags, :tenants, column: :tenant_id, primary_key: :id

@@ -13,7 +13,6 @@ cache: &cache
       - Gemfile.lock
   paths:
     - vendor/bundle
-    - public/vite
     - tmp/cache/vite
     - tmp/rubocop_cache
 
@@ -93,7 +92,7 @@ rubocop:
     - schedules
 
 rspec:
-  parallel: 4
+  # parallel: 4  # TODO: Fix parallel test failures
   tags:
     - x86_64-linux
     - r1.2xlarge
@@ -112,11 +111,12 @@ rspec:
     REDIS_FOR_WORKER_URL: redis://redis:6379/0
     SECRET_KEY_BASE: d5a4673d2c4b02366ae8cc60e2bac02234866f11722cc8ba096a7f05841ef2c849cc58cc956c4a128acaa6d105b40159bc6c48f02450b7b885d62cb33961b3d8
     ALLOW_ORIGINS: '[]'
-    PARALLEL_SPLIT_TEST: 'true'
-    KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC: $KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC
-    KNAPSACK_PRO_FIXED_QUEUE_SPLIT: 'true'
-    KNAPSACK_PRO_RSPEC_SPLIT_BY_TEST_EXAMPLES: 'true'
-    KNAPSACK_PRO_LOG_LEVEL: 'info'
+    # Parallel test variables (disabled)
+    # PARALLEL_SPLIT_TEST: 'true'
+    # KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC: $KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC
+    # KNAPSACK_PRO_FIXED_QUEUE_SPLIT: 'true'
+    # KNAPSACK_PRO_RSPEC_SPLIT_BY_TEST_EXAMPLES: 'true'
+    # KNAPSACK_PRO_LOG_LEVEL: 'info'
     ACTIVE_RECORD_PRIMARY_KEY: 'dummy'
     ACTIVE_RECORD_KEY_DERIVATION_SALT: 'dummy'
     ACTIVE_RECORD_DETERMINISTIC_KEY: 'dummy'
@@ -129,18 +129,18 @@ rspec:
     - name: amazon/dynamodb-local:1.22.0
       alias: dynamodb
   before_script:
-    # - touch log/bullet.log
     - apt-get update && apt-get install -y libjq-dev
     - /bin/sh docker/scripts/bundle_install.sh
-    - bundle exec rake parallel:setup
+    # - bundle exec rake parallel:setup
+    - bundle exec rake db:create db:schema:load db:seed
     - bundle exec thor dynamodb:migrate
-  # after_script:
-  #   - cat log/bullet.log
   script:
-    - export PARALLEL_TESTS_CONCURRENCY=$(nproc)
-    - export KNAPSACK_PRO_CI_NODE_TOTAL=$CI_NODE_TOTAL
-    - export KNAPSACK_PRO_CI_NODE_INDEX=$(expr $CI_NODE_INDEX - 1)
-    - bundle exec parallel_rspec -n $PARALLEL_TESTS_CONCURRENCY -e './bin/parallel_tests'
+    # Parallel execution (disabled)
+    # - export PARALLEL_TESTS_CONCURRENCY=$(nproc)
+    # - export KNAPSACK_PRO_CI_NODE_TOTAL=$CI_NODE_TOTAL
+    # - export KNAPSACK_PRO_CI_NODE_INDEX=$(expr $CI_NODE_INDEX - 1)
+    # - bundle exec parallel_rspec -n $PARALLEL_TESTS_CONCURRENCY -e './bin/parallel_tests'
+    - bundle exec rspec
   except:
     - /^deploy-.*$/
     - schedules
@@ -175,6 +175,58 @@ sorbet:
     <<: *cache
     key: ${CI_JOB_IMAGE}-test
     policy: pull-push
+
+e2e-smoke:
+  image: ${RUBY_IMAGE}
+  stage: test
+  cache:
+    <<: *cache
+    policy: pull
+  services:
+    - ${POSTGRES_IMAGE}
+    - name: ${REDIS_IMAGE}
+      alias: redis
+  variables:
+    RAILS_ENV: test
+    DATABASE_URL: 'postgres://postgres:postgres@postgres:5432/haguruma_test'
+    POSTGRES_HOST: postgres
+    POSTGRES_TEST_HOST: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    REDIS_URL: redis://redis:6379/0
+    SECRET_KEY_BASE: d5a4673d2c4b02366ae8cc60e2bac02234866f11722cc8ba096a7f05841ef2c849cc58cc956c4a128acaa6d105b40159bc6c48f02450b7b885d62cb33961b3d8
+    ALLOW_AUTH_BYPASS: 'true'
+    AUTH_BYPASS: 'true'
+    TEST_TENANT_ID: 'sample'
+    BASE_URL: 'http://localhost:3000'
+    CI: 'true'
+  before_script:
+    - apt-get update && apt-get install -y libjq-dev
+    - /bin/sh docker/scripts/bundle_install.sh
+    - npm ci
+    - npx playwright install chromium --with-deps
+    - bundle exec rails db:create
+    - bundle exec rails ridgepole:apply
+    - bundle exec rails db:seed
+    - bundle exec rails assets:precompile
+  script:
+    - bundle exec rails server -p 3000 -d -e test
+    - sleep 5
+    - |
+      for i in $(seq 1 30); do
+        curl -s http://localhost:3000/health_check && break
+        sleep 1
+      done
+    - cd e2e && npx playwright test --project=ci tests/smoke/
+  artifacts:
+    when: always
+    paths:
+      - e2e/playwright-report/
+      - e2e/test-results/
+    expire_in: 7 days
+  except:
+    - /^deploy-.*$/
+    - schedules
 
 check-shims:
   tags:
@@ -225,6 +277,7 @@ assets:precompile:
     expire_in: 1d
     paths:
       - public/vite
+      - public/assets
   only:
     - /^deploy-.*$/
   except:

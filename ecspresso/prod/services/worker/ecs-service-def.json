@@ -1,4 +1,5 @@
 {
+  "availabilityZoneRebalancing": "DISABLED",
   "deploymentConfiguration": {
     "deploymentCircuitBreaker": {
       "enable": false,
@@ -10,11 +11,10 @@
   "deploymentController": {
     "type": "ECS"
   },
-  "enableECSManagedTags": false,
+  "enableECSManagedTags": true,
   "enableExecuteCommand": true,
+  "healthCheckGracePeriodSeconds": 0,
   "launchType": "EC2",
-  "loadBalancers": [],
-  "placementConstraints": [],
   "placementStrategy": [
     {
       "field": "attribute:ecs.availability-zone",
@@ -25,7 +25,6 @@
       "type": "spread"
     }
   ],
-  "schedulingStrategy": "REPLICA",
-  "serviceRegistries": [],
-  "tags": []
+  "propagateTags": "NONE",
+  "schedulingStrategy": "REPLICA"
 }

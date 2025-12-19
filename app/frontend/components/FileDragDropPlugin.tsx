@@ -1,8 +1,9 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { $insertNodes, $isRangeSelection, $getSelection } from 'lexical';
+import { $insertNodes, $isRangeSelection, $getSelection, $getRoot, $createParagraphNode } from 'lexical';
 import { useEffect } from 'react';
 import { $createImageNode } from './ImageNode';
 import { $createVideoNode } from './VideoNode';
+import { uploadMedia, isImageFile, isVideoFile, isSupportedMediaFile } from '../utils/mediaUpload';
 
 export default function FileDragDropPlugin(): null {
   const [editor] = useLexicalComposerContext();
@@ -18,44 +19,57 @@ export default function FileDragDropPlugin(): null {
         event.dataTransfer!.dropEffect = 'copy';
       };
 
-      const handleDrop = (event: DragEvent) => {
+      const handleDrop = async (event: DragEvent) => {
         event.preventDefault();
-        
+
         const files = event.dataTransfer?.files;
         if (!files || files.length === 0) return;
 
         const file = files[0];
-        
+
         // Check if file is image or video
-        if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+        if (!isSupportedMediaFile(file)) {
           return;
         }
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const src = e.target?.result as string;
-          
+        try {
+          // Upload to S3 and get CloudFront URL
+          const result = await uploadMedia(file);
+
           editor.update(() => {
-            const selection = $getSelection();
-            if ($isRangeSelection(selection)) {
-              if (file.type.startsWith('image/')) {
-                const imageNode = $createImageNode({
-                  src,
-                  altText: file.name,
-                  maxWidth: 500,
-                });
-                $insertNodes([imageNode]);
-              } else if (file.type.startsWith('video/')) {
-                const videoNode = $createVideoNode({
-                  src,
-                });
-                $insertNodes([videoNode]);
+            // 挿入するノードを作成
+            let nodeToInsert;
+            if (isImageFile(file)) {
+              nodeToInsert = $createImageNode({
+                src: result.s3_object_path,
+                altText: file.name,
+                maxWidth: 500,
+              });
+            } else if (isVideoFile(file)) {
+              nodeToInsert = $createVideoNode({
+                src: result.s3_object_path,
+              });
+            }
+
+            if (nodeToInsert) {
+              const selection = $getSelection();
+              if ($isRangeSelection(selection)) {
+                $insertNodes([nodeToInsert]);
+              } else {
+                // セレクションがない場合、ドキュメント末尾に挿入
+                const root = $getRoot();
+                root.append(nodeToInsert);
+                // 画像/動画の後に空のパラグラフを追加してカーソル位置を確保
+                const paragraph = $createParagraphNode();
+                root.append(paragraph);
+                paragraph.select();
               }
             }
           });
-        };
-        
-        reader.readAsDataURL(file);
+        } catch (error) {
+          console.error('Upload failed:', error);
+          alert('アップロードに失敗しました');
+        }
       };
 
       rootElement.addEventListener('dragover', handleDragOver);
