@@ -13,6 +13,11 @@
 
 ## 完了
 
+- [x] 自分自身の情報を返すエンドポイントを作成する
+  - `GET /api/v1/me` エンドポイントを `Api::V1::UsersController#me` に実装
+  - 認証済みユーザーの id, uid, last_authenticated_at, authorization_tags, registered_at を返す
+  - OpenAPI スペックとテストを追加
+
 - [x] 「公開中」と「編集中」のタブを左右逆にする
   - 公開中を左、編集中を右に配置変更
 
