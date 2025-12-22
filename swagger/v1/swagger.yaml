@@ -5,26 +5,6 @@ info:
   version: v1
   description: API documentation for Haguruma
 paths:
-  "/api/v1/me":
-    get:
-      summary: Get current authenticated user information
-      tags:
-      - User
-      security:
-      - bearer_auth: []
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/MeResponse"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
   "/api/v1/contents":
     get:
       summary: List published content entries
@@ -73,6 +53,57 @@ paths:
                 "$ref": "#/components/schemas/ContentEntryResponse"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/api/v1/me":
+    get:
+      summary: Get current authenticated user information
+      tags:
+      - User
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  uid:
+                    type: string
+                  last_authenticated_at:
+                    type: string
+                    format: date-time
+                  authorization_tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                      required:
+                      - id
+                      - name
+                  registered_at:
+                    type: string
+                    format: date-time
+                required:
+                - id
+                - uid
+                - last_authenticated_at
+                - authorization_tags
+                - registered_at
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -223,41 +254,6 @@ components:
           "$ref": "#/components/schemas/ContentEntry"
       required:
       - data
-    MeResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        uid:
-          type: string
-          description: IDP platform user ID
-        last_authenticated_at:
-          type: string
-          format: date-time
-          description: Last authentication time (falls back to session token creation time)
-        authorization_tags:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              name:
-                type: string
-            required:
-            - id
-            - name
-        registered_at:
-          type: string
-          format: date-time
-      required:
-      - id
-      - uid
-      - last_authenticated_at
-      - authorization_tags
-      - registered_at
     Error:
       type: object
       properties:
