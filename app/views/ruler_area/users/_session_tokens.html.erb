@@ -1,0 +1,94 @@
+<div class="uk-card uk-card-default uk-card-body uk-margin-bottom">
+  <h4 class="uk-card-title">セッショントークン</h4>
+
+  <% if flash[:new_token].present? %>
+    <div class="uk-alert-success" uk-alert>
+      <a href="#" class="uk-alert-close" uk-close></a>
+      <h5>新しいトークンが作成されました</h5>
+      <p class="uk-text-small">このトークンは一度しか表示されません。必ずコピーして安全に保管してください。</p>
+      <div class="uk-flex uk-flex-middle uk-margin-small-top">
+        <code class="uk-background-muted uk-padding-small" style="font-size: 1.1em; word-break: break-all;"><%= flash[:new_token] %></code>
+      </div>
+    </div>
+  <% end %>
+
+  <% active_tokens = @user.session_tokens.available.order(created_at: :desc) %>
+  <% expired_tokens = @user.session_tokens.expired.order(created_at: :desc) %>
+
+  <h5>有効なトークン (<%= active_tokens.size %>)</h5>
+  <% if active_tokens.any? %>
+    <table class="uk-table uk-table-small uk-table-divider">
+      <thead>
+        <tr>
+          <th>トークンID（先頭8文字）</th>
+          <th>作成日時</th>
+          <th>有効期限</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% active_tokens.each do |token| %>
+          <tr>
+            <td><code><%= token.id[0, 8] %>...</code></td>
+            <td><%= token.created_at.strftime('%Y/%m/%d %H:%M') %></td>
+            <td><%= token.expires_at.strftime('%Y/%m/%d %H:%M') %></td>
+            <td>
+              <div class="uk-text-right">
+                <%= link_to '無効化', ruler_area_tenant_user_session_token_path(@tenant, @user, token), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'このトークンを無効化しますか？' }, class: 'uk-button uk-button-small uk-button-danger' %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="uk-text-muted">有効なトークンがありません</p>
+  <% end %>
+
+  <% if expired_tokens.any? %>
+    <h5 class="uk-margin-top">期限切れトークン (<%= expired_tokens.size %>)</h5>
+    <table class="uk-table uk-table-small uk-table-divider">
+      <thead>
+        <tr>
+          <th>トークンID（先頭8文字）</th>
+          <th>作成日時</th>
+          <th>有効期限</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% expired_tokens.limit(5).each do |token| %>
+          <tr class="uk-text-muted">
+            <td><code><%= token.id[0, 8] %>...</code></td>
+            <td><%= token.created_at.strftime('%Y/%m/%d %H:%M') %></td>
+            <td><span class="uk-label uk-label-danger">期限切れ</span> <%= token.expires_at.strftime('%Y/%m/%d %H:%M') %></td>
+            <td>
+              <div class="uk-text-right">
+                <%= link_to '削除', ruler_area_tenant_user_session_token_path(@tenant, @user, token), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'このトークンを削除しますか？' }, class: 'uk-button uk-button-small uk-button-text' %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+        <% if expired_tokens.size > 5 %>
+          <tr>
+            <td colspan="4" class="uk-text-center uk-text-muted">
+              他 <%= expired_tokens.size - 5 %> 件の期限切れトークン
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+
+  <hr class="uk-divider-icon">
+  <h5>新しいトークンを作成</h5>
+  <%= form_with(url: ruler_area_tenant_user_session_tokens_path(@tenant, @user), method: :post, local: true, class: 'uk-form-horizontal') do |form| %>
+    <div class="uk-margin">
+      <label class="uk-form-label">有効期限</label>
+      <div class="uk-form-controls uk-flex uk-flex-middle">
+        <%= select_tag :expires_in, options_for_select([['30日', '30'], ['60日', '60'], ['90日（推奨）', '90'], ['365日', '365']], '90'), class: 'uk-select uk-form-width-medium' %>
+        <%= form.submit 'トークンを作成', class: 'uk-button uk-button-primary uk-margin-small-left' %>
+      </div>
+    </div>
+  <% end %>
+</div>

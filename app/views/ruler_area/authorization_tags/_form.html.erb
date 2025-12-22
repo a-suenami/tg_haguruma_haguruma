@@ -1,0 +1,34 @@
+<% if @error_message.present? %>
+  <div class="uk-alert-danger" uk-alert>
+    <a href="#" class="uk-alert-close" uk-close></a>
+    <p><%= @error_message %></p>
+  </div>
+<% end %>
+
+<%= form_with(url: form_url, method: form_method, scope: :content_authorization_tag, local: true) do |form| %>
+  <div class="uk-margin">
+    <%= form.label :name, 'タグ名', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.text_field :name, value: @authorization_tag.name, class: "uk-input #{'uk-form-danger' if @authorization_tag.errors[:name].any?}", placeholder: '例: プレミアム会員', required: true %>
+      <% if @authorization_tag.errors[:name].any? %>
+        <div class="uk-text-danger uk-text-small"><%= @authorization_tag.errors[:name].join(', ') %></div>
+      <% end %>
+      <div class="uk-text-muted uk-text-small">コンテンツ認可に使用するタグ名です（テナント内で一意）</div>
+    </div>
+  </div>
+
+  <% if @authorization_tag.persisted? && @authorization_tag.remote_id.present? %>
+    <div class="uk-margin">
+      <label class="uk-form-label">外部システムID</label>
+      <div class="uk-form-controls">
+        <code><%= @authorization_tag.remote_id %></code>
+        <div class="uk-text-muted uk-text-small">外部システムと連携して作成されたタグです</div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="uk-margin">
+    <%= form.submit submit_label, class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_tenant_authorization_tags_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>

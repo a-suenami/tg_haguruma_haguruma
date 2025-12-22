@@ -28,7 +28,7 @@
     "valueFrom": "/haguruma/stg/ecs/main/auth0_m2m_client_secret"
   },
   {
-    "name": "CLOUDFRONT_MEDIA_KEY_PAIR_PRIVATE_PRIVATE_KEY",
+    "name": "AWS_CLOUDFRONT_MEDIA_KEY_PAIR_PRIVATE_PRIVATE_KEY",
     "valueFrom": "/haguruma/stg/ecs/main/cloudfront_media_key_pair_private_private_key"
   },
   {

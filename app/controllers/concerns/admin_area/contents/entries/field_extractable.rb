@@ -102,9 +102,10 @@ module AdminArea
         end
 
         # Override this method in Show controllers to extract HTML
+        # Transforms S3 paths to signed URLs for editor display
         sig { params(field: ContentEntry::Field).returns(T.untyped) }
         def extract_richtext_value(field)
-          field.richtext&.value
+          RichtextUrlTransformer.transform(field.richtext&.value)
         end
 
         # Override this method if @content_entry can be nil
@@ -154,12 +155,12 @@ module AdminArea
         end
 
         sig { void }
-        def load_is_public
+        def load_visibility
           version = version_for_field_values
-          is_public_value = version&.is_public
-          @is_public = T.let(
-            is_public_value.nil? ? true : is_public_value,
-            T.nilable(T::Boolean),
+          visibility_value = version&.visibility
+          @visibility = T.let(
+            visibility_value || 'public',
+            T.nilable(String),
           )
         end
 
@@ -168,9 +169,9 @@ module AdminArea
           Array(params[:authorization_tag_ids]).compact_blank
         end
 
-        sig { returns(T::Boolean) }
-        def public_param?
-          params[:is_public] == '1'
+        sig { returns(String) }
+        def visibility_param
+          params[:visibility] || 'public'
         end
       end
     end

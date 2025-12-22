@@ -28,6 +28,9 @@ class ContentEntry::Version
 
     sig { returns(T::Hash[T.any(String, Symbol), Integer]) }
     def statuses; end
+
+    sig { returns(T::Hash[T.any(String, Symbol), Integer]) }
+    def visibilities; end
   end
 
   module CommonRelationMethods
@@ -449,6 +452,24 @@ class ContentEntry::Version
 
     sig { returns(T::Boolean) }
     def unpublished?; end
+
+    sig { void }
+    def visibility_authenticated!; end
+
+    sig { returns(T::Boolean) }
+    def visibility_authenticated?; end
+
+    sig { void }
+    def visibility_public!; end
+
+    sig { returns(T::Boolean) }
+    def visibility_public?; end
+
+    sig { void }
+    def visibility_restricted!; end
+
+    sig { returns(T::Boolean) }
+    def visibility_restricted?; end
   end
 
   module GeneratedAssociationMethods
@@ -614,6 +635,15 @@ class ContentEntry::Version
     def not_unpublished(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def not_visibility_authenticated(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def not_visibility_public(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def not_visibility_restricted(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def null_relation?(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
@@ -686,6 +716,15 @@ class ContentEntry::Version
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def unscope(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def visibility_authenticated(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def visibility_public(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def visibility_restricted(*args, &blk); end
 
     sig { returns(PrivateAssociationRelationWhereChain) }
     sig { params(args: T.untyped).returns(PrivateAssociationRelation) }
@@ -1050,6 +1089,9 @@ class ContentEntry::Version
     sig { void }
     def restore_version!; end
 
+    sig { void }
+    def restore_visibility!; end
+
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_content_entry_id; end
 
@@ -1115,6 +1157,12 @@ class ContentEntry::Version
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_version?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def saved_change_to_visibility; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_visibility?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(::String) }
     def status; end
@@ -1296,6 +1344,51 @@ class ContentEntry::Version
     sig { void }
     def version_will_change!; end
 
+    sig { returns(::String) }
+    def visibility; end
+
+    sig { params(value: T.any(::String, ::Symbol, ::Integer)).returns(T.any(::String, ::Symbol, ::Integer)) }
+    def visibility=(value); end
+
+    sig { returns(T::Boolean) }
+    def visibility?; end
+
+    sig { returns(T.nilable(::String)) }
+    def visibility_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def visibility_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def visibility_came_from_user?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def visibility_change; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def visibility_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def visibility_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def visibility_in_database; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def visibility_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def visibility_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def visibility_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def visibility_was; end
+
+    sig { void }
+    def visibility_will_change!; end
+
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_content_entry_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
@@ -1328,6 +1421,9 @@ class ContentEntry::Version
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_version?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_visibility?(from: T.unsafe(nil), to: T.unsafe(nil)); end
   end
 
   module GeneratedRelationMethods
@@ -1422,6 +1518,15 @@ class ContentEntry::Version
     def not_unpublished(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def not_visibility_authenticated(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def not_visibility_public(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def not_visibility_restricted(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def null_relation?(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
@@ -1494,6 +1599,15 @@ class ContentEntry::Version
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def unscope(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def visibility_authenticated(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def visibility_public(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def visibility_restricted(*args, &blk); end
 
     sig { returns(PrivateRelationWhereChain) }
     sig { params(args: T.untyped).returns(PrivateRelation) }

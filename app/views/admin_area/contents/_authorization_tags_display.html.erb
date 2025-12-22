@@ -1,16 +1,21 @@
 <% selected_tags ||= [] %>
-<% is_public = local_assigns.fetch(:is_public, true) %>
+<% visibility = local_assigns.fetch(:visibility, 'public') %>
 
 <div class="action-section">
   <h4 class="action-section-title">ACCESS CONTROL</h4>
   <div class="authorization-tags-display">
-    <% if is_public %>
+    <% case visibility %>
+    <% when 'public' %>
       <span class="authorization-status-badge public">
-        <i class="fas fa-check-circle"></i> 公開
+        <i class="fas fa-globe"></i> 全公開
       </span>
-    <% else %>
+    <% when 'authenticated' %>
+      <span class="authorization-status-badge authenticated">
+        <i class="fas fa-user"></i> 認証済みユーザーのみ
+      </span>
+    <% when 'restricted' %>
       <span class="authorization-status-badge private">
-        <i class="fas fa-lock"></i> 制限
+        <i class="fas fa-lock"></i> タグ制限
       </span>
       <% if selected_tags.any? %>
         <div class="authorization-tags-pills">

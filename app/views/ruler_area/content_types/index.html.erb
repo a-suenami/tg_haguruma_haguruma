@@ -6,27 +6,27 @@
     <%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %>
   </li>
   <li>
-    <span>コンテンツモデル</span>
+    <span>コンテンツタイプ</span>
   </li>
 </ul>
 
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-  <h3 style="margin: 0;">コンテンツモデル一覧</h3>
+  <h3 style="margin: 0;">コンテンツタイプ一覧</h3>
   <div>
-    <button type="button" class="uk-button uk-button-primary" id="create-button" onclick="createContentModel()">新規作成</button>
+    <button type="button" class="uk-button uk-button-primary" id="create-button" onclick="createContentType()">新規作成</button>
   </div>
 </div>
 
 <div class="uk-margin">
-  <input type="text" class="uk-input" placeholder="コンテンツモデル名を検索..." style="max-width: 500px;">
+  <input type="text" class="uk-input" placeholder="コンテンツタイプ名を検索..." style="max-width: 500px;">
 </div>
 
 <ul class="uk-tab" uk-tab>
   <li class="<%= 'uk-active' if @active_tab == 'collections' %>">
-    <%= link_to 'Collection', ruler_area_tenant_content_models_path(@tenant, tab: 'collections') %>
+    <%= link_to 'Collection', ruler_area_tenant_content_types_path(@tenant, tab: 'collections') %>
   </li>
   <li class="<%= 'uk-active' if @active_tab == 'singletons' %>">
-    <%= link_to 'Singleton', ruler_area_tenant_content_models_path(@tenant, tab: 'singletons') %>
+    <%= link_to 'Singleton', ruler_area_tenant_content_types_path(@tenant, tab: 'singletons') %>
   </li>
 </ul>
 
@@ -45,7 +45,7 @@
         </thead>
         <tbody>
           <% @collections.each do |content_type| %>
-            <tr onclick="window.location='<%= ruler_area_tenant_content_model_path(@tenant, content_type) %>'" style="cursor: pointer;">
+            <tr onclick="window.location='<%= ruler_area_tenant_content_type_path(@tenant, content_type) %>'" style="cursor: pointer;">
               <td><code><%= content_type.unique_name %></code></td>
               <td>
                 <%= content_type.display_name %>
@@ -62,7 +62,7 @@
     <% else %>
       <div class="uk-text-center uk-margin-large uk-text-muted">
         <p>Collectionモデルがまだありません</p>
-        <%= link_to '新規作成', new_ruler_area_tenant_content_model_path(@tenant, type: 'collection'), class: 'uk-button uk-button-primary uk-margin-small-top' %>
+        <%= link_to '新規作成', new_ruler_area_tenant_content_type_path(@tenant, type: 'collection'), class: 'uk-button uk-button-primary uk-margin-small-top' %>
       </div>
     <% end %>
   </li>
@@ -81,7 +81,7 @@
         </thead>
         <tbody>
           <% @singletons.each do |content_type| %>
-            <tr onclick="window.location='<%= ruler_area_tenant_content_model_path(@tenant, content_type) %>'" style="cursor: pointer;">
+            <tr onclick="window.location='<%= ruler_area_tenant_content_type_path(@tenant, content_type) %>'" style="cursor: pointer;">
               <td><code><%= content_type.unique_name %></code></td>
               <td>
                 <%= content_type.display_name %>
@@ -98,14 +98,14 @@
     <% else %>
       <div class="uk-text-center uk-margin-large uk-text-muted">
         <p>Singletonモデルがまだありません</p>
-        <%= link_to '新規作成', new_ruler_area_tenant_content_model_path(@tenant, type: 'singleton'), class: 'uk-button uk-button-primary uk-margin-small-top' %>
+        <%= link_to '新規作成', new_ruler_area_tenant_content_type_path(@tenant, type: 'singleton'), class: 'uk-button uk-button-primary uk-margin-small-top' %>
       </div>
     <% end %>
   </li>
 </ul>
 
 <script>
-function createContentModel() {
+function createContentType() {
   // Find which tab is active
   const tabs = document.querySelectorAll('.uk-tab li');
   let activeTabIndex = 0;
@@ -118,6 +118,6 @@ function createContentModel() {
 
   // 0 = collections, 1 = singletons
   const type = activeTabIndex === 0 ? 'collection' : 'singleton';
-  window.location.href = '<%= new_ruler_area_tenant_content_model_path(@tenant) %>?type=' + type;
+  window.location.href = '<%= new_ruler_area_tenant_content_type_path(@tenant) %>?type=' + type;
 }
 </script>

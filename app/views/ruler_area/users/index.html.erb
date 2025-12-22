@@ -1,0 +1,66 @@
+<ul class="uk-breadcrumb">
+  <li>
+    <%= link_to 'テナント', ruler_area_tenants_path %>
+  </li>
+  <li>
+    <%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %>
+  </li>
+  <li>
+    <span>ユーザー</span>
+  </li>
+</ul>
+
+<div class="am-page-header">
+  <h3>ユーザー一覧</h3>
+  <div>
+    <%= link_to '新規作成', new_ruler_area_tenant_user_path(@tenant), class: 'uk-button uk-button-primary' %>
+  </div>
+</div>
+
+<table class="uk-table">
+  <thead>
+    <tr>
+      <th>UID</th>
+      <th>認証プロバイダ</th>
+      <th>最終認証日時</th>
+      <th>認可タグ</th>
+      <th>有効トークン</th>
+      <th>作成日時</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @users.empty? %>
+      <tr>
+        <td colspan="7" class="uk-text-center uk-text-muted">
+          ユーザーが登録されていません
+        </td>
+      </tr>
+    <% else %>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= link_to user.uid, ruler_area_tenant_user_path(@tenant, user), class: 'uk-link-muted' %></td>
+          <td><%= user.oauth_provider&.client_id || '-' %></td>
+          <td>
+            <% if user.last_authenticated_at %>
+              <%= user.last_authenticated_at.strftime('%Y/%m/%d %H:%M') %>
+            <% else %>
+              <span class="uk-text-muted">未認証</span>
+            <% end %>
+          </td>
+          <td><%= user.user_tags.size %></td>
+          <td><%= user.session_tokens.available.size %></td>
+          <td><%= user.created_at.strftime('%Y/%m/%d %H:%M') %></td>
+          <td>
+            <div class="uk-text-right">
+              <%= link_to '詳細', ruler_area_tenant_user_path(@tenant, user), class: 'uk-button uk-button-small uk-button-default uk-margin-small-right' %>
+              <% if user.last_authenticated_at.nil? %>
+                <%= link_to '削除', ruler_area_tenant_user_path(@tenant, user), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'uk-button uk-button-small uk-button-danger' %>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

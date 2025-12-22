@@ -27,7 +27,6 @@ class Rails::Conductor::BaseController
     include ::ActionController::Base::HelperMethods
     include ::ApplicationHelper
     include ::RulerArea::ApplicationHelper
-    include ::RulerArea::ContentModelsHelper
   end
 
   class HelperProxy < ::ActionView::Base

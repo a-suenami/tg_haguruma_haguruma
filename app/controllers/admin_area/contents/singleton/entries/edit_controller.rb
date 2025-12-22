@@ -21,7 +21,7 @@ module AdminArea
           def edit
             @field_values = load_field_values
             load_selected_authorization_tag_id
-            load_is_public
+            load_visibility
           end
 
           def update
@@ -30,7 +30,7 @@ module AdminArea
               content_entry: @content_entry,
               fields_params:,
               authorization_tag_ids: authorization_tag_ids_params,
-              is_public: public_param?,
+              visibility: visibility_param,
             ).call
 
             if result.success
@@ -41,7 +41,7 @@ module AdminArea
               flash.now[:alert] = result.errors.join(', ')
               @field_values = fields_params
               @selected_authorization_tag_ids = authorization_tag_ids_params
-              @is_public = public_param?
+              @visibility = visibility_param
               render :edit, status: :unprocessable_entity
             end
           end

@@ -1,6 +1,6 @@
-\restrict ky3ZvZ5h11QzcYHQ5o2Dj6cw2hFqDttzfeCNNoyZ7QSY5oBUi3x0A59S3xZnHRg
+\restrict YayPdtfEBHVZLO8Qrfbf5dFv3fvm5UxhltlL9ufGMa0FgM35xufyYbF9mjwjTUP
 
--- Dumped from database version 16.10
+-- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.10
 
 SET statement_timeout = 0;
@@ -277,6 +277,7 @@ CREATE TABLE public.content_entry_versions (
     version integer DEFAULT 1 NOT NULL,
     status integer NOT NULL,
     is_public boolean DEFAULT false NOT NULL,
+    visibility integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     published_at timestamp(6) without time zone,
     unpublished_at timestamp(6) without time zone
@@ -1026,6 +1027,13 @@ CREATE UNIQUE INDEX index_content_entry_versions_on_tenant_type_entry_version ON
 
 
 --
+-- Name: index_content_entry_versions_on_tenant_visibility; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_entry_versions_on_tenant_visibility ON public.content_entry_versions USING btree (tenant_id, visibility);
+
+
+--
 -- Name: index_content_type_fields_on_content_type_id_and_position; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1389,7 +1397,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ky3ZvZ5h11QzcYHQ5o2Dj6cw2hFqDttzfeCNNoyZ7QSY5oBUi3x0A59S3xZnHRg
+\unrestrict YayPdtfEBHVZLO8Qrfbf5dFv3fvm5UxhltlL9ufGMa0FgM35xufyYbF9mjwjTUP
 
 SET search_path TO "$user", public;
 

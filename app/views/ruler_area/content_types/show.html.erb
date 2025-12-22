@@ -6,14 +6,14 @@
     <%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %>
   </li>
   <li>
-    <%= link_to 'コンテンツモデル', ruler_area_tenant_content_models_path(@tenant) %>
+    <%= link_to 'コンテンツタイプ', ruler_area_tenant_content_types_path(@tenant) %>
   </li>
   <li>
     <span><%= @content_type.display_name %></span>
   </li>
 </ul>
 
-<%= form_with model: @content_type, url: ruler_area_tenant_content_model_path(@tenant, @content_type), local: true, data: { turbo: false } do |f| %>
+<%= form_with model: @content_type, url: ruler_area_tenant_content_type_path(@tenant, @content_type), local: true, data: { turbo: false } do |f| %>
   <%= f.hidden_field :tenant_id, value: @tenant.id %>
   <%= f.hidden_field :display_name, id: 'hidden-display-name' %>
   <%= f.hidden_field :description, id: 'hidden-description' %>
@@ -128,7 +128,7 @@
     <div class="uk-width-1-4@m">
       <div class="uk-card uk-card-default uk-card-body uk-card-small">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-          <div class="uk-text-bold">コンテンツモデル</div>
+          <div class="uk-text-bold">コンテンツタイプ</div>
           <a href="#" uk-icon="icon: pencil" onclick="openMetadataModal(event)"></a>
         </div>
 
@@ -180,13 +180,13 @@
   <%= render 'field_modal' %>
   <%= render 'field_metadata_modal' %>
 
-  <!-- Content Model Metadata Edit Modal -->
-  <div id="content-model-metadata-modal" uk-modal>
+  <!-- Content Type Metadata Edit Modal -->
+  <div id="content-type-metadata-modal" uk-modal>
     <div class="uk-modal-dialog">
       <button class="uk-modal-close-default" type="button" uk-close></button>
 
       <div class="uk-modal-header">
-        <h2 class="uk-modal-title">コンテンツモデルの編集</h2>
+        <h2 class="uk-modal-title">コンテンツタイプの編集</h2>
       </div>
 
       <div class="uk-modal-body">
@@ -200,7 +200,7 @@
         <div class="uk-margin">
           <label class="uk-form-label">説明</label>
           <div class="uk-form-controls">
-            <textarea id="modal-description" class="uk-textarea" rows="3" placeholder="このコンテンツモデルの説明を入力してください"><%= @content_type.description %></textarea>
+            <textarea id="modal-description" class="uk-textarea" rows="3" placeholder="このコンテンツタイプの説明を入力してください"><%= @content_type.description %></textarea>
           </div>
         </div>
 
@@ -217,7 +217,7 @@
 
       <div class="uk-modal-footer uk-text-right">
         <button class="uk-button uk-button-default uk-modal-close" type="button">キャンセル</button>
-        <button class="uk-button uk-button-primary" type="button" onclick="updateContentModelMetadata()">保存する</button>
+        <button class="uk-button uk-button-primary" type="button" onclick="updateContentTypeMetadata()">保存する</button>
       </div>
     </div>
   </div>
@@ -235,10 +235,10 @@
 
     function openMetadataModal(event) {
       event.preventDefault();
-      UIkit.modal('#content-model-metadata-modal').show();
+      UIkit.modal('#content-type-metadata-modal').show();
     }
 
-    function updateContentModelMetadata() {
+    function updateContentTypeMetadata() {
       const displayName = document.getElementById('modal-display-name').value;
       const description = document.getElementById('modal-description').value;
 
@@ -258,7 +258,7 @@
       const sidebarDesc = document.querySelector('.uk-card .uk-margin-small:nth-child(4) div:last-child');
       if (sidebarDesc) sidebarDesc.textContent = description || '-';
 
-      UIkit.modal('#content-model-metadata-modal').hide();
+      UIkit.modal('#content-type-metadata-modal').hide();
     }
   </script>
 <% end %>

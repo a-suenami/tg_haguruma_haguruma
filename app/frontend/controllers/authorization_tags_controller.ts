@@ -12,7 +12,7 @@ export default class extends Controller {
     "selectedTags",
     "hiddenInput",
     "tagSelector",
-    "isPublicCheckbox",
+    "visibilityRadio",
     "saveButton",
     "inputWrapper",
   ]
@@ -21,6 +21,7 @@ export default class extends Controller {
     selected: String,
     saveUrl: String,
     standalone: Boolean,
+    visibility: String,
   }
 
   declare inputTarget: HTMLInputElement
@@ -28,17 +29,19 @@ export default class extends Controller {
   declare selectedTagsTarget: HTMLElement
   declare hiddenInputTarget: HTMLInputElement
   declare tagSelectorTarget: HTMLElement
-  declare isPublicCheckboxTarget: HTMLInputElement
+  declare visibilityRadioTargets: HTMLInputElement[]
   declare saveButtonTarget: HTMLButtonElement
   declare inputWrapperTarget: HTMLElement
   declare tagsValue: Tag[]
   declare selectedValue: string
   declare saveUrlValue: string
   declare standaloneValue: boolean
+  declare visibilityValue: string
   declare hasTagSelectorTarget: boolean
   declare hasInputTarget: boolean
   declare hasSaveButtonTarget: boolean
   declare hasInputWrapperTarget: boolean
+  declare hasVisibilityRadioTarget: boolean
 
   private isDirty = false
 
@@ -78,10 +81,14 @@ export default class extends Controller {
   }
 
   private showFilteredTags(query: string) {
+    // Don't show dropdown if a tag is already selected
+    if (this.selectedValue) {
+      this.hideDropdown()
+      return
+    }
+
     const availableTags = this.tagsValue.filter(
-      (tag) =>
-        tag.id !== this.selectedValue &&
-        (query === "" || tag.name.toLowerCase().includes(query))
+      (tag) => query === "" || tag.name.toLowerCase().includes(query)
     )
 
     const tagsToShow = availableTags.slice(0, 5)
@@ -95,6 +102,7 @@ export default class extends Controller {
   }
 
   selectTag(event: Event) {
+    event.stopPropagation()
     const button = event.currentTarget as HTMLElement
     const tagId = button.dataset.tagId
     if (!tagId) return
@@ -105,6 +113,7 @@ export default class extends Controller {
 
     if (this.hasInputTarget) {
       this.inputTarget.value = ""
+      this.inputTarget.blur()
     }
     this.hideDropdown()
   }
@@ -116,10 +125,15 @@ export default class extends Controller {
     this.markDirty()
     if (this.hasInputTarget) {
       this.inputTarget.focus()
+      this.showFilteredTags("")
     }
   }
 
-  onIsPublicChange() {
+  onVisibilityChange() {
+    const selectedRadio = this.visibilityRadioTargets.find((r) => r.checked)
+    if (selectedRadio) {
+      this.visibilityValue = selectedRadio.value
+    }
     this.updateTagSelectorVisibility()
     this.markDirty()
   }
@@ -127,13 +141,12 @@ export default class extends Controller {
   private updateTagSelectorVisibility() {
     if (!this.hasTagSelectorTarget) return
 
-    const isPublic = this.isPublicCheckboxTarget.checked
-    if (isPublic) {
+    if (this.visibilityValue === "restricted") {
+      this.tagSelectorTarget.style.display = "block"
+    } else {
       this.tagSelectorTarget.style.display = "none"
       this.selectedValue = ""
       this.renderSelectedTag()
-    } else {
-      this.tagSelectorTarget.style.display = "block"
     }
   }
 
@@ -168,7 +181,7 @@ export default class extends Controller {
           "X-CSRF-Token": csrfToken || "",
         },
         body: JSON.stringify({
-          is_public: this.isPublicCheckboxTarget.checked,
+          visibility: this.visibilityValue,
           authorization_tag_id: this.selectedValue || null,
         }),
       })
