@@ -16,7 +16,7 @@ RSpec.describe 'Api::V1::Users' do
                properties: {
                  id: { type: :string, format: :uuid },
                  uid: { type: :string },
-                 last_authenticated_at: { type: :string, format: :'date-time', nullable: true },
+                 last_authenticated_at: { type: :string, format: :'date-time' },
                  authorization_tags: {
                    type: :array,
                    items: {
@@ -30,7 +30,7 @@ RSpec.describe 'Api::V1::Users' do
                  },
                  registered_at: { type: :string, format: :'date-time' },
                },
-               required: %w[id uid authorization_tags registered_at]
+               required: %w[id uid last_authenticated_at authorization_tags registered_at]
 
         let(:tenant) { create(:tenant) }
         let(:user) { create(:user, tenant:) }

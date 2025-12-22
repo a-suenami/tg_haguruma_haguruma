@@ -15,11 +15,13 @@ module Api
       sig { void }
       def me
         user = T.must(current_user)
+        session_token = T.must(current_session_token)
+        last_authenticated = user.last_authenticated_at || session_token.created_at
 
         render json: {
           id: user.id,
           uid: user.uid,
-          last_authenticated_at: user.last_authenticated_at&.iso8601,
+          last_authenticated_at: last_authenticated.iso8601,
           authorization_tags: user.content_authorization_tags.map do |tag|
             {
               id: tag.id,

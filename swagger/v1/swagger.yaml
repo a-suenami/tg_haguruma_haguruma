@@ -235,7 +235,7 @@ components:
         last_authenticated_at:
           type: string
           format: date-time
-          nullable: true
+          description: Last authentication time (falls back to session token creation time)
         authorization_tags:
           type: array
           items:
@@ -255,6 +255,7 @@ components:
       required:
       - id
       - uid
+      - last_authenticated_at
       - authorization_tags
       - registered_at
     Error:
