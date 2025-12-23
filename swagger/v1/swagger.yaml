@@ -57,6 +57,57 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
+  "/api/v1/me":
+    get:
+      summary: Get current authenticated user information
+      tags:
+      - User
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  uid:
+                    type: string
+                  last_authenticated_at:
+                    type: string
+                    format: date-time
+                  authorization_tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                      required:
+                      - id
+                      - name
+                  registered_at:
+                    type: string
+                    format: date-time
+                required:
+                - id
+                - uid
+                - last_authenticated_at
+                - authorization_tags
+                - registered_at
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
 servers:
 - url: "{protocol}://{tenant}.{domain}"
   description: Multi-tenant API server (tenant identified by subdomain)
