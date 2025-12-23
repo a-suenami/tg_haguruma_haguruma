@@ -56,4 +56,7 @@ Rails.application.routes.draw do
       get 'auth/bypass', to: 'auth#bypass'
     end
   end
+
+  # User Area routes (public-facing content rendering)
+  draw :user_area
 end
