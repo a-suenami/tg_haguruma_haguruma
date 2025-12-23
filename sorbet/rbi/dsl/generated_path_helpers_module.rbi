@@ -118,6 +118,9 @@ module GeneratedPathHelpersModule
   def api_v1_contents_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def api_v1_me_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_category_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }

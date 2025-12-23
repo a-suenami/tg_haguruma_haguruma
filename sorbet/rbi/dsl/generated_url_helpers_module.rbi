@@ -118,6 +118,9 @@ module GeneratedUrlHelpersModule
   def api_v1_contents_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def api_v1_me_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_category_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
