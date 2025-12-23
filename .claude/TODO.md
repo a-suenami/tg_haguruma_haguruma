@@ -33,6 +33,11 @@
 
 ## 完了
 
+- [x] 自分自身の情報を返すエンドポイントを作成する
+  - `GET /api/v1/me` エンドポイントを `Api::V1::UsersController#me` に実装
+  - 認証済みユーザーの id, uid, last_authenticated_at, authorization_tags, registered_at を返す
+  - OpenAPI スペックとテストを追加
+
 - [x] Ruler にユーザー管理機能を実装（一覧、認可タグ、トークン作成）
   - UsersController: 一覧・詳細・新規作成・削除
   - UserTagsController: 認可タグの付与・削除

@@ -17,7 +17,14 @@ module Api
       # Returns nil if no valid token is provided (anonymous access).
       sig { returns(T.nilable(User)) }
       def current_user
-        @current_user ||= T.let(authenticate_from_token, T.nilable(User))
+        current_session_token&.user
+      end
+
+      # Returns the current session token.
+      # Returns nil if no valid token is provided.
+      sig { returns(T.nilable(SessionToken)) }
+      def current_session_token
+        @current_session_token ||= T.let(authenticate_from_token, T.nilable(SessionToken))
       end
 
       private
@@ -54,16 +61,13 @@ module Api
       end
 
       # Authenticates user from session token.
-      # Returns User if valid token found, nil otherwise.
-      sig { returns(T.nilable(User)) }
+      # Returns SessionToken if valid token found, nil otherwise.
+      sig { returns(T.nilable(SessionToken)) }
       def authenticate_from_token
         token_value = extract_bearer_token
         return nil if token_value.blank?
 
-        session_token = SessionToken.available.find_by(id: token_value)
-        return nil unless session_token
-
-        session_token.user
+        SessionToken.available.find_by(id: token_value)
       end
 
       # Helper method to require authentication.
