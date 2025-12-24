@@ -2,19 +2,53 @@
   Contents - <%= current_tenant&.name %>
 <% end %>
 
-<h1 style="margin-bottom: 1.5rem;">Contents</h1>
+<% if @content_type %>
+  <%# Content entries list for a specific content type %>
+  <div style="margin-bottom: 1rem;">
+    <%= link_to '← Back to Content Types', user_area_contents_path, style: 'color: var(--primary-color);' %>
+  </div>
 
-<% if @content_types.any? %>
-  <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
-    <% @content_types.each do |content_type| %>
-      <div class="card">
-        <h2><%= content_type.name %></h2>
-        <p style="color: var(--text-muted);"><%= content_type.api_identifier %></p>
-      </div>
-    <% end %>
-  </div>
+  <h1 style="margin-bottom: 1.5rem;"><%= @content_type.display_name %></h1>
+
+  <% if @content_entries.any? %>
+    <div style="display: grid; gap: 1rem;">
+      <% @content_entries.each do |entry| %>
+        <% published_version = entry.versions.find(&:published?) %>
+        <% first_text_field = published_version&.fields&.find { |f| f.field_type == 'text' } %>
+        <%= link_to user_area_content_path(entry), style: 'text-decoration: none; color: inherit;' do %>
+          <div class="card" style="cursor: pointer;">
+            <h3><%= first_text_field&.text&.value || 'Untitled' %></h3>
+            <p style="color: var(--text-muted); font-size: 0.875rem;">
+              <%= entry.content_type.display_name %> / <%= published_version&.published_at&.strftime('%Y/%m/%d') %>
+            </p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card">
+      <p style="color: var(--text-muted);">No entries available.</p>
+    </div>
+  <% end %>
+
 <% else %>
-  <div class="card">
-    <p style="color: var(--text-muted);">No content types available.</p>
-  </div>
+  <%# Content types list %>
+  <h1 style="margin-bottom: 1.5rem;">Contents</h1>
+
+  <% if @content_types.any? %>
+    <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+      <% @content_types.each do |content_type| %>
+        <%= link_to user_area_contents_path(content_type_id: content_type.id), style: 'text-decoration: none; color: inherit;' do %>
+          <div class="card" style="cursor: pointer;">
+            <h2><%= content_type.display_name %></h2>
+            <p style="color: var(--text-muted);"><%= content_type.unique_name %></p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card">
+      <p style="color: var(--text-muted);">No content types available.</p>
+    </div>
+  <% end %>
 <% end %>

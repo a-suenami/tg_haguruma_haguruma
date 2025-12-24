@@ -2,13 +2,40 @@
   Content - <%= current_tenant&.name %>
 <% end %>
 
+<% published_version = @content_entry.versions.find(&:published?) %>
+
+<div style="margin-bottom: 1rem;">
+  <%= link_to "← Back to #{@content_type.display_name}", user_area_contents_path(content_type_id: @content_type.id), style: 'color: var(--primary-color);' %>
+</div>
+
 <div class="card">
-  <h1><%= @content_entry.title rescue 'Content' %></h1>
-  <p style="color: var(--text-muted);">
-    Created: <%= @content_entry.created_at.strftime('%Y/%m/%d %H:%M') %>
+  <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
+    <%= @content_type.display_name %> / Published: <%= published_version&.published_at&.strftime('%Y/%m/%d %H:%M') %>
   </p>
 
-  <div style="margin-top: 1.5rem;">
-    <%= link_to 'Back to contents', user_area_contents_path, class: 'btn btn-secondary' %>
-  </div>
+  <% if published_version %>
+    <% published_version.fields.includes(:content_type_field, :text, :richtext, :media_asset).each do |field| %>
+      <div style="margin-bottom: 1.5rem;">
+        <h4 style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.5rem;">
+          <%= field.content_type_field&.label %>
+        </h4>
+        <% case field.field_type %>
+        <% when 'text' %>
+          <p><%= field.text&.value %></p>
+        <% when 'richtext' %>
+          <div class="richtext-content" style="line-height: 1.8;">
+            <%= raw lexical_to_html(field.richtext&.value) %>
+          </div>
+        <% when 'media_asset' %>
+          <% if field.media_asset&.media_type == 'image' %>
+            <img src="<%= field.media_asset&.s3_object_path %>" style="max-width: 100%; height: auto;" alt="">
+          <% else %>
+            <p>Media: <%= field.media_asset&.media_type %></p>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p style="color: var(--text-muted);">No published version available.</p>
+  <% end %>
 </div>
