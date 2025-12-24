@@ -400,6 +400,9 @@ module GeneratedUrlHelpersModule
   def user_area_contents_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_dev_skip_auth_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_login_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
