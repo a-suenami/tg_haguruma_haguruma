@@ -1,0 +1,14 @@
+<% content_for :title do %>
+  <%= current_tenant&.name || 'Welcome' %>
+<% end %>
+
+<div class="card">
+  <h1>Welcome to <%= current_tenant&.name %></h1>
+  <p>This is the user area where you can access your content.</p>
+
+  <% if user_signed_in? %>
+    <p>You are logged in. <%= link_to 'Browse contents', user_area_contents_path, class: 'btn btn-primary' %></p>
+  <% else %>
+    <p><%= link_to 'Login to get started', user_area_login_path, class: 'btn btn-primary' %></p>
+  <% end %>
+</div>

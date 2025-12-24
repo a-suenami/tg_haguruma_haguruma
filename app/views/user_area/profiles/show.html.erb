@@ -1,0 +1,22 @@
+<% content_for :title do %>
+  Profile - <%= current_tenant&.name %>
+<% end %>
+
+<div class="card">
+  <h1 style="margin-bottom: 1.5rem;">Profile</h1>
+
+  <dl style="display: grid; gap: 0.5rem;">
+    <dt style="font-weight: 600;">User ID</dt>
+    <dd style="color: var(--text-muted);"><%= @user&.uid %></dd>
+
+    <dt style="font-weight: 600; margin-top: 1rem;">Last Authenticated</dt>
+    <dd style="color: var(--text-muted);"><%= @user&.last_authenticated_at&.strftime('%Y/%m/%d %H:%M') || '-' %></dd>
+
+    <dt style="font-weight: 600; margin-top: 1rem;">Registered At</dt>
+    <dd style="color: var(--text-muted);"><%= @user&.created_at&.strftime('%Y/%m/%d %H:%M') %></dd>
+  </dl>
+
+  <div style="margin-top: 1.5rem;">
+    <%= link_to 'Edit Profile', edit_user_area_profile_path, class: 'btn btn-primary' %>
+  </div>
+</div>
