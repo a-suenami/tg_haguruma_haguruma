@@ -154,6 +154,22 @@ en:
       create_failed: Failed to create token
       revoked: Token revoked successfully
       not_found: Token not found
+  user_area:
+    sessions:
+      oauth_provider_not_configured: OAuth provider is not configured for this tenant
+      invalid_state_parameter: Invalid state parameter
+      authorization_code_not_provided: Authorization code not provided
+      oauth_provider_not_found: OAuth provider not found
+      invalid_id_token_missing_subject: "Invalid ID token: missing subject"
+      logged_in_successfully: Logged in successfully
+      exchange_code_failed: "Authentication failed: could not exchange authorization code"
+      invalid_id_token: "Authentication failed: invalid ID token"
+      logged_out_successfully: Logged out successfully
+      oauth_provider_not_configured_short: OAuth provider not configured
+      logged_in_as_dev_user: Logged in as dev user
+      authentication_failed: "Authentication failed: %{error}"
+    profiles:
+      updated_successfully: Profile updated successfully
   admin_area:
     auth0:
       already_logged_in: You are already logged in

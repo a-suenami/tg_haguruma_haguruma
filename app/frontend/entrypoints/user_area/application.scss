@@ -1,0 +1,11 @@
+// User Area SCSS Entry Point
+// Import Lexical editor styles for read-only rendering
+@use '../admin_area/lexical_editor';
+
+.lexical-readonly {
+  // Override styles for read-only mode in user area
+  .editor-container {
+    border: none;
+    padding: 0;
+  }
+}
