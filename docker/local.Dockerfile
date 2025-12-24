@@ -7,9 +7,6 @@ RUN apk add --no-cache \
     build-base \
     postgresql-dev \
     postgresql-client \
-    nodejs \
-    npm \
-    yarn \
     tzdata \
     git \
     bash \
@@ -24,7 +21,9 @@ RUN apk add --no-cache \
     yaml-dev \
     libsodium-dev \
     gcompat \
-    libstdc++
+    libstdc++ && \
+    curl -fsSL https://unofficial-builds.nodejs.org/download/release/v22.12.0/node-v22.12.0-linux-x64-musl.tar.gz | tar -xz -C /usr/local --strip-components=1 && \
+    npm install -g yarn
 
 WORKDIR /rails_app
 
