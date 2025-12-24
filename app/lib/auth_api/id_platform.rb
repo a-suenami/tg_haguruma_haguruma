@@ -32,5 +32,24 @@ module AuthApi
       end
       T.cast(response.body, T::Hash[T.untyped, T.untyped])
     end
+
+    sig do
+      params(
+        client_id: String,
+        client_secret: String,
+        code: String,
+        redirect_uri: String,
+      ).returns(T::Hash[T.untyped, T.untyped])
+    end
+    def exchange_code(client_id:, client_secret:, code:, redirect_uri:)
+      response = @conn.post('/oauth/token', {
+        client_id:,
+        client_secret:,
+        code:,
+        redirect_uri:,
+        grant_type: 'authorization_code',
+      })
+      T.cast(response.body, T::Hash[T.untyped, T.untyped])
+    end
   end
 end
