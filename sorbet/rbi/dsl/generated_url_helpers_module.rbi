@@ -106,6 +106,9 @@ module GeneratedUrlHelpersModule
   def admin_area_ruler_area_tenant_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_root_redirect_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def api_v1_auth_provider_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -158,6 +161,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_user_area_profile_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_admin_area_category_url(*args); end
@@ -283,9 +289,6 @@ module GeneratedUrlHelpersModule
   def rails_storage_redirect_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def root_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
   def rswag_api_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -364,6 +367,9 @@ module GeneratedUrlHelpersModule
   def ruler_area_tenants_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_root_redirect_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def test_auth_bypass_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -380,4 +386,28 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def upload_admin_area_media_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_auth_failure_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_callback_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_content_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_contents_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_login_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_logout_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_profile_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_root_url(*args); end
 end
