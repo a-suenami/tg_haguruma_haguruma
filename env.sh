@@ -51,5 +51,13 @@ function jpy {
   echo $1 | jq | pbcopy
 }
 
+get_development_secrets() {
+  op item get --format json 'Rails Development Secrets' --vault 'Haguruma' | jq -r '.fields[] | "-e " + (.label) + "=" + (.value    )'
+}
+
+sync-secrets() {
+  op item get --format json 'Rails Development Secrets' --vault 'Haguruma' | jq -r '.fields[] | (.label) + "=" + (.value)' > secrets.env
+}
+
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1

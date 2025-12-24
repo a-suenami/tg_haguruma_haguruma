@@ -26,6 +26,7 @@ class ApplicationController
     include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
     include ::ApplicationHelper
+    include ::LexicalHelper
     include ::RulerArea::ApplicationHelper
   end
 

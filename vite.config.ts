@@ -7,6 +7,8 @@ export default defineConfig({
   plugins: [RubyPlugin(), vue()],
   server: {
     allowedHosts: ['vite-dev-server', '.localhost'],
+    // Docker環境ではブラウザからはlocalhost:3036でアクセスするため、originを明示的に設定
+    origin: process.env.VITE_DEV_SERVER_PUBLIC || 'http://localhost:3036',
     hmr: {
       host: process.env.VITE_SERVER_HMR_HOST || 'localhost',
       clientPort: Number(process.env.VITE_SERVER_HMR_PORT) || 3036,

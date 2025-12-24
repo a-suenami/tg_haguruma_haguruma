@@ -106,6 +106,9 @@ module GeneratedPathHelpersModule
   def admin_area_ruler_area_tenant_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_root_redirect_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def api_v1_auth_provider_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -158,6 +161,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_user_area_profile_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_admin_area_category_path(*args); end
@@ -283,9 +289,6 @@ module GeneratedPathHelpersModule
   def rails_storage_redirect_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def root_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
   def rswag_api_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -364,6 +367,9 @@ module GeneratedPathHelpersModule
   def ruler_area_tenants_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_root_redirect_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def test_auth_bypass_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -380,4 +386,31 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def upload_admin_area_media_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_auth_failure_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_callback_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_content_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_contents_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_dev_skip_auth_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_login_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_logout_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_profile_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_root_path(*args); end
 end

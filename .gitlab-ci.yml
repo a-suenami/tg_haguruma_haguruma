@@ -122,6 +122,7 @@ rspec:
     ACTIVE_RECORD_DETERMINISTIC_KEY: 'dummy'
     GOD_AREA_ENABLED: 'true'
     GOD_AREA_PASSWORD: 'god'
+    ADMIN_DOMAIN: 'admin.localhost'
   services:
     - ${POSTGRES_IMAGE}
     - name: ${REDIS_IMAGE}
@@ -200,6 +201,7 @@ e2e-smoke:
     TEST_TENANT_ID: 'sample'
     BASE_URL: 'http://localhost:3000'
     CI: 'true'
+    RULER_DOMAIN: 'localhost'
   before_script:
     - apt-get update && apt-get install -y libjq-dev
     - /bin/sh docker/scripts/bundle_install.sh

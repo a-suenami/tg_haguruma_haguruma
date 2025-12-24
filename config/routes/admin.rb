@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+root to: redirect('/admin'), as: :admin_root_redirect
+
 namespace :admin_area, path: :admin do
   # Auth0 Authentication routes
   get 'login', to: 'auth0#login', as: :login

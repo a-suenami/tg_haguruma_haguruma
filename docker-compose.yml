@@ -12,7 +12,7 @@ services:
         RAILS_ENV: development
     command: bundle exec rails server -b 0.0.0.0 -p '3000'
     ports:
-      - '3000:3000'
+      - '${APP_PORT:-3000}:3000'
     links:
       - postgres
       - redis
@@ -48,7 +48,7 @@ services:
     environment:
       VITE_RUBY_HOST: '0.0.0.0'
     ports:
-      - '3036:3036'
+      - '${VITE_PORT:-3036}:3036'
 
   # ----------------------------------------------------------------------------
   worker:
@@ -67,7 +67,7 @@ services:
     # ----------------------------------------------------------------------------
     image: postgres:16-alpine
     ports:
-      - '5432:5432'
+      - '${POSTGRES_PORT:-5432}:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -80,7 +80,7 @@ services:
     # ----------------------------------------------------------------------------
     image: redis:7-alpine
     ports:
-      - '6379:6379'
+      - '${REDIS_PORT:-6379}:6379'
     command: [redis-server, --loglevel, notice]
     volumes:
       - redis-data:/data
@@ -90,8 +90,8 @@ services:
     # ----------------------------------------------------------------------------
     image: minio/minio:latest
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - '${MINIO_API_PORT:-9000}:9000'
+      - '${MINIO_CONSOLE_PORT:-9001}:9001'
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
