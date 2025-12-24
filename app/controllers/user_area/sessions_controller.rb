@@ -19,7 +19,7 @@ module UserArea
       oauth_provider = current_tenant&.oauth_provider
 
       unless oauth_provider
-        redirect_to user_area_login_path, alert: 'OAuth provider is not configured for this tenant'
+        redirect_to user_area_login_path, alert: t('user_area.sessions.oauth_provider_not_configured')
         return
       end
 
@@ -36,19 +36,19 @@ module UserArea
     def callback
       # Verify state parameter for CSRF protection
       unless valid_oauth_state?
-        redirect_to user_area_login_path, alert: 'Invalid state parameter'
+        redirect_to user_area_login_path, alert: t('user_area.sessions.invalid_state_parameter')
         return
       end
 
       code = params[:code]
       if code.blank?
-        redirect_to user_area_login_path, alert: 'Authorization code not provided'
+        redirect_to user_area_login_path, alert: t('user_area.sessions.authorization_code_not_provided')
         return
       end
 
       oauth_provider = current_tenant&.oauth_provider
       unless oauth_provider
-        redirect_to user_area_login_path, alert: 'OAuth provider not found'
+        redirect_to user_area_login_path, alert: t('user_area.sessions.oauth_provider_not_found')
         return
       end
 
@@ -66,7 +66,7 @@ module UserArea
 
         uid = payload['sub']
         if uid.blank?
-          redirect_to user_area_login_path, alert: 'Invalid ID token: missing subject'
+          redirect_to user_area_login_path, alert: t('user_area.sessions.invalid_id_token_missing_subject')
           return
         end
 
@@ -88,13 +88,13 @@ module UserArea
         session[:tenant_id] = current_tenant&.id
         session.delete(:oauth_state)
 
-        redirect_to user_area_root_path, notice: 'Logged in successfully'
+        redirect_to user_area_root_path, notice: t('user_area.sessions.logged_in_successfully')
       rescue Auth::IdPlatform::ExchangeCodeService::Error => e
         Rails.logger.error("OAuth code exchange failed: #{e.message}")
-        redirect_to user_area_login_path, alert: 'Authentication failed: could not exchange authorization code'
+        redirect_to user_area_login_path, alert: t('user_area.sessions.exchange_code_failed')
       rescue JWT::DecodeError => e
         Rails.logger.error("ID token verification failed: #{e.message}")
-        redirect_to user_area_login_path, alert: 'Authentication failed: invalid ID token'
+        redirect_to user_area_login_path, alert: t('user_area.sessions.invalid_id_token')
       end
     end
 
@@ -102,14 +102,14 @@ module UserArea
     sig { void }
     def destroy
       reset_session
-      redirect_to user_area_login_path, notice: 'Logged out successfully'
+      redirect_to user_area_login_path, notice: t('user_area.sessions.logged_out_successfully')
     end
 
     # GET /auth/failure
     sig { void }
     def failure
       error_message = params[:message] || 'Unknown error'
-      redirect_to user_area_login_path, alert: "Authentication failed: #{error_message}"
+      redirect_to user_area_login_path, alert: t('user_area.sessions.authentication_failed', error: error_message)
     end
 
     # GET /dev/skip_auth (development only)
@@ -117,7 +117,7 @@ module UserArea
     def dev_skip_auth
       oauth_provider = current_tenant&.oauth_provider
       unless oauth_provider
-        redirect_to user_area_login_path, alert: 'OAuth provider not configured'
+        redirect_to user_area_login_path, alert: t('user_area.sessions.oauth_provider_not_configured_short')
         return
       end
 
@@ -131,7 +131,7 @@ module UserArea
       session[:user_id] = user.id
       session[:tenant_id] = current_tenant&.id
 
-      redirect_to user_area_root_path, notice: 'Logged in as dev user'
+      redirect_to user_area_root_path, notice: t('user_area.sessions.logged_in_as_dev_user')
     end
 
     private

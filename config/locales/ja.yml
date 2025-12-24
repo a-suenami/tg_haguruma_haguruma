@@ -131,6 +131,22 @@ ja:
       create_failed: トークンの作成に失敗しました
       revoked: トークンを無効化しました
       not_found: トークンが見つかりません
+  user_area:
+    sessions:
+      oauth_provider_not_configured: このテナントにはOAuthプロバイダが設定されていません
+      invalid_state_parameter: 無効なstateパラメータです
+      authorization_code_not_provided: 認可コードが提供されていません
+      oauth_provider_not_found: OAuthプロバイダが見つかりません
+      invalid_id_token_missing_subject: "無効なIDトークン: subjectがありません"
+      logged_in_successfully: ログインしました
+      exchange_code_failed: "認証に失敗しました: 認可コードを交換できませんでした"
+      invalid_id_token: "認証に失敗しました: 無効なIDトークン"
+      logged_out_successfully: ログアウトしました
+      oauth_provider_not_configured_short: OAuthプロバイダが設定されていません
+      logged_in_as_dev_user: 開発用ユーザーでログインしました
+      authentication_failed: "認証に失敗しました: %{error}"
+    profiles:
+      updated_successfully: プロフィールを更新しました
   admin_area:
     auth0:
       already_logged_in: すでにログインしています

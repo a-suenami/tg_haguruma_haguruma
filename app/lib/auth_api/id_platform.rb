@@ -48,7 +48,7 @@ module AuthApi
         code:,
         redirect_uri:,
         grant_type: 'authorization_code',
-      })
+      },)
       T.cast(response.body, T::Hash[T.untyped, T.untyped])
     end
   end
