@@ -102,9 +102,10 @@ module AdminArea
         end
 
         # Override this method in Show controllers to extract HTML
+        # Transforms S3 paths to signed URLs for editor display
         sig { params(field: ContentEntry::Field).returns(T.untyped) }
         def extract_richtext_value(field)
-          field.richtext&.value
+          RichtextUrlTransformer.transform(field.richtext&.value)
         end
 
         # Override this method if @content_entry can be nil

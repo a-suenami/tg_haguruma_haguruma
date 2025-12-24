@@ -30,8 +30,8 @@ aws:
       key_pair:
         private:
           public_key_id: <%= ENV['AWS_CLOUDFRONT_MEDIA_KEY_PAIR_PRIVATE_PUBLIC_KEY_ID'] %>
-          # 環境変数があればそれを使い、なければRails credentialsから取得
-          private_key: <%= ENV['AWS_CLOUDFRONT_MEDIA_KEY_PAIR_PRIVATE_PRIVATE_KEY'] || Rails.application.credentials.dig(:aws, :cloudfront, :media, :private_key) %>
+          # Use `to_json` to properly handle newline (\n) characters in the private key
+          private_key: <%= (ENV['AWS_CLOUDFRONT_MEDIA_KEY_PAIR_PRIVATE_PRIVATE_KEY'] || '').to_json %>
   dynamodb:
     access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
     app_constant:

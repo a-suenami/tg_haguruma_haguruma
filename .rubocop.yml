@@ -191,6 +191,9 @@ Rails/FindEach:
 RSpec/ImplicitSubject:
   Exclude:
     - 'spec/requests/**/*'
+RSpec/VariableName:
+  Exclude:
+    - 'spec/requests/**/*'
 RSpec/ContextWording:
   Enabled: true
 RSpec/ExampleLength:
