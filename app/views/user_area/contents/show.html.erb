@@ -1,0 +1,14 @@
+<% content_for :title do %>
+  Content - <%= current_tenant&.name %>
+<% end %>
+
+<div class="card">
+  <h1><%= @content_entry.title rescue 'Content' %></h1>
+  <p style="color: var(--text-muted);">
+    Created: <%= @content_entry.created_at.strftime('%Y/%m/%d %H:%M') %>
+  </p>
+
+  <div style="margin-top: 1.5rem;">
+    <%= link_to 'Back to contents', user_area_contents_path, class: 'btn btn-secondary' %>
+  </div>
+</div>

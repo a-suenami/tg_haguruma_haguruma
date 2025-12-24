@@ -1,0 +1,20 @@
+<% content_for :title do %>
+  Contents - <%= current_tenant&.name %>
+<% end %>
+
+<h1 style="margin-bottom: 1.5rem;">Contents</h1>
+
+<% if @content_types.any? %>
+  <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+    <% @content_types.each do |content_type| %>
+      <div class="card">
+        <h2><%= content_type.name %></h2>
+        <p style="color: var(--text-muted);"><%= content_type.api_identifier %></p>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="card">
+    <p style="color: var(--text-muted);">No content types available.</p>
+  </div>
+<% end %>
