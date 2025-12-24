@@ -14,7 +14,14 @@ module UserArea
 
     sig { void }
     def authenticate!
+      return if Rails.env.development? && skip_auth_in_development?
+
       redirect_to user_area_login_path unless user_signed_in?
+    end
+
+    sig { returns(T::Boolean) }
+    def skip_auth_in_development?
+      params[:skip_auth] == 'true' || session[:skip_auth] == true
     end
 
     sig { returns(T.nilable(User)) }

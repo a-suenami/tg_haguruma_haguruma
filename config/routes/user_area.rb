@@ -8,6 +8,9 @@ namespace :user_area, path: '' do
   get '/auth/callback', to: 'sessions#callback', as: :callback
   get '/auth/failure', to: 'sessions#failure', as: :auth_failure
 
+  # Development only: bypass authentication
+  get '/dev/skip_auth', to: 'sessions#dev_skip_auth', as: :dev_skip_auth if Rails.env.development?
+
   # Top page (root for user area)
   root to: 'top#index'
 
