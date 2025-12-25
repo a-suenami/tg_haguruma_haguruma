@@ -292,7 +292,7 @@ build:app:staging:
     <<: *cache
     policy: pull
   services:
-    - name: docker:24-dind
+    - name: docker:dind
       alias: docker
   variables:
     DOCKER_HOST: tcp://docker:2375/
@@ -322,7 +322,7 @@ build:app:production:
     <<: *cache
     policy: pull
   services:
-    - name: docker:24-dind
+    - name: docker:dind
       alias: docker
   variables:
     DOCKER_HOST: tcp://docker:2375/
