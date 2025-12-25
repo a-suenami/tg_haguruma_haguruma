@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  BLOG - <%= current_tenant&.name || 'Fan Club' %>
+  TICKET - <%= current_tenant&.name || 'Fan Club' %>
 <% end %>
 
 <%= render 'user_area/alpha/shared/page_header' %>
@@ -7,8 +7,8 @@
 <main class="main">
   <section cog-list-fragment>
     <div cog-list-fragment-title>
-      <div cog-feature-title-image feature="blog">
-        <div class="title-image"><%= feature_title_svg('blog') %></div>
+      <div cog-feature-title-image feature="ticket">
+        <div class="title-image">TICKET</div>
       </div>
     </div>
 
@@ -20,31 +20,19 @@
             <div class="current-line"></div>
           </button>
           <button cog-tab>
-            <div class="text">ファッション</div>
+            <div class="text">ライブ</div>
             <div class="current-line"></div>
           </button>
           <button cog-tab>
-            <div class="text">音楽</div>
+            <div class="text">イベント</div>
             <div class="current-line"></div>
           </button>
           <button cog-tab>
-            <div class="text">グルメ</div>
+            <div class="text">先行販売</div>
             <div class="current-line"></div>
           </button>
           <button cog-tab>
-            <div class="text">旅行</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">アート</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">ライフスタイル</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">スペシャル</div>
+            <div class="text">一般販売</div>
             <div class="current-line"></div>
           </button>
         </div>
@@ -55,14 +43,14 @@
       <div cog-blog-list>
         <div class="list">
           <% 10.times do |i| %>
-            <a href="<%= user_area_blog_path(i + 1) %>" cog-blog-item>
+            <a href="<%= user_area_ticket_path(i + 1) %>" cog-blog-item>
               <div class="thumbnail">
-                <img draggable="false" src="https://placehold.co/600x400/e8e8e8/999999?text=Blog+<%= i + 1 %>" alt="Blog Thumbnail">
+                <img draggable="false" src="https://placehold.co/600x400/e8e8e8/999999?text=Ticket+<%= i + 1 %>" alt="Ticket Thumbnail">
                 <div class="label">
-                  <span cog-category-label>ファッション</span>
+                  <span cog-category-label>ライブ</span>
                 </div>
               </div>
-              <div class="title">サンプルブログタイトル <%= i + 1 %></div>
+              <div class="title">サンプルチケット <%= i + 1 %> - 2025年春ツアー</div>
             </a>
           <% end %>
         </div>

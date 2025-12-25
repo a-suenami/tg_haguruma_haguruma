@@ -88,6 +88,8 @@
 @use './features/schedule/pages/schedule-overview/schedule-overview.page';
 @use './features/schedule/pages/schedule-detail/schedule-detail.page';
 @use './features/schedule/components/schedule-container/schedule-container.component';
+@use './features/schedule/components/schedule-container/styles/schedule-container.browser' as schedule-container-browser;
+@use './features/schedule/components/schedule-container/styles/schedule-container.tablet' as schedule-container-tablet;
 @use './features/schedule/components/monthly-schedule-list/monthly-schedule-list.component';
 @use './features/schedule/components/monthly-schedule-group/monthly-schedule-group.component';
 @use './features/schedule/components/monthly-schedule-group-partition/monthly-schedule-group-partition.component';

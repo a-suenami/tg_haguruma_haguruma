@@ -1,19 +1,104 @@
-// FIXME: #19 (https://git.l.twogate.net/haguruma/gearbox/-/issues/19) でtheme周りを整理する
 [cog-inline-calendar] {
   display: block;
   width: 240px;
 
-  --mat-datepicker-calendar-date-text-color: var(--gearbox-secondary);
-  --mat-datepicker-calendar-date-today-outline-color: var(--gearbox-primary);
-  --mat-datepicker-calendar-date-selected-state-background-color: var(
-    --gearbox-primary
-  );
-  --mat-datepicker-calendar-date-selected-state-text-color: var(
-    --gearbox-on-primary
-  );
+  .calendar-container {
+    background: var(--gearbox-white);
+    border-radius: 8px;
+    padding: var(--gearbox-spacing-8);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-  // --mat-icon-button-state-layer-color: var(--gearbox-primary);
-  // --mat-datepicker-calendar-header-text-color: var(--gearbox-secondary);
-  // --mat-button-text-state-layer-color: var(--gearbox-primary);
-  // --mat-datepicker-calendar-period-button-text-color: var(--gearbox-on-primary);
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gearbox-spacing-8);
+    margin-bottom: var(--gearbox-spacing-8);
+  }
+
+  .calendar-period {
+    font-family: var(--gearbox-font-family-primary);
+    font-size: var(--gearbox-font-size-body);
+    font-weight: var(--gearbox-font-weight-semibold);
+    color: var(--gearbox-secondary);
+  }
+
+  .calendar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--gearbox-secondary);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    &:disabled {
+      opacity: 0.38;
+      cursor: default;
+    }
+  }
+
+  .calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    th,
+    td {
+      text-align: center;
+      padding: var(--gearbox-spacing-4);
+    }
+
+    th {
+      font-family: var(--gearbox-font-family-primary);
+      font-size: var(--gearbox-font-size-caption);
+      font-weight: var(--gearbox-font-weight-regular);
+      color: var(--gearbox-secondary);
+      opacity: 0.6;
+    }
+  }
+
+  .calendar-date {
+    cursor: pointer;
+
+    .date-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      margin: 0 auto;
+      border-radius: 50%;
+      font-family: var(--gearbox-font-family-primary);
+      font-size: var(--gearbox-font-size-body-small);
+      color: var(--gearbox-secondary);
+      transition: background-color 0.2s;
+    }
+
+    &:hover .date-number {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    &.other-month .date-number {
+      opacity: 0.38;
+    }
+
+    &.today .date-number {
+      border: 1px solid var(--gearbox-primary);
+    }
+
+    &.selected .date-number {
+      background-color: var(--gearbox-primary);
+      color: var(--gearbox-on-primary);
+    }
+  }
 }

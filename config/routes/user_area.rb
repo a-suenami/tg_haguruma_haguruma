@@ -25,6 +25,7 @@ namespace :user_area, path: '' do
   # See: docs/adr/20251225-user-area-alpha-namespace/ADR.ja.md
   scope module: :alpha do
     resources :news, only: [:index, :show]
+    resources :tickets, only: [:index, :show]
     resources :blog, only: [:index, :show]
     resources :schedules, only: [:index, :show]
   end

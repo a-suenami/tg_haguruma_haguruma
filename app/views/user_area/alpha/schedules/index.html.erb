@@ -9,7 +9,7 @@
   <section cog-list-fragment>
     <div cog-list-fragment-title>
       <div cog-feature-title-image feature="schedule">
-        <div class="title-image">SCHEDULE</div>
+        <div class="title-image"><%= feature_title_svg('schedule') %></div>
       </div>
     </div>
 
@@ -38,7 +38,34 @@
 
     <div cog-list-fragment-content>
       <div cog-schedule-container>
-        <div cog-monthly-schedule-list>
+        <div class="pane date">
+          <div class="calendar browser-only">
+            <div cog-inline-calendar>
+              <%= render 'user_area/alpha/schedules/calendar', year: 2024, month: 12 %>
+            </div>
+          </div>
+          <div class="date-picker tablet-only">
+            <div cog-date-picker>
+              <button type="button" class="arrow-icon-button prev">
+                <span class="arrow-icon">&lt;</span>
+              </button>
+              <div class="trigger">
+                <button type="button" class="trigger-button">
+                  <span>2024年12月</span>
+                  <span class="triangle-icon">▼</span>
+                </button>
+              </div>
+              <button type="button" class="arrow-icon-button next">
+                <span class="arrow-icon">&gt;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider browser-only"></div>
+
+        <div class="pane list">
+          <div cog-monthly-schedule-list>
           <div cog-monthly-schedule-group>
             <div cog-monthly-schedule-group-partition>
               <div class="period">
@@ -64,6 +91,7 @@
               <% end %>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
