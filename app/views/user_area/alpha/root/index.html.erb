@@ -1,0 +1,15 @@
+<% content_for :title do %>
+  Alpha - <%= current_tenant&.name || 'Top' %>
+<% end %>
+
+<div class="card">
+  <h1>Alpha Top Page</h1>
+  <p>This is a test page in the alpha namespace.</p>
+  <p>Tenant: <strong><%= current_tenant&.name %></strong></p>
+
+  <% if user_signed_in? %>
+    <p>Logged in as: <strong><%= current_user&.uid %></strong></p>
+  <% else %>
+    <p>Not logged in</p>
+  <% end %>
+</div>

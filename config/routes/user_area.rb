@@ -12,11 +12,17 @@ namespace :user_area, path: '' do
   get '/dev/skip_auth', to: 'sessions#dev_skip_auth', as: :dev_skip_auth if Rails.env.development?
 
   # Top page (root for user area)
-  root to: 'top#index'
+  # root to: 'top#index' # Original implementation
+  root to: 'alpha/root#index' # Alpha implementation
 
   # Profile management
   resource :profile, only: [:show, :edit, :update]
 
   # Contents
   resources :contents, only: [:index, :show]
+
+  # Alpha: Short-term implementation (to be replaced by dynamic page system)
+  # See: docs/adr/20251225-user-area-alpha-namespace/ADR.ja.md
+  # scope module: :alpha do
+  # end
 end
