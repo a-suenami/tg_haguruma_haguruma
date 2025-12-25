@@ -1,0 +1,29 @@
+<button (click)="previousMonth()" class="arrow-icon-button">
+  <cog-icon-back-arrow class="arrow-icon"></cog-icon-back-arrow>
+</button>
+
+<div class="trigger">
+  <button
+    class="trigger-button"
+    [class.opened]="picker.opened"
+    (click)="picker.open()"
+  >
+    <span>{{ selectedDate() | date: 'yyyy年MM月' }}</span>
+    <cog-icon-triangle class="triangle-icon"></cog-icon-triangle>
+  </button>
+
+  <div class="trigger-input">
+    <mat-form-field>
+      <input 
+        matInput 
+        [matDatepicker]="picker" 
+        [value]="selectedDate()"
+        (dateChange)="onDateChange($event)" />
+      <mat-datepicker #picker [startAt]="selectedDate()"></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>
+
+<button (click)="nextMonth()" class="arrow-icon-button">
+  <cog-icon-forward-arrow class="arrow-icon"></cog-icon-forward-arrow>
+</button>

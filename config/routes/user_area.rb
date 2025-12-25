@@ -23,6 +23,9 @@ namespace :user_area, path: '' do
 
   # Alpha: Short-term implementation (to be replaced by dynamic page system)
   # See: docs/adr/20251225-user-area-alpha-namespace/ADR.ja.md
-  # scope module: :alpha do
-  # end
+  scope module: :alpha do
+    resources :news, only: [:index, :show]
+    resources :blog, only: [:index, :show]
+    resources :schedules, only: [:index, :show]
+  end
 end

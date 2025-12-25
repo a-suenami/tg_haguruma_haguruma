@@ -1,0 +1,18 @@
+@use 'shared/theme/breakpoints/breakpoints' as breakpoints;
+
+@include breakpoints.media-down(md) {
+  [cog-schedule-container.tablet.scss] {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .browser-only {
+    display: none;
+  }
+  .tablet-only {
+    display: block;
+  }
+
+  .date-picker {
+    display: block;
+  }
+}

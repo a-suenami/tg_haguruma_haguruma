@@ -1,0 +1,81 @@
+<% content_for :title do %>
+  NEWS - <%= current_tenant&.name || 'Fan Club' %>
+<% end %>
+
+<%= render 'user_area/alpha/shared/page_header' %>
+
+<main class="main">
+  <section cog-list-fragment>
+    <div cog-list-fragment-title>
+      <div cog-feature-title-image feature="news">
+        <div class="title-image">NEWS</div>
+      </div>
+    </div>
+
+    <div cog-list-fragment-actions>
+      <nav cog-tabs-bar>
+        <div cog-tabs>
+          <button cog-tab class="active">
+            <div class="text">すべて</div>
+            <div class="current-line"></div>
+          </button>
+          <button cog-tab>
+            <div class="text">更新履歴</div>
+            <div class="current-line"></div>
+          </button>
+          <button cog-tab>
+            <div class="text">ニュース</div>
+            <div class="current-line"></div>
+          </button>
+          <button cog-tab>
+            <div class="text">メール</div>
+            <div class="current-line"></div>
+          </button>
+          <button cog-tab>
+            <div class="text">発送物</div>
+            <div class="current-line"></div>
+          </button>
+          <button cog-tab>
+            <div class="text">観覧・プレゼント</div>
+            <div class="current-line"></div>
+          </button>
+          <button cog-tab>
+            <div class="text">スペシャル</div>
+            <div class="current-line"></div>
+          </button>
+          <button cog-tab>
+            <div class="text">海外番組記</div>
+            <div class="current-line"></div>
+          </button>
+        </div>
+      </nav>
+    </div>
+
+    <div cog-list-fragment-content>
+      <div cog-news-list>
+        <div class="list">
+          <% 10.times do |i| %>
+            <a href="<%= user_area_news_path(i + 1) %>" cog-news-item>
+              <div class="category">
+                <span cog-category-label>ニュース</span>
+              </div>
+              <div class="date">
+                <span cog-date-label>2024.12.<%= 15 - (i % 10) %></span>
+              </div>
+              <div class="title">サンプルニュースタイトル <%= i + 1 %> - ここにニュースのタイトルが入ります</div>
+            </a>
+            <% unless i == 9 %>
+              <div class="divider"></div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="pagination-button-container">
+          <button cog-button primary outlined>VIEW MORE</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%= render 'user_area/alpha/shared/page_footer' %>

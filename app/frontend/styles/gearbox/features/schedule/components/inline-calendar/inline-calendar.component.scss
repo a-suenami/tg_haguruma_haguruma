@@ -1,0 +1,19 @@
+// FIXME: #19 (https://git.l.twogate.net/haguruma/gearbox/-/issues/19) でtheme周りを整理する
+[cog-inline-calendar] {
+  display: block;
+  width: 240px;
+
+  --mat-datepicker-calendar-date-text-color: var(--gearbox-secondary);
+  --mat-datepicker-calendar-date-today-outline-color: var(--gearbox-primary);
+  --mat-datepicker-calendar-date-selected-state-background-color: var(
+    --gearbox-primary
+  );
+  --mat-datepicker-calendar-date-selected-state-text-color: var(
+    --gearbox-on-primary
+  );
+
+  // --mat-icon-button-state-layer-color: var(--gearbox-primary);
+  // --mat-datepicker-calendar-header-text-color: var(--gearbox-secondary);
+  // --mat-button-text-state-layer-color: var(--gearbox-primary);
+  // --mat-datepicker-calendar-period-button-text-color: var(--gearbox-on-primary);
+}

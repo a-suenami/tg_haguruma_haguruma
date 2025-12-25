@@ -1,0 +1,16 @@
+[cog-radio-group] {
+  display: flex;
+  width: 100%;
+  --cog-radio-group-direction: column;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: var(--cog-radio-group-direction, column);
+  gap: var(--gearbox-spacing-12);
+  width: 100%;
+}
+
+.radio-group[aria-disabled='true'] {
+  opacity: 0.7;
+}

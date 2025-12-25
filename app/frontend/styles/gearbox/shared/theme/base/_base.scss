@@ -1,0 +1,35 @@
+// Base Styles
+// きゃぱぱぴゅぱぴゅFC Design System
+
+// Set base font-size for rem calculations
+// 1rem = 16px
+:root {
+  font-size: 16px;
+}
+
+// Optional: Ensure html also has the base font-size
+html {
+  font-size: 16px;
+}
+
+// Basic box-sizing reset
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// Remove default margins
+body {
+  margin: 0;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}

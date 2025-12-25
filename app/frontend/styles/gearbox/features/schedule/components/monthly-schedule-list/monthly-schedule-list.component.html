@@ -1,0 +1,23 @@
+<div class="inner">
+  @for (group of groupedSchedules(); track group.monthKey) {
+    <cog-monthly-schedule-group>
+      <cog-monthly-schedule-group-partition
+        [month]="group.month"
+        [year]="group.year"
+      >
+      </cog-monthly-schedule-group-partition>
+      <cog-daily-schedule-items>
+        @if (group.items.length === 0) {
+          {{ group.month }}月の予定は現在ありません
+        } @else {
+          @for (item of group.items; track item.date; let i = $index) {
+            <cog-daily-schedule-item
+              [routerLink]="['/schedule/detail', i + 1]"
+              [schedule]="item">
+            </cog-daily-schedule-item>
+          }
+        }
+      </cog-daily-schedule-items>
+    </cog-monthly-schedule-group>
+  }
+</div>

@@ -1,0 +1,38 @@
+[cog-monthly-schedule-group-partition] {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  .period {
+    display: flex;
+    gap: var(--gearbox-spacing-8);
+    padding: var(--gearbox-spacing-8);
+    align-items: baseline;
+  }
+
+  .month {
+    font-size: var(--gearbox-font-size-heading-small);
+    font-family: var(--gearbox-font-family-heading);
+    font-weight: var(--gearbox-font-weight-semibold);
+    color: var(--gearbox-secondary);
+  }
+
+  .year {
+    font-size: var(--gearbox-font-size-body-small);
+    font-family: var(--gearbox-font-family-primary);
+    font-weight: var(--gearbox-font-weight-semibold);
+    color: var(--gearbox-secondary);
+  }
+
+  .line {
+    height: 1px;
+    flex: 1;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--gearbox-secondary) 0,
+      var(--gearbox-secondary) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  }
+}

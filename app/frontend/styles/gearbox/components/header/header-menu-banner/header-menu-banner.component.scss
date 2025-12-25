@@ -1,0 +1,13 @@
+[cog-header-menu-banner] {
+  display: block;
+  cursor: pointer;
+
+  &:active {
+    opacity: 0.8;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gearbox-primary);
+    outline-offset: 2px;
+  }
+}

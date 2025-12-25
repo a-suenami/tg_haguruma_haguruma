@@ -1,0 +1,95 @@
+@use '../button-animations/button-animations' as animations;
+
+[cog-button] {
+  // CSS Variables
+  --cog-button-radius: 100px;
+  --cog-button-width: auto;
+  --cog-button-align: center;
+
+  // Filled variant
+  --cog-button-filled-color: var(--gearbox-on-primary);
+  --cog-button-filled-background-color: var(--gearbox-primary);
+  --cog-button-filled-outline-color: var(--gearbox-primary);
+
+  // Outlined variant
+  --cog-button-outlined-color: var(--gearbox-primary);
+  --cog-button-outlined-background-color: var(--gearbox-surface-bright);
+  --cog-button-outlined-outline-color: var(--gearbox-primary);
+
+  // Base styles
+  display: inline-flex;
+  align-items: center;
+  justify-content: var(--cog-button-align, center);
+  gap: var(--gearbox-spacing-4);
+  padding: var(--gearbox-spacing-8) var(--gearbox-spacing-16);
+  border-radius: var(--cog-button-radius);
+  border: 3px solid transparent;
+  font-family: var(--gearbox-font-family-primary);
+  font-size: var(--gearbox-font-size-body-medium);
+  font-weight: var(--gearbox-font-weight-semibold);
+  line-height: var(--gearbox-line-height-loose);
+  letter-spacing: 0.04em; // Better than fixed px for letter spacing
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  box-sizing: border-box;
+  width: var(--cog-button-width);
+  text-decoration: none;
+  white-space: nowrap;
+
+  // Default styles (filled)
+  background-color: var(--cog-button-filled-background-color);
+  color: var(--cog-button-filled-color);
+  border-color: var(--cog-button-filled-outline-color);
+
+  // Apply button animations
+  @include animations.button-base-animations();
+
+  // Disabled state
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // Remove default button styles
+  &:focus {
+    outline: none;
+  }
+}
+
+// Filled variant (explicit)
+[cog-button][filled] {
+  background-color: var(--cog-button-filled-background-color);
+  color: var(--cog-button-filled-color);
+  border-color: var(--cog-button-filled-outline-color);
+}
+
+// Outlined variant
+[cog-button][outlined] {
+  background-color: var(--cog-button-outlined-background-color);
+  color: var(--cog-button-outlined-color);
+  border-color: var(--cog-button-outlined-outline-color);
+}
+
+// Primary color
+[cog-button][primary] {
+  --cog-button-filled-color: var(--gearbox-on-primary);
+  --cog-button-filled-background-color: var(--gearbox-primary);
+  --cog-button-filled-outline-color: var(--gearbox-primary);
+
+  --cog-button-outlined-color: var(--gearbox-primary);
+  --cog-button-outlined-background-color: var(--gearbox-surface-bright);
+  --cog-button-outlined-outline-color: var(--gearbox-primary);
+}
+
+// Secondary color
+[cog-button][secondary] {
+  --cog-button-filled-color: var(--gearbox-on-secondary);
+  --cog-button-filled-background-color: var(--gearbox-secondary);
+  --cog-button-filled-outline-color: var(--gearbox-secondary);
+
+  --cog-button-outlined-color: var(--gearbox-on-secondary-container);
+  --cog-button-outlined-background-color: var(--gearbox-surface-bright);
+  --cog-button-outlined-outline-color: var(--gearbox-secondary);
+}

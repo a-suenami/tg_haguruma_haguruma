@@ -1,0 +1,50 @@
+<% content_for :title do %>
+  BLOG - <%= current_tenant&.name || 'Fan Club' %>
+<% end %>
+
+<%= render 'user_area/alpha/shared/page_header' %>
+
+<main class="main">
+  <div class="inner">
+    <article cog-detail-fragment>
+      <header cog-detail-fragment-header>
+        <div cog-detail-fragment-toolbar>
+          <h1 cog-detail-fragment-title>ブログ</h1>
+        </div>
+        <div cog-detail-fragment-toolbar>
+          <span cog-category-label>ファッション</span>
+          <span cog-date-label>2024.12.15</span>
+        </div>
+      </header>
+
+      <div cog-detail-fragment-content>
+        <div cog-rich-content-viewer>
+          <h2>サンプルブログタイトル</h2>
+          <p>
+            こんにちは！今日は最近のお気に入りのファッションについてお話しします。
+          </p>
+          <p>
+            最近は秋冬の新作がたくさん出ていて、ショッピングが楽しい季節ですね。
+            特に今年はオーバーサイズのアウターがトレンドで、私もいくつか新調しました。
+          </p>
+          <figure>
+            <img src="/assets/images/dummy-blog-content.jpg" alt="Blog Content Image">
+            <figcaption>お気に入りのコーディネート</figcaption>
+          </figure>
+          <p>
+            皆さんもぜひ今年のトレンドを取り入れてみてくださいね！
+            質問があればコメントで教えてください。
+          </p>
+        </div>
+      </div>
+
+      <footer cog-detail-fragment-actions>
+        <a href="<%= user_area_blog_index_path %>" cog-button outlined class="action-button">
+          一覧に戻る
+        </a>
+      </footer>
+    </article>
+  </div>
+</main>
+
+<%= render 'user_area/alpha/shared/page_footer' %>

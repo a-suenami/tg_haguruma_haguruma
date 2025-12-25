@@ -1,0 +1,27 @@
+// Button Animation Mixins
+// Shared animations for buttons and FAB buttons
+
+@mixin button-base-animations() {
+  // Smooth transition for all animations
+  // transition: transform 0.15s ease-out, filter 0.2s ease-out;
+  transition:
+    transform 120ms cubic-bezier(0.4, 0, 0.2, 1),
+    filter 150ms linear;
+
+  // Click animation - scale down when pressed
+  &:active:not([disabled]) {
+    transform: scale(0.95);
+  }
+
+  // Hover animation - only on devices that support hover
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not([disabled]) {
+      filter: brightness(1.15);
+    }
+  }
+}
+
+// FAB button animations - same as regular buttons
+@mixin fab-button-animations() {
+  @include button-base-animations();
+}

@@ -1,0 +1,9 @@
+@use '../../mixins/css-variables' as css-vars;
+
+$gearbox-opacity: (
+  placeholder: 0.35,
+  disabled: 0.35,
+) !default;
+
+@include css-vars.generate-css-variables($gearbox-opacity, 'gearbox-opacity');
+

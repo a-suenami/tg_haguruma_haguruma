@@ -1,0 +1,24 @@
+[cog-schedule-detail] {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .main {
+    display: flex;
+    flex: 1;
+  }
+
+  .inner {
+    display: block;
+    flex-grow: 1;
+  }
+
+  .action-button {
+    flex: 1;
+    --cog-button-width: 100%;
+
+    &.in-content {
+      max-width: 300px;
+    }
+  }
+}

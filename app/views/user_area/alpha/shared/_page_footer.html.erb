@@ -1,0 +1,27 @@
+<footer cog-footer>
+  <nav cog-footer-menu>
+    <a cog-footer-menu-item href="<%= user_area_root_path %>">TOP</a>
+    <a cog-footer-menu-item href="<%= user_area_news_index_path %>">NEWS</a>
+    <a cog-footer-menu-item href="<%= user_area_blog_index_path %>">BLOG</a>
+    <a cog-footer-menu-item href="<%= user_area_schedules_path %>">SCHEDULE</a>
+    <a cog-footer-menu-item href="#">MYPAGE</a>
+  </nav>
+
+  <div cog-legal-links>
+    <a cog-legal-link href="#">利用規約・チケット規約</a>
+    <a cog-legal-link href="#">個人情報の取り扱いについて</a>
+    <a cog-legal-link href="#">サイトポリシー</a>
+    <a cog-legal-link href="#">特定商取引法に基づく表記</a>
+    <a cog-legal-link href="#">FAQ / お問い合わせ</a>
+  </div>
+
+  <div cog-sns-items>
+    <a cog-sns-item type="x" href="#" target="_blank" rel="noopener"></a>
+    <a cog-sns-item type="instagram" href="#" target="_blank" rel="noopener"></a>
+    <a cog-sns-item type="youtube" href="#" target="_blank" rel="noopener"></a>
+  </div>
+
+  <div cog-copyright>
+    &copy; <%= Time.current.year %> <%= current_tenant&.name || 'Fan Club' %>
+  </div>
+</footer>
