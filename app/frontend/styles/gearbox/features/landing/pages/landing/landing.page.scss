@@ -44,7 +44,7 @@
     }
 
     [cog-swiper-slide] {
-      --cog-swiper-slide-width: calc(100% - var(--gearbox-spacing-40));
+      --cog-swiper-slide-width: calc(100vw - var(--gearbox-spacing-40));
     }
 
     [cog-swiper-slide]:first-of-type {
@@ -53,6 +53,12 @@
 
     [cog-swiper-slide]:last-of-type {
       margin-right: 0;
+    }
+
+    .banner-swiper .swiper-inner {
+      justify-content: flex-start;
+      padding-left: var(--gearbox-spacing-20);
+      padding-right: var(--gearbox-spacing-20);
     }
   }
 
