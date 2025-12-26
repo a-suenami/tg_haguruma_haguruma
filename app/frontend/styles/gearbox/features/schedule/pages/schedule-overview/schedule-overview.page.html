@@ -1,0 +1,28 @@
+<cog-page-header></cog-page-header>
+
+<main class="main">
+  <cog-list-fragment style="flex: 1">
+    <cog-list-fragment-title>
+      <cog-feature-title-image [feature]="'schedule'"></cog-feature-title-image>
+    </cog-list-fragment-title>
+    <cog-list-fragment-actions>
+      <cog-tabs-bar>
+        <cog-tabs>
+          <button cog-tab tab="all">すべて</button>
+          <button cog-tab tab="event">EVENT</button>
+          <button cog-tab tab="radio">RADIO</button>
+          <button cog-tab tab="other">OTHER</button>
+        </cog-tabs>
+      </cog-tabs-bar>
+    </cog-list-fragment-actions>
+    <cog-list-fragment-content style="flex: 1">
+      <cog-schedule-container style="flex: 1">
+        <cog-inline-calendar></cog-inline-calendar>
+        <cog-date-picker></cog-date-picker>
+        <cog-monthly-schedule-list></cog-monthly-schedule-list>
+      </cog-schedule-container>
+    </cog-list-fragment-content>
+  </cog-list-fragment>
+</main>
+
+<cog-page-footer></cog-page-footer>

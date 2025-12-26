@@ -1,0 +1,106 @@
+@use '../button-animations/button-animations' as animations;
+
+[cog-fab-button] {
+  // CSS Variables - defaults
+  --cog-fab-button-size: 64px;
+  --cog-fab-button-padding: var(--gearbox-spacing-16);
+  --cog-fab-button-icon-size: 24px;
+  --cog-fab-button-elevation: var(--gearbox-elevation);
+
+  --cog-fab-direct-button-color: var(--gearbox-on-primary);
+  --cog-fab-direct-button-background-color: var(--gearbox-primary);
+
+  --cog-fab-inverse-button-color: var(--gearbox-on-primary-container);
+  --cog-fab-inverse-button-background-color: var(--gearbox-primary-container);
+
+  // default styles
+  color: var(--cog-fab-direct-button-color);
+  background-color: var(--cog-fab-direct-button-background-color);
+
+  // Base styles
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  overflow: hidden;
+  font-family: inherit;
+  text-decoration: none;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+
+  // Apply CSS variables
+  min-width: var(--cog-fab-button-size);
+  min-height: var(--cog-fab-button-size);
+  width: var(--cog-fab-button-size);
+  height: var(--cog-fab-button-size);
+  padding: var(--cog-fab-button-padding);
+  box-shadow: var(--cog-fab-button-elevation);
+
+  // Apply FAB button animations
+  @include animations.fab-button-animations();
+}
+
+// Size - Small
+[cog-fab-button][small] {
+  --cog-fab-button-size: 40px;
+  --cog-fab-button-padding: var(--gearbox-spacing-8);
+  --cog-fab-button-icon-size: 18px;
+}
+
+// Size - Medium
+[cog-fab-button][medium] {
+  --cog-fab-button-size: 64px;
+  --cog-fab-button-padding: var(--gearbox-spacing-16);
+  --cog-fab-button-icon-size: 24px;
+}
+
+// Size - Large
+[cog-fab-button][large] {
+  --cog-fab-button-size: 90px;
+  --cog-fab-button-padding: var(--gearbox-spacing-24);
+  --cog-fab-button-icon-size: 36px;
+}
+
+// Color - Primary Inverse
+[cog-fab-button][inverse] {
+  color: var(--cog-fab-inverse-button-color);
+  background-color: var(--cog-fab-inverse-button-background-color);
+}
+
+// Color - Primary
+[cog-fab-button][primary] {
+  --cog-fab-direct-button-color: var(--gearbox-on-primary);
+  --cog-fab-direct-button-background-color: var(--gearbox-primary);
+
+  --cog-fab-inverse-button-color: var(--gearbox-on-primary-container);
+  --cog-fab-inverse-button-background-color: var(--gearbox-primary-container);
+}
+
+// Color - Secondary
+[cog-fab-button][secondary] {
+  --cog-fab-direct-button-color: var(--gearbox-on-secondary);
+  --cog-fab-direct-button-background-color: var(--gearbox-secondary);
+
+  --cog-fab-inverse-button-color: var(--gearbox-on-secondary-container);
+  --cog-fab-inverse-button-background-color: var(--gearbox-secondary-container);
+}
+
+// Disabled state
+[cog-fab-button][disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+  pointer-events: none;
+
+  --cog-fab-direct-button-background-color: var(--gearbox-surface-dim);
+  --cog-fab-inverse-button-background-color: var(--gearbox-surface-dim);
+}
+
+[cog-fab-button]:active:not([disabled]) .ripple::after {
+  width: 200%;
+  height: 200%;
+}

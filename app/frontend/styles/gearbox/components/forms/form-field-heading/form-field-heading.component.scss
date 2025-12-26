@@ -1,0 +1,12 @@
+[cog-form-field-heading] {
+  display: block;
+  width: 100%;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: var(--gearbox-spacing-4);
+  width: 100%;
+}

@@ -1,0 +1,33 @@
+[cog-news-list] {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--gearbox-spacing-32);
+
+  .list {
+    display: block;
+    width: 100%;
+  }
+
+  .divider {
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--gearbox-outline-primary) 0,
+      var(--gearbox-outline-primary) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  }
+
+  .overview-page-indicator,
+  .pagination-button-container {
+    display: flex;
+    justify-content: center;
+
+    button, a {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+}

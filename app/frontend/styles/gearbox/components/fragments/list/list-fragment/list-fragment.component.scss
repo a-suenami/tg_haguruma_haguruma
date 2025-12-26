@@ -1,0 +1,56 @@
+@use 'sass:map';
+@use '../../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-list-fragment] {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gearbox-spacing-32);
+  margin: 0 auto;
+}
+
+@media (max-width: map.get(breakpoints.$breakpoints, 'lg')) and (max-height: 1080px) {
+  [cog-list-fragment] {
+    $header-height: 76px;
+    position: relative;
+    min-height: calc(100dvh - $header-height);
+  }
+}
+
+@media (min-width: map.get(breakpoints.$breakpoints, 'lg')) and (max-height: 1080px) {
+  [cog-list-fragment] {
+    $header-height: 76px;
+    position: relative;
+    min-height: calc(100dvh - $header-height);
+  }
+}
+
+@media (min-width: map.get(breakpoints.$breakpoints, 'md')) and (max-width: map.get(breakpoints.$breakpoints, 'lg')) and (max-height: 1400px) {
+  [cog-list-fragment] {
+    $header-height: 76px;
+    position: relative;
+    min-height: calc(100dvh - $header-height);
+  }
+}
+@media (min-width: map.get(breakpoints.$breakpoints, 'md')) and (max-width: map.get(breakpoints.$breakpoints, 'lg')) and (min-height: 1400px) {
+  [cog-list-fragment] {
+    $header-height: 76px;
+    $footer-height: 619px;
+    position: relative;
+    min-height: calc(100dvh - $header-height - $footer-height);
+  }
+}
+
+@include breakpoints.media-up(md) {
+  [cog-list-fragment] {
+    padding: var(--gearbox-spacing-56);
+  }
+}
+@include breakpoints.media-down(md) {
+  [cog-list-fragment] {
+    padding: var(--gearbox-spacing-32) var(--gearbox-spacing-16)
+      var(--gearbox-spacing-24);
+  }
+}

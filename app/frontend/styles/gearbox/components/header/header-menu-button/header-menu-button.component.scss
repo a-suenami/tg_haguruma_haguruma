@@ -1,0 +1,43 @@
+[cog-header-menu-button] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 60px;
+  height: auto;
+  background: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+
+  transition:
+    transform 120ms cubic-bezier(0, 0, 0.2, 1),
+    filter 150ms linear;
+
+  &:active:not([disabled]) {
+    transform: scale(0.95);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not([disabled]) {
+      .icon {
+        filter: brightness(1.15);
+      }
+      .text {
+        filter: brightness(1.15);
+      }
+    }
+  }
+
+  .icon {
+    color: var(--gearbox-primary);
+  }
+
+  .text {
+    font-family: var(--gearbox-font-family-primary);
+    font-weight: var(--gearbox-font-weight-semibold);
+    font-size: var(--gearbox-font-size-caption-medium);
+    line-height: var(--gearbox-line-height-relaxed);
+    color: var(--gearbox-primary);
+  }
+}

@@ -1,0 +1,43 @@
+[cog-monthly-schedule-list] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gearbox-spacing-4);
+  position: relative;
+
+  &::before {
+    top: -1rem;
+    background: linear-gradient(
+      to bottom,
+      var(--gearbox-surface) 60%,
+      transparent 100%
+    );
+  }
+
+  &::after {
+    bottom: -1rem;
+    background: linear-gradient(
+      to top,
+      var(--gearbox-surface) 60%,
+      transparent 100%
+    );
+  }
+
+  &::after,
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2rem;
+    transition: all 450ms ease-in-out;
+    z-index: 1;
+  }
+
+  .inner {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+}
+

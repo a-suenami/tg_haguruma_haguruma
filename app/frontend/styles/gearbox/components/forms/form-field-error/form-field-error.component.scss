@@ -1,0 +1,21 @@
+[cog-form-field-error] {
+  display: flex;
+  width: 100%;
+  gap: var(--gearbox-spacing-4);
+  justify-content: flex-start;
+  align-items: center;
+}
+.text {
+  color: var(--gearbox-danger);
+  font-size: var(--gearbox-font-size-caption-small);
+  font-weight: var(--gearbox-font-weight-semibold);
+  line-height: var(--gearbox-line-height-relaxed);
+  font-family: var(--gearbox-font-family-system);
+}
+.icon {
+  display: flex;
+  color: var(--gearbox-danger);
+  $size: 0.875rem;
+  width: $size;
+  height: $size;
+}

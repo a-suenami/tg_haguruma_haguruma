@@ -1,0 +1,26 @@
+[cog-swiper-container] {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.full-height {
+    height: 100%;
+  }
+
+  // Inner wrapper for slides - centers when fewer items, scrolls when more
+  .swiper-inner {
+    display: flex;
+    justify-content: center;
+    gap: var(--gearbox-spacing-16);
+    padding: var(--gearbox-spacing-8) 0;
+    width: max-content;
+    min-width: 100%;
+  }
+}

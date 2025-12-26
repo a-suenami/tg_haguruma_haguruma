@@ -1,0 +1,77 @@
+[cog-radio] {
+  display: inline-flex;
+  width: 100%;
+  font-size: var(--gearbox-font-size-body-tiny);
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: var(--gearbox-spacing-4);
+  cursor: pointer;
+
+  width: 100%;
+  color: var(--gearbox-on-surface);
+}
+
+.label.disabled {
+  cursor: default;
+  opacity: var(--gearbox-opacity-disabled);
+}
+
+input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.control {
+  $control-size: 1.25em;
+  width: $control-size;
+  height: $control-size;
+  border-radius: 50%;
+  border-width: 1.25px;
+  border-style: solid;
+  border-color: rgba(var(--gearbox-on-surface-rgb), 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0;
+}
+
+.control::after {
+  margin: 0;
+  $circle-size: 0.75em;
+  content: '';
+  width: $circle-size;
+  height: $circle-size;
+  border-radius: 50%;
+  background-color: var(--gearbox-secondary);
+  transform: scale(0.87);
+  opacity: 0;
+  transition:
+    transform 120ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 120ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input[type='radio']:checked + .control::after {
+  transform: scale(1);
+  opacity: 1;
+}
+
+input[type='radio']:disabled + .control {
+  opacity: 0.5;
+  border-color: var(
+    --gearbox-outline-secondary,
+    var(--gearbox-outline-primary)
+  );
+}
+
+.text {
+  font-family: var(--gearbox-font-family-system);
+  font-size: var(--gearbox-font-size-body-tiny);
+  font-weight: var(--gearbox-font-weight-regular);
+  line-height: var(--gearbox-line-height-relaxed);
+  color: var(--gearbox-on-secondary-container);
+}

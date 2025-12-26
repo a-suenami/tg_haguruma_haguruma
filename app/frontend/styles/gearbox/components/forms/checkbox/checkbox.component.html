@@ -1,0 +1,20 @@
+<label class="label" [for]="resolvedId()">
+  <input
+    #inputElement
+    hidden
+    type="checkbox"
+    [id]="resolvedId()"
+    [name]="resolvedName()"
+    [value]="value() ?? 'on'"
+    [checked]="isChecked()"
+    [disabled]="disabled()"
+    (change)="changeValue($event)"
+  />
+
+  <div class="checkbox">
+    <cog-icon-check class="icon" />
+  </div>
+  <span class="text">
+    <ng-content></ng-content>
+  </span>
+</label>

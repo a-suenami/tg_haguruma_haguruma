@@ -1,0 +1,9 @@
+[cog-form-field-requirements] {
+  display: flex;
+  flex-direction: column;
+  padding: var(--gearbox-spacing-12) var(--gearbox-spacing-16);
+  border-radius: 5px;
+  background-color: var(--gearbox-surface-container-low);
+  margin-top: var(--gearbox-spacing-4);
+  gap: var(--gearbox-spacing-4);
+}

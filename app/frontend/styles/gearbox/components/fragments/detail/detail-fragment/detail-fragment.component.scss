@@ -1,0 +1,23 @@
+@use "sass:map";
+@use '../../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-detail-fragment] {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--gearbox-spacing-32);
+  height: 100%;
+  max-width: map.get(breakpoints.$breakpoints-map, 'breakpoint', 'xl');
+  margin: 0 auto;
+}
+
+@include breakpoints.media-up(sm) {
+  [cog-detail-fragment] {
+    padding: var(--gearbox-spacing-56);
+  }
+}
+
+@include breakpoints.media-down(sm) {
+  [cog-detail-fragment] {
+    padding: var(--gearbox-spacing-24) var(--gearbox-spacing-16);
+  }
+}

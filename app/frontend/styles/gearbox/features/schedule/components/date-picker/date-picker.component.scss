@@ -1,0 +1,106 @@
+[cog-date-picker] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative;
+
+  .trigger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+  }
+
+  .trigger-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gearbox-spacing-4);
+    flex: 1;
+    background: none;
+    border: none;
+    font-family: var(--gearbox-font-family-primary);
+    color: var(--gearbox-secondary);
+    font-size: var(--gearbox-font-size-heading-miniature);
+    font-weight: var(--gearbox-font-weight-semibold);
+    line-height: var(--gearbox-line-height-relaxed);
+    text-align: center;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: var(--gearbox-spacing-8) var(--gearbox-spacing-16);
+    transition: background-color 75ms linear;
+
+    .triangle-icon {
+      --cog-icon-size: 12px;
+      transition: transform 120ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: rgba(var(--gearbox-surface-container-highest-rgb), 0.9);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--gearbox-primary);
+      outline-offset: 2px;
+    }
+
+    &.opened {
+      .triangle-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .trigger-input {
+    $form-field-height: 75px;
+    $button-height: 32px;
+    $calendar-width: 295px;
+    overflow: hidden;
+    display: block;
+    height: 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-64px, -$form-field-height + $button-height * 2);
+  }
+
+  .arrow-icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition:
+      background-color 75ms linear,
+      transform 120ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    .arrow-icon {
+      --cog-icon-size: 8px;
+      color: var(--gearbox-secondary);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: rgba(var(--gearbox-surface-container-highest-rgb), 0.9);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--gearbox-primary);
+      outline-offset: 2px;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}

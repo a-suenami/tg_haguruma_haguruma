@@ -1,0 +1,29 @@
+[cog-blog-detail] {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .main {
+    display: flex;
+    flex: 1;
+  }
+
+  .inner {
+    display: block;
+    flex-grow: 1;
+  }
+
+  .action-button {
+    flex: 1;
+    max-width: 300px;
+    --cog-button-width: 100%;
+  }
+
+  .loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+}

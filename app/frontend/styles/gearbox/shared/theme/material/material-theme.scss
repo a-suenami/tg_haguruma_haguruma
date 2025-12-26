@@ -1,0 +1,82 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@use './tone-generator' as tone;
+@use './custom-material-calendar';
+
+@function _build-color-config($gearbox-colors) {
+  $primary: tone.generate-palette(map.get($gearbox-colors, primary));
+  $secondary: tone.generate-palette(map.get($gearbox-colors, secondary));
+  $tertiary: tone.generate-palette(map.get($gearbox-colors, 'on-surface'));
+  $error: tone.generate-palette(map.get($gearbox-colors, danger));
+  $neutral: tone.generate-neutral-palette(map.get($gearbox-colors, surface));
+  $neutral-variant: tone.generate-palette(
+    map.get($gearbox-colors, 'surface-container-low')
+  );
+
+  // $primary-palette: map.merge(map.get($_palettes, primary), $_rest);
+
+  $reset: (
+    secondary: $secondary,
+    neutral: $neutral,
+    neutral-variant: $neutral-variant,
+    error: $error,
+  );
+
+  @return map.merge($primary, $reset);
+}
+
+/// Generates Angular Material CSS variables using only Sass helpers.
+/// Reference: https://material.angular.dev/guide/theming
+@mixin apply-material-color-system($gearbox-colors) {
+  $pallets: _build-color-config($gearbox-colors);
+
+  $theme: (
+    color: (
+      primary: $pallets,
+      theme-type: light,
+    ),
+  );
+
+  :root {
+    @include mat.theme($theme);
+  }
+}
+
+// Support Angular Material v19 theme
+@mixin support-v19-material-theme($gearbox-colors) {
+  // Build palettes in the same shape as the v19 CLI generated palettes:
+  // primary/tertiary tone maps + shared "rest" palettes (secondary, neutral, neutral-variant, error).
+  $primary: tone.generate-v19-palette(map.get($gearbox-colors, primary));
+  $secondary: tone.generate-v19-palette(map.get($gearbox-colors, secondary));
+  $tertiary: tone.generate-v19-palette(map.get($gearbox-colors, 'on-surface'));
+  $error: tone.generate-v19-palette(map.get($gearbox-colors, danger));
+  $neutral: tone.generate-v19-neutral-palette(
+    map.get($gearbox-colors, surface)
+  );
+  $neutral-variant: tone.generate-v19-palette(
+    map.get($gearbox-colors, 'surface-container-low')
+  );
+
+  $rest: (
+    secondary: $secondary,
+    neutral: $neutral,
+    neutral-variant: $neutral-variant,
+    error: $error,
+  );
+
+  $primary-palette: map.merge($primary, $rest);
+  $tertiary-palette: map.merge($tertiary, $rest);
+
+  $theme: (
+    color: (
+      theme-type: light,
+      primary: $primary-palette,
+      tertiary: $tertiary-palette,
+    ),
+  );
+
+  :root {
+    @include mat.theme($theme);
+  }
+}

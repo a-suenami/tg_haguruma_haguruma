@@ -1,0 +1,91 @@
+<header cog-header>
+  <a href="<%= user_area_root_path %>" cog-header-logo-button>
+    <div cog-logo>
+      <img src="https://placehold.co/160x50/4e34c0/ffffff?text=LOGO" alt="<%= current_tenant&.name || 'Fan Club' %>">
+    </div>
+  </a>
+
+  <div class="menu-container browser">
+    <nav cog-header-menu>
+      <a href="<%= user_area_news_index_path %>" cog-header-menu-item>NEWS</a>
+      <a href="<%= user_area_tickets_path %>" cog-header-menu-item>TICKET</a>
+      <a href="<%= user_area_blog_index_path %>" cog-header-menu-item>BLOG</a>
+      <a href="<%= user_area_schedules_path %>" cog-header-menu-item>SCHEDULE</a>
+      <div class="auth-action-buttons">
+        <% if user_signed_in? %>
+          <a href="#" cog-header-menu-item class="auth-action-button">
+            <span class="auth-icon"><%= icon_svg('user-circle') %></span>
+            <span>マイページ</span>
+          </a>
+        <% else %>
+          <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
+            <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
+            <span>ログイン</span>
+          </a>
+          <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
+            <span class="auth-icon"><%= icon_svg('sign-up-indicator') %></span>
+            <span>新規登録</span>
+          </a>
+        <% end %>
+      </div>
+    </nav>
+  </div>
+
+  <div class="menu-container mobile">
+    <button type="button" cog-header-menu-button id="mobile-menu-button">
+      <span cog-icon-mobile-header-menu></span>
+    </button>
+
+    <div cog-header-menu-overlay id="mobile-menu-overlay" class="hidden">
+      <div cog-header-menu-overlay-head>
+        <div cog-header-menu-overlay-actions>
+          <% if user_signed_in? %>
+            <a href="#" cog-button outlined class="overlay-action-button in-vertical">
+              <span class="mypage-text">マイページ</span>
+              <span class="overlay-icon"><%= icon_svg('user-circle-bold') %></span>
+            </a>
+          <% else %>
+            <a href="<%= user_area_auth_start_path %>" cog-button filled class="overlay-action-button">
+              <span>ログイン</span>
+              <span class="overlay-icon"><%= icon_svg('sign-in-indicator') %></span>
+            </a>
+            <a href="<%= user_area_auth_start_path %>" cog-button outlined class="overlay-action-button">
+              <span>新規会員登録</span>
+              <span class="overlay-icon"><%= icon_svg('sign-up-indicator') %></span>
+            </a>
+          <% end %>
+        </div>
+      </div>
+
+      <div cog-header-menu-overlay-content>
+        <nav cog-menu-items>
+          <a cog-menu-item href="<%= user_area_root_path %>">TOP</a>
+          <a cog-menu-item href="<%= user_area_news_index_path %>">NEWS</a>
+          <a cog-menu-item href="<%= user_area_tickets_path %>">TICKET</a>
+          <a cog-menu-item href="<%= user_area_blog_index_path %>">BLOG</a>
+          <a cog-menu-item href="<%= user_area_schedules_path %>">SCHEDULE</a>
+          <% if user_signed_in? %>
+            <a cog-menu-item href="#">MYPAGE</a>
+          <% end %>
+        </nav>
+
+        <div cog-sns-items>
+          <a cog-sns-item type="x" href="#" target="_blank" rel="noopener"></a>
+          <a cog-sns-item type="instagram" href="#" target="_blank" rel="noopener"></a>
+          <a cog-sns-item type="youtube" href="#" target="_blank" rel="noopener"></a>
+        </div>
+      </div>
+
+      <div cog-header-menu-overlay-footer>
+        <div cog-header-menu-banners>
+          <a cog-header-menu-banner href="#">
+            <img src="https://placehold.co/400x200/e8e8e8/999999?text=Banner+1" alt="Banner 1">
+          </a>
+          <a cog-header-menu-banner href="#">
+            <img src="https://placehold.co/400x200/e8e8e8/999999?text=Banner+2" alt="Banner 2">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
