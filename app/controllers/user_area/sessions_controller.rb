@@ -5,8 +5,6 @@ module UserArea
   class SessionsController < ApplicationController
     extend T::Sig
 
-    skip_before_action :authenticate!, only: [:new, :create, :callback, :failure, :dev_skip_auth]
-
     # GET /login
     sig { void }
     def new

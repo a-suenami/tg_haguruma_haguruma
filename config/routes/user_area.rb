@@ -4,6 +4,7 @@ namespace :user_area, path: '' do
   # Session management routes
   get 'login', to: 'sessions#new', as: :login
   post 'login', to: 'sessions#create'
+  get '/auth/start', to: 'sessions#create', as: :auth_start
   delete 'logout', to: 'sessions#destroy', as: :logout
   get '/auth/callback', to: 'sessions#callback', as: :callback
   get '/auth/failure', to: 'sessions#failure', as: :auth_failure

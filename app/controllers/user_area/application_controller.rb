@@ -8,7 +8,6 @@ module UserArea
     layout 'user_area/application'
 
     before_action :set_tenant
-    before_action :authenticate!
 
     helper_method :current_user, :user_signed_in?, :current_tenant
 

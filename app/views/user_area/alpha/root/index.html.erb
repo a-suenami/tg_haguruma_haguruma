@@ -13,18 +13,20 @@
   </section>
 
   <div class="main-content">
-    <section cog-landing-section>
-      <div cog-landing-section-content>
-        <div cog-landing-section-actions>
-          <button cog-button filled class="action-button">
-            <span>ログイン</span>
-          </button>
-          <button cog-button outlined class="action-button">
-            <span>新規会員登録</span>
-          </button>
+    <% unless user_signed_in? %>
+      <section cog-landing-section>
+        <div cog-landing-section-content>
+          <div cog-landing-section-actions>
+            <a href="<%= user_area_auth_start_path %>" cog-button filled class="action-button">
+              <span>ログイン</span>
+            </a>
+            <a href="<%= user_area_auth_start_path %>" cog-button outlined class="action-button">
+              <span>新規会員登録</span>
+            </a>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    <% end %>
 
     <section cog-landing-section class="banners">
       <div cog-landing-section-content>

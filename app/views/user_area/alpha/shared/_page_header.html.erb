@@ -11,7 +11,23 @@
       <a href="<%= user_area_tickets_path %>" cog-header-menu-item>TICKET</a>
       <a href="<%= user_area_blog_index_path %>" cog-header-menu-item>BLOG</a>
       <a href="<%= user_area_schedules_path %>" cog-header-menu-item>SCHEDULE</a>
-      <a href="#" cog-header-menu-item>MYPAGE</a>
+      <div class="auth-action-buttons">
+        <% if user_signed_in? %>
+          <a href="#" cog-header-menu-item class="auth-action-button">
+            <span class="auth-icon"><%= icon_svg('user-circle') %></span>
+            <span>マイページ</span>
+          </a>
+        <% else %>
+          <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
+            <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
+            <span>ログイン</span>
+          </a>
+          <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
+            <span class="auth-icon"><%= icon_svg('sign-up-indicator') %></span>
+            <span>新規登録</span>
+          </a>
+        <% end %>
+      </div>
     </nav>
   </div>
 
@@ -23,12 +39,21 @@
     <div cog-header-menu-overlay id="mobile-menu-overlay" class="hidden">
       <div cog-header-menu-overlay-head>
         <div cog-header-menu-overlay-actions>
-          <button cog-button filled class="action-button">
-            <span>ログイン</span>
-          </button>
-          <button cog-button outlined class="action-button">
-            <span>新規会員登録</span>
-          </button>
+          <% if user_signed_in? %>
+            <a href="#" cog-button outlined class="overlay-action-button in-vertical">
+              <span class="mypage-text">マイページ</span>
+              <span class="overlay-icon"><%= icon_svg('user-circle-bold') %></span>
+            </a>
+          <% else %>
+            <a href="<%= user_area_auth_start_path %>" cog-button filled class="overlay-action-button">
+              <span>ログイン</span>
+              <span class="overlay-icon"><%= icon_svg('sign-in-indicator') %></span>
+            </a>
+            <a href="<%= user_area_auth_start_path %>" cog-button outlined class="overlay-action-button">
+              <span>新規会員登録</span>
+              <span class="overlay-icon"><%= icon_svg('sign-up-indicator') %></span>
+            </a>
+          <% end %>
         </div>
       </div>
 
@@ -39,7 +64,9 @@
           <a cog-menu-item href="<%= user_area_tickets_path %>">TICKET</a>
           <a cog-menu-item href="<%= user_area_blog_index_path %>">BLOG</a>
           <a cog-menu-item href="<%= user_area_schedules_path %>">SCHEDULE</a>
-          <a cog-menu-item href="#">MYPAGE</a>
+          <% if user_signed_in? %>
+            <a cog-menu-item href="#">MYPAGE</a>
+          <% end %>
         </nav>
 
         <div cog-sns-items>
