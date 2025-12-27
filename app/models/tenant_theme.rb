@@ -35,41 +35,130 @@ class TenantTheme < ApplicationRecord
 
   belongs_to :tenant, primary_key: :id
 
+  # 静的なテーマ設定（検証用）
+  # TODO: DB スキーマ確定後に削除
+  STATIC_THEME_CONFIG = T.let({
+    # 全体背景
+    page_background_color: '#F8F8F8',
+
+    # 一般（本文）テキスト
+    general_text_color: '#333333',
+    general_font_family: '"Noto Sans JP", sans-serif',
+
+    # ボーダー
+    border_color: '#E5E5E5',
+
+    # タイトル
+    title_text_color: '#1E3A5F',
+    title_font_family: '"Noto Serif JP", serif',
+
+    # ナビゲーション
+    navigation_text_color: '#333333',
+    navigation_font_family: '"Noto Serif JP", serif',
+
+    # リンク
+    link_text_color: '#1E3A5F',
+    link_underline: true,
+
+    # タブ
+    tab_font_family: '"Noto Sans JP", sans-serif',
+    tab_active_text_color: '#1E3A5F',
+    tab_active_underline_color: '#1E3A5F',
+    tab_inactive_text_color: '#666666',
+    tab_inactive_underline_color: '#FFFFFF',
+
+    # 補助テキスト
+    caption_text_color: '#666666',
+    caption_font_family: '"Noto Sans JP", sans-serif',
+
+    # ラベル
+    label_background_color: '#C9A227',
+    label_text_color: '#FFFFFF',
+    label_font_family: '"Noto Sans JP", sans-serif',
+
+    # ボタン（共通）
+    button_font_family: '"Noto Sans JP", sans-serif',
+
+    # ボタン（Primary）
+    button_primary_background_color: '#1E3A5F',
+    button_primary_text_color: '#FFFFFF',
+
+    # ボタン（Secondary）
+    button_secondary_border_color: '#1E3A5F',
+    button_secondary_background_color: '#FFFFFF',
+    button_secondary_text_color: '#1E3A5F',
+  }.freeze, T::Hash[Symbol, T.any(String, T::Boolean)])
+
   # Returns all CSS custom properties as a hash
   sig { returns(T::Hash[String, T.nilable(String)]) }
   def css_custom_properties
+    config = STATIC_THEME_CONFIG
+
     props = {
-      # Primary colors (accent, category labels)
-      '--gearbox-primary' => color_primary,
-      '--gearbox-primary-dark' => color_primary_dark,
-      '--gearbox-on-primary' => color_on_primary,
+      # 全体背景
+      '--theme-page-background-color' => config[:page_background_color],
 
-      # Secondary colors (titles, buttons, navigation)
-      '--gearbox-secondary' => color_secondary,
-      '--gearbox-on-secondary' => color_on_secondary,
-      '--gearbox-secondary-container' => color_surface,
-      '--gearbox-on-secondary-container' => color_secondary,
+      # 一般（本文）テキスト
+      '--theme-general-text-color' => config[:general_text_color],
+      '--theme-general-font-family' => config[:general_font_family],
 
-      # Surface colors
-      '--gearbox-background' => color_background,
-      '--gearbox-surface' => color_surface,
-      '--gearbox-on-surface' => color_text_primary,
+      # ボーダー
+      '--theme-border-color' => config[:border_color],
 
-      # Outline
-      '--gearbox-outline' => color_outline,
-      '--gearbox-outline-primary' => color_primary,
-      '--gearbox-outline-secondary' => color_secondary,
-      '--gearbox-outline-variant' => color_outline,
+      # タイトル
+      '--theme-title-text-color' => config[:title_text_color],
+      '--theme-title-font-family' => config[:title_font_family],
 
-      # Fonts
-      '--gearbox-font-family-heading' => font_heading,
-      '--gearbox-font-family-primary' => font_primary,
+      # ナビゲーション
+      '--theme-navigation-text-color' => config[:navigation_text_color],
+      '--theme-navigation-font-family' => config[:navigation_font_family],
+
+      # リンク
+      '--theme-link-text-color' => config[:link_text_color],
+      '--theme-link-underline' => config[:link_underline] ? 'underline' : 'none',
+
+      # タブ
+      '--theme-tab-font-family' => config[:tab_font_family],
+      '--theme-tab-active-text-color' => config[:tab_active_text_color],
+      '--theme-tab-active-underline-color' => config[:tab_active_underline_color],
+      '--theme-tab-inactive-text-color' => config[:tab_inactive_text_color],
+      '--theme-tab-inactive-underline-color' => config[:tab_inactive_underline_color],
+
+      # 補助テキスト
+      '--theme-caption-text-color' => config[:caption_text_color],
+      '--theme-caption-font-family' => config[:caption_font_family],
+
+      # ラベル
+      '--theme-label-background-color' => config[:label_background_color],
+      '--theme-label-text-color' => config[:label_text_color],
+      '--theme-label-font-family' => config[:label_font_family],
+
+      # ボタン（共通）
+      '--theme-button-font-family' => config[:button_font_family],
+
+      # ボタン（Primary）
+      '--theme-button-primary-background-color' => config[:button_primary_background_color],
+      '--theme-button-primary-text-color' => config[:button_primary_text_color],
+
+      # ボタン（Secondary）
+      '--theme-button-secondary-border-color' => config[:button_secondary_border_color],
+      '--theme-button-secondary-background-color' => config[:button_secondary_background_color],
+      '--theme-button-secondary-text-color' => config[:button_secondary_text_color],
+
+      # 後方互換性のため旧変数も出力（段階的に移行）
+      '--gearbox-primary' => config[:label_background_color],
+      '--gearbox-on-primary' => config[:label_text_color],
+      '--gearbox-secondary' => config[:title_text_color],
+      '--gearbox-on-secondary' => config[:button_primary_text_color],
+      '--gearbox-background' => config[:page_background_color],
+      '--gearbox-surface' => config[:page_background_color],
+      '--gearbox-on-surface' => config[:general_text_color],
+      '--gearbox-outline' => config[:border_color],
+      '--gearbox-font-family-heading' => config[:title_font_family],
+      '--gearbox-font-family-primary' => config[:general_font_family],
     }
 
-    # Add RGB versions for rgba() usage
-    props['--gearbox-on-surface-rgb'] = hex_to_rgb(color_text_primary) if color_text_primary
-
-    props.compact
+    props.transform_values(&:to_s).compact
   end
 
   private

@@ -1,7 +1,7 @@
 [cog-header-menu-item] {
   display: inline-block;
-  color: var(--gearbox-primary, #f2719d);
-  font-family: var(--gearbox-font-family-heading);
+  color: var(--theme-navigation-text-color, #333333);
+  font-family: var(--theme-navigation-font-family, var(--gearbox-font-family-heading));
   font-size: var(--gearbox-font-size-body-medium);
   font-weight: var(--gearbox-font-weight-bold);
   letter-spacing: 0.064rem;

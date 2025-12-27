@@ -29,5 +29,6 @@ namespace :user_area, path: '' do
     resources :tickets, only: [:index, :show]
     resources :blog, only: [:index, :show]
     resources :schedules, only: [:index, :show]
+    resource :biography, only: [:show]
   end
 end
