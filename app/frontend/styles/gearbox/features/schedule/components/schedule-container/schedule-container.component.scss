@@ -1,0 +1,36 @@
+@use 'shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-schedule-container] {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease-in-out;
+
+  .pane {
+    display: block;
+    height: 100%;
+    position: relative;
+
+    &.date {
+      grid-template-rows: auto 1fr;
+    }
+
+    &.list {
+      display: block;
+      height: 100%;
+      width: 100%;
+      overflow-y: auto;
+    }
+  }
+
+  .divider {
+    width: 1px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--gearbox-secondary) 0,
+      var(--gearbox-secondary) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  }
+}

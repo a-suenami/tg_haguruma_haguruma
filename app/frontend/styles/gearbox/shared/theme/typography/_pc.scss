@@ -1,0 +1,59 @@
+// PC Typography Map
+$typography-pc-sizes: (
+  font-size-pc: (
+    heading: (
+      // 48px
+      large: 3rem,
+      // 40px
+      medium: 2.5rem,
+      // 26px
+      small: 1.625rem,
+      // 24px
+      miniature: 1.5rem,
+      // 20px
+      tiny: 1.25rem,
+    ),
+    title: (
+      // 28px
+      large: 1.75rem,
+      // 24px
+      medium: 1.5rem,
+      // 20px
+      small: 1.25rem,
+    ),
+    label: (
+      // 16px
+      large: 1rem,
+      // 14px
+      medium: 0.875rem,
+      // 13px
+      small: 0.8125rem,
+      // 11px
+      tiny: 0.6875rem,
+    ),
+    body: (
+      // 24px
+      gigantic: 1.5rem,
+      // 22px
+      majestic: 1.375rem,
+      // 20px
+      grand: 1.25rem,
+      // 18px
+      large: 1.125rem,
+      // 16px
+      medium: 1rem,
+      // 15px
+      small: 0.875rem,
+      // 12px
+      tiny: 0.875rem,
+    ),
+    caption: (
+      large: 0.875rem,
+      // 14px
+      medium: 0.75rem,
+      // 12px
+      small: 0.625rem,
+      // 10px
+    ),
+  ),
+);

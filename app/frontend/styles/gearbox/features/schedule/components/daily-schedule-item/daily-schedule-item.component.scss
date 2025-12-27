@@ -1,0 +1,65 @@
+[cog-daily-schedule-item] {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--gearbox-spacing-8);
+  align-items: center;
+  cursor: pointer;
+  transition:
+    transform 120ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 75ms linear;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gearbox-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .date {
+    display: flex;
+    width: 40px;
+    flex-direction: column;
+    align-items: center;
+
+    .number {
+      font-size: var(--gearbox-font-size-heading-miniature);
+      font-weight: var(--gearbox-font-weight-semibold);
+      font-family: var(--gearbox-font-family-primary);
+      color: var(--gearbox-secondary);
+    }
+
+    .day {
+      font-size: var(--gearbox-font-size-body-tiny);
+      font-weight: var(--gearbox-font-weight-medium);
+      font-family: var(--gearbox-font-family-primary);
+      color: var(--gearbox-secondary);
+      line-height: var(--gearbox-line-height-loose);
+    }
+  }
+
+  .schedule-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gearbox-spacing-8);
+    background-color: var(--gearbox-surface-container-highest);
+    padding: var(--gearbox-spacing-8);
+    border-radius: 6px;
+
+    .title {
+      font-size: var(--gearbox-font-size-body-tiny);
+      font-weight: var(--gearbox-font-weight-semibold);
+      font-family: var(--gearbox-font-family-primary);
+      color: var(--gearbox-secondary);
+      line-height: var(--gearbox-line-height-loose);
+    }
+  }
+}

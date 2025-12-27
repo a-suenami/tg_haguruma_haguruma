@@ -1,0 +1,22 @@
+@if (blogResource.isLoading()) {
+  <div class="loading">Loading...</div>
+}
+
+@if (blogResource.value(); as blogItems) {
+  <div class="list">
+  @for (blog of blogItems; track blog.title; let i = $index) {
+    <cog-blog-item
+      [routerLink]="['/blog/detail', i + 1]"
+      [blog]="blog">
+    </cog-blog-item>
+  }
+  </div>
+
+  <div class="pagination-button-container">
+    <button cog-button primary outlined>VIEW MORE</button>
+  </div>
+}
+
+@if (blogResource.error()) {
+  <div class="error">Failed to load blog items</div>
+}

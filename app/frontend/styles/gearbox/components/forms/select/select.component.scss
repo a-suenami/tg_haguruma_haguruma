@@ -1,0 +1,22 @@
+[cog-select] {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  color: var(--gearbox-on-surface);
+  font-family: var(--gearbox-font-family-system);
+  font-size: var(--gearbox-font-size-body-medium);
+  line-height: var(--gearbox-line-height-relaxed);
+  font-weight: var(--gearbox-font-weight-regular);
+  padding: var(--gearbox-spacing-8) 0 var(--gearbox-spacing-8)
+    var(--gearbox-spacing-16);
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+}
+
+[cog-select] option {
+  color: var(--gearbox-on-surface);
+  font-family: inherit;
+  font-size: inherit;
+}

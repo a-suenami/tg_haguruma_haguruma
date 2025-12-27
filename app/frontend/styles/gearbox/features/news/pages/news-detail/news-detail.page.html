@@ -1,0 +1,49 @@
+<cog-page-header></cog-page-header>
+
+<main class="main">
+  <div class="inner">
+    <cog-detail-fragment>
+      <cog-detail-fragment-header>
+        <cog-detail-fragment-toolbar>
+          <cog-detail-fragment-title>ニュース</cog-detail-fragment-title>
+        </cog-detail-fragment-toolbar>
+        <cog-detail-fragment-toolbar>
+          <cog-category-label>ニュース</cog-category-label>
+          <cog-date-label>2024.12.15</cog-date-label>
+        </cog-detail-fragment-toolbar>
+      </cog-detail-fragment-header>
+
+      <cog-detail-fragment-content>
+        <!-- Rich content viewer component to display Lexical content -->
+        <!-- The content is loaded from lexical-richtext.json via resource -->
+        @if (lexicalContent.isLoading()) {
+          <div class="loading-state">
+            <cog-loading [size]="60"></cog-loading>
+          </div>
+        }
+        @if (lexicalContent.error()) {
+          <div class="error-state">コンテンツの読み込みに失敗しました</div>
+          <button
+            cog-button
+            outlined
+            class="action-button"
+            (click)="lexicalContent.reload()"
+          >
+            再読み込み
+          </button>
+        }
+        @if (lexicalContent.value()) {
+          <cog-rich-content-viewer
+            [lexicalJson]="lexicalContent.value()!"
+          ></cog-rich-content-viewer>
+        }
+      </cog-detail-fragment-content>
+
+      <cog-detail-fragment-actions>
+        <button cog-button outlined class="action-button">一覧に戻る</button>
+      </cog-detail-fragment-actions>
+    </cog-detail-fragment>
+  </div>
+</main>
+
+<cog-page-footer></cog-page-footer>
