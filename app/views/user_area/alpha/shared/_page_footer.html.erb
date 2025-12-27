@@ -1,9 +1,15 @@
 <footer cog-footer>
   <nav cog-footer-menu>
     <a cog-footer-menu-item href="<%= user_area_root_path %>">TOP</a>
-    <a cog-footer-menu-item href="<%= user_area_news_index_path %>">NEWS</a>
-    <a cog-footer-menu-item href="<%= user_area_blog_index_path %>">BLOG</a>
-    <a cog-footer-menu-item href="<%= user_area_schedules_path %>">SCHEDULE</a>
+    <% if feature_enabled?(:news) %>
+      <a cog-footer-menu-item href="<%= user_area_news_index_path %>"><%= feature_label(:news, :menu_label) %></a>
+    <% end %>
+    <% if feature_enabled?(:blog) %>
+      <a cog-footer-menu-item href="<%= user_area_blog_index_path %>"><%= feature_label(:blog, :menu_label) %></a>
+    <% end %>
+    <% if feature_enabled?(:schedule) %>
+      <a cog-footer-menu-item href="<%= user_area_schedules_path %>"><%= feature_label(:schedule, :menu_label) %></a>
+    <% end %>
     <a cog-footer-menu-item href="#">MYPAGE</a>
   </nav>
 

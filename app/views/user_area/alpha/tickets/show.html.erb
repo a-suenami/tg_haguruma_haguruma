@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  TICKET - <%= current_tenant&.name || 'Fan Club' %>
+  <%= feature_label(:ticket) %> - <%= current_tenant&.name || 'Fan Club' %>
 <% end %>
 
 <%= render 'user_area/alpha/shared/page_header' %>

@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  SCHEDULE - <%= current_tenant&.name || 'Fan Club' %>
+  <%= feature_label(:schedule) %> - <%= current_tenant&.name || 'Fan Club' %>
 <% end %>
 
 <div cog-schedule-overview>

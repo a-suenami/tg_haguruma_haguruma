@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  NEWS - <%= current_tenant&.name || 'Fan Club' %>
+  <%= feature_label(:news) %> - <%= current_tenant&.name || 'Fan Club' %>
 <% end %>
 
 <%= render 'user_area/alpha/shared/page_header' %>
