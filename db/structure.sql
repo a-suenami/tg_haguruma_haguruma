@@ -1,4 +1,4 @@
-\restrict n7ZtvOP32we54DqzKcUQ2bjmUDJ5AVSkfvahCXLofbkOcDGdeuYyy2JVg1FmdPe
+\restrict rhcSeqhlKSaFLc2FW4pMfOK6YXHuVR2HWcEsAR4mTii68u2JmofkmDEOvcObJiH
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -563,18 +563,32 @@ CREATE TABLE public.tenant_site_settings (
 CREATE TABLE public.tenant_themes (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id character varying NOT NULL,
-    color_primary character varying,
-    color_primary_dark character varying,
-    color_secondary character varying,
-    color_on_primary character varying,
-    color_on_secondary character varying,
-    color_background character varying,
-    color_surface character varying,
-    color_text_primary character varying,
-    color_text_secondary character varying,
-    color_outline character varying,
-    font_heading character varying,
-    font_primary character varying,
+    page_background_color character varying,
+    general_text_color character varying,
+    general_font_family character varying,
+    border_color character varying,
+    title_text_color character varying,
+    title_font_family character varying,
+    navigation_text_color character varying,
+    navigation_font_family character varying,
+    link_text_color character varying,
+    link_underline boolean DEFAULT true,
+    tab_font_family character varying,
+    tab_active_text_color character varying,
+    tab_active_underline_color character varying,
+    tab_inactive_text_color character varying,
+    tab_inactive_underline_color character varying,
+    caption_text_color character varying,
+    caption_font_family character varying,
+    label_background_color character varying,
+    label_text_color character varying,
+    label_font_family character varying,
+    button_font_family character varying,
+    button_primary_background_color character varying,
+    button_primary_text_color character varying,
+    button_secondary_border_color character varying,
+    button_secondary_background_color character varying,
+    button_secondary_text_color character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1483,7 +1497,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict n7ZtvOP32we54DqzKcUQ2bjmUDJ5AVSkfvahCXLofbkOcDGdeuYyy2JVg1FmdPe
+\unrestrict rhcSeqhlKSaFLc2FW4pMfOK6YXHuVR2HWcEsAR4mTii68u2JmofkmDEOvcObJiH
 
 SET search_path TO "$user", public;
 

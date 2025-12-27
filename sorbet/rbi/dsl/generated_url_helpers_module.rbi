@@ -394,6 +394,9 @@ module GeneratedUrlHelpersModule
   def user_area_auth_start_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_biography_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_blog_index_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }

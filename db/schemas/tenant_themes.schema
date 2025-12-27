@@ -1,21 +1,55 @@
 create_table :tenant_themes, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
   t.string :tenant_id, null: false
 
-  # Colors (output as CSS custom properties)
-  t.string :color_primary        # --gearbox-primary (accent, category labels)
-  t.string :color_primary_dark   # --gearbox-primary-dark
-  t.string :color_secondary      # --gearbox-secondary (titles, buttons, navigation)
-  t.string :color_on_primary     # --gearbox-on-primary (text on primary)
-  t.string :color_on_secondary   # --gearbox-on-secondary (text on secondary/buttons)
-  t.string :color_background     # --gearbox-background
-  t.string :color_surface        # --gearbox-surface
-  t.string :color_text_primary   # --gearbox-on-surface (body text)
-  t.string :color_text_secondary # (secondary text)
-  t.string :color_outline        # --gearbox-outline
+  # 全体背景
+  t.string :page_background_color
 
-  # Fonts
-  t.string :font_heading         # --gearbox-font-family-heading
-  t.string :font_primary         # --gearbox-font-family-primary
+  # 一般（本文）テキスト
+  t.string :general_text_color
+  t.string :general_font_family
+
+  # ボーダー
+  t.string :border_color
+
+  # タイトル
+  t.string :title_text_color
+  t.string :title_font_family
+
+  # ナビゲーション
+  t.string :navigation_text_color
+  t.string :navigation_font_family
+
+  # リンク
+  t.string :link_text_color
+  t.boolean :link_underline, default: true
+
+  # タブ
+  t.string :tab_font_family
+  t.string :tab_active_text_color
+  t.string :tab_active_underline_color
+  t.string :tab_inactive_text_color
+  t.string :tab_inactive_underline_color
+
+  # 補助テキスト
+  t.string :caption_text_color
+  t.string :caption_font_family
+
+  # ラベル
+  t.string :label_background_color
+  t.string :label_text_color
+  t.string :label_font_family
+
+  # ボタン（共通）
+  t.string :button_font_family
+
+  # ボタン（Primary）
+  t.string :button_primary_background_color
+  t.string :button_primary_text_color
+
+  # ボタン（Secondary）
+  t.string :button_secondary_border_color
+  t.string :button_secondary_background_color
+  t.string :button_secondary_text_color
 
   t.timestamps null: false
 end

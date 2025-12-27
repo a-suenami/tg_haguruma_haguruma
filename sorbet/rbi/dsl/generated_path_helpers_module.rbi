@@ -394,6 +394,9 @@ module GeneratedPathHelpersModule
   def user_area_auth_start_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_biography_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_blog_index_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }

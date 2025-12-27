@@ -15,17 +15,55 @@ if sample_tenant
   # Theme (pink-based design)
   theme = TenantTheme.find_or_initialize_by(tenant_id: sample_tenant.id)
   theme.assign_attributes(
-    color_primary: '#F2719D',
-    color_primary_dark: '#D4567D',
-    color_secondary: nil,
-    color_on_primary: '#FFFFFF',
-    color_background: '#FFFFFF',
-    color_surface: '#F5F5F5',
-    color_text_primary: '#333333',
-    color_text_secondary: '#666666',
-    color_outline: '#E0E0E0',
-    font_heading: 'Tsukimi Rounded',
-    font_primary: 'Zen Maru Gothic',
+    # 全体背景
+    page_background_color: '#FFFFFF',
+
+    # 一般（本文）テキスト
+    general_text_color: '#333333',
+    general_font_family: '"Zen Maru Gothic", sans-serif',
+
+    # ボーダー
+    border_color: '#E0E0E0',
+
+    # タイトル
+    title_text_color: '#F2719D',
+    title_font_family: '"Tsukimi Rounded", sans-serif',
+
+    # ナビゲーション
+    navigation_text_color: '#333333',
+    navigation_font_family: '"Tsukimi Rounded", sans-serif',
+
+    # リンク
+    link_text_color: '#F2719D',
+    link_underline: true,
+
+    # タブ
+    tab_font_family: '"Zen Maru Gothic", sans-serif',
+    tab_active_text_color: '#F2719D',
+    tab_active_underline_color: '#F2719D',
+    tab_inactive_text_color: '#666666',
+    tab_inactive_underline_color: '#FFFFFF',
+
+    # 補助テキスト
+    caption_text_color: '#666666',
+    caption_font_family: '"Zen Maru Gothic", sans-serif',
+
+    # ラベル
+    label_background_color: '#F2719D',
+    label_text_color: '#FFFFFF',
+    label_font_family: '"Zen Maru Gothic", sans-serif',
+
+    # ボタン（共通）
+    button_font_family: '"Zen Maru Gothic", sans-serif',
+
+    # ボタン（Primary）
+    button_primary_background_color: '#F2719D',
+    button_primary_text_color: '#FFFFFF',
+
+    # ボタン（Secondary）
+    button_secondary_border_color: '#F2719D',
+    button_secondary_background_color: '#FFFFFF',
+    button_secondary_text_color: '#F2719D',
   )
 
   if theme.save
@@ -65,20 +103,58 @@ end
 # yokotogiku_tenant = Tenant.find_by(id: 'yokotogiku')
 #
 # if yokotogiku_tenant
-#   # Theme (blue/yellow based design)
+#   # Theme (紺色/金色 design - 斧琴菊スタイル)
 #   theme = TenantTheme.find_or_initialize_by(tenant_id: yokotogiku_tenant.id)
 #   theme.assign_attributes(
-#     color_primary: '#1B4B7A',      # 紺色
-#     color_primary_dark: '#0F3254',
-#     color_secondary: '#C9A227',    # 金色/黄色
-#     color_on_primary: '#FFFFFF',
-#     color_background: '#FFFFFF',
-#     color_surface: '#F8F8F8',
-#     color_text_primary: '#333333',
-#     color_text_secondary: '#666666',
-#     color_outline: '#E0E0E0',
-#     font_heading: 'Tsukimi Rounded',
-#     font_primary: 'Zen Maru Gothic',
+#     # 全体背景
+#     page_background_color: '#F8F8F8',
+#
+#     # 一般（本文）テキスト
+#     general_text_color: '#333333',
+#     general_font_family: '"Noto Sans JP", sans-serif',
+#
+#     # ボーダー
+#     border_color: '#E5E5E5',
+#
+#     # タイトル
+#     title_text_color: '#1E3A5F',
+#     title_font_family: '"Noto Serif JP", serif',
+#
+#     # ナビゲーション
+#     navigation_text_color: '#333333',
+#     navigation_font_family: '"Noto Serif JP", serif',
+#
+#     # リンク
+#     link_text_color: '#1E3A5F',
+#     link_underline: true,
+#
+#     # タブ
+#     tab_font_family: '"Noto Sans JP", sans-serif',
+#     tab_active_text_color: '#1E3A5F',
+#     tab_active_underline_color: '#1E3A5F',
+#     tab_inactive_text_color: '#666666',
+#     tab_inactive_underline_color: '#FFFFFF',
+#
+#     # 補助テキスト
+#     caption_text_color: '#666666',
+#     caption_font_family: '"Noto Sans JP", sans-serif',
+#
+#     # ラベル
+#     label_background_color: '#C9A227',
+#     label_text_color: '#FFFFFF',
+#     label_font_family: '"Noto Sans JP", sans-serif',
+#
+#     # ボタン（共通）
+#     button_font_family: '"Noto Sans JP", sans-serif',
+#
+#     # ボタン（Primary）
+#     button_primary_background_color: '#1E3A5F',
+#     button_primary_text_color: '#FFFFFF',
+#
+#     # ボタン（Secondary）
+#     button_secondary_border_color: '#1E3A5F',
+#     button_secondary_background_color: '#FFFFFF',
+#     button_secondary_text_color: '#1E3A5F',
 #   )
 #   theme.save!
 #
@@ -108,10 +184,10 @@ end
 #         ],
 #       },
 #       'schedule' => { 'enabled' => false },
-#       'profile' => { 'enabled' => true, 'label' => 'プロフィール', 'menu_label' => 'プロフィール', 'show_in_landing' => true },
+#       'biography' => { 'enabled' => true, 'label' => 'プロフィール', 'menu_label' => 'プロフィール', 'show_in_landing' => true },
 #     },
 #     landing: {
-#       'sections_order' => %w[auth news blog profile],
+#       'sections_order' => %w[auth news blog biography],
 #     },
 #     login_label: 'ログイン',
 #     signup_label: '新規会員登録',

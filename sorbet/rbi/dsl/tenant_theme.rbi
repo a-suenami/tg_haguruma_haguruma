@@ -560,454 +560,409 @@ class TenantTheme
 
   module GeneratedAttributeMethods
     sig { returns(T.nilable(::String)) }
-    def color_background; end
+    def border_color; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def color_background=(value); end
+    def border_color=(value); end
 
     sig { returns(T::Boolean) }
-    def color_background?; end
+    def border_color?; end
 
     sig { returns(T.nilable(::String)) }
-    def color_background_before_last_save; end
+    def border_color_before_last_save; end
 
     sig { returns(T.untyped) }
-    def color_background_before_type_cast; end
+    def border_color_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def color_background_came_from_user?; end
+    def border_color_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_background_change; end
+    def border_color_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_background_change_to_be_saved; end
+    def border_color_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_background_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def border_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_background_in_database; end
+    def border_color_in_database; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_background_previous_change; end
+    def border_color_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_background_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def border_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_background_previously_was; end
+    def border_color_previously_was; end
 
     sig { returns(T.nilable(::String)) }
-    def color_background_was; end
+    def border_color_was; end
 
     sig { void }
-    def color_background_will_change!; end
+    def border_color_will_change!; end
 
     sig { returns(T.nilable(::String)) }
-    def color_on_primary; end
+    def button_font_family; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def color_on_primary=(value); end
+    def button_font_family=(value); end
 
     sig { returns(T::Boolean) }
-    def color_on_primary?; end
+    def button_font_family?; end
 
     sig { returns(T.nilable(::String)) }
-    def color_on_primary_before_last_save; end
+    def button_font_family_before_last_save; end
 
     sig { returns(T.untyped) }
-    def color_on_primary_before_type_cast; end
+    def button_font_family_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def color_on_primary_came_from_user?; end
+    def button_font_family_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_on_primary_change; end
+    def button_font_family_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_on_primary_change_to_be_saved; end
+    def button_font_family_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_on_primary_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_font_family_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_on_primary_in_database; end
+    def button_font_family_in_database; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_on_primary_previous_change; end
+    def button_font_family_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_on_primary_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_font_family_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_on_primary_previously_was; end
+    def button_font_family_previously_was; end
 
     sig { returns(T.nilable(::String)) }
-    def color_on_primary_was; end
+    def button_font_family_was; end
 
     sig { void }
-    def color_on_primary_will_change!; end
+    def button_font_family_will_change!; end
 
     sig { returns(T.nilable(::String)) }
-    def color_on_secondary; end
+    def button_primary_background_color; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def color_on_secondary=(value); end
+    def button_primary_background_color=(value); end
 
     sig { returns(T::Boolean) }
-    def color_on_secondary?; end
+    def button_primary_background_color?; end
 
     sig { returns(T.nilable(::String)) }
-    def color_on_secondary_before_last_save; end
+    def button_primary_background_color_before_last_save; end
 
     sig { returns(T.untyped) }
-    def color_on_secondary_before_type_cast; end
+    def button_primary_background_color_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def color_on_secondary_came_from_user?; end
+    def button_primary_background_color_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_on_secondary_change; end
+    def button_primary_background_color_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_on_secondary_change_to_be_saved; end
+    def button_primary_background_color_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_on_secondary_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_primary_background_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_on_secondary_in_database; end
+    def button_primary_background_color_in_database; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_on_secondary_previous_change; end
+    def button_primary_background_color_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_on_secondary_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_primary_background_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_on_secondary_previously_was; end
+    def button_primary_background_color_previously_was; end
 
     sig { returns(T.nilable(::String)) }
-    def color_on_secondary_was; end
+    def button_primary_background_color_was; end
 
     sig { void }
-    def color_on_secondary_will_change!; end
+    def button_primary_background_color_will_change!; end
 
     sig { returns(T.nilable(::String)) }
-    def color_outline; end
+    def button_primary_text_color; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def color_outline=(value); end
+    def button_primary_text_color=(value); end
 
     sig { returns(T::Boolean) }
-    def color_outline?; end
+    def button_primary_text_color?; end
 
     sig { returns(T.nilable(::String)) }
-    def color_outline_before_last_save; end
+    def button_primary_text_color_before_last_save; end
 
     sig { returns(T.untyped) }
-    def color_outline_before_type_cast; end
+    def button_primary_text_color_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def color_outline_came_from_user?; end
+    def button_primary_text_color_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_outline_change; end
+    def button_primary_text_color_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_outline_change_to_be_saved; end
+    def button_primary_text_color_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_outline_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_primary_text_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_outline_in_database; end
+    def button_primary_text_color_in_database; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_outline_previous_change; end
+    def button_primary_text_color_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_outline_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_primary_text_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_outline_previously_was; end
+    def button_primary_text_color_previously_was; end
 
     sig { returns(T.nilable(::String)) }
-    def color_outline_was; end
+    def button_primary_text_color_was; end
 
     sig { void }
-    def color_outline_will_change!; end
+    def button_primary_text_color_will_change!; end
 
     sig { returns(T.nilable(::String)) }
-    def color_primary; end
+    def button_secondary_background_color; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def color_primary=(value); end
+    def button_secondary_background_color=(value); end
 
     sig { returns(T::Boolean) }
-    def color_primary?; end
+    def button_secondary_background_color?; end
 
     sig { returns(T.nilable(::String)) }
-    def color_primary_before_last_save; end
+    def button_secondary_background_color_before_last_save; end
 
     sig { returns(T.untyped) }
-    def color_primary_before_type_cast; end
+    def button_secondary_background_color_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def color_primary_came_from_user?; end
+    def button_secondary_background_color_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_primary_change; end
+    def button_secondary_background_color_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_primary_change_to_be_saved; end
+    def button_secondary_background_color_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_primary_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_secondary_background_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_primary_dark; end
+    def button_secondary_background_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def button_secondary_background_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def button_secondary_background_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def button_secondary_background_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def button_secondary_background_color_was; end
+
+    sig { void }
+    def button_secondary_background_color_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def button_secondary_border_color; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def color_primary_dark=(value); end
+    def button_secondary_border_color=(value); end
 
     sig { returns(T::Boolean) }
-    def color_primary_dark?; end
+    def button_secondary_border_color?; end
 
     sig { returns(T.nilable(::String)) }
-    def color_primary_dark_before_last_save; end
+    def button_secondary_border_color_before_last_save; end
 
     sig { returns(T.untyped) }
-    def color_primary_dark_before_type_cast; end
+    def button_secondary_border_color_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def color_primary_dark_came_from_user?; end
+    def button_secondary_border_color_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_primary_dark_change; end
+    def button_secondary_border_color_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_primary_dark_change_to_be_saved; end
+    def button_secondary_border_color_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_primary_dark_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_secondary_border_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_primary_dark_in_database; end
+    def button_secondary_border_color_in_database; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_primary_dark_previous_change; end
+    def button_secondary_border_color_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_primary_dark_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_secondary_border_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_primary_dark_previously_was; end
+    def button_secondary_border_color_previously_was; end
 
     sig { returns(T.nilable(::String)) }
-    def color_primary_dark_was; end
+    def button_secondary_border_color_was; end
 
     sig { void }
-    def color_primary_dark_will_change!; end
+    def button_secondary_border_color_will_change!; end
 
     sig { returns(T.nilable(::String)) }
-    def color_primary_in_database; end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_primary_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_primary_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def color_primary_previously_was; end
-
-    sig { returns(T.nilable(::String)) }
-    def color_primary_was; end
-
-    sig { void }
-    def color_primary_will_change!; end
-
-    sig { returns(T.nilable(::String)) }
-    def color_secondary; end
+    def button_secondary_text_color; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def color_secondary=(value); end
+    def button_secondary_text_color=(value); end
 
     sig { returns(T::Boolean) }
-    def color_secondary?; end
+    def button_secondary_text_color?; end
 
     sig { returns(T.nilable(::String)) }
-    def color_secondary_before_last_save; end
+    def button_secondary_text_color_before_last_save; end
 
     sig { returns(T.untyped) }
-    def color_secondary_before_type_cast; end
+    def button_secondary_text_color_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def color_secondary_came_from_user?; end
+    def button_secondary_text_color_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_secondary_change; end
+    def button_secondary_text_color_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_secondary_change_to_be_saved; end
+    def button_secondary_text_color_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_secondary_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_secondary_text_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_secondary_in_database; end
+    def button_secondary_text_color_in_database; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_secondary_previous_change; end
+    def button_secondary_text_color_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_secondary_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def button_secondary_text_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_secondary_previously_was; end
+    def button_secondary_text_color_previously_was; end
 
     sig { returns(T.nilable(::String)) }
-    def color_secondary_was; end
+    def button_secondary_text_color_was; end
 
     sig { void }
-    def color_secondary_will_change!; end
+    def button_secondary_text_color_will_change!; end
 
     sig { returns(T.nilable(::String)) }
-    def color_surface; end
+    def caption_font_family; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def color_surface=(value); end
+    def caption_font_family=(value); end
 
     sig { returns(T::Boolean) }
-    def color_surface?; end
+    def caption_font_family?; end
 
     sig { returns(T.nilable(::String)) }
-    def color_surface_before_last_save; end
+    def caption_font_family_before_last_save; end
 
     sig { returns(T.untyped) }
-    def color_surface_before_type_cast; end
+    def caption_font_family_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def color_surface_came_from_user?; end
+    def caption_font_family_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_surface_change; end
+    def caption_font_family_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_surface_change_to_be_saved; end
+    def caption_font_family_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_surface_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def caption_font_family_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_surface_in_database; end
+    def caption_font_family_in_database; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_surface_previous_change; end
+    def caption_font_family_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_surface_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def caption_font_family_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_surface_previously_was; end
+    def caption_font_family_previously_was; end
 
     sig { returns(T.nilable(::String)) }
-    def color_surface_was; end
+    def caption_font_family_was; end
 
     sig { void }
-    def color_surface_will_change!; end
+    def caption_font_family_will_change!; end
 
     sig { returns(T.nilable(::String)) }
-    def color_text_primary; end
+    def caption_text_color; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def color_text_primary=(value); end
+    def caption_text_color=(value); end
 
     sig { returns(T::Boolean) }
-    def color_text_primary?; end
+    def caption_text_color?; end
 
     sig { returns(T.nilable(::String)) }
-    def color_text_primary_before_last_save; end
+    def caption_text_color_before_last_save; end
 
     sig { returns(T.untyped) }
-    def color_text_primary_before_type_cast; end
+    def caption_text_color_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def color_text_primary_came_from_user?; end
+    def caption_text_color_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_text_primary_change; end
+    def caption_text_color_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_text_primary_change_to_be_saved; end
+    def caption_text_color_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_text_primary_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def caption_text_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_text_primary_in_database; end
+    def caption_text_color_in_database; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_text_primary_previous_change; end
+    def caption_text_color_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_text_primary_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def caption_text_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def color_text_primary_previously_was; end
+    def caption_text_color_previously_was; end
 
     sig { returns(T.nilable(::String)) }
-    def color_text_primary_was; end
+    def caption_text_color_was; end
 
     sig { void }
-    def color_text_primary_will_change!; end
-
-    sig { returns(T.nilable(::String)) }
-    def color_text_secondary; end
-
-    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def color_text_secondary=(value); end
-
-    sig { returns(T::Boolean) }
-    def color_text_secondary?; end
-
-    sig { returns(T.nilable(::String)) }
-    def color_text_secondary_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def color_text_secondary_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def color_text_secondary_came_from_user?; end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_text_secondary_change; end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_text_secondary_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_text_secondary_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def color_text_secondary_in_database; end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def color_text_secondary_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def color_text_secondary_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def color_text_secondary_previously_was; end
-
-    sig { returns(T.nilable(::String)) }
-    def color_text_secondary_was; end
-
-    sig { void }
-    def color_text_secondary_will_change!; end
+    def caption_text_color_will_change!; end
 
     sig { returns(::ActiveSupport::TimeWithZone) }
     def created_at; end
@@ -1055,94 +1010,94 @@ class TenantTheme
     def created_at_will_change!; end
 
     sig { returns(T.nilable(::String)) }
-    def font_heading; end
+    def general_font_family; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def font_heading=(value); end
+    def general_font_family=(value); end
 
     sig { returns(T::Boolean) }
-    def font_heading?; end
+    def general_font_family?; end
 
     sig { returns(T.nilable(::String)) }
-    def font_heading_before_last_save; end
+    def general_font_family_before_last_save; end
 
     sig { returns(T.untyped) }
-    def font_heading_before_type_cast; end
+    def general_font_family_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def font_heading_came_from_user?; end
+    def general_font_family_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def font_heading_change; end
+    def general_font_family_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def font_heading_change_to_be_saved; end
+    def general_font_family_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def font_heading_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def general_font_family_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def font_heading_in_database; end
+    def general_font_family_in_database; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def font_heading_previous_change; end
+    def general_font_family_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def font_heading_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def general_font_family_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def font_heading_previously_was; end
+    def general_font_family_previously_was; end
 
     sig { returns(T.nilable(::String)) }
-    def font_heading_was; end
+    def general_font_family_was; end
 
     sig { void }
-    def font_heading_will_change!; end
+    def general_font_family_will_change!; end
 
     sig { returns(T.nilable(::String)) }
-    def font_primary; end
+    def general_text_color; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
-    def font_primary=(value); end
+    def general_text_color=(value); end
 
     sig { returns(T::Boolean) }
-    def font_primary?; end
+    def general_text_color?; end
 
     sig { returns(T.nilable(::String)) }
-    def font_primary_before_last_save; end
+    def general_text_color_before_last_save; end
 
     sig { returns(T.untyped) }
-    def font_primary_before_type_cast; end
+    def general_text_color_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def font_primary_came_from_user?; end
+    def general_text_color_came_from_user?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def font_primary_change; end
+    def general_text_color_change; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def font_primary_change_to_be_saved; end
+    def general_text_color_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def font_primary_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def general_text_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def font_primary_in_database; end
+    def general_text_color_in_database; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def font_primary_previous_change; end
+    def general_text_color_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def font_primary_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def general_text_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def font_primary_previously_was; end
+    def general_text_color_previously_was; end
 
     sig { returns(T.nilable(::String)) }
-    def font_primary_was; end
+    def general_text_color_was; end
 
     sig { void }
-    def font_primary_will_change!; end
+    def general_text_color_will_change!; end
 
     sig { returns(::String) }
     def id; end
@@ -1234,44 +1189,401 @@ class TenantTheme
     sig { void }
     def id_will_change!; end
 
-    sig { void }
-    def restore_color_background!; end
+    sig { returns(T.nilable(::String)) }
+    def label_background_color; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def label_background_color=(value); end
+
+    sig { returns(T::Boolean) }
+    def label_background_color?; end
+
+    sig { returns(T.nilable(::String)) }
+    def label_background_color_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def label_background_color_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def label_background_color_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def label_background_color_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def label_background_color_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def label_background_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def label_background_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def label_background_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def label_background_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def label_background_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def label_background_color_was; end
 
     sig { void }
-    def restore_color_on_primary!; end
+    def label_background_color_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def label_font_family; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def label_font_family=(value); end
+
+    sig { returns(T::Boolean) }
+    def label_font_family?; end
+
+    sig { returns(T.nilable(::String)) }
+    def label_font_family_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def label_font_family_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def label_font_family_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def label_font_family_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def label_font_family_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def label_font_family_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def label_font_family_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def label_font_family_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def label_font_family_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def label_font_family_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def label_font_family_was; end
 
     sig { void }
-    def restore_color_on_secondary!; end
+    def label_font_family_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def label_text_color; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def label_text_color=(value); end
+
+    sig { returns(T::Boolean) }
+    def label_text_color?; end
+
+    sig { returns(T.nilable(::String)) }
+    def label_text_color_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def label_text_color_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def label_text_color_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def label_text_color_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def label_text_color_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def label_text_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def label_text_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def label_text_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def label_text_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def label_text_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def label_text_color_was; end
 
     sig { void }
-    def restore_color_outline!; end
+    def label_text_color_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def link_text_color; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def link_text_color=(value); end
+
+    sig { returns(T::Boolean) }
+    def link_text_color?; end
+
+    sig { returns(T.nilable(::String)) }
+    def link_text_color_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def link_text_color_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def link_text_color_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def link_text_color_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def link_text_color_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def link_text_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def link_text_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def link_text_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def link_text_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def link_text_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def link_text_color_was; end
 
     sig { void }
-    def restore_color_primary!; end
+    def link_text_color_will_change!; end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def link_underline; end
+
+    sig { params(value: T.nilable(T::Boolean)).returns(T.nilable(T::Boolean)) }
+    def link_underline=(value); end
+
+    sig { returns(T::Boolean) }
+    def link_underline?; end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def link_underline_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def link_underline_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def link_underline_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(T::Boolean), T.nilable(T::Boolean)])) }
+    def link_underline_change; end
+
+    sig { returns(T.nilable([T.nilable(T::Boolean), T.nilable(T::Boolean)])) }
+    def link_underline_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def link_underline_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def link_underline_in_database; end
+
+    sig { returns(T.nilable([T.nilable(T::Boolean), T.nilable(T::Boolean)])) }
+    def link_underline_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def link_underline_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def link_underline_previously_was; end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def link_underline_was; end
 
     sig { void }
-    def restore_color_primary_dark!; end
+    def link_underline_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def navigation_font_family; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def navigation_font_family=(value); end
+
+    sig { returns(T::Boolean) }
+    def navigation_font_family?; end
+
+    sig { returns(T.nilable(::String)) }
+    def navigation_font_family_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def navigation_font_family_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def navigation_font_family_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def navigation_font_family_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def navigation_font_family_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def navigation_font_family_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def navigation_font_family_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def navigation_font_family_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def navigation_font_family_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def navigation_font_family_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def navigation_font_family_was; end
 
     sig { void }
-    def restore_color_secondary!; end
+    def navigation_font_family_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def navigation_text_color; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def navigation_text_color=(value); end
+
+    sig { returns(T::Boolean) }
+    def navigation_text_color?; end
+
+    sig { returns(T.nilable(::String)) }
+    def navigation_text_color_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def navigation_text_color_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def navigation_text_color_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def navigation_text_color_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def navigation_text_color_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def navigation_text_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def navigation_text_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def navigation_text_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def navigation_text_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def navigation_text_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def navigation_text_color_was; end
 
     sig { void }
-    def restore_color_surface!; end
+    def navigation_text_color_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def page_background_color; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def page_background_color=(value); end
+
+    sig { returns(T::Boolean) }
+    def page_background_color?; end
+
+    sig { returns(T.nilable(::String)) }
+    def page_background_color_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def page_background_color_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def page_background_color_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def page_background_color_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def page_background_color_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def page_background_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def page_background_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def page_background_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def page_background_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def page_background_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def page_background_color_was; end
 
     sig { void }
-    def restore_color_text_primary!; end
+    def page_background_color_will_change!; end
 
     sig { void }
-    def restore_color_text_secondary!; end
+    def restore_border_color!; end
+
+    sig { void }
+    def restore_button_font_family!; end
+
+    sig { void }
+    def restore_button_primary_background_color!; end
+
+    sig { void }
+    def restore_button_primary_text_color!; end
+
+    sig { void }
+    def restore_button_secondary_background_color!; end
+
+    sig { void }
+    def restore_button_secondary_border_color!; end
+
+    sig { void }
+    def restore_button_secondary_text_color!; end
+
+    sig { void }
+    def restore_caption_font_family!; end
+
+    sig { void }
+    def restore_caption_text_color!; end
 
     sig { void }
     def restore_created_at!; end
 
     sig { void }
-    def restore_font_heading!; end
+    def restore_general_font_family!; end
 
     sig { void }
-    def restore_font_primary!; end
+    def restore_general_text_color!; end
 
     sig { void }
     def restore_id!; end
@@ -1280,70 +1592,109 @@ class TenantTheme
     def restore_id_value!; end
 
     sig { void }
+    def restore_label_background_color!; end
+
+    sig { void }
+    def restore_label_font_family!; end
+
+    sig { void }
+    def restore_label_text_color!; end
+
+    sig { void }
+    def restore_link_text_color!; end
+
+    sig { void }
+    def restore_link_underline!; end
+
+    sig { void }
+    def restore_navigation_font_family!; end
+
+    sig { void }
+    def restore_navigation_text_color!; end
+
+    sig { void }
+    def restore_page_background_color!; end
+
+    sig { void }
+    def restore_tab_active_text_color!; end
+
+    sig { void }
+    def restore_tab_active_underline_color!; end
+
+    sig { void }
+    def restore_tab_font_family!; end
+
+    sig { void }
+    def restore_tab_inactive_text_color!; end
+
+    sig { void }
+    def restore_tab_inactive_underline_color!; end
+
+    sig { void }
     def restore_tenant_id!; end
+
+    sig { void }
+    def restore_title_font_family!; end
+
+    sig { void }
+    def restore_title_text_color!; end
 
     sig { void }
     def restore_updated_at!; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_color_background; end
+    def saved_change_to_border_color; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_color_background?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_border_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_color_on_primary; end
+    def saved_change_to_button_font_family; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_color_on_primary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_button_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_color_on_secondary; end
+    def saved_change_to_button_primary_background_color; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_color_on_secondary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_button_primary_background_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_color_outline; end
+    def saved_change_to_button_primary_text_color; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_color_outline?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_button_primary_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_color_primary; end
+    def saved_change_to_button_secondary_background_color; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_color_primary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_button_secondary_background_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_color_primary_dark; end
+    def saved_change_to_button_secondary_border_color; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_color_primary_dark?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_button_secondary_border_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_color_secondary; end
+    def saved_change_to_button_secondary_text_color; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_color_secondary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_button_secondary_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_color_surface; end
+    def saved_change_to_caption_font_family; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_color_surface?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_caption_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_color_text_primary; end
+    def saved_change_to_caption_text_color; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_color_text_primary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_color_text_secondary; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_color_text_secondary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_caption_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
     def saved_change_to_created_at; end
@@ -1352,16 +1703,16 @@ class TenantTheme
     def saved_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_font_heading; end
+    def saved_change_to_general_font_family; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_font_heading?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_general_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
-    def saved_change_to_font_primary; end
+    def saved_change_to_general_text_color; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_font_primary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def saved_change_to_general_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_id; end
@@ -1375,17 +1726,332 @@ class TenantTheme
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_label_background_color; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_label_background_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_label_font_family; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_label_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_label_text_color; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_label_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_link_text_color; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_link_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(T::Boolean), T.nilable(T::Boolean)])) }
+    def saved_change_to_link_underline; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_link_underline?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_navigation_font_family; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_navigation_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_navigation_text_color; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_navigation_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_page_background_color; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_page_background_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_tab_active_text_color; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_tab_active_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_tab_active_underline_color; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_tab_active_underline_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_tab_font_family; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_tab_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_tab_inactive_text_color; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_tab_inactive_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_tab_inactive_underline_color; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_tab_inactive_underline_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_tenant_id; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_title_font_family; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_title_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_title_text_color; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_title_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
     sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
     def saved_change_to_updated_at; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_updated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_active_text_color; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def tab_active_text_color=(value); end
+
+    sig { returns(T::Boolean) }
+    def tab_active_text_color?; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_active_text_color_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def tab_active_text_color_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def tab_active_text_color_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_active_text_color_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_active_text_color_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tab_active_text_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_active_text_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_active_text_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tab_active_text_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_active_text_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_active_text_color_was; end
+
+    sig { void }
+    def tab_active_text_color_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_active_underline_color; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def tab_active_underline_color=(value); end
+
+    sig { returns(T::Boolean) }
+    def tab_active_underline_color?; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_active_underline_color_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def tab_active_underline_color_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def tab_active_underline_color_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_active_underline_color_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_active_underline_color_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tab_active_underline_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_active_underline_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_active_underline_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tab_active_underline_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_active_underline_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_active_underline_color_was; end
+
+    sig { void }
+    def tab_active_underline_color_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_font_family; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def tab_font_family=(value); end
+
+    sig { returns(T::Boolean) }
+    def tab_font_family?; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_font_family_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def tab_font_family_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def tab_font_family_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_font_family_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_font_family_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tab_font_family_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_font_family_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_font_family_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tab_font_family_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_font_family_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_font_family_was; end
+
+    sig { void }
+    def tab_font_family_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_inactive_text_color; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def tab_inactive_text_color=(value); end
+
+    sig { returns(T::Boolean) }
+    def tab_inactive_text_color?; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_inactive_text_color_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def tab_inactive_text_color_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def tab_inactive_text_color_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_inactive_text_color_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_inactive_text_color_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tab_inactive_text_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_inactive_text_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_inactive_text_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tab_inactive_text_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_inactive_text_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_inactive_text_color_was; end
+
+    sig { void }
+    def tab_inactive_text_color_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_inactive_underline_color; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def tab_inactive_underline_color=(value); end
+
+    sig { returns(T::Boolean) }
+    def tab_inactive_underline_color?; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_inactive_underline_color_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def tab_inactive_underline_color_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def tab_inactive_underline_color_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_inactive_underline_color_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_inactive_underline_color_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tab_inactive_underline_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_inactive_underline_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def tab_inactive_underline_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def tab_inactive_underline_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_inactive_underline_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def tab_inactive_underline_color_was; end
+
+    sig { void }
+    def tab_inactive_underline_color_will_change!; end
 
     sig { returns(::String) }
     def tenant_id; end
@@ -1431,6 +2097,96 @@ class TenantTheme
 
     sig { void }
     def tenant_id_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def title_font_family; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def title_font_family=(value); end
+
+    sig { returns(T::Boolean) }
+    def title_font_family?; end
+
+    sig { returns(T.nilable(::String)) }
+    def title_font_family_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def title_font_family_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def title_font_family_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def title_font_family_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def title_font_family_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def title_font_family_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def title_font_family_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def title_font_family_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def title_font_family_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def title_font_family_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def title_font_family_was; end
+
+    sig { void }
+    def title_font_family_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def title_text_color; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def title_text_color=(value); end
+
+    sig { returns(T::Boolean) }
+    def title_text_color?; end
+
+    sig { returns(T.nilable(::String)) }
+    def title_text_color_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def title_text_color_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def title_text_color_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def title_text_color_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def title_text_color_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def title_text_color_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def title_text_color_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def title_text_color_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def title_text_color_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def title_text_color_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def title_text_color_was; end
+
+    sig { void }
+    def title_text_color_will_change!; end
 
     sig { returns(::ActiveSupport::TimeWithZone) }
     def updated_at; end
@@ -1478,43 +2234,40 @@ class TenantTheme
     def updated_at_will_change!; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_color_background?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_border_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_color_on_primary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_button_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_color_on_secondary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_button_primary_background_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_color_outline?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_button_primary_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_color_primary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_button_secondary_background_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_color_primary_dark?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_button_secondary_border_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_color_secondary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_button_secondary_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_color_surface?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_caption_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_color_text_primary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_color_text_secondary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_caption_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_font_heading?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_general_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_font_primary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def will_save_change_to_general_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
@@ -1523,7 +2276,52 @@ class TenantTheme
     def will_save_change_to_id_value?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_label_background_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_label_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_label_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_link_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_link_underline?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_navigation_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_navigation_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_page_background_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_tab_active_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_tab_active_underline_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_tab_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_tab_inactive_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_tab_inactive_underline_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_title_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_title_text_color?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_updated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end

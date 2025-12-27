@@ -5,22 +5,36 @@
 #
 # Table name: tenant_themes
 #
-#  id                   :uuid             not null, primary key
-#  color_background     :string
-#  color_on_primary     :string
-#  color_on_secondary   :string
-#  color_outline        :string
-#  color_primary        :string
-#  color_primary_dark   :string
-#  color_secondary      :string
-#  color_surface        :string
-#  color_text_primary   :string
-#  color_text_secondary :string
-#  font_heading         :string
-#  font_primary         :string
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  tenant_id            :string           not null
+#  id                                :uuid             not null, primary key
+#  border_color                      :string
+#  button_font_family                :string
+#  button_primary_background_color   :string
+#  button_primary_text_color         :string
+#  button_secondary_background_color :string
+#  button_secondary_border_color     :string
+#  button_secondary_text_color       :string
+#  caption_font_family               :string
+#  caption_text_color                :string
+#  general_font_family               :string
+#  general_text_color                :string
+#  label_background_color            :string
+#  label_font_family                 :string
+#  label_text_color                  :string
+#  link_text_color                   :string
+#  link_underline                    :boolean          default(TRUE)
+#  navigation_font_family            :string
+#  navigation_text_color             :string
+#  page_background_color             :string
+#  tab_active_text_color             :string
+#  tab_active_underline_color        :string
+#  tab_font_family                   :string
+#  tab_inactive_text_color           :string
+#  tab_inactive_underline_color      :string
+#  title_font_family                 :string
+#  title_text_color                  :string
+#  created_at                        :datetime         not null
+#  updated_at                        :datetime         not null
+#  tenant_id                         :string           not null
 #
 # Indexes
 #
@@ -90,72 +104,101 @@ class TenantTheme < ApplicationRecord
   }.freeze, T::Hash[Symbol, T.any(String, T::Boolean)])
 
   # Returns all CSS custom properties as a hash
+  # DB カラムの値を優先し、nil の場合は STATIC_THEME_CONFIG のデフォルト値を使用
   sig { returns(T::Hash[String, T.nilable(String)]) }
   def css_custom_properties
-    config = STATIC_THEME_CONFIG
+    defaults = STATIC_THEME_CONFIG
+
+    # DB カラムから値を取得（nil の場合はデフォルト値を使用）
+    page_bg = page_background_color || defaults[:page_background_color]
+    general_text = general_text_color || defaults[:general_text_color]
+    general_font = general_font_family || defaults[:general_font_family]
+    border = border_color || defaults[:border_color]
+    title_text = title_text_color || defaults[:title_text_color]
+    title_font = title_font_family || defaults[:title_font_family]
+    nav_text = navigation_text_color || defaults[:navigation_text_color]
+    nav_font = navigation_font_family || defaults[:navigation_font_family]
+    link_text = link_text_color || defaults[:link_text_color]
+    link_ul = link_underline.nil? ? defaults[:link_underline] : link_underline
+    tab_font = tab_font_family || defaults[:tab_font_family]
+    tab_active_text = tab_active_text_color || defaults[:tab_active_text_color]
+    tab_active_ul = tab_active_underline_color || defaults[:tab_active_underline_color]
+    tab_inactive_text = tab_inactive_text_color || defaults[:tab_inactive_text_color]
+    tab_inactive_ul = tab_inactive_underline_color || defaults[:tab_inactive_underline_color]
+    caption_text = caption_text_color || defaults[:caption_text_color]
+    caption_font = caption_font_family || defaults[:caption_font_family]
+    label_bg = label_background_color || defaults[:label_background_color]
+    label_text = label_text_color || defaults[:label_text_color]
+    label_font = label_font_family || defaults[:label_font_family]
+    btn_font = button_font_family || defaults[:button_font_family]
+    btn_primary_bg = button_primary_background_color || defaults[:button_primary_background_color]
+    btn_primary_text = button_primary_text_color || defaults[:button_primary_text_color]
+    btn_secondary_border = button_secondary_border_color || defaults[:button_secondary_border_color]
+    btn_secondary_bg = button_secondary_background_color || defaults[:button_secondary_background_color]
+    btn_secondary_text = button_secondary_text_color || defaults[:button_secondary_text_color]
 
     props = {
       # 全体背景
-      '--theme-page-background-color' => config[:page_background_color],
+      '--theme-page-background-color' => page_bg,
 
       # 一般（本文）テキスト
-      '--theme-general-text-color' => config[:general_text_color],
-      '--theme-general-font-family' => config[:general_font_family],
+      '--theme-general-text-color' => general_text,
+      '--theme-general-font-family' => general_font,
 
       # ボーダー
-      '--theme-border-color' => config[:border_color],
+      '--theme-border-color' => border,
 
       # タイトル
-      '--theme-title-text-color' => config[:title_text_color],
-      '--theme-title-font-family' => config[:title_font_family],
+      '--theme-title-text-color' => title_text,
+      '--theme-title-font-family' => title_font,
 
       # ナビゲーション
-      '--theme-navigation-text-color' => config[:navigation_text_color],
-      '--theme-navigation-font-family' => config[:navigation_font_family],
+      '--theme-navigation-text-color' => nav_text,
+      '--theme-navigation-font-family' => nav_font,
 
       # リンク
-      '--theme-link-text-color' => config[:link_text_color],
-      '--theme-link-underline' => config[:link_underline] ? 'underline' : 'none',
+      '--theme-link-text-color' => link_text,
+      '--theme-link-underline' => link_ul ? 'underline' : 'none',
 
       # タブ
-      '--theme-tab-font-family' => config[:tab_font_family],
-      '--theme-tab-active-text-color' => config[:tab_active_text_color],
-      '--theme-tab-active-underline-color' => config[:tab_active_underline_color],
-      '--theme-tab-inactive-text-color' => config[:tab_inactive_text_color],
-      '--theme-tab-inactive-underline-color' => config[:tab_inactive_underline_color],
+      '--theme-tab-font-family' => tab_font,
+      '--theme-tab-active-text-color' => tab_active_text,
+      '--theme-tab-active-underline-color' => tab_active_ul,
+      '--theme-tab-inactive-text-color' => tab_inactive_text,
+      '--theme-tab-inactive-underline-color' => tab_inactive_ul,
 
       # 補助テキスト
-      '--theme-caption-text-color' => config[:caption_text_color],
-      '--theme-caption-font-family' => config[:caption_font_family],
+      '--theme-caption-text-color' => caption_text,
+      '--theme-caption-font-family' => caption_font,
 
       # ラベル
-      '--theme-label-background-color' => config[:label_background_color],
-      '--theme-label-text-color' => config[:label_text_color],
-      '--theme-label-font-family' => config[:label_font_family],
+      '--theme-label-background-color' => label_bg,
+      '--theme-label-text-color' => label_text,
+      '--theme-label-font-family' => label_font,
 
       # ボタン（共通）
-      '--theme-button-font-family' => config[:button_font_family],
+      '--theme-button-font-family' => btn_font,
 
       # ボタン（Primary）
-      '--theme-button-primary-background-color' => config[:button_primary_background_color],
-      '--theme-button-primary-text-color' => config[:button_primary_text_color],
+      '--theme-button-primary-background-color' => btn_primary_bg,
+      '--theme-button-primary-text-color' => btn_primary_text,
 
       # ボタン（Secondary）
-      '--theme-button-secondary-border-color' => config[:button_secondary_border_color],
-      '--theme-button-secondary-background-color' => config[:button_secondary_background_color],
-      '--theme-button-secondary-text-color' => config[:button_secondary_text_color],
+      '--theme-button-secondary-border-color' => btn_secondary_border,
+      '--theme-button-secondary-background-color' => btn_secondary_bg,
+      '--theme-button-secondary-text-color' => btn_secondary_text,
 
       # 後方互換性のため旧変数も出力（段階的に移行）
-      '--gearbox-primary' => config[:label_background_color],
-      '--gearbox-on-primary' => config[:label_text_color],
-      '--gearbox-secondary' => config[:title_text_color],
-      '--gearbox-on-secondary' => config[:button_primary_text_color],
-      '--gearbox-background' => config[:page_background_color],
-      '--gearbox-surface' => config[:page_background_color],
-      '--gearbox-on-surface' => config[:general_text_color],
-      '--gearbox-outline' => config[:border_color],
-      '--gearbox-font-family-heading' => config[:title_font_family],
-      '--gearbox-font-family-primary' => config[:general_font_family],
+      '--gearbox-primary' => label_bg,
+      '--gearbox-on-primary' => label_text,
+      '--gearbox-secondary' => title_text,
+      '--gearbox-on-secondary' => btn_primary_text,
+      '--gearbox-background' => page_bg,
+      '--gearbox-surface' => page_bg,
+      '--gearbox-on-surface' => general_text,
+      '--gearbox-outline' => border,
+      '--gearbox-font-family-heading' => title_font,
+      '--gearbox-font-family-primary' => general_font,
     }
 
     props.transform_values(&:to_s).compact
