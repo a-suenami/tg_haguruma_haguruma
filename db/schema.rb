@@ -222,6 +222,35 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["user_id"], name: "index_session_tokens_on_user_id"
   end
 
+  create_table "tenant_site_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.jsonb "features", default: {}, null: false
+    t.jsonb "landing", default: {}, null: false
+    t.string "login_label", default: "ログイン", null: false
+    t.string "signup_label", default: "新規会員登録", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_site_settings_on_tenant_id", unique: true
+  end
+
+  create_table "tenant_themes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.string "color_primary"
+    t.string "color_primary_dark"
+    t.string "color_secondary"
+    t.string "color_on_primary"
+    t.string "color_background"
+    t.string "color_surface"
+    t.string "color_text_primary"
+    t.string "color_text_secondary"
+    t.string "color_outline"
+    t.string "font_heading"
+    t.string "font_primary"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_themes_on_tenant_id", unique: true
+  end
+
   create_table "tenants", id: :string, force: :cascade do |t|
     t.string "name"
     t.string "user_page_domain"
@@ -278,6 +307,8 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "ruler_auth0_accounts", "rulers", name: "fk_ruler_auth0_accounts_rulers"
   add_foreign_key "session_tokens", "tenants"
   add_foreign_key "session_tokens", "users"
+  add_foreign_key "tenant_site_settings", "tenants"
+  add_foreign_key "tenant_themes", "tenants"
   add_foreign_key "user_tags", "content_authorization_tags"
   add_foreign_key "user_tags", "tenants"
   add_foreign_key "user_tags", "users", column: ["tenant_id", "user_id"], primary_key: ["tenant_id", "id"], name: "fk_user_tags_users"

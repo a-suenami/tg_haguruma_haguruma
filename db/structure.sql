@@ -1,4 +1,4 @@
-\restrict WO7AqUc0q4FBsPaIgJX9yfWmqnaYXVBGNd5eJwOSeIqsUhp0Z8JKRkRCdXcDChP
+\restrict huOlj2xc73iyRTCziiEzcvhBfNMi1fM3vfmHTnVTC0pCFmZauuVshfp9L0xN7J8
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -541,6 +541,45 @@ CREATE TABLE public.session_tokens (
 
 
 --
+-- Name: tenant_site_settings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tenant_site_settings (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id character varying NOT NULL,
+    features jsonb DEFAULT '{}'::jsonb NOT NULL,
+    landing jsonb DEFAULT '{}'::jsonb NOT NULL,
+    login_label character varying DEFAULT 'ログイン'::character varying NOT NULL,
+    signup_label character varying DEFAULT '新規会員登録'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: tenant_themes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tenant_themes (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id character varying NOT NULL,
+    color_primary character varying,
+    color_primary_dark character varying,
+    color_secondary character varying,
+    color_on_primary character varying,
+    color_background character varying,
+    color_surface character varying,
+    color_text_primary character varying,
+    color_text_secondary character varying,
+    color_outline character varying,
+    font_heading character varying,
+    font_primary character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: tenants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -818,6 +857,22 @@ ALTER TABLE ONLY public.rulers
 
 ALTER TABLE ONLY public.session_tokens
     ADD CONSTRAINT session_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenant_site_settings tenant_site_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_site_settings
+    ADD CONSTRAINT tenant_site_settings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenant_themes tenant_themes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_themes
+    ADD CONSTRAINT tenant_themes_pkey PRIMARY KEY (id);
 
 
 --
@@ -1104,6 +1159,20 @@ CREATE INDEX index_session_tokens_on_user_id ON public.session_tokens USING btre
 
 
 --
+-- Name: index_tenant_site_settings_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tenant_site_settings_on_tenant_id ON public.tenant_site_settings USING btree (tenant_id);
+
+
+--
+-- Name: index_tenant_themes_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tenant_themes_on_tenant_id ON public.tenant_themes USING btree (tenant_id);
+
+
+--
 -- Name: index_user_tags_on_tag; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1258,6 +1327,14 @@ ALTER TABLE ONLY public.user_tags
 
 
 --
+-- Name: tenant_site_settings fk_rails_4c850b6370; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_site_settings
+    ADD CONSTRAINT fk_rails_4c850b6370 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: content_type_fields fk_rails_56320489b5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1370,6 +1447,14 @@ ALTER TABLE ONLY public.user_tags
 
 
 --
+-- Name: tenant_themes fk_rails_ff24ac10ab; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_themes
+    ADD CONSTRAINT fk_rails_ff24ac10ab FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: ruler_auth0_accounts fk_ruler_auth0_accounts_auth0_accounts; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1397,7 +1482,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict WO7AqUc0q4FBsPaIgJX9yfWmqnaYXVBGNd5eJwOSeIqsUhp0Z8JKRkRCdXcDChP
+\unrestrict huOlj2xc73iyRTCziiEzcvhBfNMi1fM3vfmHTnVTC0pCFmZauuVshfp9L0xN7J8
 
 SET search_path TO "$user", public;
 
