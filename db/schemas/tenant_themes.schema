@@ -1,0 +1,23 @@
+create_table :tenant_themes, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
+  t.string :tenant_id, null: false
+
+  # Colors (output as CSS custom properties)
+  t.string :color_primary        # --gearbox-primary
+  t.string :color_primary_dark   # --gearbox-primary-dark
+  t.string :color_secondary      # --gearbox-secondary
+  t.string :color_on_primary     # --gearbox-on-primary
+  t.string :color_background     # --gearbox-background
+  t.string :color_surface        # --gearbox-surface
+  t.string :color_text_primary   # --gearbox-text-primary
+  t.string :color_text_secondary # --gearbox-text-secondary
+  t.string :color_outline        # --gearbox-outline-primary
+
+  # Fonts
+  t.string :font_heading         # --gearbox-font-family-heading
+  t.string :font_primary         # --gearbox-font-family-primary
+
+  t.timestamps null: false
+end
+
+add_index :tenant_themes, [:tenant_id], unique: true
+add_foreign_key :tenant_themes, :tenants, column: :tenant_id, primary_key: :id

@@ -20,7 +20,7 @@ UserArea のファンクラブサイトは、テナント（アーティスト�
 2. **フォント**: テナントごとに異なるフォントファミリーを適用
 3. **ラベル**: 機能名の表示（NEWS vs お知らせ、TICKET vs お切符、BLOG vs メッセージ）
 4. **機能の有効/無効**: テナントごとに表示する機能を選択（SCHEDULE の有無など）
-5. **ランディングページ構成**: セクションの表示順序や外部リンクの設定
+5. **ランディングページ構成**: セクションの表示順序
 
 ### 将来の動的ページシステムとの関係
 
@@ -139,12 +139,7 @@ end
 
 ```json
 {
-  "sections_order": ["auth", "external_link", "news", "blog", "profile"],
-  "external_link": {
-    "show": true,
-    "label": "オフィシャルサイトはこちら",
-    "url": "https://example.com"
-  }
+  "sections_order": ["auth", "news", "blog", "profile"]
 }
 ```
 

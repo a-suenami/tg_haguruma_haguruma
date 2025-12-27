@@ -7,10 +7,21 @@
 
   <div class="menu-container browser">
     <nav cog-header-menu>
-      <a href="<%= user_area_news_index_path %>" cog-header-menu-item>NEWS</a>
-      <a href="<%= user_area_tickets_path %>" cog-header-menu-item>TICKET</a>
-      <a href="<%= user_area_blog_index_path %>" cog-header-menu-item>BLOG</a>
-      <a href="<%= user_area_schedules_path %>" cog-header-menu-item>SCHEDULE</a>
+      <% if feature_enabled?(:news) %>
+        <a href="<%= user_area_news_index_path %>" cog-header-menu-item><%= feature_label(:news, :menu_label) %></a>
+      <% end %>
+      <% if feature_enabled?(:ticket) %>
+        <a href="<%= user_area_tickets_path %>" cog-header-menu-item><%= feature_label(:ticket, :menu_label) %></a>
+      <% end %>
+      <% if feature_enabled?(:blog) %>
+        <a href="<%= user_area_blog_index_path %>" cog-header-menu-item><%= feature_label(:blog, :menu_label) %></a>
+      <% end %>
+      <% if feature_enabled?(:schedule) %>
+        <a href="<%= user_area_schedules_path %>" cog-header-menu-item><%= feature_label(:schedule, :menu_label) %></a>
+      <% end %>
+      <% if feature_enabled?(:profile) %>
+        <a href="#" cog-header-menu-item><%= feature_label(:profile, :menu_label) %></a>
+      <% end %>
       <div class="auth-action-buttons">
         <% if user_signed_in? %>
           <a href="#" cog-header-menu-item class="auth-action-button">
@@ -20,11 +31,11 @@
         <% else %>
           <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
             <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
-            <span>ログイン</span>
+            <span><%= login_label %></span>
           </a>
           <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
             <span class="auth-icon"><%= icon_svg('sign-up-indicator') %></span>
-            <span>新規登録</span>
+            <span><%= signup_label %></span>
           </a>
         <% end %>
       </div>
@@ -46,11 +57,11 @@
             </a>
           <% else %>
             <a href="<%= user_area_auth_start_path %>" cog-button filled class="overlay-action-button">
-              <span>ログイン</span>
+              <span><%= login_label %></span>
               <span class="overlay-icon"><%= icon_svg('sign-in-indicator') %></span>
             </a>
             <a href="<%= user_area_auth_start_path %>" cog-button outlined class="overlay-action-button">
-              <span>新規会員登録</span>
+              <span><%= signup_label %></span>
               <span class="overlay-icon"><%= icon_svg('sign-up-indicator') %></span>
             </a>
           <% end %>
@@ -60,10 +71,21 @@
       <div cog-header-menu-overlay-content>
         <nav cog-menu-items>
           <a cog-menu-item href="<%= user_area_root_path %>">TOP</a>
-          <a cog-menu-item href="<%= user_area_news_index_path %>">NEWS</a>
-          <a cog-menu-item href="<%= user_area_tickets_path %>">TICKET</a>
-          <a cog-menu-item href="<%= user_area_blog_index_path %>">BLOG</a>
-          <a cog-menu-item href="<%= user_area_schedules_path %>">SCHEDULE</a>
+          <% if feature_enabled?(:news) %>
+            <a cog-menu-item href="<%= user_area_news_index_path %>"><%= feature_label(:news, :menu_label) %></a>
+          <% end %>
+          <% if feature_enabled?(:ticket) %>
+            <a cog-menu-item href="<%= user_area_tickets_path %>"><%= feature_label(:ticket, :menu_label) %></a>
+          <% end %>
+          <% if feature_enabled?(:blog) %>
+            <a cog-menu-item href="<%= user_area_blog_index_path %>"><%= feature_label(:blog, :menu_label) %></a>
+          <% end %>
+          <% if feature_enabled?(:schedule) %>
+            <a cog-menu-item href="<%= user_area_schedules_path %>"><%= feature_label(:schedule, :menu_label) %></a>
+          <% end %>
+          <% if feature_enabled?(:profile) %>
+            <a cog-menu-item href="#"><%= feature_label(:profile, :menu_label) %></a>
+          <% end %>
           <% if user_signed_in? %>
             <a cog-menu-item href="#">MYPAGE</a>
           <% end %>

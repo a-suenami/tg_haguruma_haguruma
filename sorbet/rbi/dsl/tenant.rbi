@@ -352,11 +352,29 @@ class Tenant
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def build_oauth_provider(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantSiteSettings) }
+    def build_site_settings(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTheme) }
+    def build_theme(*args, &blk); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def create_oauth_provider(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def create_oauth_provider!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantSiteSettings) }
+    def create_site_settings(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantSiteSettings) }
+    def create_site_settings!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTheme) }
+    def create_theme(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTheme) }
+    def create_theme!(*args, &blk); end
 
     sig { returns(T.nilable(::OauthProvider)) }
     def oauth_provider; end
@@ -367,8 +385,32 @@ class Tenant
     sig { returns(T.nilable(::OauthProvider)) }
     def reload_oauth_provider; end
 
+    sig { returns(T.nilable(::TenantSiteSettings)) }
+    def reload_site_settings; end
+
+    sig { returns(T.nilable(::TenantTheme)) }
+    def reload_theme; end
+
     sig { void }
     def reset_oauth_provider; end
+
+    sig { void }
+    def reset_site_settings; end
+
+    sig { void }
+    def reset_theme; end
+
+    sig { returns(T.nilable(::TenantSiteSettings)) }
+    def site_settings; end
+
+    sig { params(value: T.nilable(::TenantSiteSettings)).void }
+    def site_settings=(value); end
+
+    sig { returns(T.nilable(::TenantTheme)) }
+    def theme; end
+
+    sig { params(value: T.nilable(::TenantTheme)).void }
+    def theme=(value); end
   end
 
   module GeneratedAssociationRelationMethods

@@ -1,7 +1,7 @@
-\restrict YayPdtfEBHVZLO8Qrfbf5dFv3fvm5UxhltlL9ufGMa0FgM35xufyYbF9mjwjTUP
+\restrict WO7AqUc0q4FBsPaIgJX9yfWmqnaYXVBGNd5eJwOSeIqsUhp0Z8JKRkRCdXcDChP
 
 -- Dumped from database version 16.11
--- Dumped by pg_dump version 16.10
+-- Dumped by pg_dump version 16.11
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1397,7 +1397,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict YayPdtfEBHVZLO8Qrfbf5dFv3fvm5UxhltlL9ufGMa0FgM35xufyYbF9mjwjTUP
+\unrestrict WO7AqUc0q4FBsPaIgJX9yfWmqnaYXVBGNd5eJwOSeIqsUhp0Z8JKRkRCdXcDChP
 
 SET search_path TO "$user", public;
 

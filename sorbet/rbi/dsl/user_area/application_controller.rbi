@@ -26,6 +26,7 @@ class UserArea::ApplicationController
     include ::LexicalHelper
     include ::RulerArea::ApplicationHelper
     include ::SvgHelper
+    include ::UserArea::SiteSettingsHelper
     include ::ApplicationController::HelperMethods
 
     sig { returns(T.nilable(::Tenant)) }
