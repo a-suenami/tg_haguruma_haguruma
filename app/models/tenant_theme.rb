@@ -1,6 +1,34 @@
 # typed: strict
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: tenant_themes
+#
+#  id                   :uuid             not null, primary key
+#  color_background     :string
+#  color_on_primary     :string
+#  color_outline        :string
+#  color_primary        :string
+#  color_primary_dark   :string
+#  color_secondary      :string
+#  color_surface        :string
+#  color_text_primary   :string
+#  color_text_secondary :string
+#  font_heading         :string
+#  font_primary         :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  tenant_id            :string           not null
+#
+# Indexes
+#
+#  index_tenant_themes_on_tenant_id  (tenant_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (tenant_id => tenants.id)
+#
 class TenantTheme < ApplicationRecord
   extend T::Sig
 

@@ -1,6 +1,27 @@
 # typed: strict
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: tenant_site_settings
+#
+#  id           :uuid             not null, primary key
+#  features     :jsonb            not null
+#  landing      :jsonb            not null
+#  login_label  :string           default("ログイン"), not null
+#  signup_label :string           default("新規会員登録"), not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  tenant_id    :string           not null
+#
+# Indexes
+#
+#  index_tenant_site_settings_on_tenant_id  (tenant_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (tenant_id => tenants.id)
+#
 class TenantSiteSettings < ApplicationRecord
   extend T::Sig
 
