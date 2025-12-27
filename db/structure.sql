@@ -1,4 +1,4 @@
-\restrict MkGP0eTkFYrUFKxf2ZhO0k6oj0aM0Xz2fdLksI10kvicYFmsgihplQQygB5cfwg
+\restrict X606uvHLCB784IBegEOMH2VGh0A6MuvfsOtjShvheJgQUEjHFSuLOPNWpF49MUN
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -563,6 +563,7 @@ CREATE TABLE public.tenant_site_settings (
 CREATE TABLE public.tenant_themes (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id character varying NOT NULL,
+    logo_media_asset_id uuid,
     page_background_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
     general_text_color character varying DEFAULT '#000000'::character varying NOT NULL,
     general_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
@@ -1398,6 +1399,14 @@ ALTER TABLE ONLY public.content_type_fields
 
 
 --
+-- Name: tenant_themes fk_rails_79c1b773a4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_themes
+    ADD CONSTRAINT fk_rails_79c1b773a4 FOREIGN KEY (logo_media_asset_id) REFERENCES public.media_assets(id);
+
+
+--
 -- Name: content_types fk_rails_8c76f12b40; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1497,7 +1506,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict MkGP0eTkFYrUFKxf2ZhO0k6oj0aM0Xz2fdLksI10kvicYFmsgihplQQygB5cfwg
+\unrestrict X606uvHLCB784IBegEOMH2VGh0A6MuvfsOtjShvheJgQUEjHFSuLOPNWpF49MUN
 
 SET search_path TO "$user", public;
 

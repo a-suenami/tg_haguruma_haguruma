@@ -1,6 +1,9 @@
 create_table :tenant_themes, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
   t.string :tenant_id, null: false
 
+  # ロゴ
+  t.uuid :logo_media_asset_id
+
   # 全体背景
   t.string :page_background_color, null: false, default: '#FFFFFF'
 
@@ -56,3 +59,4 @@ end
 
 add_index :tenant_themes, [:tenant_id], unique: true
 add_foreign_key :tenant_themes, :tenants, column: :tenant_id, primary_key: :id
+add_foreign_key :tenant_themes, :media_assets, column: :logo_media_asset_id

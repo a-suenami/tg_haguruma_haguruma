@@ -385,8 +385,17 @@ class TenantTheme
   end
 
   module GeneratedAssociationMethods
+    sig { params(args: T.untyped, blk: T.untyped).returns(::MediaAsset) }
+    def build_logo_media_asset(*args, &blk); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def build_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::MediaAsset) }
+    def create_logo_media_asset(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::MediaAsset) }
+    def create_logo_media_asset!(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def create_tenant(*args, &blk); end
@@ -394,8 +403,26 @@ class TenantTheme
     sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
     def create_tenant!(*args, &blk); end
 
+    sig { returns(T.nilable(::MediaAsset)) }
+    def logo_media_asset; end
+
+    sig { params(value: T.nilable(::MediaAsset)).void }
+    def logo_media_asset=(value); end
+
+    sig { returns(T::Boolean) }
+    def logo_media_asset_changed?; end
+
+    sig { returns(T::Boolean) }
+    def logo_media_asset_previously_changed?; end
+
+    sig { returns(T.nilable(::MediaAsset)) }
+    def reload_logo_media_asset; end
+
     sig { returns(T.nilable(::Tenant)) }
     def reload_tenant; end
+
+    sig { void }
+    def reset_logo_media_asset; end
 
     sig { void }
     def reset_tenant; end
@@ -1414,6 +1441,51 @@ class TenantTheme
     sig { void }
     def link_underline_will_change!; end
 
+    sig { returns(T.nilable(::String)) }
+    def logo_media_asset_id; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def logo_media_asset_id=(value); end
+
+    sig { returns(T::Boolean) }
+    def logo_media_asset_id?; end
+
+    sig { returns(T.nilable(::String)) }
+    def logo_media_asset_id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def logo_media_asset_id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def logo_media_asset_id_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def logo_media_asset_id_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def logo_media_asset_id_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def logo_media_asset_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def logo_media_asset_id_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def logo_media_asset_id_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def logo_media_asset_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def logo_media_asset_id_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def logo_media_asset_id_was; end
+
+    sig { void }
+    def logo_media_asset_id_will_change!; end
+
     sig { returns(::String) }
     def navigation_font_family; end
 
@@ -1607,6 +1679,9 @@ class TenantTheme
     def restore_link_underline!; end
 
     sig { void }
+    def restore_logo_media_asset_id!; end
+
+    sig { void }
     def restore_navigation_font_family!; end
 
     sig { void }
@@ -1755,6 +1830,12 @@ class TenantTheme
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_link_underline?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_logo_media_asset_id; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_logo_media_asset_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_navigation_font_family; end
@@ -2289,6 +2370,9 @@ class TenantTheme
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_link_underline?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_logo_media_asset_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_navigation_font_family?(from: T.unsafe(nil), to: T.unsafe(nil)); end
