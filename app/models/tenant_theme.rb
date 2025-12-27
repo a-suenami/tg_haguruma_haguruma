@@ -34,58 +34,22 @@ class TenantTheme < ApplicationRecord
 
   belongs_to :tenant, primary_key: :id
 
-  # Default values for CSS custom properties (matching gearbox defaults)
-  DEFAULT_COLORS = T.let({
-    color_primary: '#F2719D',
-    color_primary_dark: '#D4567D',
-    color_secondary: '#4E34C0',
-    color_on_primary: '#FFFFFF',
-    color_background: '#FFFFFF',
-    color_surface: '#FFFFFF',
-    color_text_primary: '#454C66',
-    color_text_secondary: '#666666',
-    color_outline: '#EFE7F2',
-  }.freeze, T::Hash[Symbol, String],)
-
-  DEFAULT_FONTS = T.let({
-    font_heading: 'Tsukimi Rounded',
-    font_primary: 'Zen Maru Gothic',
-  }.freeze, T::Hash[Symbol, String],)
-
-  # Returns the color value or default
-  sig { params(key: Symbol).returns(String) }
-  def color(key)
-    value = send(key)
-    return value if value.present?
-
-    DEFAULT_COLORS.fetch(key, '#000000')
-  end
-
-  # Returns the font value or default
-  sig { params(key: Symbol).returns(String) }
-  def font(key)
-    value = send(key)
-    return value if value.present?
-
-    DEFAULT_FONTS.fetch(key, 'sans-serif')
-  end
-
   # Returns all CSS custom properties as a hash
-  sig { returns(T::Hash[String, String]) }
+  sig { returns(T::Hash[String, T.nilable(String)]) }
   def css_custom_properties
     {
-      '--gearbox-primary' => color(:color_primary),
-      '--gearbox-primary-dark' => color(:color_primary_dark),
-      '--gearbox-secondary' => color(:color_secondary),
-      '--gearbox-on-primary' => color(:color_on_primary),
-      '--gearbox-background' => color(:color_background),
-      '--gearbox-surface' => color(:color_surface),
-      '--gearbox-text-primary' => color(:color_text_primary),
-      '--gearbox-text-secondary' => color(:color_text_secondary),
-      '--gearbox-outline-primary' => color(:color_outline),
-      '--gearbox-font-family-heading' => font(:font_heading),
-      '--gearbox-font-family-primary' => font(:font_primary),
-    }
+      '--gearbox-primary' => color_primary,
+      '--gearbox-primary-dark' => color_primary_dark,
+      '--gearbox-secondary' => color_secondary,
+      '--gearbox-on-primary' => color_on_primary,
+      '--gearbox-background' => color_background,
+      '--gearbox-surface' => color_surface,
+      '--gearbox-text-primary' => color_text_primary,
+      '--gearbox-text-secondary' => color_text_secondary,
+      '--gearbox-outline-primary' => color_outline,
+      '--gearbox-font-family-heading' => font_heading,
+      '--gearbox-font-family-primary' => font_primary,
+    }.compact
   end
 
   # Returns CSS style string for inline styles
