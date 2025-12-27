@@ -7,9 +7,9 @@ module UserArea
       @current_site_settings ||= current_tenant&.site_settings_or_default || TenantSiteSettings.new
     end
 
-    # Returns the current tenant's theme
+    # Returns the current tenant's theme (required - 404 if missing)
     def current_theme
-      @current_theme ||= current_tenant&.theme_or_default || TenantTheme.new
+      @current_theme ||= current_tenant&.theme
     end
 
     # Check if a feature is enabled
