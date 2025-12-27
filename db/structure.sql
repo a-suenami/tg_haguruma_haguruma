@@ -1,4 +1,4 @@
-\restrict rhcSeqhlKSaFLc2FW4pMfOK6YXHuVR2HWcEsAR4mTii68u2JmofkmDEOvcObJiH
+\restrict MkGP0eTkFYrUFKxf2ZhO0k6oj0aM0Xz2fdLksI10kvicYFmsgihplQQygB5cfwg
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -563,32 +563,32 @@ CREATE TABLE public.tenant_site_settings (
 CREATE TABLE public.tenant_themes (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id character varying NOT NULL,
-    page_background_color character varying,
-    general_text_color character varying,
-    general_font_family character varying,
-    border_color character varying,
-    title_text_color character varying,
-    title_font_family character varying,
-    navigation_text_color character varying,
-    navigation_font_family character varying,
-    link_text_color character varying,
-    link_underline boolean DEFAULT true,
-    tab_font_family character varying,
-    tab_active_text_color character varying,
-    tab_active_underline_color character varying,
-    tab_inactive_text_color character varying,
-    tab_inactive_underline_color character varying,
-    caption_text_color character varying,
-    caption_font_family character varying,
-    label_background_color character varying,
-    label_text_color character varying,
-    label_font_family character varying,
-    button_font_family character varying,
-    button_primary_background_color character varying,
-    button_primary_text_color character varying,
-    button_secondary_border_color character varying,
-    button_secondary_background_color character varying,
-    button_secondary_text_color character varying,
+    page_background_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
+    general_text_color character varying DEFAULT '#000000'::character varying NOT NULL,
+    general_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
+    border_color character varying DEFAULT '#E5E5E5'::character varying NOT NULL,
+    title_text_color character varying DEFAULT '#000000'::character varying NOT NULL,
+    title_font_family character varying DEFAULT '"Noto Serif JP", serif'::character varying NOT NULL,
+    navigation_text_color character varying DEFAULT '#000000'::character varying NOT NULL,
+    navigation_font_family character varying DEFAULT '"Noto Serif JP", serif'::character varying NOT NULL,
+    link_text_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    link_underline boolean DEFAULT true NOT NULL,
+    tab_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
+    tab_active_text_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    tab_active_underline_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    tab_inactive_text_color character varying DEFAULT '#666666'::character varying NOT NULL,
+    tab_inactive_underline_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
+    caption_text_color character varying DEFAULT '#666666'::character varying NOT NULL,
+    caption_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
+    label_background_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    label_text_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
+    label_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
+    button_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
+    button_primary_background_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    button_primary_text_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
+    button_secondary_border_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    button_secondary_background_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
+    button_secondary_text_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1497,7 +1497,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict rhcSeqhlKSaFLc2FW4pMfOK6YXHuVR2HWcEsAR4mTii68u2JmofkmDEOvcObJiH
+\unrestrict MkGP0eTkFYrUFKxf2ZhO0k6oj0aM0Xz2fdLksI10kvicYFmsgihplQQygB5cfwg
 
 SET search_path TO "$user", public;
 

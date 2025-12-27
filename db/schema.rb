@@ -235,32 +235,32 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   create_table "tenant_themes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "tenant_id", null: false
-    t.string "page_background_color"
-    t.string "general_text_color"
-    t.string "general_font_family"
-    t.string "border_color"
-    t.string "title_text_color"
-    t.string "title_font_family"
-    t.string "navigation_text_color"
-    t.string "navigation_font_family"
-    t.string "link_text_color"
-    t.boolean "link_underline", default: true
-    t.string "tab_font_family"
-    t.string "tab_active_text_color"
-    t.string "tab_active_underline_color"
-    t.string "tab_inactive_text_color"
-    t.string "tab_inactive_underline_color"
-    t.string "caption_text_color"
-    t.string "caption_font_family"
-    t.string "label_background_color"
-    t.string "label_text_color"
-    t.string "label_font_family"
-    t.string "button_font_family"
-    t.string "button_primary_background_color"
-    t.string "button_primary_text_color"
-    t.string "button_secondary_border_color"
-    t.string "button_secondary_background_color"
-    t.string "button_secondary_text_color"
+    t.string "page_background_color", default: "#FFFFFF", null: false
+    t.string "general_text_color", default: "#000000", null: false
+    t.string "general_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "border_color", default: "#E5E5E5", null: false
+    t.string "title_text_color", default: "#000000", null: false
+    t.string "title_font_family", default: "\"Noto Serif JP\", serif", null: false
+    t.string "navigation_text_color", default: "#000000", null: false
+    t.string "navigation_font_family", default: "\"Noto Serif JP\", serif", null: false
+    t.string "link_text_color", default: "#0000FF", null: false
+    t.boolean "link_underline", default: true, null: false
+    t.string "tab_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "tab_active_text_color", default: "#0000FF", null: false
+    t.string "tab_active_underline_color", default: "#0000FF", null: false
+    t.string "tab_inactive_text_color", default: "#666666", null: false
+    t.string "tab_inactive_underline_color", default: "#FFFFFF", null: false
+    t.string "caption_text_color", default: "#666666", null: false
+    t.string "caption_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "label_background_color", default: "#0000FF", null: false
+    t.string "label_text_color", default: "#FFFFFF", null: false
+    t.string "label_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "button_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "button_primary_background_color", default: "#0000FF", null: false
+    t.string "button_primary_text_color", default: "#FFFFFF", null: false
+    t.string "button_secondary_border_color", default: "#0000FF", null: false
+    t.string "button_secondary_background_color", default: "#FFFFFF", null: false
+    t.string "button_secondary_text_color", default: "#0000FF", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenant_id"], name: "index_tenant_themes_on_tenant_id", unique: true

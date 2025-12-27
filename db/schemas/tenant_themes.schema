@@ -2,54 +2,54 @@ create_table :tenant_themes, force: :cascade, id: :uuid, default: -> { 'gen_rand
   t.string :tenant_id, null: false
 
   # 全体背景
-  t.string :page_background_color
+  t.string :page_background_color, null: false, default: '#FFFFFF'
 
   # 一般（本文）テキスト
-  t.string :general_text_color
-  t.string :general_font_family
+  t.string :general_text_color, null: false, default: '#000000'
+  t.string :general_font_family, null: false, default: '"Noto Sans JP", sans-serif'
 
   # ボーダー
-  t.string :border_color
+  t.string :border_color, null: false, default: '#E5E5E5'
 
   # タイトル
-  t.string :title_text_color
-  t.string :title_font_family
+  t.string :title_text_color, null: false, default: '#000000'
+  t.string :title_font_family, null: false, default: '"Noto Serif JP", serif'
 
   # ナビゲーション
-  t.string :navigation_text_color
-  t.string :navigation_font_family
+  t.string :navigation_text_color, null: false, default: '#000000'
+  t.string :navigation_font_family, null: false, default: '"Noto Serif JP", serif'
 
   # リンク
-  t.string :link_text_color
-  t.boolean :link_underline, default: true
+  t.string :link_text_color, null: false, default: '#0000FF'
+  t.boolean :link_underline, null: false, default: true
 
   # タブ
-  t.string :tab_font_family
-  t.string :tab_active_text_color
-  t.string :tab_active_underline_color
-  t.string :tab_inactive_text_color
-  t.string :tab_inactive_underline_color
+  t.string :tab_font_family, null: false, default: '"Noto Sans JP", sans-serif'
+  t.string :tab_active_text_color, null: false, default: '#0000FF'
+  t.string :tab_active_underline_color, null: false, default: '#0000FF'
+  t.string :tab_inactive_text_color, null: false, default: '#666666'
+  t.string :tab_inactive_underline_color, null: false, default: '#FFFFFF'
 
   # 補助テキスト
-  t.string :caption_text_color
-  t.string :caption_font_family
+  t.string :caption_text_color, null: false, default: '#666666'
+  t.string :caption_font_family, null: false, default: '"Noto Sans JP", sans-serif'
 
   # ラベル
-  t.string :label_background_color
-  t.string :label_text_color
-  t.string :label_font_family
+  t.string :label_background_color, null: false, default: '#0000FF'
+  t.string :label_text_color, null: false, default: '#FFFFFF'
+  t.string :label_font_family, null: false, default: '"Noto Sans JP", sans-serif'
 
   # ボタン（共通）
-  t.string :button_font_family
+  t.string :button_font_family, null: false, default: '"Noto Sans JP", sans-serif'
 
   # ボタン（Primary）
-  t.string :button_primary_background_color
-  t.string :button_primary_text_color
+  t.string :button_primary_background_color, null: false, default: '#0000FF'
+  t.string :button_primary_text_color, null: false, default: '#FFFFFF'
 
   # ボタン（Secondary）
-  t.string :button_secondary_border_color
-  t.string :button_secondary_background_color
-  t.string :button_secondary_text_color
+  t.string :button_secondary_border_color, null: false, default: '#0000FF'
+  t.string :button_secondary_background_color, null: false, default: '#FFFFFF'
+  t.string :button_secondary_text_color, null: false, default: '#0000FF'
 
   t.timestamps null: false
 end
