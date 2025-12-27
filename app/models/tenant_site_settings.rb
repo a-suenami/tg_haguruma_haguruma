@@ -27,40 +27,40 @@ class TenantSiteSettings < ApplicationRecord
 
   belongs_to :tenant, primary_key: :id
 
-  # Default feature configuration
+  # Default feature configuration (all disabled by default - must be enabled per tenant)
   DEFAULT_FEATURES = T.let({
     'news' => {
-      'enabled' => true,
+      'enabled' => false,
       'label' => 'NEWS',
       'menu_label' => 'NEWS',
-      'show_in_landing' => true,
+      'show_in_landing' => false,
       'landing_order' => 1,
     },
     'ticket' => {
-      'enabled' => true,
+      'enabled' => false,
       'label' => 'TICKET',
       'menu_label' => 'TICKET',
       'show_in_landing' => false,
       'landing_order' => 2,
     },
     'blog' => {
-      'enabled' => true,
+      'enabled' => false,
       'label' => 'BLOG',
       'menu_label' => 'BLOG',
-      'show_in_landing' => true,
+      'show_in_landing' => false,
       'landing_order' => 3,
     },
     'schedule' => {
-      'enabled' => true,
+      'enabled' => false,
       'label' => 'SCHEDULE',
       'menu_label' => 'SCHEDULE',
       'show_in_landing' => false,
       'landing_order' => 4,
     },
-    'profile' => {
+    'biography' => {
       'enabled' => false,
-      'label' => 'PROFILE',
-      'menu_label' => 'PROFILE',
+      'label' => 'BIOGRAPHY',
+      'menu_label' => 'BIOGRAPHY',
       'show_in_landing' => false,
       'landing_order' => 5,
     },

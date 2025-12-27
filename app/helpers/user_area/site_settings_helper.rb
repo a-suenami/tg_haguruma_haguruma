@@ -2,9 +2,9 @@
 
 module UserArea
   module SiteSettingsHelper
-    # Returns the current tenant's site settings
+    # Returns the current tenant's site settings (required - 404 if missing)
     def current_site_settings
-      @current_site_settings ||= current_tenant&.site_settings_or_default || TenantSiteSettings.new
+      @current_site_settings ||= current_tenant&.site_settings
     end
 
     # Returns the current tenant's theme (required - 404 if missing)

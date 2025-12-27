@@ -2,15 +2,16 @@ create_table :tenant_themes, force: :cascade, id: :uuid, default: -> { 'gen_rand
   t.string :tenant_id, null: false
 
   # Colors (output as CSS custom properties)
-  t.string :color_primary        # --gearbox-primary
+  t.string :color_primary        # --gearbox-primary (accent, category labels)
   t.string :color_primary_dark   # --gearbox-primary-dark
-  t.string :color_secondary      # --gearbox-secondary
-  t.string :color_on_primary     # --gearbox-on-primary
+  t.string :color_secondary      # --gearbox-secondary (titles, buttons, navigation)
+  t.string :color_on_primary     # --gearbox-on-primary (text on primary)
+  t.string :color_on_secondary   # --gearbox-on-secondary (text on secondary/buttons)
   t.string :color_background     # --gearbox-background
   t.string :color_surface        # --gearbox-surface
-  t.string :color_text_primary   # --gearbox-text-primary
-  t.string :color_text_secondary # --gearbox-text-secondary
-  t.string :color_outline        # --gearbox-outline-primary
+  t.string :color_text_primary   # --gearbox-on-surface (body text)
+  t.string :color_text_secondary # (secondary text)
+  t.string :color_outline        # --gearbox-outline
 
   # Fonts
   t.string :font_heading         # --gearbox-font-family-heading

@@ -239,6 +239,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.string "color_primary_dark"
     t.string "color_secondary"
     t.string "color_on_primary"
+    t.string "color_on_secondary"
     t.string "color_background"
     t.string "color_surface"
     t.string "color_text_primary"

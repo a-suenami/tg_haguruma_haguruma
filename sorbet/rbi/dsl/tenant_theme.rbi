@@ -650,6 +650,51 @@ class TenantTheme
     def color_on_primary_will_change!; end
 
     sig { returns(T.nilable(::String)) }
+    def color_on_secondary; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def color_on_secondary=(value); end
+
+    sig { returns(T::Boolean) }
+    def color_on_secondary?; end
+
+    sig { returns(T.nilable(::String)) }
+    def color_on_secondary_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def color_on_secondary_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def color_on_secondary_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def color_on_secondary_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def color_on_secondary_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def color_on_secondary_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def color_on_secondary_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def color_on_secondary_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def color_on_secondary_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def color_on_secondary_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def color_on_secondary_was; end
+
+    sig { void }
+    def color_on_secondary_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
     def color_outline; end
 
     sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
@@ -1196,6 +1241,9 @@ class TenantTheme
     def restore_color_on_primary!; end
 
     sig { void }
+    def restore_color_on_secondary!; end
+
+    sig { void }
     def restore_color_outline!; end
 
     sig { void }
@@ -1248,6 +1296,12 @@ class TenantTheme
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_color_on_primary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_color_on_secondary; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_color_on_secondary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def saved_change_to_color_outline; end
@@ -1428,6 +1482,9 @@ class TenantTheme
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_color_on_primary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_color_on_secondary?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_color_outline?(from: T.unsafe(nil), to: T.unsafe(nil)); end

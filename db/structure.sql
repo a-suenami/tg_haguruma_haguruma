@@ -1,4 +1,4 @@
-\restrict huOlj2xc73iyRTCziiEzcvhBfNMi1fM3vfmHTnVTC0pCFmZauuVshfp9L0xN7J8
+\restrict n7ZtvOP32we54DqzKcUQ2bjmUDJ5AVSkfvahCXLofbkOcDGdeuYyy2JVg1FmdPe
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -567,6 +567,7 @@ CREATE TABLE public.tenant_themes (
     color_primary_dark character varying,
     color_secondary character varying,
     color_on_primary character varying,
+    color_on_secondary character varying,
     color_background character varying,
     color_surface character varying,
     color_text_primary character varying,
@@ -1482,7 +1483,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict huOlj2xc73iyRTCziiEzcvhBfNMi1fM3vfmHTnVTC0pCFmZauuVshfp9L0xN7J8
+\unrestrict n7ZtvOP32we54DqzKcUQ2bjmUDJ5AVSkfvahCXLofbkOcDGdeuYyy2JVg1FmdPe
 
 SET search_path TO "$user", public;
 
