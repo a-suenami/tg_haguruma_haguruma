@@ -34,17 +34,17 @@ class TenantTheme < ApplicationRecord
 
   belongs_to :tenant, primary_key: :id
 
-  # Default values for CSS custom properties
+  # Default values for CSS custom properties (matching gearbox defaults)
   DEFAULT_COLORS = T.let({
     color_primary: '#F2719D',
     color_primary_dark: '#D4567D',
-    color_secondary: '#FFD700',
+    color_secondary: '#4E34C0',
     color_on_primary: '#FFFFFF',
     color_background: '#FFFFFF',
-    color_surface: '#F5F5F5',
-    color_text_primary: '#333333',
+    color_surface: '#FFFFFF',
+    color_text_primary: '#454C66',
     color_text_secondary: '#666666',
-    color_outline: '#E0E0E0',
+    color_outline: '#EFE7F2',
   }.freeze, T::Hash[Symbol, String],)
 
   DEFAULT_FONTS = T.let({
