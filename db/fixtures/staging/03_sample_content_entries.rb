@@ -1,6 +1,6 @@
 # typed: false
 # frozen_string_literal: true
 
-require Rails.root.join('db/fixtures/support/sample_content_entries')
+require Rails.root.join('db/fixtures/_shared/sample_content_entries')
 
 Seeds::SampleContentEntries.seed
