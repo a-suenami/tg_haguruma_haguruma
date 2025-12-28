@@ -57,6 +57,32 @@ db/fixtures/
 
 ## Implementation
 
+### サービスクラスの使用原則
+
+シードファイルでは、**ActiveRecord 継承クラスを直接使用することを避け、原則として `app/services/` 以下のサービスクラスを使用する**。
+
+理由:
+1. **本番と同じプロセスでデータが投入される**: サービスクラスを経由することで、バリデーション、コールバック、関連データの作成など、本番環境と同じロジックでデータが投入される
+2. **データ不整合の防止**: サービスクラスに冪等性の担保ロジックを実装することで、シードの再実行時も安全
+3. **テスト容易性**: サービスクラスは単体テストが書きやすい
+
+```ruby
+# 推奨: サービスクラスを使用
+result = AdminArea::Contents::SaveEntryService.new(
+  content_type: content_type,
+  content_entry: nil,
+  fields_params: { 'title' => 'サンプル記事' },
+).call
+
+# 非推奨: ActiveRecord を直接使用
+ContentEntry.create!(title: 'サンプル記事', ...)
+```
+
+ただし、以下の場合はActiveRecordの直接使用を許容する:
+- 単純なマスターデータの投入（`Country.seed(:code, ...)` など）
+- サービスクラスが存在しない純粋なマスターデータモデル
+- 複雑なビジネスロジックを持たないデータ
+
 ### 基本的な使い方
 
 ```ruby

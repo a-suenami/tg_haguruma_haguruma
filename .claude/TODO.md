@@ -9,6 +9,12 @@
 
 ## 進行中
 
+- [ ] ContentType 作成用サービスクラスを作成する
+  - 現状: `RulerArea::ContentTypesController` で `ContentType.new` を直接使用
+  - fixtures でも `create_content_type` ヘルパーで直接 ActiveRecord 操作している
+  - ADR の「サービスクラス使用原則」に則り、サービスクラスに抽出すべき
+  - フィールド作成も含めた `RulerArea::ContentTypes::CreateService` を検討
+
 - [ ] S3 のパスが返っているので CloudFront の URL にする
 - [ ] Triple と oauth_provider テーブルを比較して差分を分析（必要なら修正）
   - IDP を使った動作確認
