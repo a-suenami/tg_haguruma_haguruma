@@ -52,6 +52,32 @@
           </label>
         </div>
       </div>
+
+      <!-- Select field specific settings -->
+      <div id="select-field-settings" style="display: none;">
+        <h4>セレクトフィールドの設定</h4>
+
+        <div class="uk-margin">
+          <label class="uk-form-label">表示形式</label>
+          <div class="uk-form-controls">
+            <select id="select-display-format" class="uk-select">
+              <option value="dropdown">ドロップダウン</option>
+              <option value="checkbox">チェックボックス（複数選択可）</option>
+              <option value="radio">ラジオボタン</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="uk-margin">
+          <label class="uk-form-label">選択肢</label>
+          <div id="select-options-container">
+            <!-- Options will be added here dynamically -->
+          </div>
+          <button type="button" class="uk-button uk-button-default uk-button-small uk-margin-small-top" onclick="addSelectOption()">
+            + 選択肢を追加
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="uk-modal-footer uk-text-right">
@@ -63,11 +89,84 @@
 <script>
 let selectedFieldType = '';
 let editingFieldId = null; // null = add mode, otherwise = edit mode
+let selectOptionCounter = 0; // Counter for generating unique option IDs
 const fieldTypeLabels = {
   text: { label: 'ショートテキスト', desc: 'タイトルや名前などの短いテキスト', icon: 'pencil' },
   richtext: { label: 'リッチテキスト', desc: 'スタイルや画像、動画などのメディアを含めたテキスト', icon: 'file-edit' },
-  media_asset: { label: 'メディア', desc: '画像や動画、PDFなどのファイル用', icon: 'image' }
+  media_asset: { label: 'メディア', desc: '画像や動画、PDFなどのファイル用', icon: 'image' },
+  select_field: { label: 'セレクト', desc: 'ドロップダウン、チェックボックス、ラジオボタン', icon: 'list' }
 };
+
+// Select field option management
+function showSelectSettings(show) {
+  const settings = document.getElementById('select-field-settings');
+  if (settings) {
+    settings.style.display = show ? 'block' : 'none';
+  }
+}
+
+function clearSelectOptions() {
+  const container = document.getElementById('select-options-container');
+  if (container) {
+    container.innerHTML = '';
+  }
+  selectOptionCounter = 0;
+}
+
+function addSelectOption(displayName = '', identifier = '') {
+  const container = document.getElementById('select-options-container');
+  if (!container) return;
+
+  const optionId = selectOptionCounter++;
+  const optionHtml = `
+    <div class="uk-margin-small select-option-row" data-option-id="${optionId}">
+      <div class="uk-grid-small" uk-grid>
+        <div class="uk-width-expand">
+          <input type="text" class="uk-input uk-form-small option-display-name" placeholder="表示名（例：ニュース）" value="${displayName}">
+        </div>
+        <div class="uk-width-expand">
+          <input type="text" class="uk-input uk-form-small option-identifier" placeholder="識別子（例：news）" value="${identifier}">
+        </div>
+        <div class="uk-width-auto">
+          <button type="button" class="uk-button uk-button-danger uk-button-small" onclick="removeSelectOption(${optionId})">
+            <span uk-icon="icon: trash; ratio: 0.8"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', optionHtml);
+}
+
+function removeSelectOption(optionId) {
+  const row = document.querySelector(`.select-option-row[data-option-id="${optionId}"]`);
+  if (row) {
+    row.remove();
+  }
+}
+
+function getSelectOptions() {
+  const options = [];
+  const rows = document.querySelectorAll('.select-option-row');
+  rows.forEach((row, index) => {
+    const displayName = row.querySelector('.option-display-name').value.trim();
+    const identifier = row.querySelector('.option-identifier').value.trim();
+    if (displayName && identifier) {
+      options.push({ display_name: displayName, identifier: identifier, position: index });
+    }
+  });
+  return options;
+}
+
+function validateSelectOptions() {
+  const options = getSelectOptions();
+  const identifiers = options.map(o => o.identifier);
+  const duplicates = identifiers.filter((id, index) => identifiers.indexOf(id) !== index);
+  if (duplicates.length > 0) {
+    return { valid: false, error: `選択肢の識別子が重複しています: ${[...new Set(duplicates)].join(', ')}` };
+  }
+  return { valid: true };
+}
 
 function addField(fieldType) {
   editingFieldId = null; // Reset to add mode
@@ -88,6 +187,17 @@ function addField(fieldType) {
   document.getElementById('field-description').value = '';
   document.getElementById('field-required').checked = false;
 
+  // Handle select field settings
+  if (fieldType === 'select_field') {
+    showSelectSettings(true);
+    clearSelectOptions();
+    document.getElementById('select-display-format').value = 'dropdown';
+    // Add one empty option row by default
+    addSelectOption();
+  } else {
+    showSelectSettings(false);
+  }
+
   // Update modal UI for add mode
   document.getElementById('modal-title').textContent = 'フィールドメタデータの設定';
   document.getElementById('submit-button').textContent = 'フィールドを追加する';
@@ -98,7 +208,7 @@ function addField(fieldType) {
   UIkit.modal('#field-metadata-modal').show();
 }
 
-function editField(event, fieldId, fieldType, identifier, name, description, required) {
+function editField(event, fieldId, fieldType, identifier, name, description, required, selectData = null) {
   event.preventDefault();
 
   editingFieldId = fieldId;
@@ -118,6 +228,25 @@ function editField(event, fieldId, fieldType, identifier, name, description, req
   document.getElementById('field-name').value = name;
   document.getElementById('field-description').value = description;
   document.getElementById('field-required').checked = required;
+
+  // Handle select field settings
+  if (fieldType === 'select_field') {
+    showSelectSettings(true);
+    clearSelectOptions();
+    if (selectData) {
+      document.getElementById('select-display-format').value = selectData.display_format || 'dropdown';
+      if (selectData.options && selectData.options.length > 0) {
+        selectData.options.forEach(opt => {
+          addSelectOption(opt.display_name, opt.identifier);
+        });
+      }
+    } else {
+      document.getElementById('select-display-format').value = 'dropdown';
+      addSelectOption();
+    }
+  } else {
+    showSelectSettings(false);
+  }
 
   // Update modal UI for edit mode
   document.getElementById('modal-title').textContent = 'フィールドの編集';
@@ -146,6 +275,20 @@ function confirmAddOrUpdateField() {
     return;
   }
 
+  // Validate select field options
+  if (selectedFieldType === 'select_field') {
+    const options = getSelectOptions();
+    if (options.length === 0) {
+      alert('セレクトフィールドには少なくとも1つの選択肢が必要です');
+      return;
+    }
+    const validation = validateSelectOptions();
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
+    }
+  }
+
   if (editingFieldId) {
     // Edit mode - update existing field
     updateExistingField(editingFieldId, identifier, name, description, required);
@@ -172,7 +315,7 @@ function addNewField(identifier, name, description, required) {
 
   // Create hidden inputs
   const hiddenContainer = document.getElementById('hidden-fields-container');
-  const hiddenFieldsHtml = `
+  let hiddenFieldsHtml = `
     <div data-field-id="${timestamp}">
       <input type="hidden" name="content_type[fields_attributes][${timestamp}][tenant_id]" value="${tenantId}">
       <input type="hidden" name="content_type[fields_attributes][${timestamp}][label]" value="${name}">
@@ -182,8 +325,25 @@ function addNewField(identifier, name, description, required) {
       <input type="hidden" name="content_type[fields_attributes][${timestamp}][required]" value="${required ? '1' : '0'}">
       <input type="hidden" name="content_type[fields_attributes][${timestamp}][position]" value="${position}">
       <input type="hidden" name="content_type[fields_attributes][${timestamp}][_destroy]" value="false" class="field-destroy-input">
-    </div>
   `;
+
+  // Add select field configuration if applicable
+  if (selectedFieldType === 'select_field') {
+    const displayFormat = document.getElementById('select-display-format').value;
+    const options = getSelectOptions();
+    hiddenFieldsHtml += `
+      <input type="hidden" name="content_type[fields_attributes][${timestamp}][select_attributes][display_format]" value="${displayFormat}">
+    `;
+    options.forEach((opt, idx) => {
+      hiddenFieldsHtml += `
+        <input type="hidden" name="content_type[fields_attributes][${timestamp}][select_attributes][options_attributes][${idx}][display_name]" value="${opt.display_name}">
+        <input type="hidden" name="content_type[fields_attributes][${timestamp}][select_attributes][options_attributes][${idx}][identifier]" value="${opt.identifier}">
+        <input type="hidden" name="content_type[fields_attributes][${timestamp}][select_attributes][options_attributes][${idx}][position]" value="${opt.position}">
+      `;
+    });
+  }
+
+  hiddenFieldsHtml += `</div>`;
   hiddenContainer.insertAdjacentHTML('beforeend', hiddenFieldsHtml);
 
   // Remove empty state if exists

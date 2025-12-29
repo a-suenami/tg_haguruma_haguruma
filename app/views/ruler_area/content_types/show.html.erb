@@ -83,6 +83,7 @@
                            when 'text' then 'pencil'
                            when 'richtext' then 'file-edit'
                            when 'media_asset' then 'image'
+                           when 'select_field' then 'list'
                            else 'file'
                            end
                   %>
@@ -94,7 +95,17 @@
                   <div uk-dropdown="mode: click">
                     <ul class="uk-nav uk-dropdown-nav">
                       <li>
-                        <a href="#" onclick="editField(event, '<%= unique_id %>', '<%= field.field_type %>', '<%= j(field.api_identifier) %>', '<%= j(field.label) %>', '<%= j(field.description.to_s) %>', <%= field.required? %>)">
+                        <%
+                          select_data = if field.select_field? && field.select.present?
+                            {
+                              display_format: field.select.display_format,
+                              options: field.select.options.order(:position).map { |o| { display_name: o.display_name, identifier: o.identifier } }
+                            }.to_json
+                          else
+                            'null'
+                          end
+                        %>
+                        <a href="#" onclick="editField(event, '<%= unique_id %>', '<%= field.field_type %>', '<%= j(field.api_identifier) %>', '<%= j(field.label) %>', '<%= j(field.description.to_s) %>', <%= field.required? %>, <%= select_data %>)">
                           <span uk-icon="icon: pencil; ratio: 0.8"></span> 編集
                         </a>
                       </li>
