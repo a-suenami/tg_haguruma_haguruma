@@ -13,13 +13,16 @@
   </li>
 </ul>
 
-<%= form_with model: @content_type, url: ruler_area_tenant_content_type_path(@tenant, @content_type), local: true, data: { turbo: false } do |f| %>
+<%= form_with model: @content_type,
+              url: ruler_area_tenant_content_type_path(@tenant, @content_type),
+              local: true,
+              data: { turbo: false, controller: 'content-type-field' } do |f| %>
   <%= f.hidden_field :tenant_id, value: @tenant.id %>
-  <%= f.hidden_field :display_name, id: 'hidden-display-name' %>
-  <%= f.hidden_field :description, id: 'hidden-description' %>
+  <%= f.hidden_field :display_name, data: { content_type_field_target: 'hiddenDisplayName' } %>
+  <%= f.hidden_field :description, data: { content_type_field_target: 'hiddenDescription' } %>
 
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-    <h3 style="margin: 0;"><%= @content_type.display_name %></h3>
+    <h3 style="margin: 0;" data-content-type-field-target="pageTitle"><%= @content_type.display_name %></h3>
     <div>
       <%= f.submit '保存する', class: 'uk-button uk-button-primary' %>
     </div>
@@ -29,7 +32,7 @@
     <!-- Main content -->
     <div class="uk-width-expand">
       <!-- Hidden inputs for existing fields -->
-      <div id="hidden-fields-container" style="display: none;">
+      <div data-content-type-field-target="hiddenFieldsContainer" style="display: none;">
         <%= f.fields_for :fields do |field_form| %>
           <% unique_id = field_form.object.id || "new_#{field_form.object.object_id}" %>
           <div data-field-id="<%= unique_id %>">
@@ -58,7 +61,7 @@
               <th style="width: 40px;"></th>
             </tr>
           </thead>
-          <tbody id="fields-table-body" uk-sortable="handle: .drag-handle">
+          <tbody data-content-type-field-target="fieldsTableBody" uk-sortable="handle: .drag-handle">
             <% @content_type.fields.sort_by(&:position).each do |field| %>
               <% unique_id = field.id || "new_#{field.object_id}" %>
               <tr data-field-id="<%= unique_id %>">
@@ -99,18 +102,31 @@
                           select_data = if field.select_field? && field.select.present?
                             {
                               display_format: field.select.display_format,
-                              options: field.select.options.order(:position).map { |o| { display_name: o.display_name, identifier: o.identifier } }
+                              options: field.select.options.order(:position).map { |o|
+                                { display_name: o.display_name, identifier: o.identifier }
+                              }
                             }.to_json
                           else
                             'null'
                           end
                         %>
-                        <a href="#" onclick="editField(event, '<%= unique_id %>', '<%= field.field_type %>', '<%= j(field.api_identifier) %>', '<%= j(field.label) %>', '<%= j(field.description.to_s) %>', <%= field.required? %>, <%= select_data %>)">
+                        <a href="#"
+                           data-action="content-type-field#editField"
+                           data-field-id="<%= unique_id %>"
+                           data-field-type="<%= field.field_type %>"
+                           data-identifier="<%= field.api_identifier %>"
+                           data-name="<%= field.label %>"
+                           data-description="<%= field.description.to_s %>"
+                           data-required="<%= field.required? %>"
+                           data-select-data="<%= select_data %>">
                           <span uk-icon="icon: pencil; ratio: 0.8"></span> 編集
                         </a>
                       </li>
                       <li>
-                        <a href="#" onclick="confirmRemoveField(event, '<%= unique_id %>')" style="color: #f0506e;">
+                        <a href="#"
+                           data-action="content-type-field#confirmRemoveField"
+                           data-field-id="<%= unique_id %>"
+                           style="color: #f0506e;">
                           <span uk-icon="icon: trash; ratio: 0.8"></span> 削除
                         </a>
                       </li>
@@ -122,7 +138,8 @@
           </tbody>
         </table>
       <% else %>
-        <div id="empty-fields-message" class="uk-text-center uk-text-muted uk-margin">
+        <div data-content-type-field-target="emptyFieldsMessage"
+             class="uk-text-center uk-text-muted uk-margin">
           <p>フィールドがまだありません</p>
           <p>「フィールドを追加」ボタンからフィールドを追加してください</p>
         </div>
@@ -140,7 +157,9 @@
       <div class="uk-card uk-card-default uk-card-body uk-card-small">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
           <div class="uk-text-bold">コンテンツタイプ</div>
-          <a href="#" uk-icon="icon: pencil" onclick="openMetadataModal(event)"></a>
+          <a href="#"
+             uk-icon="icon: pencil"
+             data-action="content-type-field#openMetadataModal"></a>
         </div>
 
         <div class="uk-margin-small">
@@ -150,12 +169,12 @@
 
         <div class="uk-margin-small">
           <div class="uk-text-bold uk-text-small">名前</div>
-          <div><%= @content_type.display_name %></div>
+          <div data-content-type-field-target="sidebarDisplayName"><%= @content_type.display_name %></div>
         </div>
 
         <div class="uk-margin-small">
           <div class="uk-text-bold uk-text-small">説明</div>
-          <div><%= @content_type.description.presence || '-' %></div>
+          <div data-content-type-field-target="sidebarDescription"><%= @content_type.description.presence || '-' %></div>
         </div>
 
         <div class="uk-margin-small">
@@ -168,7 +187,7 @@
 
   <style>
     /* Fix for UIkit sortable on table rows */
-    #fields-table-body .uk-sortable-drag {
+    [data-content-type-field-target="fieldsTableBody"] .uk-sortable-drag {
       display: table;
       width: 100%;
       background: white;
@@ -176,14 +195,14 @@
       table-layout: fixed;
     }
 
-    #fields-table-body .uk-sortable-drag td {
+    [data-content-type-field-target="fieldsTableBody"] .uk-sortable-drag td {
       display: table-cell;
       padding: 10px;
       border: 1px solid #e5e5e5;
       vertical-align: middle;
     }
 
-    #fields-table-body .uk-sortable-placeholder {
+    [data-content-type-field-target="fieldsTableBody"] .uk-sortable-placeholder {
       opacity: 0.3;
     }
   </style>
@@ -192,7 +211,9 @@
   <%= render 'field_metadata_modal' %>
 
   <!-- Content Type Metadata Edit Modal -->
-  <div id="content-type-metadata-modal" uk-modal>
+  <div id="content-type-metadata-modal"
+       uk-modal
+       data-content-type-field-target="contentTypeMetadataModal">
     <div class="uk-modal-dialog">
       <button class="uk-modal-close-default" type="button" uk-close></button>
 
@@ -204,14 +225,21 @@
         <div class="uk-margin">
           <label class="uk-form-label">名前</label>
           <div class="uk-form-controls">
-            <input type="text" id="modal-display-name" class="uk-input" placeholder="例: ブログ記事" value="<%= @content_type.display_name %>">
+            <input type="text"
+                   data-content-type-field-target="modalDisplayName"
+                   class="uk-input"
+                   placeholder="例: ブログ記事"
+                   value="<%= @content_type.display_name %>">
           </div>
         </div>
 
         <div class="uk-margin">
           <label class="uk-form-label">説明</label>
           <div class="uk-form-controls">
-            <textarea id="modal-description" class="uk-textarea" rows="3" placeholder="このコンテンツタイプの説明を入力してください"><%= @content_type.description %></textarea>
+            <textarea data-content-type-field-target="modalDescription"
+                      class="uk-textarea"
+                      rows="3"
+                      placeholder="このコンテンツタイプの説明を入力してください"><%= @content_type.description %></textarea>
           </div>
         </div>
 
@@ -219,7 +247,7 @@
           <label class="uk-form-label">多言語</label>
           <div class="uk-form-controls">
             <label>
-              <input type="checkbox" id="modal-multilingual" class="uk-checkbox" disabled>
+              <input type="checkbox" class="uk-checkbox" disabled>
               無効
             </label>
           </div>
@@ -228,48 +256,10 @@
 
       <div class="uk-modal-footer uk-text-right">
         <button class="uk-button uk-button-default uk-modal-close" type="button">キャンセル</button>
-        <button class="uk-button uk-button-primary" type="button" onclick="updateContentTypeMetadata()">保存する</button>
+        <button class="uk-button uk-button-primary"
+                type="button"
+                data-action="content-type-field#updateContentTypeMetadata">保存する</button>
       </div>
     </div>
   </div>
-
-  <script>
-    // Initialize sortable event listener on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      const tableBody = document.getElementById('fields-table-body');
-      if (tableBody) {
-        UIkit.util.on(tableBody, 'stop', function() {
-          updateFieldPositions();
-        });
-      }
-    });
-
-    function openMetadataModal(event) {
-      event.preventDefault();
-      UIkit.modal('#content-type-metadata-modal').show();
-    }
-
-    function updateContentTypeMetadata() {
-      const displayName = document.getElementById('modal-display-name').value;
-      const description = document.getElementById('modal-description').value;
-
-      // Update hidden inputs that will be submitted with the form
-      document.getElementById('hidden-display-name').value = displayName;
-      document.getElementById('hidden-description').value = description;
-
-      // Update page title
-      const pageTitle = document.querySelector('h3');
-      if (pageTitle) pageTitle.textContent = displayName;
-
-      // Update sidebar display name (now nth-child(3) because of header div)
-      const sidebarName = document.querySelector('.uk-card .uk-margin-small:nth-child(3) div:last-child');
-      if (sidebarName) sidebarName.textContent = displayName;
-
-      // Update sidebar description (now nth-child(4) because of header div)
-      const sidebarDesc = document.querySelector('.uk-card .uk-margin-small:nth-child(4) div:last-child');
-      if (sidebarDesc) sidebarDesc.textContent = description || '-';
-
-      UIkit.modal('#content-type-metadata-modal').hide();
-    }
-  </script>
 <% end %>
