@@ -89,6 +89,21 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.jsonb "value", null: false
   end
 
+  create_table "content_entry_field_select_selections", force: :cascade do |t|
+    t.bigint "content_entry_field_select_id", null: false
+    t.bigint "option_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_entry_field_select_id", "option_id"], name: "idx_field_select_selections_unique", unique: true
+  end
+
+  create_table "content_entry_field_selects", force: :cascade do |t|
+    t.citext "tenant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "id"], name: "index_content_entry_field_selects_on_tenant_id_and_id", unique: true
+  end
+
   create_table "content_entry_field_texts", force: :cascade do |t|
     t.text "value", null: false
   end
@@ -103,6 +118,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.integer "text_id"
     t.integer "richtext_id"
     t.integer "media_asset_id"
+    t.bigint "select_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -130,6 +146,24 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   create_table "content_type_field_richtexts", force: :cascade do |t|
   end
 
+  create_table "content_type_field_select_options", force: :cascade do |t|
+    t.bigint "field_select_id", null: false
+    t.text "display_name", null: false
+    t.text "identifier", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_select_id", "identifier"], name: "idx_on_field_select_id_identifier_c909d81143", unique: true
+    t.index ["field_select_id", "position"], name: "idx_on_field_select_id_position_9d0ef88527"
+  end
+
+  create_table "content_type_field_selects", force: :cascade do |t|
+    t.integer "display_format", default: 0, null: false
+    t.bigint "default_option_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "content_type_field_texts", force: :cascade do |t|
   end
 
@@ -142,6 +176,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.integer "text_id"
     t.integer "richtext_id"
     t.integer "media_asset_id"
+    t.bigint "select_id"
     t.text "description", default: "", null: false
     t.boolean "required", default: false, null: false
     t.integer "position", default: 0, null: false
@@ -262,14 +297,21 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "content_entry_authorizations", "content_entry_versions", column: ["content_entry_id", "version"], primary_key: ["content_entry_id", "version"], name: "fk_content_entry_authorizations_versions"
   add_foreign_key "content_entry_authorizations", "tenants"
   add_foreign_key "content_entry_field_media_assets", "media_assets", column: ["tenant_id", "media_type", "media_asset_id"], primary_key: ["tenant_id", "media_type", "id"], name: "fk_content_entry_field_media_assets_media_assets"
+  add_foreign_key "content_entry_field_select_selections", "content_entry_field_selects"
+  add_foreign_key "content_entry_field_select_selections", "content_type_field_select_options", column: "option_id"
+  add_foreign_key "content_entry_field_selects", "tenants"
   add_foreign_key "content_entry_fields", "content_entry_field_media_assets", column: ["tenant_id", "media_asset_id"], primary_key: ["tenant_id", "id"], name: "fk_content_entry_fields_media_assets"
   add_foreign_key "content_entry_fields", "content_entry_field_richtexts", column: "richtext_id"
+  add_foreign_key "content_entry_fields", "content_entry_field_selects", column: ["tenant_id", "select_id"], primary_key: ["tenant_id", "id"], name: "fk_content_entry_fields_selects"
   add_foreign_key "content_entry_fields", "content_entry_field_texts", column: "text_id"
   add_foreign_key "content_entry_fields", "content_entry_versions", column: ["tenant_id", "content_type_id", "content_entry_id", "version"], primary_key: ["tenant_id", "content_type_id", "content_entry_id", "version"], name: "fk_content_entry_fields_content_entry_versions"
   add_foreign_key "content_entry_fields", "content_type_fields", column: ["tenant_id", "content_type_id", "content_type_field_id", "field_type"], primary_key: ["tenant_id", "content_type_id", "id", "field_type"], name: "fk_content_entry_fields_content_type_fields"
   add_foreign_key "content_entry_versions", "content_entries", column: ["tenant_id", "content_type_id", "content_entry_id"], primary_key: ["tenant_id", "content_type_id", "id"], name: "fk_content_entry_versions_content_entries"
+  add_foreign_key "content_type_field_select_options", "content_type_field_selects", column: "field_select_id"
+  add_foreign_key "content_type_field_selects", "content_type_field_select_options", column: "default_option_id"
   add_foreign_key "content_type_fields", "content_type_field_media_assets", column: "media_asset_id"
   add_foreign_key "content_type_fields", "content_type_field_richtexts", column: "richtext_id"
+  add_foreign_key "content_type_fields", "content_type_field_selects", column: "select_id"
   add_foreign_key "content_type_fields", "content_type_field_texts", column: "text_id"
   add_foreign_key "content_type_fields", "content_types", column: ["tenant_id", "content_type_id"], primary_key: ["tenant_id", "id"]
   add_foreign_key "content_types", "tenants"

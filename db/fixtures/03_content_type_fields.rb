@@ -52,6 +52,27 @@ def create_field_if_not_exists(tenant_id, content_type_id, api_identifier, label
       description: description,
       required: required
     )
+  when :select_field
+    # options should be passed as array of hashes: [{display_name: 'A', identifier: 'a'}, ...]
+    options = description.is_a?(Array) ? description : []
+    select_config = ContentType::FieldSelect.create!(display_format: :dropdown)
+    options.each_with_index do |opt, idx|
+      select_config.options.create!(
+        display_name: opt[:display_name],
+        identifier: opt[:identifier],
+        position: idx
+      )
+    end
+    ContentType::Field.create!(
+      content_type: content_type,
+      tenant_id: tenant_id,
+      api_identifier: api_identifier,
+      label: label,
+      field_type: :select_field,
+      select_id: select_config.id,
+      description: '',
+      required: required
+    )
   end
 end
 
@@ -60,6 +81,12 @@ create_field_if_not_exists('dev-tenant', '00000000-0000-0000-0000-000000000001',
                            description: '記事のタイトル', required: true)
 create_field_if_not_exists('dev-tenant', '00000000-0000-0000-0000-000000000001', 'body', '本文', :richtext,
                            description: '記事の本文', required: true)
+create_field_if_not_exists('dev-tenant', '00000000-0000-0000-0000-000000000001', 'category', 'カテゴリ', :select_field,
+                           description: [
+                             { display_name: 'ニュース', identifier: 'news' },
+                             { display_name: 'お知らせ', identifier: 'announcement' },
+                             { display_name: 'イベント', identifier: 'event' }
+                           ], required: false)
 
 # お知らせ（announcement）のフィールド
 create_field_if_not_exists('dev-tenant', '00000000-0000-0000-0000-000000000002', 'title', 'タイトル', :text,
