@@ -1,5 +1,18 @@
+<style>
+  /* Sortable options styling */
+  [data-content-type-field-target="selectOptionsContainer"] .uk-sortable-drag {
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    border-radius: 4px;
+    padding: 5px;
+  }
+  [data-content-type-field-target="selectOptionsContainer"] .uk-sortable-placeholder {
+    opacity: 0.3;
+  }
+</style>
+
 <div id="field-metadata-modal"
-     uk-modal
+     uk-modal="container: false"
      data-content-type-field-target="fieldMetadataModal">
   <div class="uk-modal-dialog">
     <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -89,7 +102,8 @@
 
         <div class="uk-margin">
           <label class="uk-form-label">選択肢</label>
-          <div data-content-type-field-target="selectOptionsContainer">
+          <div data-content-type-field-target="selectOptionsContainer"
+               uk-sortable="handle: .option-drag-handle">
             <!-- Options will be added here dynamically -->
           </div>
           <button type="button"

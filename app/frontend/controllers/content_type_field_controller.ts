@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 
 interface SelectOption {
+  id?: string;
   display_name: string;
   identifier: string;
   position: number;
@@ -186,7 +187,7 @@ export default class ContentTypeFieldController extends Controller {
             selectData.display_format || 'dropdown';
           if (selectData.options?.length > 0) {
             selectData.options.forEach((opt) => {
-              this.addSelectOptionWithValues(opt.display_name, opt.identifier);
+              this.addSelectOptionWithValues(opt.display_name, opt.identifier, opt.id);
             });
           }
         } catch {
@@ -293,6 +294,8 @@ export default class ContentTypeFieldController extends Controller {
         ${this.hiddenInput(baseAttr, '_destroy', 'false', 'field-destroy-input')}
     `;
 
+    let selectDataJson: string | undefined;
+
     if (this.selectedFieldType === 'select_field') {
       const displayFormat = this.selectDisplayFormatTarget.value;
       const options = this.getSelectOptions();
@@ -317,6 +320,15 @@ export default class ContentTypeFieldController extends Controller {
           opt.position.toString(),
         );
       });
+
+      // Build select data JSON for edit functionality
+      selectDataJson = JSON.stringify({
+        display_format: displayFormat,
+        options: options.map((o) => ({
+          display_name: o.display_name,
+          identifier: o.identifier,
+        })),
+      });
     }
 
     hiddenFieldsHtml += '</div>';
@@ -327,7 +339,7 @@ export default class ContentTypeFieldController extends Controller {
     }
 
     this.ensureTableExists();
-    this.addFieldRow(timestamp, identifier, name, description, required);
+    this.addFieldRow(timestamp, identifier, name, description, required, selectDataJson);
   }
 
   private updateExistingField(
@@ -345,6 +357,88 @@ export default class ContentTypeFieldController extends Controller {
       this.updateHiddenInput(hiddenContainer, '[api_identifier]', identifier);
       this.updateHiddenInput(hiddenContainer, '[description]', description);
       this.updateHiddenInput(hiddenContainer, '[required]', required ? '1' : '0');
+
+      // Update select field hidden inputs if applicable
+      if (this.selectedFieldType === 'select_field') {
+        const displayFormat = this.selectDisplayFormatTarget.value;
+        this.updateHiddenInput(hiddenContainer, '[display_format]', displayFormat);
+
+        // Collect existing option IDs from hidden inputs
+        const existingOptionIds = new Set<string>();
+        const oldOptionIdInputs = hiddenContainer.querySelectorAll<HTMLInputElement>(
+          'input[name*="[options_attributes]"][name$="[id]"]',
+        );
+        oldOptionIdInputs.forEach((input) => {
+          if (input.value) {
+            existingOptionIds.add(input.value);
+          }
+        });
+
+        // Remove all old option inputs
+        const oldOptionInputs = hiddenContainer.querySelectorAll(
+          'input[name*="[options_attributes]"]',
+        );
+        oldOptionInputs.forEach((input) => input.remove());
+
+        const options = this.getSelectOptions();
+        const baseNameMatch = hiddenContainer
+          .querySelector('input[name*="[select_attributes]"]')
+          ?.getAttribute('name')
+          ?.match(/(.+\[select_attributes\])/);
+
+        if (baseNameMatch) {
+          const selectAttr = baseNameMatch[1];
+          let optionIndex = 0;
+
+          // Track which existing IDs are still in use
+          const usedIds = new Set<string>();
+
+          // Process current options
+          options.forEach((opt) => {
+            const optAttr = `${selectAttr}[options_attributes][${optionIndex}]`;
+
+            // If option has an ID, it's an existing record - UPDATE it
+            if (opt.id) {
+              usedIds.add(opt.id);
+              hiddenContainer.insertAdjacentHTML(
+                'beforeend',
+                this.hiddenInput(optAttr, 'id', opt.id),
+              );
+            }
+            // If no ID, it's a new record - CREATE it (no id field needed)
+
+            hiddenContainer.insertAdjacentHTML(
+              'beforeend',
+              this.hiddenInput(optAttr, 'display_name', this.escapeHtml(opt.display_name)),
+            );
+            hiddenContainer.insertAdjacentHTML(
+              'beforeend',
+              this.hiddenInput(optAttr, 'identifier', this.escapeHtml(opt.identifier)),
+            );
+            hiddenContainer.insertAdjacentHTML(
+              'beforeend',
+              this.hiddenInput(optAttr, 'position', opt.position.toString()),
+            );
+            optionIndex++;
+          });
+
+          // Mark removed options for destruction (existing IDs that are no longer in use)
+          existingOptionIds.forEach((oldId) => {
+            if (!usedIds.has(oldId)) {
+              const optAttr = `${selectAttr}[options_attributes][${optionIndex}]`;
+              hiddenContainer.insertAdjacentHTML(
+                'beforeend',
+                this.hiddenInput(optAttr, 'id', oldId),
+              );
+              hiddenContainer.insertAdjacentHTML(
+                'beforeend',
+                this.hiddenInput(optAttr, '_destroy', '1'),
+              );
+              optionIndex++;
+            }
+          });
+        }
+      }
     }
 
     const row = this.fieldsTableBodyTarget.querySelector<HTMLTableRowElement>(
@@ -366,6 +460,30 @@ export default class ContentTypeFieldController extends Controller {
           ? `<br><small class="uk-text-muted">${this.escapeHtml(description)}</small>`
           : '';
         nameCell.innerHTML = this.escapeHtml(name) + descHtml;
+      }
+
+      // Update the edit link's data-select-data attribute
+      const editLink = row.querySelector<HTMLAnchorElement>(
+        'a[data-action="content-type-field#editField"]',
+      );
+      if (editLink) {
+        editLink.dataset.identifier = identifier;
+        editLink.dataset.name = name;
+        editLink.dataset.description = description;
+        editLink.dataset.required = String(required);
+
+        if (this.selectedFieldType === 'select_field') {
+          const options = this.getSelectOptions();
+          const selectDataJson = JSON.stringify({
+            display_format: this.selectDisplayFormatTarget.value,
+            options: options.map((o) => ({
+              id: o.id,
+              display_name: o.display_name,
+              identifier: o.identifier,
+            })),
+          });
+          editLink.dataset.selectData = selectDataJson;
+        }
       }
     }
   }
@@ -417,11 +535,19 @@ export default class ContentTypeFieldController extends Controller {
     this.addSelectOptionWithValues('', '');
   }
 
-  private addSelectOptionWithValues(displayName: string, identifier: string): void {
+  private addSelectOptionWithValues(
+    displayName: string,
+    identifier: string,
+    dbId?: string,
+  ): void {
     const optionId = this.selectOptionCounter++;
+    const dbIdAttr = dbId ? ` data-db-id="${dbId}"` : '';
     const optionHtml = `
-      <div class="uk-margin-small select-option-row" data-option-id="${optionId}">
-        <div class="uk-grid-small" uk-grid>
+      <div class="uk-margin-small select-option-row" data-option-id="${optionId}"${dbIdAttr}>
+        <div class="uk-grid-small uk-flex-middle" uk-grid>
+          <div class="uk-width-auto">
+            <a href="#" uk-icon="icon: menu; ratio: 0.8" class="option-drag-handle" style="cursor: move;"></a>
+          </div>
           <div class="uk-width-expand">
             <input type="text"
                    class="uk-input uk-form-small option-display-name"
@@ -446,6 +572,15 @@ export default class ContentTypeFieldController extends Controller {
       </div>
     `;
     this.selectOptionsContainerTarget.insertAdjacentHTML('beforeend', optionHtml);
+
+    // Initialize UIkit icon for the new drag handle
+    const newRow = this.selectOptionsContainerTarget.querySelector(
+      `.select-option-row[data-option-id="${optionId}"] [uk-icon]`,
+    );
+    if (newRow) {
+      // @ts-expect-error UIkit is global
+      UIkit.icon(newRow);
+    }
   }
 
   removeSelectOptionById(event: Event): void {
@@ -464,14 +599,19 @@ export default class ContentTypeFieldController extends Controller {
 
   private getSelectOptions(): SelectOption[] {
     const options: SelectOption[] = [];
-    const rows = this.selectOptionsContainerTarget.querySelectorAll('.select-option-row');
+    const rows = this.selectOptionsContainerTarget.querySelectorAll<HTMLElement>('.select-option-row');
     rows.forEach((row, index) => {
       const displayName =
         row.querySelector<HTMLInputElement>('.option-display-name')?.value.trim() || '';
       const identifier =
         row.querySelector<HTMLInputElement>('.option-identifier')?.value.trim() || '';
+      const dbId = row.dataset.dbId;
       if (displayName && identifier) {
-        options.push({ display_name: displayName, identifier, position: index });
+        const option: SelectOption = { display_name: displayName, identifier, position: index };
+        if (dbId) {
+          option.id = dbId;
+        }
+        options.push(option);
       }
     });
     return options;
@@ -651,6 +791,7 @@ export default class ContentTypeFieldController extends Controller {
     name: string,
     description: string,
     required: boolean,
+    selectData?: string,
   ): void {
     const info = FIELD_TYPE_LABELS[this.selectedFieldType];
     const fieldTypeLabel = info?.label || this.selectedFieldType;
@@ -689,7 +830,8 @@ export default class ContentTypeFieldController extends Controller {
                    data-identifier="${this.escapeHtml(identifier)}"
                    data-name="${this.escapeHtml(name)}"
                    data-description="${this.escapeHtml(description)}"
-                   data-required="${required}">
+                   data-required="${required}"
+                   data-select-data="${this.escapeAttr(selectData || 'null')}">
                   <span uk-icon="icon: pencil; ratio: 0.8"></span> 編集
                 </a>
               </li>
@@ -735,5 +877,14 @@ export default class ContentTypeFieldController extends Controller {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+  }
+
+  private escapeAttr(text: string): string {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
   }
 }

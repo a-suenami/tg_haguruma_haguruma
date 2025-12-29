@@ -45,6 +45,18 @@
             <%= field_form.hidden_field :required %>
             <%= field_form.hidden_field :position %>
             <%= field_form.hidden_field :_destroy, class: 'field-destroy-input' %>
+            <% if field_form.object.select_field? && field_form.object.select.present? %>
+              <%= field_form.fields_for :select do |select_form| %>
+                <%= select_form.hidden_field :id %>
+                <%= select_form.hidden_field :display_format %>
+                <%= select_form.fields_for :options do |option_form| %>
+                  <%= option_form.hidden_field :id %>
+                  <%= option_form.hidden_field :display_name %>
+                  <%= option_form.hidden_field :identifier %>
+                  <%= option_form.hidden_field :position %>
+                <% end %>
+              <% end %>
+            <% end %>
           </div>
         <% end %>
       </div>
@@ -103,7 +115,7 @@
                             {
                               display_format: field.select.display_format,
                               options: field.select.options.order(:position).map { |o|
-                                { display_name: o.display_name, identifier: o.identifier }
+                                { id: o.id, display_name: o.display_name, identifier: o.identifier }
                               }
                             }.to_json
                           else
@@ -212,7 +224,7 @@
 
   <!-- Content Type Metadata Edit Modal -->
   <div id="content-type-metadata-modal"
-       uk-modal
+       uk-modal="container: false"
        data-content-type-field-target="contentTypeMetadataModal">
     <div class="uk-modal-dialog">
       <button class="uk-modal-close-default" type="button" uk-close></button>
