@@ -29,6 +29,7 @@ namespace :admin_area, path: :admin do
           resources :text_fields, only: [:update], controller: 'entries/text_fields', param: :api_identifier
           resources :richtext_fields, only: [:update], controller: 'entries/richtext_fields', param: :api_identifier
           resources :media_asset_fields, only: [:update], controller: 'entries/media_asset_fields', param: :api_identifier
+          resources :select_fields, only: [:update], controller: 'entries/select_fields', param: :api_identifier
           resource :authorization, only: [:update], controller: 'entries/authorizations'
         end
         resources :entries, only: :show, controller: 'entries/show'

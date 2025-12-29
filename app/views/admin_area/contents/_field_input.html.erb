@@ -23,6 +23,12 @@
         entry_id: content_entry.id,
         api_identifier: field.api_identifier,
       )
+    when 'select_field'
+      admin_area_contents_collection_entry_select_field_path(
+        content_type_id: content_type.id,
+        entry_id: content_entry.id,
+        api_identifier: field.api_identifier,
+      )
     end
   end
 %>
@@ -141,6 +147,62 @@
         </button>
       </div>
     </div>
+
+  <% when 'select_field' %>
+    <%
+      select_config = field.select
+      display_format = select_config&.display_format || 'dropdown'
+      options = select_config&.options&.order(:position) || []
+      # value is array of selected option IDs
+      selected_ids = Array(value).map(&:to_i)
+    %>
+
+    <% case display_format %>
+    <% when 'dropdown' %>
+      <select name="fields[<%= field.api_identifier %>]"
+              id="fields_<%= field.api_identifier %>"
+              class="field-input field-select"
+              data-autosave-field-target="input"
+              <%= 'required' if field.required %>>
+        <option value="">選択してください</option>
+        <% options.each do |option| %>
+          <option value="<%= option.id %>"
+                  <%= 'selected' if selected_ids.include?(option.id) %>>
+            <%= option.display_name %>
+          </option>
+        <% end %>
+      </select>
+
+    <% when 'checkbox' %>
+      <div class="field-checkbox-group">
+        <% options.each do |option| %>
+          <label class="field-checkbox-label">
+            <input type="checkbox"
+                   name="fields[<%= field.api_identifier %>][]"
+                   value="<%= option.id %>"
+                   class="field-checkbox"
+                   data-autosave-field-target="input"
+                   <%= 'checked' if selected_ids.include?(option.id) %>>
+            <span><%= option.display_name %></span>
+          </label>
+        <% end %>
+      </div>
+
+    <% when 'radio' %>
+      <div class="field-radio-group">
+        <% options.each do |option| %>
+          <label class="field-radio-label">
+            <input type="radio"
+                   name="fields[<%= field.api_identifier %>]"
+                   value="<%= option.id %>"
+                   class="field-radio"
+                   data-autosave-field-target="input"
+                   <%= 'checked' if selected_ids.include?(option.id) %>>
+            <span><%= option.display_name %></span>
+          </label>
+        <% end %>
+      </div>
+    <% end %>
 
   <% end %>
 </div>
