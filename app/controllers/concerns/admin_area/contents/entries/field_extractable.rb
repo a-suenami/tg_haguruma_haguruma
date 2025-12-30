@@ -98,6 +98,8 @@ module AdminArea
             extract_richtext_value(field)
           when 'media_asset'
             field.media_asset&.media_asset_id
+          when 'select_field'
+            field.select&.selected_option_ids
           end
         end
 

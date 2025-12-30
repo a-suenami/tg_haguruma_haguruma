@@ -1,0 +1,16 @@
+create_table :content_entry_field_select_selections, force: :cascade do |t|
+  t.bigint :content_entry_field_select_id, null: false
+  t.bigint :option_id, null: false
+
+  t.timestamps null: false
+end
+
+add_index :content_entry_field_select_selections,
+          [:content_entry_field_select_id, :option_id],
+          unique: true,
+          name: 'idx_field_select_selections_unique'
+
+add_foreign_key :content_entry_field_select_selections, :content_entry_field_selects,
+                column: :content_entry_field_select_id
+add_foreign_key :content_entry_field_select_selections, :content_type_field_select_options,
+                column: :option_id
