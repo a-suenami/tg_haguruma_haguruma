@@ -79,9 +79,34 @@ class ContentEntrySerializer < ApplicationSerializer
       base.merge(richtext: { json_value: RichtextUrlTransformer.transform(field.richtext&.value) })
     when 'media_asset'
       base.merge(media_asset: media_asset_hash(field.media_asset))
+    when 'select_field'
+      base.merge(select_field: select_field_hash(field.select, content_type_field))
     else
       base
     end
+  end
+
+  sig do
+    params(
+      field_select: T.nilable(ContentEntry::FieldSelect),
+      content_type_field: ContentType::Field,
+    ).returns(T.nilable(T::Hash[Symbol, T.untyped]))
+  end
+  def select_field_hash(field_select, content_type_field)
+    return nil if field_select.nil?
+
+    selected_option_ids = field_select.selected_option_ids
+    options = content_type_field.select&.options&.where(id: selected_option_ids) || []
+
+    {
+      selected_options: options.map do |option|
+        {
+          id: option.id,
+          api_identifier: option.api_identifier,
+          display_name: option.display_name,
+        }
+      end,
+    }
   end
 
   sig { params(field_media_asset: T.nilable(ContentEntry::FieldMediaAsset)).returns(T.nilable(T::Hash[Symbol, T.untyped])) }

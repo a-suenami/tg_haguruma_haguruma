@@ -100,6 +100,8 @@ module AdminArea
           copy_richtext_field(published_field, new_field)
         when 'media_asset'
           copy_media_asset_field(published_field, new_field)
+        when 'select_field'
+          copy_select_field(published_field, new_field)
         end
 
         unless new_field.save
@@ -134,6 +136,17 @@ module AdminArea
           media_type: T.must(published_field.media_asset).media_type,
         )
         new_field.media_asset = new_media_asset
+      end
+
+      sig { params(published_field: ContentEntry::Field, new_field: ContentEntry::Field).void }
+      def copy_select_field(published_field, new_field)
+        return unless published_field.select
+
+        # Copy selected options to new FieldSelect
+        new_select = ContentEntry::FieldSelect.create!(tenant_id: Tenant.current_id)
+        new_select.selected_option_ids = T.must(published_field.select).selected_option_ids
+        new_select.save!
+        new_field.select = new_select
       end
 
       sig { params(draft_version: ContentEntry::Version).void }
