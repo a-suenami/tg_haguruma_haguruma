@@ -451,27 +451,6 @@ class ContentType::FieldSelect
   end
 
   module GeneratedAssociationMethods
-    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType::FieldSelectOption) }
-    def build_default_option(*args, &blk); end
-
-    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType::FieldSelectOption) }
-    def create_default_option(*args, &blk); end
-
-    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType::FieldSelectOption) }
-    def create_default_option!(*args, &blk); end
-
-    sig { returns(T.nilable(::ContentType::FieldSelectOption)) }
-    def default_option; end
-
-    sig { params(value: T.nilable(::ContentType::FieldSelectOption)).void }
-    def default_option=(value); end
-
-    sig { returns(T::Boolean) }
-    def default_option_changed?; end
-
-    sig { returns(T::Boolean) }
-    def default_option_previously_changed?; end
-
     sig { returns(T::Array[T.untyped]) }
     def option_ids; end
 
@@ -488,12 +467,6 @@ class ContentType::FieldSelect
 
     sig { params(attributes: T.untyped).returns(T.untyped) }
     def options_attributes=(attributes); end
-
-    sig { returns(T.nilable(::ContentType::FieldSelectOption)) }
-    def reload_default_option; end
-
-    sig { void }
-    def reset_default_option; end
   end
 
   module GeneratedAssociationRelationMethods
@@ -709,51 +682,6 @@ class ContentType::FieldSelect
     sig { void }
     def created_at_will_change!; end
 
-    sig { returns(T.nilable(::Integer)) }
-    def default_option_id; end
-
-    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
-    def default_option_id=(value); end
-
-    sig { returns(T::Boolean) }
-    def default_option_id?; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def default_option_id_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def default_option_id_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def default_option_id_came_from_user?; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def default_option_id_change; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def default_option_id_change_to_be_saved; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def default_option_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def default_option_id_in_database; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def default_option_id_previous_change; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def default_option_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def default_option_id_previously_was; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def default_option_id_was; end
-
-    sig { void }
-    def default_option_id_will_change!; end
-
     sig { returns(::String) }
     def display_format; end
 
@@ -893,9 +821,6 @@ class ContentType::FieldSelect
     def restore_created_at!; end
 
     sig { void }
-    def restore_default_option_id!; end
-
-    sig { void }
     def restore_display_format!; end
 
     sig { void }
@@ -912,12 +837,6 @@ class ContentType::FieldSelect
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def saved_change_to_default_option_id; end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def saved_change_to_default_option_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_display_format; end
@@ -990,9 +909,6 @@ class ContentType::FieldSelect
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_created_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
-    def will_save_change_to_default_option_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_display_format?(from: T.unsafe(nil), to: T.unsafe(nil)); end
