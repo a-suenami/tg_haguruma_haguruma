@@ -8,7 +8,11 @@
 <main class="main">
   <section cog-landing-hero-image-section>
     <div cog-landing-hero-image>
-      <img src="https://placehold.co/1920x1080/333333/666666?text=Hero+Image" alt="Hero Image">
+      <% if @kv_image_url %>
+        <img src="<%= @kv_image_url %>" alt="<%= current_tenant&.name || '' %>">
+      <% else %>
+        <img src="https://placehold.co/1920x1080/333333/666666?text=Hero+Image" alt="Hero Image">
+      <% end %>
     </div>
   </section>
 
