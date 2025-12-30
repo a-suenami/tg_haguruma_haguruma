@@ -235,7 +235,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   create_table "tenant_themes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "tenant_id", null: false
-    t.uuid "logo_media_asset_id"
+    t.uuid "logo_media_asset_id", null: false
     t.string "page_background_color", default: "#FFFFFF", null: false
     t.string "general_text_color", default: "#000000", null: false
     t.string "general_font_family", default: "\"Noto Sans JP\", sans-serif", null: false

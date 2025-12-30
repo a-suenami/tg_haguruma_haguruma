@@ -34,7 +34,7 @@
 #  title_text_color                  :string           default("#000000"), not null
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
-#  logo_media_asset_id               :uuid
+#  logo_media_asset_id               :uuid             not null
 #  tenant_id                         :string           not null
 #
 # Indexes
@@ -50,12 +50,11 @@ class TenantTheme < ApplicationRecord
   extend T::Sig
 
   belongs_to :tenant, primary_key: :id
-  belongs_to :logo_media_asset, class_name: 'MediaAsset', optional: true
+  belongs_to :logo_media_asset, class_name: 'MediaAsset'
 
-  # ロゴのURLを取得（署名付き）
-  sig { returns(T.nilable(String)) }
+  sig { returns(String) }
   def logo_url
-    logo_media_asset&.url
+    T.must(logo_media_asset).url.to_s
   end
 
   # Returns all CSS custom properties as a hash

@@ -2,7 +2,7 @@ create_table :tenant_themes, force: :cascade, id: :uuid, default: -> { 'gen_rand
   t.string :tenant_id, null: false
 
   # ロゴ
-  t.uuid :logo_media_asset_id
+  t.uuid :logo_media_asset_id, null: false
 
   # 全体背景
   t.string :page_background_color, null: false, default: '#FFFFFF'

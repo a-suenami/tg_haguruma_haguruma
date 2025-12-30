@@ -1,4 +1,4 @@
-\restrict X606uvHLCB784IBegEOMH2VGh0A6MuvfsOtjShvheJgQUEjHFSuLOPNWpF49MUN
+\restrict bN9YPct7cayYQfVbXztUxHWYXU3ix9MP5UE9WOL6ww4OFrpOxDoxJvyViituqGc
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -563,7 +563,7 @@ CREATE TABLE public.tenant_site_settings (
 CREATE TABLE public.tenant_themes (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id character varying NOT NULL,
-    logo_media_asset_id uuid,
+    logo_media_asset_id uuid NOT NULL,
     page_background_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
     general_text_color character varying DEFAULT '#000000'::character varying NOT NULL,
     general_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
@@ -1506,7 +1506,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict X606uvHLCB784IBegEOMH2VGh0A6MuvfsOtjShvheJgQUEjHFSuLOPNWpF49MUN
+\unrestrict bN9YPct7cayYQfVbXztUxHWYXU3ix9MP5UE9WOL6ww4OFrpOxDoxJvyViituqGc
 
 SET search_path TO "$user", public;
 

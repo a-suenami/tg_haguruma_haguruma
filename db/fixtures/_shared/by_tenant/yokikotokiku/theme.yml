@@ -6,7 +6,7 @@
 tenant_id: yokikotokiku
 
 # 全体背景
-page_background_color: "#FFFFFF"
+page_background_color: "#EBEBEB"
 
 # 一般（本文）テキスト
 general_text_color: "#000000"

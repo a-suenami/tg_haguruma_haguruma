@@ -1441,10 +1441,10 @@ class TenantTheme
     sig { void }
     def link_underline_will_change!; end
 
-    sig { returns(T.nilable(::String)) }
+    sig { returns(::String) }
     def logo_media_asset_id; end
 
-    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    sig { params(value: ::String).returns(::String) }
     def logo_media_asset_id=(value); end
 
     sig { returns(T::Boolean) }
@@ -1459,10 +1459,10 @@ class TenantTheme
     sig { returns(T::Boolean) }
     def logo_media_asset_id_came_from_user?; end
 
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    sig { returns(T.nilable([::String, ::String])) }
     def logo_media_asset_id_change; end
 
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    sig { returns(T.nilable([::String, ::String])) }
     def logo_media_asset_id_change_to_be_saved; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -1471,7 +1471,7 @@ class TenantTheme
     sig { returns(T.nilable(::String)) }
     def logo_media_asset_id_in_database; end
 
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    sig { returns(T.nilable([::String, ::String])) }
     def logo_media_asset_id_previous_change; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -1831,7 +1831,7 @@ class TenantTheme
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_link_underline?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
-    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_logo_media_asset_id; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
