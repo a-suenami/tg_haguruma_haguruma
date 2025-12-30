@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus';
 interface SelectOption {
   id?: string;
   display_name: string;
-  identifier: string;
+  unique_name: string;
   position: number;
 }
 
@@ -187,7 +187,7 @@ export default class ContentTypeFieldController extends Controller {
             selectData.display_format || 'dropdown';
           if (selectData.options?.length > 0) {
             selectData.options.forEach((opt) => {
-              this.addSelectOptionWithValues(opt.display_name, opt.identifier, opt.id);
+              this.addSelectOptionWithValues(opt.display_name, opt.unique_name, opt.id);
             });
           }
         } catch {
@@ -311,8 +311,8 @@ export default class ContentTypeFieldController extends Controller {
         );
         hiddenFieldsHtml += this.hiddenInput(
           optAttr,
-          'identifier',
-          this.escapeHtml(opt.identifier),
+          'unique_name',
+          this.escapeHtml(opt.unique_name),
         );
         hiddenFieldsHtml += this.hiddenInput(
           optAttr,
@@ -326,7 +326,7 @@ export default class ContentTypeFieldController extends Controller {
         display_format: displayFormat,
         options: options.map((o) => ({
           display_name: o.display_name,
-          identifier: o.identifier,
+          unique_name: o.unique_name,
         })),
       });
     }
@@ -413,7 +413,7 @@ export default class ContentTypeFieldController extends Controller {
             );
             hiddenContainer.insertAdjacentHTML(
               'beforeend',
-              this.hiddenInput(optAttr, 'identifier', this.escapeHtml(opt.identifier)),
+              this.hiddenInput(optAttr, 'unique_name', this.escapeHtml(opt.unique_name)),
             );
             hiddenContainer.insertAdjacentHTML(
               'beforeend',
@@ -479,7 +479,7 @@ export default class ContentTypeFieldController extends Controller {
             options: options.map((o) => ({
               id: o.id,
               display_name: o.display_name,
-              identifier: o.identifier,
+              unique_name: o.unique_name,
             })),
           });
           editLink.dataset.selectData = selectDataJson;
@@ -556,7 +556,7 @@ export default class ContentTypeFieldController extends Controller {
           </div>
           <div class="uk-width-expand">
             <input type="text"
-                   class="uk-input uk-form-small option-identifier"
+                   class="uk-input uk-form-small option-unique-name"
                    placeholder="識別子（例：news）"
                    value="${this.escapeHtml(identifier)}">
           </div>
@@ -603,11 +603,11 @@ export default class ContentTypeFieldController extends Controller {
     rows.forEach((row, index) => {
       const displayName =
         row.querySelector<HTMLInputElement>('.option-display-name')?.value.trim() || '';
-      const identifier =
-        row.querySelector<HTMLInputElement>('.option-identifier')?.value.trim() || '';
+      const uniqueName =
+        row.querySelector<HTMLInputElement>('.option-unique-name')?.value.trim() || '';
       const dbId = row.dataset.dbId;
-      if (displayName && identifier) {
-        const option: SelectOption = { display_name: displayName, identifier, position: index };
+      if (displayName && uniqueName) {
+        const option: SelectOption = { display_name: displayName, unique_name: uniqueName, position: index };
         if (dbId) {
           option.id = dbId;
         }
@@ -619,7 +619,7 @@ export default class ContentTypeFieldController extends Controller {
 
   private validateSelectOptions(): { valid: boolean; error?: string } {
     const options = this.getSelectOptions();
-    const identifiers = options.map((o) => o.identifier);
+    const identifiers = options.map((o) => o.unique_name);
     const duplicates = identifiers.filter(
       (id, index) => identifiers.indexOf(id) !== index,
     );

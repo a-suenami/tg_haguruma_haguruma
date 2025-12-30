@@ -6,26 +6,21 @@
 # Table name: content_type_field_selects
 #
 #  id                :bigint           not null, primary key
-#  display_format    :integer          default(0), not null
-#  default_option_id :bigint
+#  display_format    :integer          default(1), not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
 class ContentType::FieldSelect < ApplicationRecord
   DISPLAY_FORMATS = {
-    dropdown: 0,
-    checkbox: 1,
-    radio: 2,
+    dropdown: 1,
+    checkbox: 2,
+    radio: 3,
   }.freeze
 
   has_many :options,
            class_name: 'ContentType::FieldSelectOption',
            dependent: :destroy,
            inverse_of: :field_select
-
-  belongs_to :default_option,
-             class_name: 'ContentType::FieldSelectOption',
-             optional: true
 
   enum :display_format, DISPLAY_FORMATS
 
