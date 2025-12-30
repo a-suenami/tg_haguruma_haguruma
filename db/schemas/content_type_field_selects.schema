@@ -1,6 +1,5 @@
 create_table :content_type_field_selects, force: :cascade do |t|
-  t.integer :display_format, null: false, default: 0 # 0=dropdown, 1=checkbox, 2=radio
-  t.bigint :default_option_id # FK to options (nullable, added after options table)
+  t.integer :display_format, null: false, default: 1 # 1=dropdown, 2=checkbox, 3=radio
 
   t.timestamps null: false
 end
