@@ -1,0 +1,54 @@
+// Breakpoints
+// きゃぱぱぴゅぱぴゅFC Design System
+
+@use 'sass:map';
+
+@use '../../mixins/css-variables' as css-vars;
+
+// Breakpoint map
+$breakpoints-map: (
+  breakpoint: (
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px,
+  ),
+);
+
+// Generate CSS Variables
+@include css-vars.generate-css-variables($breakpoints-map);
+
+// Get breakpoints for mixins
+$breakpoints: map.get($breakpoints-map, 'breakpoint');
+
+// Media query mixins
+@mixin media-up($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (min-width: map.get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' not found in $breakpoints map.";
+  }
+}
+
+@mixin media-down($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (max-width: map.get($breakpoints, $breakpoint) - 1px) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' not found in $breakpoints map.";
+  }
+}
+
+@mixin media-between($lower, $upper) {
+  @if map.has-key($breakpoints, $lower) and map.has-key($breakpoints, $upper) {
+    @media (min-width: map.get($breakpoints, $lower)) and (max-width: map.get($breakpoints, $upper) - 1px) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint not found in $breakpoints map.";
+  }
+}

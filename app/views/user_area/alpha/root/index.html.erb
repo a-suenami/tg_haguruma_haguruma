@@ -1,0 +1,81 @@
+<% content_for :title do %>
+  <%= current_tenant&.name || 'Fan Club' %>
+<% end %>
+
+<div cog-landing>
+<%= render 'user_area/alpha/shared/page_header' %>
+
+<main class="main">
+  <section cog-landing-hero-image-section>
+    <div cog-landing-hero-image>
+      <img src="https://placehold.co/1920x1080/333333/666666?text=Hero+Image" alt="Hero Image">
+    </div>
+  </section>
+
+  <div class="main-content">
+    <% unless user_signed_in? %>
+      <section cog-landing-section>
+        <div cog-landing-section-content>
+          <div cog-landing-section-actions>
+            <a href="<%= user_area_auth_start_path %>" cog-button filled class="action-button">
+              <span>ログイン</span>
+            </a>
+            <a href="<%= user_area_auth_start_path %>" cog-button outlined class="action-button">
+              <span>新規会員登録</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    <% end %>
+
+    <section cog-landing-section class="banners">
+      <div cog-landing-section-content>
+        <div cog-swiper-container class="banner-swiper">
+          <div class="swiper-inner">
+            <% 5.times do |i| %>
+              <div cog-swiper-slide>
+                <a href="#" cog-landing-banner>
+                  <img src="https://placehold.co/800x400/e8e8e8/999999?text=Banner+<%= i + 1 %>" alt="Banner <%= i + 1 %>">
+                </a>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section cog-landing-section>
+      <div cog-landing-section-title>
+        <div cog-feature-title-image feature="news">
+          <div class="title-image"><%= feature_title_svg('news') %></div>
+        </div>
+      </div>
+      <div cog-landing-section-content>
+        <div cog-news-list overview>
+          <div class="list">
+            <% 3.times do |i| %>
+              <a href="<%= user_area_news_path(i + 1) %>" cog-news-item>
+                <div class="category">
+                  <span cog-category-label>ニュース</span>
+                </div>
+                <div class="date">
+                  <span cog-date-label>2024.12.<%= 15 - i %></span>
+                </div>
+                <div class="title">サンプルニュースタイトル <%= i + 1 %></div>
+              </a>
+              <% unless i == 2 %>
+                <div class="divider"></div>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="overview-page-indicator">
+            <a href="<%= user_area_news_index_path %>" cog-button primary outlined>VIEW ALL</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<%= render 'user_area/alpha/shared/page_footer' %>
+</div>

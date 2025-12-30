@@ -1,0 +1,37 @@
+[cog-select-control] {
+  --cog-select-background-color: var(--gearbox-surface-dim);
+  --cog-select-border-color: var(--cog-select-background-color);
+
+  display: flex;
+  width: 100%;
+  align-items: center;
+  border: 2px solid var(--cog-select-border-color);
+  border-radius: 4px;
+  background-color: var(--cog-select-background-color);
+  padding-right: var(--gearbox-spacing-16);
+  gap: var(--gearbox-spacing-8);
+  transition:
+    background-color 120ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 120ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+  color: var(--gearbox-on-surface);
+  cursor: pointer;
+}
+
+[cog-select-control]:focus-within {
+  --cog-select-border-color: var(--gearbox-outline-primary);
+  --cog-select-background-color: var(--gearbox-surface-bright);
+  box-shadow: none;
+}
+
+[cog-select-control]:has(select[disabled]) {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.select-chevron {
+  width: 16px;
+  height: 16px;
+  color: rgba(var(--gearbox-on-surface-rgb), 0.72);
+}

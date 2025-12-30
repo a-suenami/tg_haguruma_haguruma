@@ -391,6 +391,15 @@ module GeneratedPathHelpersModule
   def user_area_auth_failure_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_auth_start_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_blog_index_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_blog_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_callback_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -409,8 +418,26 @@ module GeneratedPathHelpersModule
   def user_area_logout_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_news_index_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_news_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_profile_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def user_area_root_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_schedule_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_schedules_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_ticket_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_tickets_path(*args); end
 end

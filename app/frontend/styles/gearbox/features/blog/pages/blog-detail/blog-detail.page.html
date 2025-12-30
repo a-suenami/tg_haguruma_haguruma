@@ -1,0 +1,49 @@
+<cog-page-header></cog-page-header>
+
+<main class="main">
+  <div class="inner">
+    <cog-detail-fragment>
+      <cog-detail-fragment-header>
+        <cog-detail-fragment-toolbar>
+          <cog-detail-fragment-title>ブログ</cog-detail-fragment-title>
+        </cog-detail-fragment-toolbar>
+        <cog-detail-fragment-toolbar>
+          <cog-category-label>テクノロジー</cog-category-label>
+          <cog-date-label>2024.12.20</cog-date-label>
+        </cog-detail-fragment-toolbar>
+      </cog-detail-fragment-header>
+
+      <cog-detail-fragment-content>
+        @switch (true) {
+          @case (lexicalContent.isLoading()) {
+            <div class="loading-state">
+              <cog-loading [size]="60"></cog-loading>
+            </div>
+          }
+          @case (!!lexicalContent.error()) {
+            <div class="error-state">コンテンツの読み込みに失敗しました</div>
+            <button
+              cog-button
+              outlined
+              class="action-button"
+              (click)="lexicalContent.reload()"
+            >
+              再読み込み
+            </button>
+          }
+          @case (!!lexicalContent.value()) {
+            <cog-rich-content-viewer
+              [lexicalJson]="lexicalContent.value()!"
+            ></cog-rich-content-viewer>
+          }
+        }
+      </cog-detail-fragment-content>
+
+      <cog-detail-fragment-actions>
+        <button cog-button filled class="action-button">一覧に戻る</button>
+      </cog-detail-fragment-actions>
+    </cog-detail-fragment>
+  </div>
+</main>
+
+<cog-page-footer></cog-page-footer>

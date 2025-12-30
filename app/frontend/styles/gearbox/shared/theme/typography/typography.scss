@@ -1,0 +1,48 @@
+// Typography Index
+// きゃぱぱぴゅぱぴゅFC Design System
+
+@use 'variables';
+@use 'sp';
+@use 'pc';
+@use 'sass:map';
+
+@use '../breakpoints/breakpoints' as breakpoints;
+
+// Generate responsive CSS variables for typography
+@mixin generate-responsive-typography() {
+  :root {
+    // Mobile first - SP values
+    @each $group, $sizes in map.get(sp.$typography-sp-sizes, 'font-size-sp') {
+      @each $size, $value in $sizes {
+        --gearbox-font-size-#{$group}-#{$size}: #{$value};
+      }
+    }
+
+    // Desktop - PC values at breakpoint
+    @include breakpoints.media-up(md) {
+      @each $group, $sizes in map.get(pc.$typography-pc-sizes, 'font-size-pc') {
+        @each $size, $value in $sizes {
+          --gearbox-font-size-#{$group}-#{$size}: #{$value};
+        }
+      }
+    }
+  }
+}
+
+// Generate the responsive typography CSS variables
+@include generate-responsive-typography();
+
+// Responsive Typography Mixin
+@mixin typography($variant) {
+  // Mobile first - apply SP styles
+  @if map.has-key(sp.$typography-sp, $variant) {
+    @include sp.typography-sp($variant);
+  }
+
+  // Desktop - apply PC styles at breakpoint
+  @include breakpoints.media-up(sm) {
+    @if map.has-key(pc.$typography-pc, $variant) {
+      @include pc.typography-pc($variant);
+    }
+  }
+}

@@ -1,0 +1,31 @@
+// Mixin: Join Key Name
+// Joins nested map keys with a separator to create flat key names
+// Used to convert nested Sass maps into flat CSS variable names
+//
+// @param {Map} $map - The map to process
+// @param {String} $prefix - The prefix to prepend to keys
+// @param {String} $separator - The separator between key parts
+//
+// Example:
+// $colors: (
+//   'primary': (
+//     'base': #2563eb,
+//     'light': #3b82f6
+//   )
+// );
+// @include join-key-name($colors, 'color');
+// Output: --color-primary-base: #2563eb; --color-primary-light: #3b82f6;
+
+@mixin join-key-name($map, $prefix: '', $separator: '-') {
+  @each $key, $value in $map {
+    $new-key: if($prefix == '', $key, '#{$prefix}#{$separator}#{$key}');
+
+    @if type-of($value) == 'map' {
+      // Recursively process nested maps
+      @include join-key-name($value, $new-key, $separator);
+    } @else {
+      // Output CSS variable
+      --#{$new-key}: #{$value};
+    }
+  }
+}

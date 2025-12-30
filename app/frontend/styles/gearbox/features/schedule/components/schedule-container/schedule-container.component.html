@@ -1,0 +1,14 @@
+<div class="pane date">
+  <div class="calendar browser-only">
+    <ng-content select="cog-inline-calendar"></ng-content>
+  </div>
+  <div class="date-picker tablet-only">
+    <ng-content select="cog-date-picker"></ng-content>
+  </div>
+</div>
+
+<div class="divider browser-only"></div>
+
+<div class="pane list">
+  <ng-content select="cog-monthly-schedule-list"></ng-content>
+</div>
