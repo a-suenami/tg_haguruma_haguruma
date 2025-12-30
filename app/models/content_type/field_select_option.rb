@@ -7,8 +7,8 @@
 #
 #  id              :bigint           not null, primary key
 #  field_select_id :bigint           not null
+#  unique_name     :string           not null
 #  display_name    :text             not null
-#  identifier      :text             not null
 #  position        :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -19,8 +19,8 @@ class ContentType::FieldSelectOption < ApplicationRecord
              inverse_of: :options
 
   validates :display_name, presence: true, length: { maximum: 255 }
-  validates :identifier, presence: true, length: { maximum: 32 },
-                         uniqueness: { scope: :field_select_id }
+  validates :unique_name, presence: true, length: { maximum: 32 },
+                          uniqueness: { scope: :field_select_id }
   validates :position, presence: true,
                        numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
@@ -33,9 +33,9 @@ class ContentType::FieldSelectOption < ApplicationRecord
   def set_position
     return unless position.nil?
 
-    max_position = self.class.unscoped
+    max_position = self.class
                        .where(field_select_id:)
-                       .maximum(:position) || -1
+                       .maximum(:position) || 0
     self.position = max_position + 1
   end
 end
