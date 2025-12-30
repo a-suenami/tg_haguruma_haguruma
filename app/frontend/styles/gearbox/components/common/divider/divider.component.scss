@@ -1,0 +1,24 @@
+[cog-divider] {
+  --cog-divider-line: repeating-linear-gradient(
+    to right,
+    var(--gearbox-outline-primary) 0,
+    var(--gearbox-outline-primary) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+
+  display: block;
+  width: 100%;
+
+  .divider {
+    width: 100%;
+  }
+
+  hr {
+    width: 100%;
+    border: none;
+    margin: 0;
+    height: 1px;
+    background-image: var(--cog-divider-line);
+  }
+}

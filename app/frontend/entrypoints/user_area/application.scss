@@ -1,4 +1,8 @@
 // User Area SCSS Entry Point
+
+// Import Gearbox Design System
+@use '../../styles/gearbox/index';
+
 // Import Lexical editor styles for read-only rendering
 @use '../admin_area/lexical_editor';
 

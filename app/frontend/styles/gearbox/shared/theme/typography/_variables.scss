@@ -1,0 +1,53 @@
+// Typography Variables - Shared
+// きゃぱぱぴゅぱぴゅFC Design System
+
+@use '../../mixins/css-variables' as css-vars;
+@use 'sass:map';
+
+// Typography Base Map
+$typography-base: (
+  font-family: (
+    heading: (
+      'Tsukimi Rounded',
+    ),
+    primary: (
+      'Zen Maru Gothic',
+    ),
+    system: (
+      'Hiragino Sans',
+    ),
+    currency: (
+      'Rubik',
+    ),
+  ),
+  font-weight: (
+    light: 300,
+    regular: 400,
+    medium: 500,
+    semibold: 600,
+    bold: 700,
+  ),
+  line-height: (
+    solid: 1,
+    tight: 1.2,
+    normal: 1.5,
+    relaxed: 1.6,
+    loose: 1.8,
+  ),
+);
+
+// Generate CSS Variables
+@include css-vars.generate-css-variables($typography-base);
+
+// Helper functions to get values from map
+@function font-family($name) {
+  @return map.get(map.get($typography-base, 'font-family'), $name);
+}
+
+@function font-weight($name) {
+  @return map.get(map.get($typography-base, 'font-weight'), $name);
+}
+
+@function line-height($name) {
+  @return map.get(map.get($typography-base, 'line-height'), $name);
+}

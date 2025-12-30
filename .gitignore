@@ -77,3 +77,4 @@ e2e/.env
 # mise
 mise.local.toml
 
+.figma-api-key

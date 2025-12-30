@@ -1,0 +1,44 @@
+[cog-form-field-requirement] {
+  --valid-color: var(--gearbox-primary);
+  --invalid-color: var(--gearbox-danger);
+  --default-color: var(--gearbox-on-surface);
+
+  --form-field-requirement-color: var(--default-color);
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--gearbox-spacing-8);
+}
+
+[cog-form-field-requirement].valid {
+  --form-field-requirement-color: var(--valid-color);
+}
+
+[cog-form-field-requirement].invalid.dirty {
+  --form-field-requirement-color: var(--invalid-color);
+}
+
+[cog-form-field-requirement]:not(.valid:not(.dirty)) {
+  opacity: var(--gearbox-disabled);
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon {
+  $size: 1.125rem;
+  width: $size;
+  height: $size;
+  color: var(--form-field-requirement-color);
+}
+
+.text {
+  color: var(--form-field-requirement-color);
+  font-size: var(--gearbox-font-size-caption-medium);
+  font-weight: var(--gearbox-font-weight-semibold);
+  line-height: var(--gearbox-line-height-relaxed);
+  font-family: var(--gearbox-font-family-system);
+}

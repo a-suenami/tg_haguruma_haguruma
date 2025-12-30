@@ -1,0 +1,28 @@
+[cog-feature-title-image] {
+  display: block;
+  height: 100%;
+
+  .title-image {
+    width: auto;
+    height: 100%;
+
+    // SVG inline content
+    svg {
+      width: auto;
+      height: 100%;
+      display: block;
+    }
+
+    // Fallback text styling (when SVG is not available)
+    &:not(:has(svg)) {
+      font-family: var(--gearbox-font-family-heading);
+      font-size: var(--gearbox-font-size-heading-large);
+      font-weight: var(--gearbox-font-weight-bold);
+      color: var(--gearbox-secondary);
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

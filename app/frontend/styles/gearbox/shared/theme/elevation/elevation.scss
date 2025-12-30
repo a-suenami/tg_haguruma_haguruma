@@ -1,0 +1,13 @@
+// Elevation System
+// Material Design inspired elevation with box-shadow
+
+@use 'sass:map';
+@use '../../mixins/css-variables' as css-vars;
+
+// Default elevation map - single property
+$elevations: (
+  elevation: 0 0 6.75px 0 rgba(0, 0, 0, 0.25),
+) !default;
+
+// Generate CSS variables
+@include css-vars.generate-css-variables($elevations);

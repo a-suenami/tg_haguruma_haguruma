@@ -1,0 +1,17 @@
+[cog-cog-icon.scss] {
+  --cog-icon-size: 24px;
+  display: block;
+  color: currentColor;
+  height: var(--cog-icon-size);
+  width: var(--cog-icon-size);
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  div,
+  svg {
+    height: 100%;
+    width: 100%;
+  }
+}

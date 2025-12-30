@@ -1,0 +1,11 @@
+[cog-fab-button-icon] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  font-size: var(--cog-fab-button-icon-size);
+}
+
+// Add margin when parent is extended
+/* :host-context removed - not supported */

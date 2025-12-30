@@ -1,0 +1,28 @@
+<cog-page-header></cog-page-header>
+
+<main class="main">
+  <cog-list-fragment>
+    <cog-list-fragment-title>
+      <cog-feature-title-image [feature]="'news'"></cog-feature-title-image>
+    </cog-list-fragment-title>
+    <cog-list-fragment-actions>
+      <cog-tabs-bar>
+        <cog-tabs>
+          <button cog-tab tab="all">すべて</button>
+          <button cog-tab tab="updates">更新履歴</button>
+          <button cog-tab tab="news">ニュース</button>
+          <button cog-tab tab="mail">メール</button>
+          <button cog-tab tab="shipments">発送物</button>
+          <button cog-tab tab="viewing">観覧・プレゼント</button>
+          <button cog-tab tab="special">スペシャル</button>
+          <button cog-tab tab="overseas">海外番組記</button>
+        </cog-tabs>
+      </cog-tabs-bar>
+    </cog-list-fragment-actions>
+    <cog-list-fragment-content>
+      <cog-news-list overview></cog-news-list>
+    </cog-list-fragment-content>
+  </cog-list-fragment>
+</main>
+
+<cog-page-footer></cog-page-footer>
