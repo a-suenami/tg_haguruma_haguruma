@@ -115,7 +115,7 @@
                             {
                               display_format: field.select.display_format,
                               options: field.select.options.order(:position).map { |o|
-                                { id: o.id, display_name: o.display_name, identifier: o.identifier }
+                                { id: o.id, display_name: o.display_name, unique_name: o.unique_name }
                               }
                             }.to_json
                           else
