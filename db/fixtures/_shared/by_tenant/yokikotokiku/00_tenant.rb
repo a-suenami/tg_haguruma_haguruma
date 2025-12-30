@@ -4,6 +4,8 @@
 # 斧琴菊テナント作成（初期データ）
 # 既に存在する場合はスキップ
 
+require_relative '../../tenant_domain_helper'
+
 tenant_id = 'yokikotokiku'
 
 if Tenant.exists?(id: tenant_id)
@@ -12,7 +14,7 @@ else
   Tenant.create!(
     id: tenant_id,
     name: '斧琴菊',
-    user_page_domain: 'yokikotokiku.localhost',
+    user_page_domain: TenantDomainHelper.user_page_domain_for(tenant_id),
   )
   puts "  Created tenant: #{tenant_id}"
 end
