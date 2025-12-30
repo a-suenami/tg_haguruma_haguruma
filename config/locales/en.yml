@@ -86,6 +86,11 @@ en:
         text: Short Text
         richtext: Rich Text
         media_asset: Media
+        select_field: Select
+      select_display_formats:
+        dropdown: Dropdown
+        checkbox: Checkbox
+        radio: Radio Button
       errors:
         unique_name_taken: "This identifier is already in use by:"
         field_api_identifier_taken: "This identifier is already in use by:"
