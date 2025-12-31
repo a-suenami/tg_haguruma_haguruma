@@ -29,6 +29,7 @@ class Rails::Conductor::BaseController
     include ::LexicalHelper
     include ::RulerArea::ApplicationHelper
     include ::SvgHelper
+    include ::UserArea::SiteSettingsHelper
   end
 
   class HelperProxy < ::ActionView::Base

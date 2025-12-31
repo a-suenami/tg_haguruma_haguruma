@@ -34,5 +34,10 @@ namespace :ruler_area, path: :ruler do
       resources :user_tags, only: [:create, :destroy]
       resources :session_tokens, only: [:index, :create, :destroy]
     end
+
+    # Site settings
+    resource :site_setting, only: [:show, :edit, :update]
+    resource :theme, only: [:show, :edit, :update]
+    resources :pages, only: [:index]
   end
 end

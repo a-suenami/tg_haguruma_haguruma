@@ -1,7 +1,7 @@
-\restrict YayPdtfEBHVZLO8Qrfbf5dFv3fvm5UxhltlL9ufGMa0FgM35xufyYbF9mjwjTUP
+\restrict UvzJbNGwbvp5U0Zx7kURKR2piGLZVWAXapgt2KvEvbDTVbEaeTTbxtjH3Tr3DAJ
 
 -- Dumped from database version 16.11
--- Dumped by pg_dump version 16.10
+-- Dumped by pg_dump version 16.11
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -541,6 +541,79 @@ CREATE TABLE public.session_tokens (
 
 
 --
+-- Name: tenant_site_settings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tenant_site_settings (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id character varying NOT NULL,
+    features jsonb DEFAULT '{}'::jsonb NOT NULL,
+    landing jsonb DEFAULT '{}'::jsonb NOT NULL,
+    login_label character varying DEFAULT 'ログイン'::character varying NOT NULL,
+    signup_label character varying DEFAULT '新規会員登録'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: tenant_themes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tenant_themes (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id character varying NOT NULL,
+    logo_media_asset_id uuid NOT NULL,
+    page_background_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
+    general_text_color character varying DEFAULT '#000000'::character varying NOT NULL,
+    general_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
+    border_color character varying DEFAULT '#E5E5E5'::character varying NOT NULL,
+    title_text_color character varying DEFAULT '#000000'::character varying NOT NULL,
+    title_font_family character varying DEFAULT '"Noto Serif JP", serif'::character varying NOT NULL,
+    navigation_text_color character varying DEFAULT '#000000'::character varying NOT NULL,
+    navigation_font_family character varying DEFAULT '"Noto Serif JP", serif'::character varying NOT NULL,
+    link_text_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    link_underline boolean DEFAULT true NOT NULL,
+    tab_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
+    tab_active_text_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    tab_active_underline_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    tab_inactive_text_color character varying DEFAULT '#666666'::character varying NOT NULL,
+    tab_inactive_underline_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
+    caption_text_color character varying DEFAULT '#666666'::character varying NOT NULL,
+    caption_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
+    label_background_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    label_text_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
+    label_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
+    button_font_family character varying DEFAULT '"Noto Sans JP", sans-serif'::character varying NOT NULL,
+    button_primary_background_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    button_primary_text_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
+    button_secondary_border_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    button_secondary_background_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
+    button_secondary_text_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT chk_tenant_themes_border_color_format CHECK (((border_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_button_primary_background_color_format CHECK (((button_primary_background_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_button_primary_text_color_format CHECK (((button_primary_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_button_secondary_background_color_format CHECK (((button_secondary_background_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_button_secondary_border_color_format CHECK (((button_secondary_border_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_button_secondary_text_color_format CHECK (((button_secondary_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_caption_text_color_format CHECK (((caption_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_general_text_color_format CHECK (((general_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_label_background_color_format CHECK (((label_background_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_label_text_color_format CHECK (((label_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_link_text_color_format CHECK (((link_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_navigation_text_color_format CHECK (((navigation_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_page_background_color_format CHECK (((page_background_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_tab_active_text_color_format CHECK (((tab_active_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_tab_active_underline_color_format CHECK (((tab_active_underline_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_tab_inactive_text_color_format CHECK (((tab_inactive_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_tab_inactive_underline_color_format CHECK (((tab_inactive_underline_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_title_text_color_format CHECK (((title_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text))
+);
+
+
+--
 -- Name: tenants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -818,6 +891,22 @@ ALTER TABLE ONLY public.rulers
 
 ALTER TABLE ONLY public.session_tokens
     ADD CONSTRAINT session_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenant_site_settings tenant_site_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_site_settings
+    ADD CONSTRAINT tenant_site_settings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenant_themes tenant_themes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_themes
+    ADD CONSTRAINT tenant_themes_pkey PRIMARY KEY (id);
 
 
 --
@@ -1104,6 +1193,20 @@ CREATE INDEX index_session_tokens_on_user_id ON public.session_tokens USING btre
 
 
 --
+-- Name: index_tenant_site_settings_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tenant_site_settings_on_tenant_id ON public.tenant_site_settings USING btree (tenant_id);
+
+
+--
+-- Name: index_tenant_themes_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tenant_themes_on_tenant_id ON public.tenant_themes USING btree (tenant_id);
+
+
+--
 -- Name: index_user_tags_on_tag; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1258,6 +1361,14 @@ ALTER TABLE ONLY public.user_tags
 
 
 --
+-- Name: tenant_site_settings fk_rails_4c850b6370; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_site_settings
+    ADD CONSTRAINT fk_rails_4c850b6370 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: content_type_fields fk_rails_56320489b5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1303,6 +1414,14 @@ ALTER TABLE ONLY public.session_tokens
 
 ALTER TABLE ONLY public.content_type_fields
     ADD CONSTRAINT fk_rails_782051ab84 FOREIGN KEY (tenant_id, content_type_id) REFERENCES public.content_types(tenant_id, id);
+
+
+--
+-- Name: tenant_themes fk_rails_79c1b773a4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_themes
+    ADD CONSTRAINT fk_rails_79c1b773a4 FOREIGN KEY (logo_media_asset_id) REFERENCES public.media_assets(id);
 
 
 --
@@ -1370,6 +1489,14 @@ ALTER TABLE ONLY public.user_tags
 
 
 --
+-- Name: tenant_themes fk_rails_ff24ac10ab; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_themes
+    ADD CONSTRAINT fk_rails_ff24ac10ab FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: ruler_auth0_accounts fk_ruler_auth0_accounts_auth0_accounts; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1397,7 +1524,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict YayPdtfEBHVZLO8Qrfbf5dFv3fvm5UxhltlL9ufGMa0FgM35xufyYbF9mjwjTUP
+\unrestrict UvzJbNGwbvp5U0Zx7kURKR2piGLZVWAXapgt2KvEvbDTVbEaeTTbxtjH3Tr3DAJ
 
 SET search_path TO "$user", public;
 

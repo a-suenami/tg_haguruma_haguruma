@@ -15,10 +15,10 @@
 
     // Fallback text styling (when SVG is not available)
     &:not(:has(svg)) {
-      font-family: var(--gearbox-font-family-heading);
+      font-family: var(--theme-title-font-family, var(--gearbox-font-family-heading));
       font-size: var(--gearbox-font-size-heading-large);
       font-weight: var(--gearbox-font-weight-bold);
-      color: var(--gearbox-secondary);
+      color: var(--theme-title-text-color, var(--gearbox-secondary));
       letter-spacing: 0.1em;
       display: flex;
       align-items: center;

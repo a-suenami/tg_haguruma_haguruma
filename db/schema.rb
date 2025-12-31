@@ -256,6 +256,69 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["user_id"], name: "index_session_tokens_on_user_id"
   end
 
+  create_table "tenant_site_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.jsonb "features", default: {}, null: false
+    t.jsonb "landing", default: {}, null: false
+    t.string "login_label", default: "ログイン", null: false
+    t.string "signup_label", default: "新規会員登録", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_site_settings_on_tenant_id", unique: true
+  end
+
+  create_table "tenant_themes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.uuid "logo_media_asset_id", null: false
+    t.string "page_background_color", default: "#FFFFFF", null: false
+    t.string "general_text_color", default: "#000000", null: false
+    t.string "general_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "border_color", default: "#E5E5E5", null: false
+    t.string "title_text_color", default: "#000000", null: false
+    t.string "title_font_family", default: "\"Noto Serif JP\", serif", null: false
+    t.string "navigation_text_color", default: "#000000", null: false
+    t.string "navigation_font_family", default: "\"Noto Serif JP\", serif", null: false
+    t.string "link_text_color", default: "#0000FF", null: false
+    t.boolean "link_underline", default: true, null: false
+    t.string "tab_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "tab_active_text_color", default: "#0000FF", null: false
+    t.string "tab_active_underline_color", default: "#0000FF", null: false
+    t.string "tab_inactive_text_color", default: "#666666", null: false
+    t.string "tab_inactive_underline_color", default: "#FFFFFF", null: false
+    t.string "caption_text_color", default: "#666666", null: false
+    t.string "caption_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "label_background_color", default: "#0000FF", null: false
+    t.string "label_text_color", default: "#FFFFFF", null: false
+    t.string "label_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "button_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "button_primary_background_color", default: "#0000FF", null: false
+    t.string "button_primary_text_color", default: "#FFFFFF", null: false
+    t.string "button_secondary_border_color", default: "#0000FF", null: false
+    t.string "button_secondary_background_color", default: "#FFFFFF", null: false
+    t.string "button_secondary_text_color", default: "#0000FF", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_themes_on_tenant_id", unique: true
+    t.check_constraint "border_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_border_color_format"
+    t.check_constraint "button_primary_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_primary_background_color_format"
+    t.check_constraint "button_primary_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_primary_text_color_format"
+    t.check_constraint "button_secondary_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_secondary_background_color_format"
+    t.check_constraint "button_secondary_border_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_secondary_border_color_format"
+    t.check_constraint "button_secondary_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_secondary_text_color_format"
+    t.check_constraint "caption_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_caption_text_color_format"
+    t.check_constraint "general_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_general_text_color_format"
+    t.check_constraint "label_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_label_background_color_format"
+    t.check_constraint "label_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_label_text_color_format"
+    t.check_constraint "link_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_link_text_color_format"
+    t.check_constraint "navigation_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_navigation_text_color_format"
+    t.check_constraint "page_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_page_background_color_format"
+    t.check_constraint "tab_active_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_active_text_color_format"
+    t.check_constraint "tab_active_underline_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_active_underline_color_format"
+    t.check_constraint "tab_inactive_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_inactive_text_color_format"
+    t.check_constraint "tab_inactive_underline_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_inactive_underline_color_format"
+    t.check_constraint "title_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_title_text_color_format"
+  end
+
   create_table "tenants", id: :string, force: :cascade do |t|
     t.string "name"
     t.string "user_page_domain"
@@ -318,6 +381,9 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "ruler_auth0_accounts", "rulers", name: "fk_ruler_auth0_accounts_rulers"
   add_foreign_key "session_tokens", "tenants"
   add_foreign_key "session_tokens", "users"
+  add_foreign_key "tenant_site_settings", "tenants"
+  add_foreign_key "tenant_themes", "media_assets", column: "logo_media_asset_id"
+  add_foreign_key "tenant_themes", "tenants"
   add_foreign_key "user_tags", "content_authorization_tags"
   add_foreign_key "user_tags", "tenants"
   add_foreign_key "user_tags", "users", column: ["tenant_id", "user_id"], primary_key: ["tenant_id", "id"], name: "fk_user_tags_users"

@@ -1,0 +1,158 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><span>テーマ</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>テーマ設定</h3>
+  <div>
+    <%= link_to '編集', edit_ruler_area_tenant_theme_path(@tenant), class: 'uk-button uk-button-primary' %>
+  </div>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">ロゴ</h4>
+  <div class="uk-margin">
+    <img src="<%= @theme.logo_url %>" alt="ロゴ" style="max-height: 80px; max-width: 300px;">
+  </div>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">ページ</h4>
+  <table class="uk-table uk-table-divider">
+    <tbody>
+      <tr>
+        <th style="width: 200px;">背景色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.page_background_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.page_background_color %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">テキスト</h4>
+  <table class="uk-table uk-table-divider">
+    <tbody>
+      <tr>
+        <th style="width: 200px;">一般テキスト色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.general_text_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.general_text_color %>
+        </td>
+      </tr>
+      <tr>
+        <th>一般フォント</th>
+        <td><%= @theme.general_font_family %></td>
+      </tr>
+      <tr>
+        <th>タイトル色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.title_text_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.title_text_color %>
+        </td>
+      </tr>
+      <tr>
+        <th>タイトルフォント</th>
+        <td><%= @theme.title_font_family %></td>
+      </tr>
+      <tr>
+        <th>ナビゲーション色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.navigation_text_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.navigation_text_color %>
+        </td>
+      </tr>
+      <tr>
+        <th>リンク色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.link_text_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.link_text_color %>
+        </td>
+      </tr>
+      <tr>
+        <th>キャプション色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.caption_text_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.caption_text_color %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">ボタン</h4>
+  <table class="uk-table uk-table-divider">
+    <tbody>
+      <tr>
+        <th style="width: 200px;">Primary 背景色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.button_primary_background_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.button_primary_background_color %>
+        </td>
+      </tr>
+      <tr>
+        <th>Primary テキスト色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.button_primary_text_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.button_primary_text_color %>
+        </td>
+      </tr>
+      <tr>
+        <th>Secondary 背景色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.button_secondary_background_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.button_secondary_background_color %>
+        </td>
+      </tr>
+      <tr>
+        <th>Secondary ボーダー色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.button_secondary_border_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.button_secondary_border_color %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">ラベル</h4>
+  <table class="uk-table uk-table-divider">
+    <tbody>
+      <tr>
+        <th style="width: 200px;">背景色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.label_background_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.label_background_color %>
+        </td>
+      </tr>
+      <tr>
+        <th>テキスト色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.label_text_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.label_text_color %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">ボーダー</h4>
+  <table class="uk-table uk-table-divider">
+    <tbody>
+      <tr>
+        <th style="width: 200px;">ボーダー色</th>
+        <td>
+          <span class="uk-badge" style="background-color: <%= @theme.border_color %>; width: 24px; height: 24px;"></span>
+          <%= @theme.border_color %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
