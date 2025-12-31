@@ -14,7 +14,7 @@
   </p>
 
   <% if published_version %>
-    <% published_version.fields.includes(:content_type_field, :text, :richtext, :media_asset).each do |field| %>
+    <% published_version.fields.includes(:content_type_field, :text, :richtext, :media_asset, :select).each do |field| %>
       <div style="margin-bottom: 1.5rem;">
         <h4 style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.5rem;">
           <%= field.content_type_field&.label %>
@@ -31,6 +31,20 @@
             <img src="<%= field.media_asset&.s3_object_path %>" style="max-width: 100%; height: auto;" alt="">
           <% else %>
             <p>Media: <%= field.media_asset&.media_type %></p>
+          <% end %>
+        <% when 'select_field' %>
+          <%
+            selected_ids = field.select&.selected_option_ids || []
+            options = field.content_type_field&.select&.options&.where(id: selected_ids) || []
+          %>
+          <% if options.any? %>
+            <ul style="margin: 0; padding-left: 1.5rem;">
+              <% options.each do |option| %>
+                <li><%= option.display_name %></li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p style="color: var(--text-muted);">未選択</p>
           <% end %>
         <% end %>
       </div>

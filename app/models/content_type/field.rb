@@ -40,12 +40,16 @@ class ContentType::Field < ApplicationRecord
     text: 1,
     richtext: 2,
     media_asset: 3,
+    select_field: 4,
   }.freeze
 
   belongs_to :content_type
   belongs_to :text, class_name: 'ContentType::FieldText', optional: true
   belongs_to :richtext, class_name: 'ContentType::FieldRichtext', optional: true
   belongs_to :media_asset, class_name: 'ContentType::FieldMediaAsset', optional: true
+  belongs_to :select, class_name: 'ContentType::FieldSelect', optional: true
+
+  accepts_nested_attributes_for :select, allow_destroy: true
 
   validates :api_identifier, presence: true, length: { maximum: 32 }, uniqueness: { scope: :content_type_id }
   validates :label, presence: true, length: { maximum: 255 }
@@ -81,6 +85,8 @@ class ContentType::Field < ApplicationRecord
       I18n.t('ruler_area.content_types.field_types.richtext')
     when 'media_asset'
       I18n.t('ruler_area.content_types.field_types.media_asset')
+    when 'select_field'
+      I18n.t('ruler_area.content_types.field_types.select_field')
     else
       field_type
     end
