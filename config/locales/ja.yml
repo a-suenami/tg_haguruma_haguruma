@@ -36,6 +36,44 @@ ja:
           attributes:
             base:
               reserved_id_error: このIDは予約されているため使用できません
+        tenant_theme:
+          attributes:
+            page_background_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            general_text_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            border_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            title_text_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            navigation_text_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            link_text_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            tab_active_text_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            tab_active_underline_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            tab_inactive_text_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            tab_inactive_underline_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            caption_text_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            label_background_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            label_text_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            button_primary_background_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            button_primary_text_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            button_secondary_border_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            button_secondary_background_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
+            button_secondary_text_color:
+              invalid_hex_color: は#RRGGBB形式で入力してください
   ruler_area:
     auth0:
       already_logged_in: すでにログインしています

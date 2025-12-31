@@ -74,7 +74,7 @@ class TenantTheme < ApplicationRecord
   belongs_to :tenant, primary_key: :id
   belongs_to :logo_media_asset, class_name: 'MediaAsset'
 
-  validates(*COLOR_COLUMNS, format: { with: HEX_COLOR_FORMAT, message: 'は#RRGGBB形式で入力してください' })
+  validates(*COLOR_COLUMNS, format: { with: HEX_COLOR_FORMAT, message: :invalid_hex_color })
 
   sig { returns(String) }
   def logo_url
