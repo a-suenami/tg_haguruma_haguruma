@@ -9,6 +9,7 @@ module UserArea
 
     before_action :set_tenant
 
+    helper UserArea::SiteSettingsHelper
     helper_method :current_user, :user_signed_in?, :current_tenant
 
     sig { void }

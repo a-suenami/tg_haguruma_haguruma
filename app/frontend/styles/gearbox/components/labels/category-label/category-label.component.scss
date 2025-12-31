@@ -3,11 +3,11 @@
 [cog-category-label] {
   display: inline-flex;
   align-items: center;
-  background-color: var(--gearbox-primary);
-  color: var(--gearbox-on-primary);
+  background-color: var(--theme-label-background-color, var(--gearbox-primary));
+  color: var(--theme-label-text-color, var(--gearbox-on-primary));
   padding: var(--gearbox-spacing-2) var(--gearbox-spacing-6);
   border-radius: 3px;
-  font-family: var(--gearbox-font-family-primary);
+  font-family: var(--theme-label-font-family, var(--gearbox-font-family-primary));
   font-size: var(--gearbox-font-size-caption-large);
   font-weight: var(--gearbox-font-weight-semibold);
   line-height: var(--gearbox-line-height-loose);

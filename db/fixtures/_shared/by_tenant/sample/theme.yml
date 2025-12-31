@@ -1,0 +1,56 @@
+# サンプルテナント (sample) テーマ設定
+#
+# このファイルは seed-fu によって読み込まれ、
+# TenantTheme レコードを作成/更新する際に使用される。
+
+tenant_id: sample
+
+# 全体背景
+page_background_color: "#FFFFFF"
+
+# 一般（本文）テキスト
+general_text_color: "#1F1F1F"
+general_font_family: '"Noto Sans JP", sans-serif'
+
+# ボーダー
+border_color: "#E0E0E0"
+
+# タイトル
+title_text_color: "#1F1F1F"
+title_font_family: '"Noto Sans JP", sans-serif'
+
+# ナビゲーション
+navigation_text_color: "#1F1F1F"
+navigation_font_family: '"Noto Sans JP", sans-serif'
+
+# リンク
+link_text_color: "#0066CC"
+link_underline: true
+
+# タブ
+tab_font_family: '"Noto Sans JP", sans-serif'
+tab_active_text_color: "#0066CC"
+tab_active_underline_color: "#0066CC"
+tab_inactive_text_color: "#666666"
+tab_inactive_underline_color: "#FFFFFF"
+
+# 補助テキスト
+caption_text_color: "#666666"
+caption_font_family: '"Noto Sans JP", sans-serif'
+
+# ラベル
+label_background_color: "#0066CC"
+label_text_color: "#FFFFFF"
+label_font_family: '"Noto Sans JP", sans-serif'
+
+# ボタン（共通）
+button_font_family: '"Noto Sans JP", sans-serif'
+
+# ボタン（Primary）
+button_primary_background_color: "#0066CC"
+button_primary_text_color: "#FFFFFF"
+
+# ボタン（Secondary）
+button_secondary_border_color: "#0066CC"
+button_secondary_background_color: "#FFFFFF"
+button_secondary_text_color: "#0066CC"

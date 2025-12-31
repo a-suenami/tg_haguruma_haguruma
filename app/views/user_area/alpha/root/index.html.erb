@@ -8,7 +8,11 @@
 <main class="main">
   <section cog-landing-hero-image-section>
     <div cog-landing-hero-image>
-      <img src="https://placehold.co/1920x1080/333333/666666?text=Hero+Image" alt="Hero Image">
+      <% if @kv_image_url %>
+        <img src="<%= @kv_image_url %>" alt="<%= current_tenant&.name || '' %>">
+      <% else %>
+        <img src="https://placehold.co/1920x1080/333333/666666?text=Hero+Image" alt="Hero Image">
+      <% end %>
     </div>
   </section>
 
@@ -18,10 +22,10 @@
         <div cog-landing-section-content>
           <div cog-landing-section-actions>
             <a href="<%= user_area_auth_start_path %>" cog-button filled class="action-button">
-              <span>ログイン</span>
+              <span><%= login_label %></span>
             </a>
             <a href="<%= user_area_auth_start_path %>" cog-button outlined class="action-button">
-              <span>新規会員登録</span>
+              <span><%= signup_label %></span>
             </a>
           </div>
         </div>
@@ -47,7 +51,7 @@
     <section cog-landing-section>
       <div cog-landing-section-title>
         <div cog-feature-title-image feature="news">
-          <div class="title-image"><%= feature_title_svg('news') %></div>
+          <div class="title-image"><%= feature_label(:news) %></div>
         </div>
       </div>
       <div cog-landing-section-content>

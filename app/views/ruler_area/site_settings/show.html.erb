@@ -1,0 +1,59 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><span>サイト設定</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>サイト設定</h3>
+  <div>
+    <%= link_to '編集', edit_ruler_area_tenant_site_setting_path(@tenant), class: 'uk-button uk-button-primary' %>
+  </div>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">認証ボタンラベル</h4>
+  <table class="uk-table uk-table-divider">
+    <tbody>
+      <tr>
+        <th style="width: 200px;">ログインボタン</th>
+        <td><%= @site_setting.login_label %></td>
+      </tr>
+      <tr>
+        <th>新規登録ボタン</th>
+        <td><%= @site_setting.signup_label %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">機能設定</h4>
+  <table class="uk-table uk-table-divider">
+    <thead>
+      <tr>
+        <th>機能</th>
+        <th>有効</th>
+        <th>ラベル</th>
+        <th>メニューラベル</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% TenantSiteSettings::DEFAULT_FEATURES.each do |key, defaults| %>
+        <% feature = @site_setting.send(:merged_features)[key] %>
+        <tr>
+          <td><%= key %></td>
+          <td>
+            <% if feature['enabled'] %>
+              <span class="uk-label uk-label-success">有効</span>
+            <% else %>
+              <span class="uk-label">無効</span>
+            <% end %>
+          </td>
+          <td><%= feature['label'] %></td>
+          <td><%= feature['menu_label'] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

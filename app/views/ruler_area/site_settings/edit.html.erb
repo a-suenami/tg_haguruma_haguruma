@@ -1,0 +1,12 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><%= link_to 'サイト設定', ruler_area_tenant_site_setting_path(@tenant) %></li>
+  <li><span>編集</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>サイト設定の編集</h3>
+</div>
+
+<%= render 'form' %>

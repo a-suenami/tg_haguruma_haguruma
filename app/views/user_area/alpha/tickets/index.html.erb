@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  TICKET - <%= current_tenant&.name || 'Fan Club' %>
+  <%= feature_label(:ticket) %> - <%= current_tenant&.name || 'Fan Club' %>
 <% end %>
 
 <%= render 'user_area/alpha/shared/page_header' %>
@@ -8,7 +8,7 @@
   <section cog-list-fragment>
     <div cog-list-fragment-title>
       <div cog-feature-title-image feature="ticket">
-        <div class="title-image">TICKET</div>
+        <div class="title-image"><%= feature_label(:ticket) %></div>
       </div>
     </div>
 

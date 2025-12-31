@@ -1,0 +1,28 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><span>ページ設定</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>ページ設定</h3>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body">
+  <div class="uk-text-center uk-padding">
+    <span uk-icon="icon: future; ratio: 3" class="uk-text-muted"></span>
+    <h4 class="uk-margin-top">この機能は現在準備中です</h4>
+    <p class="uk-text-muted">
+      将来的にはページごとのURL、テンプレート、コンテンツタイプの設定が可能になります。
+    </p>
+    <p class="uk-margin-top">
+      現時点では「サイト設定」から機能の有効/無効やラベルの設定が可能です。
+    </p>
+    <div class="uk-margin-top">
+      <%= link_to ruler_area_tenant_site_setting_path(@tenant), class: 'uk-button uk-button-primary' do %>
+        サイト設定へ
+        <span uk-icon="arrow-right"></span>
+      <% end %>
+    </div>
+  </div>
+</div>
