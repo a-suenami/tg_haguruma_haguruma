@@ -49,8 +49,32 @@
 class TenantTheme < ApplicationRecord
   extend T::Sig
 
+  HEX_COLOR_FORMAT = /\A#[0-9A-Fa-f]{6}\z/
+  COLOR_COLUMNS = %i[
+    page_background_color
+    general_text_color
+    title_text_color
+    navigation_text_color
+    link_text_color
+    caption_text_color
+    border_color
+    label_background_color
+    label_text_color
+    button_primary_background_color
+    button_primary_text_color
+    button_secondary_background_color
+    button_secondary_text_color
+    button_secondary_border_color
+    tab_active_text_color
+    tab_active_underline_color
+    tab_inactive_text_color
+    tab_inactive_underline_color
+  ].freeze
+
   belongs_to :tenant, primary_key: :id
   belongs_to :logo_media_asset, class_name: 'MediaAsset'
+
+  validates(*COLOR_COLUMNS, format: { with: HEX_COLOR_FORMAT, message: 'は#RRGGBB形式で入力してください' })
 
   sig { returns(String) }
   def logo_url

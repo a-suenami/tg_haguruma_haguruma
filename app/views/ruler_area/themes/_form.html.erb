@@ -18,11 +18,7 @@
     <h4 class="uk-card-title">ページ</h4>
     <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
       <div>
-        <%= form.label :page_background_color, '背景色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :page_background_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :page_background_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :page_background_color, label: '背景色' %>
       </div>
     </div>
   </div>
@@ -31,11 +27,7 @@
     <h4 class="uk-card-title">テキスト</h4>
     <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
       <div>
-        <%= form.label :general_text_color, '一般テキスト色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :general_text_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :general_text_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :general_text_color, label: '一般テキスト色' %>
       </div>
       <div>
         <%= form.label :general_font_family, '一般フォント', class: 'uk-form-label' %>
@@ -44,11 +36,7 @@
         </div>
       </div>
       <div>
-        <%= form.label :title_text_color, 'タイトル色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :title_text_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :title_text_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :title_text_color, label: 'タイトル色' %>
       </div>
       <div>
         <%= form.label :title_font_family, 'タイトルフォント', class: 'uk-form-label' %>
@@ -57,11 +45,7 @@
         </div>
       </div>
       <div>
-        <%= form.label :navigation_text_color, 'ナビゲーション色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :navigation_text_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :navigation_text_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :navigation_text_color, label: 'ナビゲーション色' %>
       </div>
       <div>
         <%= form.label :navigation_font_family, 'ナビゲーションフォント', class: 'uk-form-label' %>
@@ -70,11 +54,7 @@
         </div>
       </div>
       <div>
-        <%= form.label :link_text_color, 'リンク色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :link_text_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :link_text_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :link_text_color, label: 'リンク色' %>
       </div>
       <div>
         <%= form.label :link_underline, 'リンク下線', class: 'uk-form-label' %>
@@ -83,11 +63,7 @@
         </div>
       </div>
       <div>
-        <%= form.label :caption_text_color, 'キャプション色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :caption_text_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :caption_text_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :caption_text_color, label: 'キャプション色' %>
       </div>
       <div>
         <%= form.label :caption_font_family, 'キャプションフォント', class: 'uk-form-label' %>
@@ -109,39 +85,19 @@
       </div>
       <div></div>
       <div>
-        <%= form.label :button_primary_background_color, 'Primary 背景色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :button_primary_background_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :button_primary_background_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :button_primary_background_color, label: 'Primary 背景色' %>
       </div>
       <div>
-        <%= form.label :button_primary_text_color, 'Primary テキスト色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :button_primary_text_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :button_primary_text_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :button_primary_text_color, label: 'Primary テキスト色' %>
       </div>
       <div>
-        <%= form.label :button_secondary_background_color, 'Secondary 背景色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :button_secondary_background_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :button_secondary_background_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :button_secondary_background_color, label: 'Secondary 背景色' %>
       </div>
       <div>
-        <%= form.label :button_secondary_text_color, 'Secondary テキスト色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :button_secondary_text_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :button_secondary_text_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :button_secondary_text_color, label: 'Secondary テキスト色' %>
       </div>
       <div>
-        <%= form.label :button_secondary_border_color, 'Secondary ボーダー色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :button_secondary_border_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :button_secondary_border_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :button_secondary_border_color, label: 'Secondary ボーダー色' %>
       </div>
     </div>
   </div>
@@ -150,18 +106,10 @@
     <h4 class="uk-card-title">ラベル</h4>
     <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
       <div>
-        <%= form.label :label_background_color, '背景色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :label_background_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :label_background_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :label_background_color, label: '背景色' %>
       </div>
       <div>
-        <%= form.label :label_text_color, 'テキスト色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :label_text_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :label_text_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :label_text_color, label: 'テキスト色' %>
       </div>
       <div>
         <%= form.label :label_font_family, 'フォント', class: 'uk-form-label' %>
@@ -176,11 +124,7 @@
     <h4 class="uk-card-title">ボーダー</h4>
     <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
       <div>
-        <%= form.label :border_color, 'ボーダー色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :border_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :border_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :border_color, label: 'ボーダー色' %>
       </div>
     </div>
   </div>
@@ -196,32 +140,16 @@
       </div>
       <div></div>
       <div>
-        <%= form.label :tab_active_text_color, 'アクティブタブ テキスト色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :tab_active_text_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :tab_active_text_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :tab_active_text_color, label: 'アクティブタブ テキスト色' %>
       </div>
       <div>
-        <%= form.label :tab_active_underline_color, 'アクティブタブ 下線色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :tab_active_underline_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :tab_active_underline_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :tab_active_underline_color, label: 'アクティブタブ 下線色' %>
       </div>
       <div>
-        <%= form.label :tab_inactive_text_color, '非アクティブタブ テキスト色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :tab_inactive_text_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :tab_inactive_text_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :tab_inactive_text_color, label: '非アクティブタブ テキスト色' %>
       </div>
       <div>
-        <%= form.label :tab_inactive_underline_color, '非アクティブタブ 下線色', class: 'uk-form-label' %>
-        <div class="uk-form-controls uk-flex uk-flex-middle">
-          <%= form.color_field :tab_inactive_underline_color, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
-          <%= form.text_field :tab_inactive_underline_color, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
-        </div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :tab_inactive_underline_color, label: '非アクティブタブ 下線色' %>
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@ import AutosaveFormController from './autosave_form_controller';
 import AutosaveFieldController from './autosave_field_controller';
 import MediaAssetFieldController from './media_asset_field_controller';
 import AuthorizationTagsController from './authorization_tags_controller';
+import ColorPickerController from './color_picker_controller';
 
 const application = Application.start();
 
@@ -13,5 +14,6 @@ application.register('autosave-form', AutosaveFormController);
 application.register('autosave-field', AutosaveFieldController);
 application.register('media-asset-field', MediaAssetFieldController);
 application.register('authorization-tags', AuthorizationTagsController);
+application.register('color-picker', ColorPickerController);
 
 export { application };
