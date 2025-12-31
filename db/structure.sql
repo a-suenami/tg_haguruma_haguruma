@@ -1,4 +1,4 @@
-\restrict bN9YPct7cayYQfVbXztUxHWYXU3ix9MP5UE9WOL6ww4OFrpOxDoxJvyViituqGc
+\restrict UvzJbNGwbvp5U0Zx7kURKR2piGLZVWAXapgt2KvEvbDTVbEaeTTbxtjH3Tr3DAJ
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -591,7 +591,25 @@ CREATE TABLE public.tenant_themes (
     button_secondary_background_color character varying DEFAULT '#FFFFFF'::character varying NOT NULL,
     button_secondary_text_color character varying DEFAULT '#0000FF'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT chk_tenant_themes_border_color_format CHECK (((border_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_button_primary_background_color_format CHECK (((button_primary_background_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_button_primary_text_color_format CHECK (((button_primary_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_button_secondary_background_color_format CHECK (((button_secondary_background_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_button_secondary_border_color_format CHECK (((button_secondary_border_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_button_secondary_text_color_format CHECK (((button_secondary_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_caption_text_color_format CHECK (((caption_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_general_text_color_format CHECK (((general_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_label_background_color_format CHECK (((label_background_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_label_text_color_format CHECK (((label_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_link_text_color_format CHECK (((link_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_navigation_text_color_format CHECK (((navigation_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_page_background_color_format CHECK (((page_background_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_tab_active_text_color_format CHECK (((tab_active_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_tab_active_underline_color_format CHECK (((tab_active_underline_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_tab_inactive_text_color_format CHECK (((tab_inactive_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_tab_inactive_underline_color_format CHECK (((tab_inactive_underline_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),
+    CONSTRAINT chk_tenant_themes_title_text_color_format CHECK (((title_text_color)::text ~ '^#[0-9A-Fa-f]{6}$'::text))
 );
 
 
@@ -1506,7 +1524,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict bN9YPct7cayYQfVbXztUxHWYXU3ix9MP5UE9WOL6ww4OFrpOxDoxJvyViituqGc
+\unrestrict UvzJbNGwbvp5U0Zx7kURKR2piGLZVWAXapgt2KvEvbDTVbEaeTTbxtjH3Tr3DAJ
 
 SET search_path TO "$user", public;
 

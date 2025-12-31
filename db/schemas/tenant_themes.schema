@@ -60,3 +60,27 @@ end
 add_index :tenant_themes, [:tenant_id], unique: true
 add_foreign_key :tenant_themes, :tenants, column: :tenant_id, primary_key: :id
 add_foreign_key :tenant_themes, :media_assets, column: :logo_media_asset_id
+
+# カラーコードのCHECK制約（#RRGGBB形式）
+%w[
+  page_background_color
+  general_text_color
+  border_color
+  title_text_color
+  navigation_text_color
+  link_text_color
+  tab_active_text_color
+  tab_active_underline_color
+  tab_inactive_text_color
+  tab_inactive_underline_color
+  caption_text_color
+  label_background_color
+  label_text_color
+  button_primary_background_color
+  button_primary_text_color
+  button_secondary_border_color
+  button_secondary_background_color
+  button_secondary_text_color
+].each do |column|
+  add_check_constraint :tenant_themes, "#{column} ~ '^#[0-9A-Fa-f]{6}$'", name: "chk_tenant_themes_#{column}_format"
+end

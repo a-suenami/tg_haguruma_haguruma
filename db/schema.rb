@@ -265,6 +265,24 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenant_id"], name: "index_tenant_themes_on_tenant_id", unique: true
+    t.check_constraint "border_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_border_color_format"
+    t.check_constraint "button_primary_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_primary_background_color_format"
+    t.check_constraint "button_primary_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_primary_text_color_format"
+    t.check_constraint "button_secondary_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_secondary_background_color_format"
+    t.check_constraint "button_secondary_border_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_secondary_border_color_format"
+    t.check_constraint "button_secondary_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_secondary_text_color_format"
+    t.check_constraint "caption_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_caption_text_color_format"
+    t.check_constraint "general_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_general_text_color_format"
+    t.check_constraint "label_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_label_background_color_format"
+    t.check_constraint "label_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_label_text_color_format"
+    t.check_constraint "link_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_link_text_color_format"
+    t.check_constraint "navigation_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_navigation_text_color_format"
+    t.check_constraint "page_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_page_background_color_format"
+    t.check_constraint "tab_active_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_active_text_color_format"
+    t.check_constraint "tab_active_underline_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_active_underline_color_format"
+    t.check_constraint "tab_inactive_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_inactive_text_color_format"
+    t.check_constraint "tab_inactive_underline_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_inactive_underline_color_format"
+    t.check_constraint "title_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_title_text_color_format"
   end
 
   create_table "tenants", id: :string, force: :cascade do |t|
