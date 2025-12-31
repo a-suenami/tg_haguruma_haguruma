@@ -18,18 +18,22 @@ require 'schemas/media_assets.schema'
 
 # content types
 require 'schemas/content_types.schema'
-require 'schemas/content_type_fields.schema'
 require 'schemas/content_type_field_texts.schema'
 require 'schemas/content_type_field_richtexts.schema'
 require 'schemas/content_type_field_media_assets.schema'
+require 'schemas/content_type_field_selects.schema'
+require 'schemas/content_type_field_select_options.schema'
+require 'schemas/content_type_fields.schema'
 
 # content entries
 require 'schemas/content_entries.schema'
 require 'schemas/content_entry_versions.schema'
-require 'schemas/content_entry_fields.schema'
 require 'schemas/content_entry_field_texts.schema'
 require 'schemas/content_entry_field_richtexts.schema'
 require 'schemas/content_entry_field_media_assets.schema'
+require 'schemas/content_entry_field_selects.schema'
+require 'schemas/content_entry_field_select_selections.schema'
+require 'schemas/content_entry_fields.schema'
 
 # content authorization
 require 'schemas/content_authorization_tags.schema'

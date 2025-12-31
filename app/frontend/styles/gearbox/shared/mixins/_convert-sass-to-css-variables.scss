@@ -1,0 +1,78 @@
+// Mixin: Convert Sass to CSS Variables
+// Converts Sass variables to CSS custom properties with a namespace
+// Depends on the join-key-name mixin for processing nested maps
+//
+// @param {String} $namespace - The namespace prefix for CSS variables
+//
+// Example:
+// @include convert-sass-to-css-variables('app');
+// Output: CSS variables like --app-color-primary, --app-spacing-4, etc.
+
+@use './join-key-name' as join;
+
+@mixin convert-sass-to-css-variables($namespace: 'gb') {
+  :root {
+    // Colors
+    @if variable-exists(theme-colors) {
+      @each $color-name, $color-map in $theme-colors {
+        @if type-of($color-map) == 'map' {
+          @include join.join-key-name(
+            $color-map,
+            '#{$namespace}-color-#{$color-name}'
+          );
+        } @else {
+          --#{$namespace}-color-#{$color-name}: #{$color-map};
+        }
+      }
+    }
+
+    // Typography
+    @if variable-exists(theme-typography) {
+      @each $type-key, $type-map in $theme-typography {
+        @include join.join-key-name($type-map, '#{$namespace}-#{$type-key}');
+      }
+    }
+
+    // Spacing
+    @if variable-exists(theme-spacing) {
+      @each $space-key, $space-value in $theme-spacing {
+        --#{$namespace}-spacing-#{$space-key}: #{$space-value};
+      }
+    }
+
+    // Border Radius
+    @if variable-exists(theme-radius) {
+      @each $radius-key, $radius-value in $theme-radius {
+        --#{$namespace}-radius-#{$radius-key}: #{$radius-value};
+      }
+    }
+
+    // Shadows
+    @if variable-exists(theme-shadows) {
+      @each $shadow-key, $shadow-value in $theme-shadows {
+        --#{$namespace}-shadow-#{$shadow-key}: #{$shadow-value};
+      }
+    }
+
+    // Breakpoints
+    @if variable-exists(theme-breakpoints) {
+      @each $breakpoint-key, $breakpoint-value in $theme-breakpoints {
+        --#{$namespace}-breakpoint-#{$breakpoint-key}: #{$breakpoint-value};
+      }
+    }
+
+    // Z-Index
+    @if variable-exists(theme-z-index) {
+      @each $z-key, $z-value in $theme-z-index {
+        --#{$namespace}-z-#{$z-key}: #{$z-value};
+      }
+    }
+
+    // Transitions
+    @if variable-exists(theme-transitions) {
+      @each $transition-key, $transition-value in $theme-transitions {
+        --#{$namespace}-transition-#{$transition-key}: #{$transition-value};
+      }
+    }
+  }
+}

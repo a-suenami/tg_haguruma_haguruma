@@ -1,0 +1,8 @@
+create_table :content_entry_field_selects, force: :cascade do |t|
+  t.citext :tenant_id, null: false
+
+  t.timestamps null: false
+end
+
+add_index :content_entry_field_selects, [:tenant_id, :id], unique: true
+add_foreign_key :content_entry_field_selects, :tenants, column: :tenant_id, primary_key: :id

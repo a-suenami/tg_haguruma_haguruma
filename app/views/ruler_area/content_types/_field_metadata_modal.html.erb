@@ -1,11 +1,29 @@
-<div id="field-metadata-modal" uk-modal>
+<style>
+  /* Sortable options styling */
+  [data-content-type-field-target="selectOptionsContainer"] .uk-sortable-drag {
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    border-radius: 4px;
+    padding: 5px;
+  }
+  [data-content-type-field-target="selectOptionsContainer"] .uk-sortable-placeholder {
+    opacity: 0.3;
+  }
+</style>
+
+<div id="field-metadata-modal"
+     uk-modal="container: false"
+     data-content-type-field-target="fieldMetadataModal">
   <div class="uk-modal-dialog">
     <button class="uk-modal-close-default" type="button" uk-close></button>
 
     <div class="uk-modal-header">
       <h2 class="uk-modal-title">
-        <a href="#" id="back-button" onclick="backToFieldTypeSelection(event)" class="uk-margin-small-right">←</a>
-        <span id="modal-title">フィールドメタデータの設定</span>
+        <a href="#"
+           data-content-type-field-target="backButton"
+           data-action="click->content-type-field#backToFieldTypeSelection"
+           class="uk-margin-small-right">←</a>
+        <span data-content-type-field-target="modalTitle">フィールドメタデータの設定</span>
       </h2>
     </div>
 
@@ -13,10 +31,13 @@
       <div class="uk-margin">
         <div class="uk-card uk-card-default uk-card-body uk-card-small">
           <div style="margin-bottom: 10px;">
-            <span id="selected-field-type-icon" uk-icon="icon: pencil; ratio: 1.5"></span>
-            <span id="selected-field-type-label" style="margin-left: 10px; font-weight: 600;">ショートテキスト</span>
+            <span data-content-type-field-target="selectedFieldTypeIcon"
+                  uk-icon="icon: pencil; ratio: 1.5"></span>
+            <span data-content-type-field-target="selectedFieldTypeLabel"
+                  style="margin-left: 10px; font-weight: 600;">ショートテキスト</span>
           </div>
-          <p class="uk-text-small uk-text-muted" id="selected-field-type-desc">タイトルや名前などの短いテキスト</p>
+          <p class="uk-text-small uk-text-muted"
+             data-content-type-field-target="selectedFieldTypeDesc">タイトルや名前などの短いテキスト</p>
         </div>
       </div>
 
@@ -25,21 +46,30 @@
       <div class="uk-margin">
         <label class="uk-form-label">識別子</label>
         <div class="uk-form-controls">
-          <input type="text" id="field-identifier" class="uk-input" placeholder="例: title">
+          <input type="text"
+                 data-content-type-field-target="fieldIdentifier"
+                 class="uk-input"
+                 placeholder="例: title">
         </div>
       </div>
 
       <div class="uk-margin">
         <label class="uk-form-label">名前</label>
         <div class="uk-form-controls">
-          <input type="text" id="field-name" class="uk-input" placeholder="例: タイトル">
+          <input type="text"
+                 data-content-type-field-target="fieldName"
+                 class="uk-input"
+                 placeholder="例: タイトル">
         </div>
       </div>
 
       <div class="uk-margin">
         <label class="uk-form-label">説明</label>
         <div class="uk-form-controls">
-          <textarea id="field-description" class="uk-textarea" rows="3" placeholder="このフィールドの説明を入力してください"></textarea>
+          <textarea data-content-type-field-target="fieldDescription"
+                    class="uk-textarea"
+                    rows="3"
+                    placeholder="このフィールドの説明を入力してください"></textarea>
         </div>
       </div>
 
@@ -47,332 +77,48 @@
         <label class="uk-form-label">必須</label>
         <div class="uk-form-controls">
           <label>
-            <input type="checkbox" id="field-required" class="uk-checkbox">
+            <input type="checkbox"
+                   data-content-type-field-target="fieldRequired"
+                   class="uk-checkbox">
             必須の項目にする
           </label>
+        </div>
+      </div>
+
+      <!-- Select field specific settings -->
+      <div data-content-type-field-target="selectFieldSettings" style="display: none;">
+        <h4>セレクトフィールドの設定</h4>
+
+        <div class="uk-margin">
+          <label class="uk-form-label">表示形式</label>
+          <div class="uk-form-controls">
+            <select data-content-type-field-target="selectDisplayFormat" class="uk-select">
+              <option value="dropdown">ドロップダウン</option>
+              <option value="checkbox">チェックボックス（複数選択可）</option>
+              <option value="radio">ラジオボタン</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="uk-margin">
+          <label class="uk-form-label">選択肢</label>
+          <div data-content-type-field-target="selectOptionsContainer"
+               uk-sortable="handle: .option-drag-handle">
+            <!-- Options will be added here dynamically -->
+          </div>
+          <button type="button"
+                  class="uk-button uk-button-default uk-button-small uk-margin-small-top"
+                  data-action="click->content-type-field#addSelectOption">
+            + 選択肢を追加
+          </button>
         </div>
       </div>
     </div>
 
     <div class="uk-modal-footer uk-text-right">
-      <button id="submit-button" class="uk-button uk-button-primary" onclick="confirmAddOrUpdateField()">フィールドを追加する</button>
+      <button data-content-type-field-target="submitButton"
+              class="uk-button uk-button-primary"
+              data-action="click->content-type-field#confirmAddOrUpdateField">フィールドを追加する</button>
     </div>
   </div>
 </div>
-
-<script>
-let selectedFieldType = '';
-let editingFieldId = null; // null = add mode, otherwise = edit mode
-const fieldTypeLabels = {
-  text: { label: 'ショートテキスト', desc: 'タイトルや名前などの短いテキスト', icon: 'pencil' },
-  richtext: { label: 'リッチテキスト', desc: 'スタイルや画像、動画などのメディアを含めたテキスト', icon: 'file-edit' },
-  media_asset: { label: 'メディア', desc: '画像や動画、PDFなどのファイル用', icon: 'image' }
-};
-
-function addField(fieldType) {
-  editingFieldId = null; // Reset to add mode
-  selectedFieldType = fieldType;
-  const info = fieldTypeLabels[fieldType];
-
-  // Update metadata modal with field type info
-  document.getElementById('selected-field-type-label').textContent = info.label;
-  document.getElementById('selected-field-type-desc').textContent = info.desc;
-
-  // Update icon
-  const iconElement = document.getElementById('selected-field-type-icon');
-  iconElement.setAttribute('uk-icon', `icon: ${info.icon}; ratio: 1.5`);
-
-  // Clear previous values
-  document.getElementById('field-identifier').value = '';
-  document.getElementById('field-name').value = '';
-  document.getElementById('field-description').value = '';
-  document.getElementById('field-required').checked = false;
-
-  // Update modal UI for add mode
-  document.getElementById('modal-title').textContent = 'フィールドメタデータの設定';
-  document.getElementById('submit-button').textContent = 'フィールドを追加する';
-  document.getElementById('back-button').style.display = '';
-
-  // Close type selection modal and open metadata modal
-  UIkit.modal('#field-type-modal').hide();
-  UIkit.modal('#field-metadata-modal').show();
-}
-
-function editField(event, fieldId, fieldType, identifier, name, description, required) {
-  event.preventDefault();
-
-  editingFieldId = fieldId;
-  selectedFieldType = fieldType;
-  const info = fieldTypeLabels[fieldType];
-
-  // Update metadata modal with field type info
-  document.getElementById('selected-field-type-label').textContent = info.label;
-  document.getElementById('selected-field-type-desc').textContent = info.desc;
-
-  // Update icon
-  const iconElement = document.getElementById('selected-field-type-icon');
-  iconElement.setAttribute('uk-icon', `icon: ${info.icon}; ratio: 1.5`);
-
-  // Populate with existing values
-  document.getElementById('field-identifier').value = identifier;
-  document.getElementById('field-name').value = name;
-  document.getElementById('field-description').value = description;
-  document.getElementById('field-required').checked = required;
-
-  // Update modal UI for edit mode
-  document.getElementById('modal-title').textContent = 'フィールドの編集';
-  document.getElementById('submit-button').textContent = '保存する';
-  document.getElementById('back-button').style.display = 'none'; // Hide back button in edit mode
-
-  // Open metadata modal
-  UIkit.modal('#field-metadata-modal').show();
-}
-
-function backToFieldTypeSelection(event) {
-  event.preventDefault();
-  UIkit.modal('#field-metadata-modal').hide();
-  UIkit.modal('#field-type-modal').show();
-}
-
-function confirmAddOrUpdateField() {
-  // Get form values
-  const identifier = document.getElementById('field-identifier').value;
-  const name = document.getElementById('field-name').value;
-  const description = document.getElementById('field-description').value;
-  const required = document.getElementById('field-required').checked;
-
-  if (!identifier || !name) {
-    alert('識別子と名前は必須です');
-    return;
-  }
-
-  if (editingFieldId) {
-    // Edit mode - update existing field
-    updateExistingField(editingFieldId, identifier, name, description, required);
-  } else {
-    // Add mode - create new field
-    addNewField(identifier, name, description, required);
-  }
-
-  UIkit.modal('#field-metadata-modal').hide();
-}
-
-function addNewField(identifier, name, description, required) {
-  // Get tenant_id
-  const tenantInput = document.querySelector('input[name="content_type[tenant_id]"]');
-  const tenantId = tenantInput ? tenantInput.value : '';
-
-  // Generate unique timestamp for field name
-  const timestamp = new Date().getTime();
-
-  // Calculate position based on current number of fields
-  let tableBody = document.getElementById('fields-table-body');
-  const currentFieldCount = tableBody ? tableBody.querySelectorAll('tr[data-field-id]').length : 0;
-  const position = currentFieldCount;
-
-  // Create hidden inputs
-  const hiddenContainer = document.getElementById('hidden-fields-container');
-  const hiddenFieldsHtml = `
-    <div data-field-id="${timestamp}">
-      <input type="hidden" name="content_type[fields_attributes][${timestamp}][tenant_id]" value="${tenantId}">
-      <input type="hidden" name="content_type[fields_attributes][${timestamp}][label]" value="${name}">
-      <input type="hidden" name="content_type[fields_attributes][${timestamp}][api_identifier]" value="${identifier}">
-      <input type="hidden" name="content_type[fields_attributes][${timestamp}][description]" value="${description}">
-      <input type="hidden" name="content_type[fields_attributes][${timestamp}][field_type]" value="${selectedFieldType}">
-      <input type="hidden" name="content_type[fields_attributes][${timestamp}][required]" value="${required ? '1' : '0'}">
-      <input type="hidden" name="content_type[fields_attributes][${timestamp}][position]" value="${position}">
-      <input type="hidden" name="content_type[fields_attributes][${timestamp}][_destroy]" value="false" class="field-destroy-input">
-    </div>
-  `;
-  hiddenContainer.insertAdjacentHTML('beforeend', hiddenFieldsHtml);
-
-  // Remove empty state if exists
-  const emptyState = document.getElementById('empty-fields-message');
-  if (emptyState) {
-    emptyState.remove();
-  }
-
-  // Add row to table
-  tableBody = document.getElementById('fields-table-body');
-  if (!tableBody) {
-    // Create table if it doesn't exist
-    const hiddenContainer = document.getElementById('hidden-fields-container');
-    const tableHtml = `
-      <table class="uk-table uk-table-divider uk-table-small">
-        <thead>
-          <tr>
-            <th style="width: 40px;"></th>
-            <th>識別子</th>
-            <th>名前</th>
-            <th>種別</th>
-            <th style="width: 40px;"></th>
-          </tr>
-        </thead>
-        <tbody id="fields-table-body" uk-sortable="handle: .drag-handle"></tbody>
-      </table>
-    `;
-    hiddenContainer.insertAdjacentHTML('afterend', tableHtml);
-    tableBody = document.getElementById('fields-table-body');
-
-    // Initialize UIkit sortable with handle configuration
-    UIkit.sortable(tableBody, {
-      handle: '.drag-handle'
-    });
-  }
-
-  // Always ensure sortable stop event is attached (in case table already existed)
-  if (tableBody && !tableBody.dataset.sortableInitialized) {
-    UIkit.util.on(tableBody, 'stop', function() {
-      updateFieldPositions();
-    });
-    tableBody.dataset.sortableInitialized = 'true';
-  }
-
-  const info = fieldTypeLabels[selectedFieldType];
-  const fieldTypeLabel = info ? info.label : selectedFieldType;
-  const fieldTypeIcon = info ? info.icon : 'file';
-
-  const rowHtml = `
-    <tr data-field-id="${timestamp}">
-      <td class="uk-text-center">
-        <a href="#" uk-icon="icon: menu" class="drag-handle" style="cursor: move;"></a>
-      </td>
-      <td>
-        <code>${identifier}</code>
-        ${required ? '<span style="color: #f0506e; font-weight: bold; margin-left: 3px;">*</span>' : ''}
-      </td>
-      <td>
-        ${name}
-        ${description ? '<br><small class="uk-text-muted">' + description + '</small>' : ''}
-      </td>
-      <td>
-        <span uk-icon="icon: ${fieldTypeIcon}"></span>
-        ${fieldTypeLabel}
-      </td>
-      <td class="uk-text-center">
-        <a href="#" uk-icon="icon: more-vertical"></a>
-        <div uk-dropdown="mode: click">
-          <ul class="uk-nav uk-dropdown-nav">
-            <li>
-              <a href="#" onclick="editField(event, '${timestamp}', '${selectedFieldType}', '${identifier}', '${name}', '${description}', ${required})">
-                <span uk-icon="icon: pencil; ratio: 0.8"></span> 編集
-              </a>
-            </li>
-            <li>
-              <a href="#" onclick="confirmRemoveField(event, '${timestamp}')" style="color: #f0506e;">
-                <span uk-icon="icon: trash; ratio: 0.8"></span> 削除
-              </a>
-            </li>
-          </ul>
-        </div>
-      </td>
-    </tr>
-  `;
-  tableBody.insertAdjacentHTML('beforeend', rowHtml);
-
-  // Re-initialize UIkit icons
-  UIkit.icon(tableBody.querySelector(`tr[data-field-id="${timestamp}"] [uk-icon]`));
-}
-
-function updateExistingField(fieldId, identifier, name, description, required) {
-  // Update hidden inputs
-  const hiddenContainer = document.querySelector(`#hidden-fields-container [data-field-id="${fieldId}"]`);
-  if (hiddenContainer) {
-    const labelInput = hiddenContainer.querySelector('input[name*="[label]"]');
-    const identifierInput = hiddenContainer.querySelector('input[name*="[api_identifier]"]');
-    const descriptionInput = hiddenContainer.querySelector('input[name*="[description]"]');
-    const requiredInput = hiddenContainer.querySelector('input[name*="[required]"]');
-
-    if (labelInput) labelInput.value = name;
-    if (identifierInput) identifierInput.value = identifier;
-    if (descriptionInput) descriptionInput.value = description;
-    if (requiredInput) requiredInput.value = required ? '1' : '0';
-  }
-
-  // Update table row
-  const row = document.querySelector(`tr[data-field-id="${fieldId}"]`);
-  if (row) {
-    const info = fieldTypeLabels[selectedFieldType];
-    const fieldTypeLabel = info ? info.label : selectedFieldType;
-    const fieldTypeIcon = info ? info.icon : 'file';
-
-    // Update identifier column with required asterisk
-    const identifierCell = row.children[1];
-    if (identifierCell) {
-      const asterisk = required ? '<span style="color: #f0506e; font-weight: bold; margin-left: 3px;">*</span>' : '';
-      identifierCell.innerHTML = `<code>${identifier}</code>${asterisk}`;
-    }
-
-    // Update name column
-    const nameCell = row.children[2];
-    if (nameCell) {
-      nameCell.innerHTML = `${name}${description ? '<br><small class="uk-text-muted">' + description + '</small>' : ''}`;
-    }
-
-    // Field type column stays the same since we don't allow changing field type in edit mode
-  }
-}
-
-function confirmRemoveField(event, fieldId) {
-  event.preventDefault();
-
-  if (confirm('このフィールドを削除しますか？')) {
-    removeField(fieldId);
-  }
-}
-
-function updateFieldPositions() {
-  const tableBody = document.getElementById('fields-table-body');
-  if (!tableBody) return;
-
-  const rows = tableBody.querySelectorAll('tr[data-field-id]');
-  rows.forEach((row, index) => {
-    const fieldId = row.dataset.fieldId;
-    const hiddenContainer = document.querySelector(`#hidden-fields-container [data-field-id="${fieldId}"]`);
-    if (hiddenContainer) {
-      let positionInput = hiddenContainer.querySelector('input[name*="[position]"]');
-      if (positionInput) {
-        positionInput.value = index;
-      }
-    }
-  });
-}
-
-function removeField(fieldId) {
-  // Remove table row
-  const row = document.querySelector(`tr[data-field-id="${fieldId}"]`);
-  if (row) {
-    row.remove();
-  }
-
-  // Mark field for destruction or remove hidden inputs
-  const hiddenFieldContainer = document.querySelector(`#hidden-fields-container [data-field-id="${fieldId}"]`);
-  if (hiddenFieldContainer) {
-    const destroyInput = hiddenFieldContainer.querySelector('.field-destroy-input');
-    if (destroyInput) {
-      // Persisted field: mark for destruction
-      destroyInput.value = '1';
-    } else {
-      // New field: just remove
-      hiddenFieldContainer.remove();
-    }
-  }
-
-  // Show empty state if no fields left
-  const tableBody = document.getElementById('fields-table-body');
-  if (tableBody && tableBody.children.length === 0) {
-    const table = tableBody.closest('table');
-    if (table) {
-      table.remove();
-      const emptyHtml = `
-        <div id="empty-fields-message" class="uk-text-center uk-text-muted uk-margin">
-          <p>フィールドがまだありません</p>
-          <p>「フィールドを追加」ボタンからフィールドを追加してください</p>
-        </div>
-      `;
-      const hiddenContainer = document.getElementById('hidden-fields-container');
-      hiddenContainer.insertAdjacentHTML('afterend', emptyHtml);
-    }
-  }
-}
-</script>

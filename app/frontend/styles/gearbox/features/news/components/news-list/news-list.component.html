@@ -1,0 +1,33 @@
+@if (newsResource.isLoading()) {
+  <div class="loading">Loading...</div>
+}
+
+@if (newsResource.value(); as newsItems) {
+  <div class="list">
+    @for (news of newsItems; track news.title; let last = $last; let i = $index) {
+      <cog-news-item
+        [routerLink]="['/news/detail', i + 1]"
+        [news]="news"
+      ></cog-news-item>
+      @if (!last) {
+        <div class="divider"></div>
+      }
+    }
+  </div>
+
+  @if (!overview()) {
+    <div class="pagination-button-container">
+      <button cog-button primary outlined>VIEW MORE</button>
+    </div>
+  }
+
+  @if (overview()) {
+    <div class="overview-page-indicator">
+      <button cog-button primary outlined>VIEW ALL</button>
+    </div>
+  }
+}
+
+@if (newsResource.error()) {
+  <div class="error">Failed to load news items</div>
+}

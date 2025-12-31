@@ -145,6 +145,8 @@ module AdminArea
           save_richtext_field(field, value)
         when 'media_asset'
           save_media_asset_field(field, value)
+        when 'select_field'
+          save_select_field(field, content_type_field, value)
         end
       end
 
@@ -196,6 +198,27 @@ module AdminArea
             media_asset_id: media_asset.id,
           )
           field.media_asset = field_media_asset
+        end
+        field.save!
+      end
+
+      sig { params(field: ContentEntry::Field, content_type_field: ContentType::Field, value: T.untyped).void }
+      def save_select_field(field, content_type_field, value)
+        # value can be a single ID (dropdown/radio) or array of IDs (checkbox)
+        option_ids = Array(value).compact_blank.map(&:to_i)
+
+        # Validate options belong to this select field
+        valid_option_ids = content_type_field.select&.options&.pluck(:id) || []
+        option_ids &= valid_option_ids
+
+        if field.select
+          T.must(field.select).selected_option_ids = option_ids
+          T.must(field.select).save!
+        else
+          field_select = ContentEntry::FieldSelect.create!(tenant_id: Tenant.current_id)
+          field_select.selected_option_ids = option_ids
+          field_select.save!
+          field.select = field_select
         end
         field.save!
       end

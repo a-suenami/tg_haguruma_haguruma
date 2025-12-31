@@ -61,6 +61,9 @@ module GeneratedUrlHelpersModule
   def admin_area_contents_collection_entry_richtext_field_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_select_field_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_text_field_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -391,6 +394,15 @@ module GeneratedUrlHelpersModule
   def user_area_auth_failure_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_auth_start_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_blog_index_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_blog_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_callback_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -409,8 +421,26 @@ module GeneratedUrlHelpersModule
   def user_area_logout_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_news_index_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_news_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_profile_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def user_area_root_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_schedule_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_schedules_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_ticket_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_tickets_url(*args); end
 end

@@ -1,0 +1,56 @@
+<% content_for :title do %>
+  TICKET - <%= current_tenant&.name || 'Fan Club' %>
+<% end %>
+
+<%= render 'user_area/alpha/shared/page_header' %>
+
+<main class="main">
+  <div class="inner">
+    <article cog-detail-fragment>
+      <header cog-detail-fragment-header>
+        <div cog-detail-fragment-toolbar>
+          <h1 cog-detail-fragment-title>チケット</h1>
+        </div>
+        <div cog-detail-fragment-toolbar>
+          <span cog-category-label>ライブ</span>
+          <span cog-date-label>2024.12.15</span>
+        </div>
+      </header>
+
+      <div cog-detail-fragment-content>
+        <div cog-rich-content-viewer>
+          <h2>2025年春ツアー チケット先行販売</h2>
+          <p>
+            ファンクラブ会員限定の先行販売を開始いたします！
+          </p>
+          <p>
+            今回のツアーでは全国10都市を回り、新曲を含む最新セットリストでお届けします。
+            ぜひこの機会にお申し込みください。
+          </p>
+          <figure>
+            <img src="/assets/images/dummy-ticket-content.jpg" alt="Ticket Content Image">
+            <figcaption>ツアービジュアル</figcaption>
+          </figure>
+          <h3>公演日程</h3>
+          <ul>
+            <li>2025年3月1日（土）東京ドーム</li>
+            <li>2025年3月8日（土）大阪城ホール</li>
+            <li>2025年3月15日（土）名古屋ドーム</li>
+          </ul>
+          <h3>チケット料金</h3>
+          <p>
+            全席指定: 9,800円（税込）
+          </p>
+        </div>
+      </div>
+
+      <footer cog-detail-fragment-actions>
+        <a href="<%= user_area_tickets_path %>" cog-button outlined class="action-button">
+          一覧に戻る
+        </a>
+      </footer>
+    </article>
+  </div>
+</main>
+
+<%= render 'user_area/alpha/shared/page_footer' %>

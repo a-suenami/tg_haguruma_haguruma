@@ -1,0 +1,5 @@
+@use './defaults';
+
+$gearbox-colors: defaults.$gearbox-color-defaults !default;
+
+@forward './defaults';

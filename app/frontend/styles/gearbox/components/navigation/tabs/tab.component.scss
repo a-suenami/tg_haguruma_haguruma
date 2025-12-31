@@ -1,0 +1,71 @@
+[cog-tab] {
+  display: inline-block;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid var(--gearbox-outline);
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+  min-width: 100px;
+  width: auto;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  padding: 0;
+
+  @media (pointer: fine) {
+    &:hover {
+      .text {
+        opacity: 1;
+      }
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.active {
+    .text {
+      opacity: 1;
+    }
+    .current-line {
+      opacity: 1;
+      transform: scaleX(1);
+
+      --activate-transform-animation-duration: 120ms;
+      --activate-opacity-animation-duration: 150ms;
+      transition:
+        transform var(--activate-transform-animation-duration)
+          cubic-bezier(0.4, 0, 0.2, 1),
+        opacity var(--activate-opacity-animation-duration) linear;
+    }
+  }
+
+  .text {
+    color: var(--gearbox-secondary);
+    padding: var(--gearbox-spacing-8) var(--gearbox-spacing-16);
+    font-family: var(--gearbox-font-family-primary);
+    font-weight: var(--gearbox-font-weight-semibold);
+    font-size: var(--gearbox-font-size-body-small);
+    opacity: 0.4;
+    white-space: nowrap;
+  }
+
+  .current-line {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: var(--gearbox-primary);
+    --deactivate-transform-animation-duration: 75ms;
+    --deactivate-opacity-animation-duration: 105ms;
+    transform: scaleX(0.16);
+    opacity: 0;
+    transition:
+      transform var(--deactivate-transform-animation-duration)
+        cubic-bezier(0, 0, 0.2, 1),
+      opacity var(--deactivate-opacity-animation-duration) linear;
+  }
+}

@@ -1,0 +1,9 @@
+@use '../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-header-menu] {
+  display: flex;
+  align-items: center;
+  gap: var(--gearbox-spacing-24, 24px);
+  padding: 0;
+  margin: 0;
+}

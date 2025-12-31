@@ -1,0 +1,52 @@
+<footer cog-footer>
+  <cog-footer-menu>
+    <a cog-footer-menu-item routerLink="/landing">TOP</a>
+    @if (features | hagurumaHasFeature: 'news'; as newsFeature) {
+      <a cog-footer-menu-item routerLink="/news/list">{{
+        newsFeature.label
+      }}</a>
+    }
+    @if (features | hagurumaHasFeature: 'ticket'; as ticketFeature) {
+      <a cog-footer-menu-item (click)="openMembership()">{{
+        ticketFeature.label
+      }}</a>
+    }
+    @if (features | hagurumaHasFeature: 'blog'; as blogFeature) {
+      <a cog-footer-menu-item routerLink="/blog/list">{{
+        blogFeature.label
+      }}</a>
+    }
+    @if (features | hagurumaHasFeature: 'schedule'; as scheduleFeature) {
+      <a cog-footer-menu-item routerLink="/schedule/list">{{
+        scheduleFeature.label
+      }}</a>
+    }
+    <a cog-footer-menu-item (click)="openMyPage()">{{
+      features.mypage.label
+    }}</a>
+  </cog-footer-menu>
+
+  <cog-legal-links>
+    <a cog-legal-link>利用規約・チケット規約</a>
+    <a cog-legal-link>個人情報の取り扱いについて</a>
+    <a cog-legal-link>サイトポリシー</a>
+    <a cog-legal-link>特定商取引法に基づく表記</a>
+    <a cog-legal-link>FAQ / お問い合わせ</a>
+  </cog-legal-links>
+
+  <cog-sns-items>
+    @for (link of snsLinks; track link.name) {
+      <a
+        cog-sns-item
+        [type]="link.name"
+        [href]="link.link"
+        target="_blank"
+        rel="noopener"
+      ></a>
+    }
+  </cog-sns-items>
+
+  <cog-copyright>
+    {{ copyright }}
+  </cog-copyright>
+</footer>

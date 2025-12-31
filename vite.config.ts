@@ -21,6 +21,16 @@ export default defineConfig({
       vue: 'vue/dist/vue.esm-bundler.js',
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        includePaths: [
+          path.resolve(__dirname, 'app/frontend/styles/gearbox'),
+          path.resolve(__dirname, 'app/frontend/styles/gearbox/shared'),
+        ],
+      },
+    },
+  },
   define: {
     global: {}, // global is not defined が発生するため
   },

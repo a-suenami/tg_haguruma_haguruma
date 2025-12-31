@@ -1,0 +1,84 @@
+@use 'sass:color';
+@use 'sass:map';
+
+@function gearbox-color-to-rgb($hex) {
+  $r: color.channel($hex, 'red', $space: rgb);
+  $g: color.channel($hex, 'green', $space: rgb);
+  $b: color.channel($hex, 'blue', $space: rgb);
+
+  @return '#{$r}, #{$g}, #{$b}';
+}
+
+@function declare-rgb-properties($colors) {
+  $result: $colors;
+
+  @each $key, $value in $colors {
+    $rgb-value: gearbox-color-to-rgb($value);
+    @if $rgb-value {
+      $result: map.set($result, '#{$key}-rgb', $rgb-value);
+    }
+  }
+
+  @return $result;
+}
+
+$gearbox-base-colors: (
+  primary: #f2719d,
+  on-primary: #ffffff,
+  primary-container: #ffffff,
+  on-primary-container: #f2719d,
+
+  secondary: #4e34c0,
+  on-secondary: #ffffff,
+  secondary-container: #efe7f2,
+  on-secondary-container: #4e34c0,
+
+  tertiary: #9c71f2,
+  on-tertiary: #ffffff,
+  tertiary-container: #f2e9ff,
+  on-tertiary-container: #9c71f2,
+
+  danger: #ba1a1a,
+  on-danger: #ffffff,
+  danger-container: #ffedea,
+  on-danger-container: #ba1a1a,
+
+  background: #ffffff,
+
+  surface: #ffffff,
+  surface-dim: #eaeaea,
+  surface-bright: #ffffff,
+  surface-scrim: #fff7ff,
+
+  surface-container-highest: #efe7f2,
+  surface-container-high: #efe7f2,
+  surface-container-mid: #fff7ff,
+  surface-container-low: #fff7ff,
+  surface-container-lowest: #ffffff,
+
+  on-surface: #454c66,
+  on-surface-container-highest: #1a0515,
+  on-surface-container-high: #1a0515,
+  on-surface-container-mid: #1a0515,
+  on-surface-container-low: #1a0515,
+  on-surface-container-lowest: #201520,
+
+  outline: #efe7f2,
+  outline-primary: #f2719d,
+  outline-secondary: #4e34c0,
+  outline-variant: #efe7f2,
+) !default;
+
+$gearbox-color-defaults: declare-rgb-properties($gearbox-base-colors) !default;
+
+@function merge-gearbox-colors($overrides...) {
+  $result: $gearbox-base-colors;
+
+  @each $override in $overrides {
+    @if $override != null {
+      $result: map.deep-merge($result, $override);
+    }
+  }
+
+  @return declare-rgb-properties($result);
+}

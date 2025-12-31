@@ -31,5 +31,23 @@
       <% end %>
     </div>
 
+  <% when 'select_field' %>
+    <%
+      selected_ids = Array(value).map(&:to_i)
+      select_config = field.select
+      selected_options = select_config&.options&.where(id: selected_ids)&.order(:position) || []
+    %>
+    <div class="select-field-display">
+      <% if selected_options.any? %>
+        <ul class="selected-options-list">
+          <% selected_options.each do |option| %>
+            <li><%= option.display_name %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <span class="no-selection">選択されていません</span>
+      <% end %>
+    </div>
+
   <% end %>
 </div>

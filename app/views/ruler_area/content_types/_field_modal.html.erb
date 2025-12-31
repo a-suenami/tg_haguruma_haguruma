@@ -1,4 +1,6 @@
-<div id="field-type-modal" uk-modal>
+<div id="field-type-modal"
+     uk-modal="container: false"
+     data-content-type-field-target="fieldTypeModal">
   <div class="uk-modal-dialog uk-modal-body" style="width: 800px;">
     <button class="uk-modal-close-default" type="button" uk-close></button>
     <h2 class="uk-modal-title">フィールドの種別の選択</h2>
@@ -9,7 +11,8 @@
         <div style="padding: 5px;">
           <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-card-small"
                style="cursor: pointer;"
-               onclick="addField('text')">
+               data-action="click->content-type-field#addField"
+               data-field-type="text">
             <div style="margin-bottom: 10px;">
               <span uk-icon="icon: pencil; ratio: 2"></span>
             </div>
@@ -22,7 +25,8 @@
         <div style="padding: 5px;">
           <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-card-small"
                style="cursor: pointer;"
-               onclick="addField('richtext')">
+               data-action="click->content-type-field#addField"
+               data-field-type="richtext">
             <div style="margin-bottom: 10px;">
               <span uk-icon="icon: file-edit; ratio: 2"></span>
             </div>
@@ -35,7 +39,8 @@
         <div style="padding: 5px;">
           <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-card-small"
                style="cursor: pointer;"
-               onclick="addField('media_asset')">
+               data-action="click->content-type-field#addField"
+               data-field-type="media_asset">
             <div style="margin-bottom: 10px;">
               <span uk-icon="icon: image; ratio: 2"></span>
             </div>
@@ -55,8 +60,12 @@
           </div>
         </div>
 
+        <!-- Select Field -->
         <div style="padding: 5px;">
-          <div class="uk-card uk-card-default uk-card-body uk-card-small" style="opacity: 0.4;">
+          <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-card-small"
+               style="cursor: pointer;"
+               data-action="click->content-type-field#addField"
+               data-field-type="select_field">
             <div style="margin-bottom: 10px;">
               <span uk-icon="icon: list; ratio: 2"></span>
             </div>
@@ -108,4 +117,3 @@
     </div>
   </div>
 </div>
-

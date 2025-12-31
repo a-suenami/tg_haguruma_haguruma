@@ -1,0 +1,31 @@
+[cog-news-item] {
+  width: 100%;
+  display: grid;
+  grid-template:
+    'category date' auto
+    'title title' auto / auto 1fr;
+  align-items: center;
+  column-gap: var(--gearbox-spacing-8);
+  row-gap: var(--gearbox-spacing-4);
+  padding: var(--gearbox-spacing-12) var(--gearbox-spacing-8);
+  cursor: pointer;
+
+  .category {
+    grid-area: category;
+  }
+
+  .date {
+    grid-area: date;
+    justify-self: start;
+  }
+
+  .title {
+    grid-area: title;
+    font-family: var(--gearbox-font-family-primary);
+    font-weight: var(--gearbox-font-weight-semibold);
+    font-size: var(--gearbox-font-size-body-medium);
+    line-height: var(--gearbox-line-height-relaxed);
+    letter-spacing: 0.04em;
+    color: var(--gearbox-secondary);
+  }
+}
