@@ -65,4 +65,39 @@
   [cog-landing-section].banners {
     --landing-section-horizontal-padding: 0;
   }
+
+  // Blog swiper - smaller slides for blog items
+  .blog-swiper {
+    [cog-swiper-slide] {
+      --cog-swiper-slide-width: 280px;
+    }
+
+    [cog-swiper-slide]:first-of-type {
+      margin-left: 56px;
+    }
+
+    [cog-swiper-slide]:last-of-type {
+      margin-right: 56px;
+    }
+
+    @include breakpoints.media-down(sm) {
+      [cog-swiper-slide] {
+        --cog-swiper-slide-width: calc(50vw - 24px);
+      }
+
+      [cog-swiper-slide]:first-of-type {
+        margin-left: 0;
+      }
+
+      [cog-swiper-slide]:last-of-type {
+        margin-right: 0;
+      }
+
+      .swiper-inner {
+        justify-content: flex-start;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+  }
 }

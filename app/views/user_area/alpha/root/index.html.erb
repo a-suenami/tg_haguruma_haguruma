@@ -86,21 +86,23 @@
         </div>
       </div>
       <div cog-landing-section-content>
-        <div cog-blog-list landing>
-          <div class="list">
-            <% 4.times do |i| %>
-              <a href="<%= user_area_blog_path(i + 1) %>" cog-blog-item>
-                <div class="thumbnail">
-                  <img draggable="false" src="https://placehold.co/600x400/e8e8e8/999999?text=Blog+<%= i + 1 %>" alt="Blog Thumbnail">
-                  <div class="label">
-                    <span cog-category-label>ファッション</span>
+        <div cog-swiper-container class="blog-swiper">
+          <div class="swiper-inner">
+            <% rand(1..5).times do |i| %>
+              <div cog-swiper-slide>
+                <a href="<%= user_area_blog_path(i + 1) %>" cog-blog-item>
+                  <div class="thumbnail">
+                    <img draggable="false" src="https://placehold.co/600x400/e8e8e8/999999?text=Blog+<%= i + 1 %>" alt="Blog Thumbnail">
+                    <div class="label">
+                      <span cog-category-label>ファッション</span>
+                    </div>
                   </div>
-                </div>
-                <div class="title">XXXXのタイトルがここに入りますXXXXのタイトルがここに入りますXXXXのタ...</div>
-                <div class="date">
-                  <span cog-date-label>2025.12.31.SAT</span>
-                </div>
-              </a>
+                  <div class="title">XXXXのタイトルがここに入りますXXXXのタイトルがここに入りますXXXXのタ...</div>
+                  <div class="date">
+                    <span cog-date-label>2025.12.31.SAT</span>
+                  </div>
+                </a>
+              </div>
             <% end %>
           </div>
         </div>
