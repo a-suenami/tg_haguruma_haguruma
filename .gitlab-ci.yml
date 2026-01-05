@@ -30,7 +30,7 @@ create-deploy-merge-request:
   stage: prepare
   cache: {}
   only:
-    - master
+    - main
   except:
     - schedules
   variables:
@@ -41,13 +41,13 @@ create-deploy-merge-request:
     - >
       gitlab create_merge_request $CI_PROJECT_ID "" '{
         "title": "Build staging",
-        "source_branch": "master",
+        "source_branch": "main",
         "target_branch": "deploy-staging"
       }' || true
     - >
       gitlab create_merge_request $CI_PROJECT_ID "" '{
         "title": "Draft: Build production",
-        "source_branch": "master",
+        "source_branch": "main",
         "target_branch": "deploy-production"
       }' || true
 
