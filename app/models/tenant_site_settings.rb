@@ -27,6 +27,8 @@ class TenantSiteSettings < ApplicationRecord
 
   belongs_to :tenant, primary_key: :id
 
+  before_save :normalize_features
+
   # Default feature configuration (all disabled by default - must be enabled per tenant)
   DEFAULT_FEATURES = T.let({
     'news' => {
@@ -107,6 +109,15 @@ class TenantSiteSettings < ApplicationRecord
   end
 
   private
+
+  sig { void }
+  def normalize_features
+    return if features.blank?
+
+    features.each_value do |config|
+      config['enabled'] = ActiveModel::Type::Boolean.new.cast(config['enabled'])
+    end
+  end
 
   sig { params(feature_key: String).returns(T::Hash[String, T.untyped]) }
   def feature_config(feature_key)
