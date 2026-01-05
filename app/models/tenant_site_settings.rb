@@ -114,7 +114,7 @@ class TenantSiteSettings < ApplicationRecord
   def normalize_features
     return if features.blank?
 
-    features.each_value do |config|
+    T.must(features).each_value do |config|
       config['enabled'] = ActiveModel::Type::Boolean.new.cast(config['enabled'])
     end
   end
