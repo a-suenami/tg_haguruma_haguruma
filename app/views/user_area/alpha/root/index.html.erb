@@ -34,16 +34,24 @@
 
     <section cog-landing-section class="banners">
       <div cog-landing-section-content>
-        <div cog-swiper-container class="banner-swiper">
-          <div class="swiper-inner">
-            <% 5.times do |i| %>
-              <div cog-swiper-slide>
-                <a href="#" cog-landing-banner>
-                  <img src="https://placehold.co/800x400/e8e8e8/999999?text=Banner+<%= i + 1 %>" alt="Banner <%= i + 1 %>">
-                </a>
-              </div>
-            <% end %>
+        <div class="swiper-wrapper" data-controller="swiper-navigation">
+          <button type="button" class="swiper-nav-button prev" data-swiper-navigation-target="prevButton" data-action="swiper-navigation#prev" aria-label="前へ">
+            <span class="icon">&lsaquo;</span>
+          </button>
+          <div cog-swiper-container class="banner-swiper" data-swiper-navigation-target="scroller">
+            <div class="swiper-inner">
+              <% 5.times do |i| %>
+                <div cog-swiper-slide>
+                  <a href="#" cog-landing-banner>
+                    <img src="https://placehold.co/800x400/e8e8e8/999999?text=Banner+<%= i + 1 %>" alt="Banner <%= i + 1 %>">
+                  </a>
+                </div>
+              <% end %>
+            </div>
           </div>
+          <button type="button" class="swiper-nav-button next" data-swiper-navigation-target="nextButton" data-action="swiper-navigation#next" aria-label="次へ">
+            <span class="icon">&rsaquo;</span>
+          </button>
         </div>
       </div>
     </section>
@@ -75,6 +83,80 @@
           <div class="overview-page-indicator">
             <a href="<%= user_area_news_index_path %>" cog-button primary outlined>VIEW ALL</a>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section cog-landing-section>
+      <div cog-landing-section-title>
+        <div cog-feature-title-image feature="blog">
+          <div class="title-image"><%= feature_label(:blog) %></div>
+        </div>
+      </div>
+      <div cog-landing-section-content>
+        <div class="swiper-wrapper" data-controller="swiper-navigation">
+          <button type="button" class="swiper-nav-button prev" data-swiper-navigation-target="prevButton" data-action="swiper-navigation#prev" aria-label="前へ">
+            <span class="icon">&lsaquo;</span>
+          </button>
+          <div cog-swiper-container class="blog-swiper" data-swiper-navigation-target="scroller">
+            <div class="swiper-inner">
+              <% rand(1..5).times do |i| %>
+                <div cog-swiper-slide>
+                  <a href="<%= user_area_blog_path(i + 1) %>" cog-blog-item>
+                    <div class="thumbnail">
+                      <img draggable="false" src="https://placehold.co/600x400/e8e8e8/999999?text=Blog+<%= i + 1 %>" alt="Blog Thumbnail">
+                      <div class="label">
+                        <span cog-category-label>ファッション</span>
+                      </div>
+                    </div>
+                    <div class="title">XXXXのタイトルがここに入りますXXXXのタイトルがここに入りますXXXXのタ...</div>
+                    <div class="date">
+                      <span cog-date-label>2025.12.31.SAT</span>
+                    </div>
+                  </a>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <button type="button" class="swiper-nav-button next" data-swiper-navigation-target="nextButton" data-action="swiper-navigation#next" aria-label="次へ">
+            <span class="icon">&rsaquo;</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section cog-landing-section>
+      <div cog-landing-section-title>
+        <div cog-feature-title-image feature="biography">
+          <div class="title-image"><%= feature_label(:biography) %></div>
+        </div>
+      </div>
+      <div cog-landing-section-content>
+        <div cog-biography-list landing>
+          <article cog-biography-item>
+            <div class="image">
+              <img src="https://placehold.co/400x500/e8e8e8/999999?text=Profile+1" alt="八代目 尾上菊五郎">
+            </div>
+            <h2 class="name">八代目 尾上菊五郎</h2>
+            <div class="description">
+              <p>1977年生まれ。七代目尾上菊五郎の長男。</p>
+              <p>84年2月歌舞伎座「絵本牛若丸」で六代目尾上丑之助を名乗り初舞台。96年5月歌舞伎座「弁天娘女男白浪」の弁天小僧菊之助ほかで五代目尾上菊之助を襲名。05年には「NINAGAWA 十二夜」を実現させ、芸術選奨文部科学大臣新人賞を始め多数受賞。「伽羅先代萩」の政岡、「摂州合邦辻」の玉手御前、「籠釣瓶花街酔醒」のハツ橋など女方の大役をつとめるとともに、「京鹿子娘道成寺」「春興鏡獅子」などの舞踊、また「魚屋宗五郎」「髪結新三」「盛綱陣屋」「義経千本桜」知盛など、時代物・世話物問わず立役にも幅を広げ活躍している。</p>
+              <p>古典作品を着実に務めるとともに新作歌舞伎にも取り組み、17年初演歌舞伎座「極付印度伝 マハーバーラタ戦記」、19年初演新橋演舞場「風の谷のナウシカ」は再演されている。最新作は23年「新作歌舞伎ファイナルファンタジーX」。映像作品でも「西郷どん」（18年NHK）「グランメゾン」（19年TBS系）「カムカムエヴリバディ」（21年〜22年NHK）などに出演。</p>
+              <p>25年5月6月歌舞伎座にて八代目尾上菊五郎を襲名。</p>
+            </div>
+          </article>
+
+          <article cog-biography-item>
+            <div class="image">
+              <img src="https://placehold.co/400x500/e8e8e8/999999?text=Profile+2" alt="六代目 尾上菊之助">
+            </div>
+            <h2 class="name">六代目 尾上菊之助</h2>
+            <div class="description">
+              <p>2013年生まれ。八代目尾上菊五郎の長男。祖父は七代目尾上菊五郎、二代目中村吉右衛門。</p>
+              <p>2016年5月歌舞伎座「勢獅子音羽花籠」で寺嶋和史の名で初お目見得。2019年5月歌舞伎座「絵本牛若丸」で六代目尾上丑之助を名乗り初舞台。</p>
+              <p>2025年5月6月歌舞伎座にて六代目尾上菊之助を襲名。</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>

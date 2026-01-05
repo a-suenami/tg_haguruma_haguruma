@@ -2,8 +2,9 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require_relative '../../tenant_domain_helper'
 
-tenant_id = 'yokikotokiku'
+tenant_id = TenantDomainHelper.tenant_id_for('yokikotokiku')
 
 def upload_yokikotokiku_logo(tenant_id)
   logo_path = File.join(__dir__, 'logo.svg')

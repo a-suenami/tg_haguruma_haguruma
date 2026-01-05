@@ -8,7 +8,9 @@ module RulerArea
     before_action :set_tenant
     before_action :set_theme
 
-    def show; end
+    def show
+      redirect_to edit_ruler_area_tenant_theme_path(@tenant) unless @theme.persisted?
+    end
 
     def edit; end
 

@@ -5,7 +5,7 @@
 
 require_relative '../../tenant_domain_helper'
 
-TENANT_ID = 'sample'
+TENANT_ID = TenantDomainHelper.tenant_id_for('sample')
 
 unless Tenant.exists?(id: TENANT_ID)
   Tenant.create!(
