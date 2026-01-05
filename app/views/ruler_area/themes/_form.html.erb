@@ -1,12 +1,14 @@
 <%= form_with model: @theme, url: ruler_area_tenant_theme_path(@tenant), method: :patch, local: true, scope: :theme, multipart: true do |form| %>
   <div class="uk-card uk-card-default uk-card-body uk-margin">
     <h4 class="uk-card-title">ロゴ</h4>
+    <% if @theme.logo_media_asset.present? %>
+      <div class="uk-margin">
+        <p class="uk-text-meta">現在のロゴ:</p>
+        <img src="<%= @theme.logo_url %>" alt="現在のロゴ" style="max-height: 80px; max-width: 300px;">
+      </div>
+    <% end %>
     <div class="uk-margin">
-      <p class="uk-text-meta">現在のロゴ:</p>
-      <img src="<%= @theme.logo_url %>" alt="現在のロゴ" style="max-height: 80px; max-width: 300px;">
-    </div>
-    <div class="uk-margin">
-      <%= form.label :logo_file, 'ロゴを変更', class: 'uk-form-label' %>
+      <%= form.label :logo_file, @theme.logo_media_asset.present? ? 'ロゴを変更' : 'ロゴを設定', class: 'uk-form-label' %>
       <div class="uk-form-controls">
         <%= form.file_field :logo_file, accept: 'image/*', class: 'uk-input', style: 'padding: 8px;' %>
         <p class="uk-text-meta uk-margin-small-top">対応形式: JPEG, PNG, GIF, WebP など</p>
