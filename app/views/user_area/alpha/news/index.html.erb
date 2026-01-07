@@ -13,66 +13,40 @@
     </div>
 
     <div cog-list-fragment-actions>
-      <nav cog-tabs-bar>
-        <div cog-tabs>
-          <button cog-tab class="active">
-            <div class="text">すべて</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">更新履歴</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">ニュース</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">メール</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">発送物</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">観覧・プレゼント</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">スペシャル</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">海外番組記</div>
-            <div class="current-line"></div>
-          </button>
-        </div>
-      </nav>
+      <%= render 'user_area/alpha/shared/content/category_tabs',
+                 categories: categories,
+                 current_category: current_category,
+                 path_helper: ->(cat) { user_area_news_index_path(category: cat) } %>
     </div>
 
     <div cog-list-fragment-content>
       <div cog-news-list>
         <div class="list">
-          <% 10.times do |i| %>
-            <a href="<%= user_area_news_path(i + 1) %>" cog-news-item>
+          <% @entries.each_with_index do |entry, i| %>
+            <% version = published_version(entry) %>
+            <% next if version.nil? %>
+            <a href="<%= user_area_news_path(entry) %>" cog-news-item>
               <div class="category">
-                <span cog-category-label>ニュース</span>
+                <% category_field = field_by_identifier(version, 'category') %>
+                <% category_option = selected_option(category_field) %>
+                <span cog-category-label><%= category_option&.display_name || '-' %></span>
               </div>
               <div class="date">
-                <span cog-date-label>2024.12.<%= 15 - (i % 10) %></span>
+                <span cog-date-label><%= format_content_date(version.published_at) %></span>
               </div>
-              <div class="title">サンプルニュースタイトル <%= i + 1 %> - ここにニュースのタイトルが入ります</div>
+              <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
             </a>
-            <% unless i == 9 %>
+            <% unless i == @entries.length - 1 %>
               <div class="divider"></div>
             <% end %>
           <% end %>
         </div>
 
-        <div class="pagination-button-container">
-          <button cog-button primary outlined>VIEW MORE</button>
-        </div>
+        <% if @entries.length >= 20 %>
+          <div class="pagination-button-container">
+            <button cog-button primary outlined>VIEW MORE</button>
+          </div>
+        <% end %>
       </div>
     </div>
   </section>

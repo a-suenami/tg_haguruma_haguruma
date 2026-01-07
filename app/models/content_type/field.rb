@@ -16,6 +16,7 @@
 #  content_type_id :uuid             not null
 #  media_asset_id  :integer
 #  richtext_id     :integer
+#  select_id       :bigint
 #  tenant_id       :citext           not null
 #  text_id         :integer
 #
@@ -31,6 +32,7 @@
 #  fk_rails_...  ([tenant_id, content_type_id] => content_types[tenant_id, id])
 #  fk_rails_...  (media_asset_id => content_type_field_media_assets.id)
 #  fk_rails_...  (richtext_id => content_type_field_richtexts.id)
+#  fk_rails_...  (select_id => content_type_field_selects.id)
 #  fk_rails_...  (text_id => content_type_field_texts.id)
 #
 class ContentType::Field < ApplicationRecord

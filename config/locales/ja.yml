@@ -175,6 +175,9 @@ ja:
       revoked: トークンを無効化しました
       not_found: トークンが見つかりません
   user_area:
+    alpha:
+      categories:
+        all: すべて
     sessions:
       oauth_provider_not_configured: このテナントにはOAuthプロバイダが設定されていません
       invalid_state_parameter: 無効なstateパラメータです

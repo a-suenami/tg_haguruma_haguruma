@@ -6,9 +6,17 @@ module UserArea
     class BiographiesController < BaseController
       extend T::Sig
 
+      include ContentLoadable
+      source_content_type :biography
+
+      sig { void }
+      def index
+        @entries = query_entries(page: params[:page]&.to_i || 1)
+      end
+
       sig { void }
       def show
-        # Biography/Profile page
+        @entries = [find_singleton_entry]
       end
     end
   end

@@ -6,14 +6,20 @@ module UserArea
     class BlogController < BaseController
       extend T::Sig
 
+      include ContentLoadable
+      source_content_type :blog
+
       sig { void }
       def index
-        # Blog list page
+        @entries = query_entries(
+          select_options: { category: current_category },
+          page: params[:page]&.to_i || 1,
+        )
       end
 
       sig { void }
       def show
-        # Blog detail page
+        @entry = find_entry(params[:id])
       end
     end
   end

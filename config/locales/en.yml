@@ -160,6 +160,9 @@ en:
       revoked: Token revoked successfully
       not_found: Token not found
   user_area:
+    alpha:
+      categories:
+        all: All
     sessions:
       oauth_provider_not_configured: OAuth provider is not configured for this tenant
       invalid_state_parameter: Invalid state parameter

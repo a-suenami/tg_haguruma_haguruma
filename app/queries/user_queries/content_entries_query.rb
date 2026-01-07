@@ -63,10 +63,10 @@ module UserQueries
       chain(@scope.where(content_type_id: content_type.id))
     end
 
-    # Filter to only published entries
+    # Filter to only published entries (each entry has at most one published version)
     sig { returns(T.self_type) }
     def published
-      chain(@scope.joins(:versions).merge(ContentEntry::Version.published).distinct)
+      chain(@scope.joins(:versions).merge(ContentEntry::Version.published))
     end
 
     # Filter by authorization for a user
@@ -74,6 +74,53 @@ module UserQueries
     def authorized_for(user)
       @user = user
       self
+    end
+
+    # Filter by select field option
+    # field_identifier: the api_identifier of the ContentType::Field
+    # option_unique_name: the unique_name of the ContentType::FieldSelectOption
+    sig { params(field_identifier: String, option_unique_name: T.nilable(String)).returns(T.self_type) }
+    def by_select_option(field_identifier, option_unique_name)
+      return self if option_unique_name.blank?
+
+      chain(
+        @scope
+          .joins(versions: { fields: :content_type_field })
+          .joins(<<~SQL.squish)
+            INNER JOIN content_entry_field_selects
+              ON content_entry_field_selects.id = content_entry_fields.select_id
+            INNER JOIN content_entry_field_select_selections
+              ON content_entry_field_select_selections.content_entry_field_select_id = content_entry_field_selects.id
+            INNER JOIN content_type_field_select_options
+              ON content_type_field_select_options.id = content_entry_field_select_selections.option_id
+          SQL
+          .where(content_type_fields: { api_identifier: field_identifier })
+          .where(content_type_field_select_options: { unique_name: option_unique_name })
+          .merge(ContentEntry::Version.published),
+      )
+    end
+
+    # Order by published_at descending
+    sig { returns(T.self_type) }
+    def ordered_by_published_at
+      chain(
+        @scope
+          .joins(:versions)
+          .merge(ContentEntry::Version.published)
+          .order('content_entry_versions.published_at DESC'),
+      )
+    end
+
+    # Apply offset
+    sig { params(count: Integer).returns(T.self_type) }
+    def offset(count)
+      chain(@scope.offset(count))
+    end
+
+    # Apply limit
+    sig { params(count: Integer).returns(T.self_type) }
+    def limit(count)
+      chain(@scope.limit(count))
     end
 
     # Override resolve to apply authorization filtering

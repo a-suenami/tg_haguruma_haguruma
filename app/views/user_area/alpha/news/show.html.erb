@@ -1,5 +1,8 @@
+<% version = published_version(@entry) %>
+<% title_text = render_text_field(field_by_identifier(version, 'title')) %>
+
 <% content_for :title do %>
-  <%= feature_label(:news) %> - <%= current_tenant&.name || 'Fan Club' %>
+  <%= title_text.presence || feature_label(:news) %> - <%= current_tenant&.name || 'Fan Club' %>
 <% end %>
 
 <%= render 'user_area/alpha/shared/page_header' %>
@@ -9,35 +12,19 @@
     <article cog-detail-fragment>
       <header cog-detail-fragment-header>
         <div cog-detail-fragment-toolbar>
-          <h1 cog-detail-fragment-title>ニュース</h1>
+          <h1 cog-detail-fragment-title><%= title_text %></h1>
         </div>
         <div cog-detail-fragment-toolbar>
-          <span cog-category-label>ニュース</span>
-          <span cog-date-label>2024.12.15</span>
+          <% category_field = field_by_identifier(version, 'category') %>
+          <% category_option = selected_option(category_field) %>
+          <span cog-category-label><%= category_option&.display_name || '-' %></span>
+          <span cog-date-label><%= format_content_date(version&.published_at) %></span>
         </div>
       </header>
 
       <div cog-detail-fragment-content>
         <div cog-rich-content-viewer>
-          <h2>サンプルニュースタイトル</h2>
-          <p>
-            これはサンプルのニュース本文です。ここにリッチテキストコンテンツが表示されます。
-            Lexical エディタで作成されたコンテンツは、lexical_to_html ヘルパーを使って
-            HTML に変換されます。
-          </p>
-          <p>
-            ファンクラブの最新情報をお届けします。イベント情報、新商品の発売、
-            メンバーからのメッセージなど、様々なコンテンツがここに表示されます。
-          </p>
-          <h3>お知らせ詳細</h3>
-          <ul>
-            <li>開催日時: 2024年12月25日（水）</li>
-            <li>会場: 東京ドーム</li>
-            <li>チケット販売: ファンクラブ先行受付中</li>
-          </ul>
-          <p>
-            詳細は公式サイトをご確認ください。皆様のご参加をお待ちしております。
-          </p>
+          <%= raw render_richtext_field(field_by_identifier(version, 'body')) %>
         </div>
       </div>
 

@@ -6,12 +6,21 @@
 # Table name: content_type_field_select_options
 #
 #  id              :bigint           not null, primary key
-#  field_select_id :bigint           not null
-#  unique_name     :string           not null
 #  display_name    :text             not null
 #  position        :integer          default(0), not null
+#  unique_name     :string           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  field_select_id :bigint           not null
+#
+# Indexes
+#
+#  idx_on_field_select_id_position_9d0ef88527     (field_select_id,position)
+#  idx_on_field_select_id_unique_name_47572cb0f7  (field_select_id,unique_name) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (field_select_id => content_type_field_selects.id)
 #
 class ContentType::FieldSelectOption < ApplicationRecord
   belongs_to :field_select,
@@ -42,15 +51,15 @@ class ContentType::FieldSelectOption < ApplicationRecord
   end
 
   def identifier_unique_in_siblings
-    return if identifier.blank?
+    return if unique_name.blank?
     return if marked_for_destruction?
     return if field_select.blank?
 
     siblings = field_select.options.reject(&:marked_for_destruction?)
     duplicate = siblings.find do |sibling|
-      sibling != self && sibling.identifier == identifier
+      sibling != self && sibling.unique_name == unique_name
     end
 
-    errors.add(:identifier, :taken) if duplicate
+    errors.add(:unique_name, :taken) if duplicate
   end
 end
