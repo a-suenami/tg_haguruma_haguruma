@@ -104,15 +104,7 @@ module UserQueries
 
       chain(
         @scope
-          .joins(versions: { fields: :content_type_field })
-          .joins(<<~SQL.squish)
-            INNER JOIN content_entry_field_selects
-              ON content_entry_field_selects.id = content_entry_fields.select_id
-            INNER JOIN content_entry_field_select_selections
-              ON content_entry_field_select_selections.content_entry_field_select_id = content_entry_field_selects.id
-            INNER JOIN content_type_field_select_options
-              ON content_type_field_select_options.id = content_entry_field_select_selections.option_id
-          SQL
+          .joins(versions: { fields: [:content_type_field, { select: { selections: :option } }] })
           .where(content_type_fields: { api_identifier: field_identifier })
           .where(content_type_field_select_options: { unique_name: option_unique_name })
           .merge(ContentEntry::Version.published),
