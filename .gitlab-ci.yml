@@ -35,7 +35,7 @@ create-deploy-merge-request:
     - schedules
   variables:
     GITLAB_API_ENDPOINT: https://git.l.twogate.net/api/v4
-    GITLAB_API_PRIVATE_TOKEN: $GITLAB_API_PRIVATE_TOKEN
+    GITLAB_API_PRIVATE_TOKEN: $CI_JOB_TOKEN
   script:
     - gem install gitlab
     - >
