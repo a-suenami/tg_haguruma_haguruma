@@ -1,4 +1,4 @@
-\restrict aY6HvdnEv3G0x4mu1qGcA0x9M4g0tV9FBv4ANqk3EubuifRVe5RYkdscullT3bM
+\restrict Xlkcnd6sZWDeQSzOdBocEeBowXXBg4DXPWILueCbxljxiJwPjecv9kJjgV2OZLP
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -1341,6 +1341,20 @@ CREATE INDEX index_content_entry_versions_on_tenant_visibility ON public.content
 
 
 --
+-- Name: index_content_entry_versions_unique_draft_per_entry; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_versions_unique_draft_per_entry ON public.content_entry_versions USING btree (content_entry_id) WHERE (status = 1);
+
+
+--
+-- Name: index_content_entry_versions_unique_published_per_entry; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_versions_unique_published_per_entry ON public.content_entry_versions USING btree (content_entry_id) WHERE (status = 3);
+
+
+--
 -- Name: index_content_type_fields_on_content_type_id_and_position; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1790,7 +1804,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict aY6HvdnEv3G0x4mu1qGcA0x9M4g0tV9FBv4ANqk3EubuifRVe5RYkdscullT3bM
+\unrestrict Xlkcnd6sZWDeQSzOdBocEeBowXXBg4DXPWILueCbxljxiJwPjecv9kJjgV2OZLP
 
 SET search_path TO "$user", public;
 

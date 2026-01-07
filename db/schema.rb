@@ -135,6 +135,8 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.datetime "published_at"
     t.datetime "unpublished_at"
     t.index ["content_entry_id", "version"], name: "index_content_entry_versions_on_entry_version", unique: true
+    t.index ["content_entry_id"], name: "index_content_entry_versions_unique_draft_per_entry", unique: true, where: "(status = 1)"
+    t.index ["content_entry_id"], name: "index_content_entry_versions_unique_published_per_entry", unique: true, where: "(status = 3)"
     t.index ["tenant_id", "content_type_id", "content_entry_id", "version"], name: "index_content_entry_versions_on_tenant_type_entry_version", unique: true
     t.index ["tenant_id", "is_public"], name: "index_content_entry_versions_on_tenant_is_public"
     t.index ["tenant_id", "visibility"], name: "index_content_entry_versions_on_tenant_visibility"
