@@ -47,6 +47,7 @@ class ContentAuthorizationTag < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :tenant_id }
   validates :remote_id, uniqueness: { scope: :tenant_id }, allow_nil: true
   validates :unique_id, uniqueness: { scope: [:tenant_id, :provider] }, allow_nil: true
+  validates :unique_id, presence: true, format: { with: /\A[a-z0-9-]+\z/ }, if: :ruler?
 
   scope :searchable, -> { where.not(provider: 'system') }
 

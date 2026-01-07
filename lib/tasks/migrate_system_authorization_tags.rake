@@ -10,11 +10,29 @@ namespace :authorization do
       Tenant.current_id = tenant.id
       puts "\nProcessing tenant: #{tenant.id}"
 
+      migrate_existing_tags_for_tenant
       migrate_users_for_tenant
       migrate_content_entries_for_tenant
     end
 
     puts "\nMigration complete!"
+  end
+
+  def migrate_existing_tags_for_tenant
+    puts '  Migrating existing tags...'
+
+    updated_count = 0
+
+    ContentAuthorizationTag.where(provider: nil).find_each do |tag|
+      if tag.remote_id.present?
+        tag.update!(provider: 'idp', unique_id: tag.remote_id)
+      else
+        tag.update!(provider: 'ruler', unique_id: SecureRandom.uuid)
+      end
+      updated_count += 1
+    end
+
+    puts "    Updated #{updated_count} existing tags"
   end
 
   def migrate_users_for_tenant

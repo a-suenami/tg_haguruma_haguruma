@@ -160,6 +160,7 @@ ja:
       destroyed: 認可タグを削除しました
       not_found: 認可タグが見つかりません
       cannot_delete_external: 外部連携で登録されたタグは削除できません
+      cannot_delete_system: システムタグは削除できません
     users:
       created: ユーザーを作成しました
       destroyed: ユーザーを削除しました
