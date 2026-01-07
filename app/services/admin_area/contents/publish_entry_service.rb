@@ -84,7 +84,26 @@ module AdminArea
           status: :published,
           published_at: Time.current,
         )
+        assign_system_authorization_tag(version)
         @published_version = T.let(version, T.nilable(ContentEntry::Version))
+      end
+
+      sig { params(version: ContentEntry::Version).void }
+      def assign_system_authorization_tag(version)
+        tag = case version.visibility
+              when 'public'
+                ContentAuthorizationTag.public_tag
+              when 'authenticated'
+                ContentAuthorizationTag.member_tag
+              else
+                return
+        end
+
+        ContentEntryAuthorization.find_or_create_by!(
+          content_entry_id: version.content_entry_id,
+          version: version.version,
+          content_authorization_tag: tag,
+        )
       end
     end
   end

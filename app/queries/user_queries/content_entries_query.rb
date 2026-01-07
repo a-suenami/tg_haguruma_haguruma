@@ -69,11 +69,30 @@ module UserQueries
       chain(@scope.joins(:versions).merge(ContentEntry::Version.published))
     end
 
-    # Filter by authorization for a user
+    # Filter by authorization for a user using SQL JOIN
+    # - Anonymous users: only public content (visibility = 0)
+    # - Logged-in users: content where user has matching authorization tags
     sig { params(user: T.nilable(User)).returns(T.self_type) }
     def authorized_for(user)
       @user = user
-      self
+
+      if user.nil?
+        # Anonymous: only public content
+        chain(
+          @scope.joins(:versions)
+            .merge(ContentEntry::Version.published)
+            .where(content_entry_versions: { visibility: 0 }),
+        )
+      else
+        # Logged-in: filter by matching tags via INNER JOIN
+        chain(
+          @scope
+            .joins(versions: { content_entry_authorizations: { content_authorization_tag: :user_tags } })
+            .merge(ContentEntry::Version.published)
+            .where(user_tags: { user_id: user.id })
+            .distinct,
+        )
+      end
     end
 
     # Filter by select field option
@@ -123,14 +142,10 @@ module UserQueries
       chain(@scope.limit(count))
     end
 
-    # Override resolve to apply authorization filtering
-    # Always filters content based on authorization:
-    # - Public content (no tags): accessible to all
-    # - Restricted content (with tags): only accessible to users with matching tags
+    # Resolve the query - authorization is now handled in SQL via authorized_for
     sig { override.returns(T::Array[EntityType]) }
     def resolve
-      entries = T.unsafe(call.to_a)
-      entries.select { |entry| self.class.authorized?(entry, user: @user) }
+      T.unsafe(call.to_a)
     end
 
     private

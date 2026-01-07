@@ -1,4 +1,4 @@
-\restrict Xlkcnd6sZWDeQSzOdBocEeBowXXBg4DXPWILueCbxljxiJwPjecv9kJjgV2OZLP
+\restrict I0TYNf1JN72ykCHxLb3fhHuEFcVWdSAgazQtE7SraXJTQz0CTLe9iM3MJZFAx0v
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -94,9 +94,12 @@ CREATE TABLE public.content_authorization_tags (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id public.citext NOT NULL,
     remote_id uuid,
+    provider character varying,
+    unique_id character varying,
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT chk_content_authorization_tags_provider CHECK (((provider)::text = ANY ((ARRAY['system'::character varying, 'idp'::character varying, 'ruler'::character varying])::text[])))
 );
 
 
@@ -104,7 +107,21 @@ CREATE TABLE public.content_authorization_tags (
 -- Name: COLUMN content_authorization_tags.remote_id; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN public.content_authorization_tags.remote_id IS 'External system ID for synchronization';
+COMMENT ON COLUMN public.content_authorization_tags.remote_id IS 'DEPRECATED: External system ID for synchronization';
+
+
+--
+-- Name: COLUMN content_authorization_tags.provider; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.content_authorization_tags.provider IS 'Tag provider: system, idp, ruler, or NULL for custom';
+
+
+--
+-- Name: COLUMN content_authorization_tags.unique_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.content_authorization_tags.unique_id IS 'Unique identifier within provider scope';
 
 
 --
@@ -1243,6 +1260,13 @@ CREATE INDEX index_admin_auth0_accounts_on_auth0_account_id ON public.admin_auth
 
 
 --
+-- Name: index_content_authorization_tags_on_provider_unique_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_authorization_tags_on_provider_unique_id ON public.content_authorization_tags USING btree (tenant_id, provider, unique_id) WHERE (provider IS NOT NULL);
+
+
+--
 -- Name: index_content_authorization_tags_on_tenant_id_and_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1804,7 +1828,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict Xlkcnd6sZWDeQSzOdBocEeBowXXBg4DXPWILueCbxljxiJwPjecv9kJjgV2OZLP
+\unrestrict I0TYNf1JN72ykCHxLb3fhHuEFcVWdSAgazQtE7SraXJTQz0CTLe9iM3MJZFAx0v
 
 SET search_path TO "$user", public;
 

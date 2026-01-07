@@ -46,13 +46,17 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   create_table "content_authorization_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
-    t.uuid "remote_id", comment: "External system ID for synchronization"
+    t.uuid "remote_id", comment: "DEPRECATED: External system ID for synchronization"
+    t.string "provider", comment: "Tag provider: system, idp, ruler, or NULL for custom"
+    t.string "unique_id", comment: "Unique identifier within provider scope"
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenant_id", "id"], name: "index_content_authorization_tags_on_tenant_id_and_id", unique: true
     t.index ["tenant_id", "name"], name: "index_content_authorization_tags_on_tenant_id_and_name", unique: true
+    t.index ["tenant_id", "provider", "unique_id"], name: "index_content_authorization_tags_on_provider_unique_id", unique: true, where: "(provider IS NOT NULL)"
     t.index ["tenant_id", "remote_id"], name: "index_content_authorization_tags_on_tenant_id_and_remote_id", unique: true, where: "(remote_id IS NOT NULL)"
+    t.check_constraint "provider::text = ANY (ARRAY['system'::character varying, 'idp'::character varying, 'ruler'::character varying]::text[])", name: "chk_content_authorization_tags_provider"
   end
 
   create_table "content_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
