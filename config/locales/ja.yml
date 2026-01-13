@@ -160,6 +160,7 @@ ja:
       destroyed: 認可タグを削除しました
       not_found: 認可タグが見つかりません
       cannot_delete_external: 外部連携で登録されたタグは削除できません
+      cannot_delete_system: システムタグは削除できません
     users:
       created: ユーザーを作成しました
       destroyed: ユーザーを削除しました
@@ -175,6 +176,9 @@ ja:
       revoked: トークンを無効化しました
       not_found: トークンが見つかりません
   user_area:
+    alpha:
+      categories:
+        all: すべて
     sessions:
       oauth_provider_not_configured: このテナントにはOAuthプロバイダが設定されていません
       invalid_state_parameter: 無効なstateパラメータです

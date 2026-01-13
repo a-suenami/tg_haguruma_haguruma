@@ -6,14 +6,20 @@ module UserArea
     class NewsController < BaseController
       extend T::Sig
 
+      include ContentLoadable
+      source_content_type :news
+
       sig { void }
       def index
-        # News list page
+        @entries = query_entries(
+          select_options: { category: current_category },
+          page: params[:page]&.to_i || 1,
+        )
       end
 
       sig { void }
       def show
-        # News detail page
+        @entry = find_entry(params[:id])
       end
     end
   end

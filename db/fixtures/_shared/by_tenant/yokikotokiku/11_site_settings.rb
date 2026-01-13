@@ -4,7 +4,9 @@
 # 斧琴菊テナントのサイト設定（初期データ）
 # 既に存在する場合はスキップ
 
-tenant_id = 'yokikotokiku'
+require_relative '../../tenant_domain_helper'
+
+tenant_id = TenantDomainHelper.tenant_id_for('yokikotokiku')
 
 if TenantSiteSettings.exists?(tenant_id: tenant_id)
   puts "  SiteSettings: #{tenant_id} (already exists, skipping)"

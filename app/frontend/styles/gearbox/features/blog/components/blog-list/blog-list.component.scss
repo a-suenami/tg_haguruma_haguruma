@@ -3,7 +3,7 @@
 [cog-blog-list] {
   display: grid;
   grid-template-rows: auto auto;
-  row-gap: var(--gearbox-spacing-32);
+  row-gap: 32px;
   width: 100%;
 
   .list {
@@ -11,17 +11,17 @@
     width: 100%;
 
     @include breakpoints.media-up(md) {
-      gap: var(--gearbox-spacing-24) var(--gearbox-spacing-16);
+      gap: 24px 16px;
       grid-template-columns: repeat(3, 1fr);
     }
 
     @include breakpoints.media-down(md) {
-      gap: var(--gearbox-spacing-24) var(--gearbox-spacing-16);
+      gap: 24px 16px;
       grid-template-columns: repeat(2, 1fr);
     }
 
     @include breakpoints.media-down(sm) {
-      gap: var(--gearbox-spacing-16) var(--gearbox-spacing-8);
+      gap: 16px 8px;
       grid-template-columns: repeat(2, 1fr);
     }
   }
@@ -38,12 +38,25 @@
 
   .loading,
   .error {
-    padding: var(--gearbox-spacing-24);
+    padding: 24px;
     text-align: center;
-    color: var(--gearbox-secondary);
+    color: var(--theme-caption-text-color, #666666);
   }
 
   .error {
-    color: var(--gearbox-error);
+    color: #dc3545;
+  }
+
+  // Landing page variant - 4 columns
+  &[landing] {
+    .list {
+      @include breakpoints.media-up(md) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      @include breakpoints.media-down(md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
   }
 }

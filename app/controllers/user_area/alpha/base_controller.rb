@@ -16,7 +16,7 @@ module UserArea
       def require_tenant_theme!
         return if current_tenant&.theme.present?
 
-        raise ActionController::RoutingError.new('Tenant theme not configured')
+        render 'user_area/errors/tenant_not_configured', layout: false, status: :not_found
       end
     end
   end

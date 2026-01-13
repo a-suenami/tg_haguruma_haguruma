@@ -97,3 +97,6 @@
 @use './features/schedule/components/daily-schedule-item/daily-schedule-item.component';
 @use './features/schedule/components/inline-calendar/inline-calendar.component';
 @use './features/schedule/components/date-picker/date-picker.component';
+
+@use './features/biography/components/biography-list/biography-list.component';
+@use './features/biography/components/biography-item/biography-item.component';

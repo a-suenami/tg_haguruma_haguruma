@@ -4,7 +4,9 @@
 # 斧琴菊テナントのキービジュアル（KV）コンテンツエントリ作成（初期データ）
 # kv.svg を S3 にアップロードし、ContentEntry を作成
 
-tenant_id = 'yokikotokiku'
+require_relative '../../tenant_domain_helper'
+
+tenant_id = TenantDomainHelper.tenant_id_for('yokikotokiku')
 kv_path = File.join(__dir__, 'kv.svg')
 
 content_type = ContentType.find_by(tenant_id: tenant_id, unique_name: 'kv')

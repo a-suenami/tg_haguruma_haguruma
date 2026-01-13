@@ -9,6 +9,9 @@ module UserArea
       sig { void }
       def index
         @kv_image_url = load_kv_image_url
+        @news_entries = query_for(:news, limit: 3)
+        @blog_entries = query_for(:blog, limit: 5)
+        @biography_entries = query_for(:biography)
       end
 
       private
@@ -26,6 +29,17 @@ module UserArea
 
         image_field = version.fields.find_by(field_type: :media_asset)
         image_field&.media_asset&.media_asset&.url
+      end
+
+      sig { params(content_type_key: Symbol, limit: T.nilable(Integer)).returns(T::Array[ContentEntry]) }
+      def query_for(content_type_key, limit: nil)
+        query = UserQueries::ContentEntriesQuery.new
+                  .by_content_type(content_type_key.to_s)
+                  .published
+                  .authorized_for(current_user)
+                  .ordered_by_published_at
+        query = query.limit(limit) if limit
+        query.resolve
       end
     end
   end

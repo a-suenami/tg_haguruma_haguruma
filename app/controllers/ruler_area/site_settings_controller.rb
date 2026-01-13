@@ -27,10 +27,13 @@ module RulerArea
     end
 
     def site_setting_params
+      permitted_features = TenantSiteSettings::DEFAULT_FEATURES.keys.index_with do
+        %i[enabled label menu_label]
+      end
       params.require(:site_setting).permit(
         :login_label,
         :signup_label,
-        features: {},
+        features: permitted_features,
       )
     end
   end

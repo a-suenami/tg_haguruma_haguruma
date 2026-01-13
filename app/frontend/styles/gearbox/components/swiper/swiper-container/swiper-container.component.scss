@@ -18,9 +18,50 @@
   .swiper-inner {
     display: flex;
     justify-content: center;
-    gap: var(--gearbox-spacing-16);
-    padding: var(--gearbox-spacing-8) 0;
+    gap: 16px;
+    padding: 8px 0;
     width: max-content;
     min-width: 100%;
+  }
+}
+
+// Wrapper with navigation buttons - horizontal flexbox layout
+.swiper-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+
+  [cog-swiper-container] {
+    flex: 1;
+    min-width: 0; // Allow shrinking
+  }
+
+  .swiper-nav-button {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--theme-border-color, #e5e5e5);
+    border-radius: 50%;
+    background-color: var(--theme-page-background-color, #fff);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    .icon {
+      font-size: 24px;
+      line-height: 1;
+      color: var(--theme-general-text-color, #333);
+    }
   }
 }
