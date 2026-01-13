@@ -6,14 +6,20 @@ module UserArea
     class TicketsController < BaseController
       extend T::Sig
 
+      include ContentLoadable
+      source_content_type :ticket
+
       sig { void }
       def index
-        # Ticket list page
+        @entries = query_entries(
+          select_options: { category: current_category },
+          page: params[:page]&.to_i || 1,
+        )
       end
 
       sig { void }
       def show
-        # Ticket detail page
+        @entry = find_entry(params[:id])
       end
     end
   end

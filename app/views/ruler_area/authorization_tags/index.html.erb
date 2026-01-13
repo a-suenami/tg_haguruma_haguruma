@@ -21,16 +21,17 @@
   <thead>
     <tr>
       <th>タグ名</th>
+      <th>タグ種別</th>
+      <th>識別子</th>
       <th>関連ユーザー数</th>
       <th>コンテンツ数</th>
-      <th>外部連携ID</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <% if @authorization_tags.empty? %>
       <tr>
-        <td colspan="5" class="uk-text-center uk-text-muted">
+        <td colspan="6" class="uk-text-center uk-text-muted">
           認可タグが登録されていません
         </td>
       </tr>
@@ -38,19 +39,20 @@
       <% @authorization_tags.each do |tag| %>
         <tr>
           <td><%= tag.name %></td>
+          <td>
+            <% if tag.idp? %>
+              <span class="uk-label uk-label-warning">IDP連携</span>
+            <% else %>
+              <span class="uk-label">Ruler</span>
+            <% end %>
+          </td>
+          <td><%= tag.unique_id %></td>
           <td><%= tag.user_tags.count %></td>
           <td><%= tag.content_entry_authorizations.select(:content_entry_id).distinct.count %></td>
           <td>
-            <% if tag.remote_id.present? %>
-              <code><%= tag.remote_id %></code>
-            <% else %>
-              <span class="uk-text-muted">Rulerにより登録</span>
-            <% end %>
-          </td>
-          <td>
             <div class="uk-text-right">
               <%= link_to '編集', edit_ruler_area_tenant_authorization_tag_path(@tenant, tag), class: 'uk-button uk-button-small uk-button-default uk-margin-small-right' %>
-              <% if tag.remote_id.blank? %>
+              <% if tag.provider != 'idp' %>
                 <%= link_to '削除', ruler_area_tenant_authorization_tag_path(@tenant, tag), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？関連するユーザー割り当てとコンテンツ認可設定も削除されます。' }, class: 'uk-button uk-button-small uk-button-danger' %>
               <% end %>
             </div>

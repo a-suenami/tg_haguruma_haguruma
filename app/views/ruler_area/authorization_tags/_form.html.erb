@@ -17,12 +17,23 @@
     </div>
   </div>
 
-  <% if @authorization_tag.persisted? && @authorization_tag.remote_id.present? %>
+  <% if @authorization_tag.idp? %>
     <div class="uk-margin">
-      <label class="uk-form-label">外部システムID</label>
+      <label class="uk-form-label">識別子</label>
       <div class="uk-form-controls">
-        <code><%= @authorization_tag.remote_id %></code>
-        <div class="uk-text-muted uk-text-small">外部システムと連携して作成されたタグです</div>
+        <code><%= @authorization_tag.unique_id %></code>
+        <div class="uk-text-muted uk-text-small">IDP連携で作成されたタグです</div>
+      </div>
+    </div>
+  <% else %>
+    <div class="uk-margin">
+      <%= form.label :unique_id, '識別子', class: 'uk-form-label' %>
+      <div class="uk-form-controls">
+        <%= form.text_field :unique_id, value: @authorization_tag.unique_id, class: "uk-input #{'uk-form-danger' if @authorization_tag.errors[:unique_id].any?}", placeholder: '例: premium-member', required: true %>
+        <% if @authorization_tag.errors[:unique_id].any? %>
+          <div class="uk-text-danger uk-text-small"><%= @authorization_tag.errors[:unique_id].join(', ') %></div>
+        <% end %>
+        <div class="uk-text-muted uk-text-small">タグを識別するためのIDです（半角小文字英数字・ハイフンのみ）</div>
       </div>
     </div>
   <% end %>

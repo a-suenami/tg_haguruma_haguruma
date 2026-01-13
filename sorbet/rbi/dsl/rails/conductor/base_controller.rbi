@@ -29,6 +29,7 @@ class Rails::Conductor::BaseController
     include ::LexicalHelper
     include ::RulerArea::ApplicationHelper
     include ::SvgHelper
+    include ::UserArea::ContentFieldHelper
     include ::UserArea::SiteSettingsHelper
   end
 

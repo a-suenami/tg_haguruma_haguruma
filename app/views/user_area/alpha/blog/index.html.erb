@@ -13,63 +13,38 @@
     </div>
 
     <div cog-list-fragment-actions>
-      <nav cog-tabs-bar>
-        <div cog-tabs>
-          <button cog-tab class="active">
-            <div class="text">すべて</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">ファッション</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">音楽</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">グルメ</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">旅行</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">アート</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">ライフスタイル</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">スペシャル</div>
-            <div class="current-line"></div>
-          </button>
-        </div>
-      </nav>
+      <%= render 'user_area/alpha/shared/content/category_tabs',
+                 categories: categories,
+                 current_category: current_category,
+                 path_helper: ->(cat) { user_area_blog_index_path(category: cat) } %>
     </div>
 
     <div cog-list-fragment-content>
       <div cog-blog-list>
         <div class="list">
-          <% 10.times do |i| %>
-            <a href="<%= user_area_blog_path(i + 1) %>" cog-blog-item>
+          <% @entries.each do |entry| %>
+            <% version = published_version(entry) %>
+            <% next if version.nil? %>
+            <a href="<%= user_area_blog_path(entry) %>" cog-blog-item>
               <div class="thumbnail">
-                <img draggable="false" src="https://placehold.co/600x400/e8e8e8/999999?text=Blog+<%= i + 1 %>" alt="Blog Thumbnail">
+                <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
+                <img draggable="false" src="<%= thumbnail_url || 'https://placehold.co/600x400/e8e8e8/999999?text=No+Image' %>" alt="Blog Thumbnail">
                 <div class="label">
-                  <span cog-category-label>ファッション</span>
+                  <% category_field = field_by_identifier(version, 'category') %>
+                  <% category_option = selected_option(category_field) %>
+                  <span cog-category-label><%= category_option&.display_name || '-' %></span>
                 </div>
               </div>
-              <div class="title">サンプルブログタイトル <%= i + 1 %></div>
+              <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
             </a>
           <% end %>
         </div>
 
-        <div class="pagination-button-container">
-          <button cog-button primary outlined>VIEW MORE</button>
-        </div>
+        <% if @entries.length >= 20 %>
+          <div class="pagination-button-container">
+            <button cog-button primary outlined>VIEW MORE</button>
+          </div>
+        <% end %>
       </div>
     </div>
   </section>
