@@ -107,10 +107,17 @@
 }
 
 // Swiper.js integration styles
-// Base styles to prevent FOUC (Flash of Unstyled Content)
 .swiper {
   width: 100%;
   overflow: hidden;
+
+  // FOUC対策: 初期化完了までフェードアウト
+  opacity: 0;
+  transition: opacity 0.15s ease;
+
+  &.swiper-initialized {
+    opacity: 1;
+  }
 
   .swiper-wrapper {
     display: flex;
