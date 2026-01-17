@@ -28,7 +28,7 @@
             <a href="<%= user_area_blog_path(entry) %>" cog-blog-item>
               <div class="thumbnail">
                 <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
-                <img draggable="false" src="<%= thumbnail_url || 'https://placehold.co/600x400/e8e8e8/999999?text=No+Image' %>" alt="Blog Thumbnail">
+                <img draggable="false" src="<%= thumbnail_url || 'https://placehold.co/300x180/e8e8e8/999999?text=No+Image' %>" alt="Blog Thumbnail">
                 <div class="label">
                   <% category_field = field_by_identifier(version, 'category') %>
                   <% category_option = selected_option(category_field) %>
@@ -36,6 +36,9 @@
                 </div>
               </div>
               <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
+              <div class="date">
+                <span cog-date-label><%= format_content_date(version.published_at) %></span>
+              </div>
             </a>
           <% end %>
         </div>

@@ -1,6 +1,8 @@
 [cog-header-menu-banner] {
   display: block;
   cursor: pointer;
+  width: 100%;
+  max-width: 400px;
 
   &:active {
     opacity: 0.8;

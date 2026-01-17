@@ -29,32 +29,35 @@
             </a>
           </div>
         </div>
-      </section>
-    <% end %>
-
-    <section cog-landing-section class="banners">
-      <div cog-landing-section-content>
-        <div class="swiper-wrapper" data-controller="swiper-navigation">
-          <button type="button" class="swiper-nav-button prev" data-swiper-navigation-target="prevButton" data-action="swiper-navigation#prev" aria-label="前へ">
-            <span class="icon">&lsaquo;</span>
-          </button>
-          <div cog-swiper-container class="banner-swiper" data-swiper-navigation-target="scroller">
-            <div class="swiper-inner">
-              <% 5.times do |i| %>
-                <div cog-swiper-slide>
-                  <a href="#" cog-landing-banner>
-                    <img src="https://placehold.co/800x400/e8e8e8/999999?text=Banner+<%= i + 1 %>" alt="Banner <%= i + 1 %>">
-                  </a>
-                </div>
-              <% end %>
+        <% if @banners.present? %>
+          <div cog-landing-section-content>
+            <div class="swiper banner-swiper" data-controller="swiper">
+              <div class="swiper-wrapper">
+                <% @banners.each do |entry| %>
+                  <% version = published_version(entry) %>
+                  <% next if version.nil? %>
+                  <% image_url = media_asset_url(field_by_identifier(version, 'image')) %>
+                  <% link_url = render_text_field(field_by_identifier(version, 'link_url')) %>
+                  <% alt_text = render_text_field(field_by_identifier(version, 'alt_text')) %>
+                  <div class="swiper-slide">
+                    <% if link_url.present? %>
+                      <a href="<%= link_url %>" cog-landing-banner>
+                        <img src="<%= image_url %>" alt="<%= alt_text %>">
+                      </a>
+                    <% else %>
+                      <div cog-landing-banner>
+                        <img src="<%= image_url %>" alt="<%= alt_text %>">
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+              <div class="swiper-pagination"></div>
             </div>
           </div>
-          <button type="button" class="swiper-nav-button next" data-swiper-navigation-target="nextButton" data-action="swiper-navigation#next" aria-label="次へ">
-            <span class="icon">&rsaquo;</span>
-          </button>
-        </div>
-      </div>
-    </section>
+        <% end %>
+      </section>
+    <% end %>
 
     <% if @news_entries.present? %>
       <section cog-landing-section>
