@@ -11,7 +11,7 @@
 
 @include breakpoints.media-up(sm) {
   [cog-date-label] {
-    font-size: var(--gearbox-font-size-body-medium);
+    font-size: var(--gearbox-font-size-body-small);
   }
 }
 
