@@ -95,16 +95,28 @@
           </div>
         </div>
 
-        <div cog-header-menu-overlay-footer>
-          <div cog-header-menu-banners>
-            <a cog-header-menu-banner href="#">
-              <img src="https://placehold.co/400x200/e8e8e8/999999?text=Banner+1" alt="Banner 1">
-            </a>
-            <a cog-header-menu-banner href="#">
-              <img src="https://placehold.co/400x200/e8e8e8/999999?text=Banner+2" alt="Banner 2">
-            </a>
+        <% if @banners.present? %>
+          <div cog-header-menu-overlay-footer>
+            <div cog-header-menu-banners>
+              <% @banners.each do |entry| %>
+                <% version = published_version(entry) %>
+                <% next if version.nil? %>
+                <% image_url = media_asset_url(field_by_identifier(version, 'image')) %>
+                <% link_url = render_text_field(field_by_identifier(version, 'link_url')) %>
+                <% alt_text = render_text_field(field_by_identifier(version, 'alt_text')) %>
+                <% if link_url.present? %>
+                  <a cog-header-menu-banner href="<%= link_url %>">
+                    <img src="<%= image_url %>" alt="<%= alt_text %>">
+                  </a>
+                <% else %>
+                  <div cog-header-menu-banner>
+                    <img src="<%= image_url %>" alt="<%= alt_text %>">
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
           </div>
-        </div>
+        <% end %>
       </div>
     </div>
   </div>

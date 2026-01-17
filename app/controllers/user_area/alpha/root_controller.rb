@@ -9,6 +9,7 @@ module UserArea
       sig { void }
       def index
         @kv_image_url = load_kv_image_url
+        @banners = load_banners
         @news_entries = query_for(:news, limit: 4)
         @blog_entries = query_for(:blog, limit: 6, category: current_blog_category)
         @blog_categories = load_blog_categories
@@ -56,6 +57,11 @@ module UserArea
         return [] unless content_type
 
         content_type.fields.find_by(api_identifier: 'category')&.select&.options&.order(:position)&.to_a || []
+      end
+
+      sig { returns(T::Array[ContentEntry]) }
+      def load_banners
+        query_for(:banner)
       end
     end
   end
