@@ -6,6 +6,9 @@
 // Import Lexical editor styles for read-only rendering
 @use '../admin_area/lexical_editor';
 
+// Layout utilities
+@use './list-layout';
+
 .lexical-readonly {
   // Override styles for read-only mode in user area
   .editor-container {

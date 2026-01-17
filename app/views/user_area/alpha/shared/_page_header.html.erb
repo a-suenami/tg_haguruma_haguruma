@@ -20,6 +20,9 @@
       <% if feature_enabled?(:ticket) %>
         <a href="<%= user_area_tickets_path %>" cog-header-menu-item><%= feature_label(:ticket, :menu_label) %></a>
       <% end %>
+      <% if feature_enabled?(:schedule) %>
+        <a href="<%= user_area_schedules_path %>" cog-header-menu-item><%= feature_label(:schedule, :menu_label) %></a>
+      <% end %>
       <div class="auth-action-buttons">
         <% if user_signed_in? %>
           <a href="#" cog-header-menu-item class="auth-action-button">
@@ -83,6 +86,9 @@
             <% end %>
             <% if feature_enabled?(:ticket) %>
               <a cog-menu-item href="<%= user_area_tickets_path %>"><%= feature_label(:ticket, :menu_label) %></a>
+            <% end %>
+            <% if feature_enabled?(:schedule) %>
+              <a cog-menu-item href="<%= user_area_schedules_path %>"><%= feature_label(:schedule, :menu_label) %></a>
             <% end %>
             <% if user_signed_in? %>
               <a cog-menu-item href="#">MYPAGE</a>
