@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: var(--gearbox-spacing-32);
+  gap: var(--gearbox-spacing-24);
 
   .list {
     display: block;
@@ -27,7 +27,7 @@
 
     button, a {
       width: 100%;
-      max-width: 300px;
+      max-width: 180px;
     }
   }
 }
