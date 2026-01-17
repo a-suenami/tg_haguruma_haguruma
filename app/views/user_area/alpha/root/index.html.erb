@@ -131,9 +131,11 @@
                     </a>
                   <% end %>
                 </div>
-                <div class="overview-page-indicator">
-                  <a href="<%= user_area_blog_index_path %>" cog-button primary outlined data-turbo-frame="_top">VIEW ALL</a>
-                </div>
+                <% if @blog_entries.length >= 6 %>
+                  <div class="overview-page-indicator">
+                    <a href="<%= user_area_blog_index_path(category: current_blog_category) %>" cog-button primary outlined data-turbo-frame="_top">VIEW ALL</a>
+                  </div>
+                <% end %>
               </div>
             <% end %>
           </div>

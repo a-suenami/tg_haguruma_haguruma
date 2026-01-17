@@ -11,17 +11,18 @@
     width: 100%;
 
     @include breakpoints.media-up(md) {
-      gap: 24px 16px;
+      gap: 40px 24px;
       grid-template-columns: repeat(3, 1fr);
+      justify-content: space-between;
     }
 
     @include breakpoints.media-down(md) {
-      gap: 24px 16px;
+      gap: 24px 20px;
       grid-template-columns: repeat(2, 1fr);
     }
 
     @include breakpoints.media-down(sm) {
-      gap: 16px 8px;
+      gap: 16px;
       grid-template-columns: repeat(2, 1fr);
     }
   }
