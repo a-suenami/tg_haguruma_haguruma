@@ -1,4 +1,10 @@
 [cog-list-fragment-actions] {
   display: flex;
   justify-content: center;
+  &:has([cog-tabs-bar]) {
+    margin-inline: calc(var(--list-fragment-padding-inline) * -1);
+    & > [cog-tabs-bar] {
+      padding-inline: var(--list-fragment-padding-inline);
+    }
+  }
 }
