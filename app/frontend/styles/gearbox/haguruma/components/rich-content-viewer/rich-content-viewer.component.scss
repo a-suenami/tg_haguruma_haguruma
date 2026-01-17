@@ -1,104 +1,107 @@
-.rich-content-viewer {
+[cog-rich-content-viewer] {
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
   color: var(--gearbox-secondary);
 
-  .rich-content {
-    * {
-      max-width: 100%;
-      font-family: var(--gearbox-font-family-system);
-    }
+  * {
+    max-width: 100%;
+    font-family: var(--gearbox-font-family-system);
+  }
 
-    h1 {
-      font-size: 2em;
-      margin-bottom: var(--gearbox-spacing-16);
-      margin-top: var(--gearbox-spacing-16);
-      font-weight: var(--gearbox-font-weight-bold);
-      line-height: var(--gearbox-line-height-relaxed);
-    }
+  h1 {
+    font-size: 2em;
+    margin-bottom: var(--gearbox-spacing-16);
+    margin-top: var(--gearbox-spacing-16);
+    font-weight: var(--gearbox-font-weight-bold);
+    line-height: var(--gearbox-line-height-relaxed);
+  }
 
-    h2 {
-      font-size: 1.5em;
-      margin-bottom: var(--gearbox-spacing-16);
-      margin-top: var(--gearbox-spacing-20);
-      font-weight: var(--gearbox-font-weight-bold);
-      line-height: var(--gearbox-line-height-relaxed);
-    }
+  h2 {
+    font-size: 1.5em;
+    margin-bottom: var(--gearbox-spacing-16);
+    margin-top: var(--gearbox-spacing-20);
+    font-weight: var(--gearbox-font-weight-bold);
+    line-height: var(--gearbox-line-height-relaxed);
+  }
 
-    h3 {
-      font-size: 1.17em;
-      margin-bottom: var(--gearbox-spacing-16);
-      margin-top: var(--gearbox-spacing-16);
-      font-weight: var(--gearbox-font-weight-semibold);
-      line-height: var(--gearbox-line-height-relaxed);
-    }
+  h3 {
+    font-size: 1.17em;
+    margin-bottom: var(--gearbox-spacing-16);
+    margin-top: var(--gearbox-spacing-16);
+    font-weight: var(--gearbox-font-weight-semibold);
+    line-height: var(--gearbox-line-height-relaxed);
+  }
 
-    p {
-      margin-bottom: var(--gearbox-spacing-16);
-      margin-top: var(--gearbox-spacing-16);
-      line-height: var(--gearbox-line-height-loose);
-    }
+  p {
+    margin-bottom: var(--gearbox-spacing-16);
+    margin-top: var(--gearbox-spacing-16);
+    line-height: var(--gearbox-line-height-loose);
+    font-size: 20px;
 
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: var(--gearbox-spacing-16) 0;
-      border-radius: var(--gearbox-spacing-4);
+    &:empty {
+      min-height: 1em;
     }
+  }
 
-    ul,
-    ol {
-      margin: var(--gearbox-spacing-16) 0;
-      padding-left: var(--gearbox-spacing-32);
-      line-height: var(--gearbox-line-height-loose);
-    }
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: var(--gearbox-spacing-16) 0;
+    border-radius: var(--gearbox-spacing-4);
+  }
 
-    blockquote {
-      border-left: 4px solid var(--gearbox-outline);
-      margin: var(--gearbox-spacing-16) 0;
-      padding-left: var(--gearbox-spacing-16);
-      color: var(--gearbox-secondary);
-      font-style: italic;
-    }
+  ul,
+  ol {
+    margin: var(--gearbox-spacing-16) 0;
+    padding-left: var(--gearbox-spacing-32);
+    line-height: var(--gearbox-line-height-loose);
+  }
 
-    pre {
-      background-color: var(--gearbox-surface-dim);
-      padding: var(--gearbox-spacing-16);
-      border-radius: var(--gearbox-spacing-4);
-      overflow-x: auto;
-      margin: var(--gearbox-spacing-16) 0;
-      border: 1px solid var(--gearbox-outline);
-    }
+  blockquote {
+    border-left: 4px solid var(--gearbox-outline);
+    margin: var(--gearbox-spacing-16) 0;
+    padding-left: var(--gearbox-spacing-16);
+    color: var(--gearbox-secondary);
+    font-style: italic;
+  }
 
-    code {
-      background-color: var(--gearbox-surface-dim);
-      padding: var(--gearbox-spacing-2) var(--gearbox-spacing-6);
-      border-radius: var(--gearbox-spacing-2);
-      font-size: 0.9em;
-    }
+  pre {
+    background-color: var(--gearbox-surface-dim);
+    padding: var(--gearbox-spacing-16);
+    border-radius: var(--gearbox-spacing-4);
+    overflow-x: auto;
+    margin: var(--gearbox-spacing-16) 0;
+    border: 1px solid var(--gearbox-outline);
+  }
 
-    pre code {
-      background-color: transparent;
-      padding: 0;
-      font-size: 1em;
-    }
+  code {
+    background-color: var(--gearbox-surface-dim);
+    padding: var(--gearbox-spacing-2) var(--gearbox-spacing-6);
+    border-radius: var(--gearbox-spacing-2);
+    font-size: 0.9em;
+  }
 
-    a {
+  pre code {
+    background-color: transparent;
+    padding: 0;
+    font-size: 1em;
+  }
+
+  a {
+    color: var(--gearbox-primary);
+    text-decoration: underline;
+    font-weight: var(--gearbox-font-weight-medium);
+
+    &:hover {
       color: var(--gearbox-primary);
-      text-decoration: underline;
-      font-weight: var(--gearbox-font-weight-medium);
+      opacity: 0.8;
+    }
 
-      &:hover {
-        color: var(--gearbox-primary);
-        opacity: 0.8;
-      }
-
-      &:focus {
-        outline: 2px solid var(--gearbox-primary);
-        outline-offset: 2px;
-      }
+    &:focus {
+      outline: 2px solid var(--gearbox-primary);
+      outline-offset: 2px;
     }
   }
 }
