@@ -74,7 +74,7 @@
 
 "@esbuild/linux-arm64@0.21.5":
   version "0.21.5"
-  resolved "https://registry.yarnpkg.com/@esbuild/linux-arm64/-/linux-arm64-0.21.5.tgz#70ac6fa14f5cb7e1f7f887bcffb680ad09922b5b"
+  resolved "https://registry.npmjs.org/@esbuild/linux-arm64/-/linux-arm64-0.21.5.tgz"
   integrity sha512-ibKvmyYzKsBeX8d8I7MH/TMfWDXBF3db4qM6sy+7re0YXya+K1cem3on9XgdT2EQGMu4hQyZhan7TeQ8XkGp4Q==
 
 "@esbuild/linux-arm@0.21.5":
@@ -114,7 +114,7 @@
 
 "@esbuild/linux-x64@0.21.5":
   version "0.21.5"
-  resolved "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.21.5.tgz"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-x64/-/linux-x64-0.21.5.tgz#6d8f0c768e070e64309af8004bb94e68ab2bb3b0"
   integrity sha512-1rYdTpyv03iycF1+BhzrzQJCdOuAOtaqHTWJZCWvijKD2N5Xu0TtVC8/+1faWqcP9iBCWOmjmhoH94dH82BxPQ==
 
 "@esbuild/netbsd-x64@0.21.5":
@@ -529,17 +529,17 @@
 
 "@parcel/watcher-linux-arm64-glibc@2.5.1":
   version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm64-glibc/-/watcher-linux-arm64-glibc-2.5.1.tgz#ba60e1f56977f7e47cd7e31ad65d15fdcbd07e30"
+  resolved "https://registry.npmjs.org/@parcel/watcher-linux-arm64-glibc/-/watcher-linux-arm64-glibc-2.5.1.tgz"
   integrity sha512-LrGp+f02yU3BN9A+DGuY3v3bmnFUggAITBGriZHUREfNEzZh/GO06FF5u2kx8x+GBEUYfyTGamol4j3m9ANe8w==
 
 "@parcel/watcher-linux-arm64-musl@2.5.1":
   version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm64-musl/-/watcher-linux-arm64-musl-2.5.1.tgz#f7fbcdff2f04c526f96eac01f97419a6a99855d2"
+  resolved "https://registry.npmjs.org/@parcel/watcher-linux-arm64-musl/-/watcher-linux-arm64-musl-2.5.1.tgz"
   integrity sha512-cFOjABi92pMYRXS7AcQv9/M1YuKRw8SZniCDw0ssQb/noPkRzA+HBDkwmyOJYp5wXcsTrhxO0zq1U11cK9jsFg==
 
 "@parcel/watcher-linux-x64-glibc@2.5.1":
   version "2.5.1"
-  resolved "https://registry.npmjs.org/@parcel/watcher-linux-x64-glibc/-/watcher-linux-x64-glibc-2.5.1.tgz"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-x64-glibc/-/watcher-linux-x64-glibc-2.5.1.tgz#4d2ea0f633eb1917d83d483392ce6181b6a92e4e"
   integrity sha512-GcESn8NZySmfwlTsIur+49yDqSny2IhPeZfXunQi48DMugKeZ7uy1FX83pO0X22sHntJ4Ub+9k34XQCX+oHt2A==
 
 "@parcel/watcher-linux-x64-musl@2.5.1":
@@ -645,12 +645,12 @@
 
 "@rollup/rollup-linux-arm64-gnu@4.48.0":
   version "4.48.0"
-  resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.48.0.tgz#92848c7baddc26233ac60ad6d0548e6b2d23b28c"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.48.0.tgz"
   integrity sha512-NLtvJB5YpWn7jlp1rJiY0s+G1Z1IVmkDuiywiqUhh96MIraC0n7XQc2SZ1CZz14shqkM+XN2UrfIo7JB6UufOA==
 
 "@rollup/rollup-linux-arm64-musl@4.48.0":
   version "4.48.0"
-  resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-arm64-musl/-/rollup-linux-arm64-musl-4.48.0.tgz#d4cc292ed6b0da928994732841c3da5fa5d9ec50"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-arm64-musl/-/rollup-linux-arm64-musl-4.48.0.tgz"
   integrity sha512-QJ4hCOnz2SXgCh+HmpvZkM+0NSGcZACyYS8DGbWn2PbmA0e5xUk4bIP8eqJyNXLtyB4gZ3/XyvKtQ1IFH671vQ==
 
 "@rollup/rollup-linux-loongarch64-gnu@4.48.0":
@@ -680,7 +680,7 @@
 
 "@rollup/rollup-linux-x64-gnu@4.48.0":
   version "4.48.0"
-  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.48.0.tgz"
+  resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.48.0.tgz#9be6c47712a91b56d3801a46f41360034f4eb754"
   integrity sha512-GUdZKTeKBq9WmEBzvFYuC88yk26vT66lQV8D5+9TgkfbewhLaTHRNATyzpQwwbHIfJvDJ3N9WJ90wK/uR3cy3Q==
 
 "@rollup/rollup-linux-x64-musl@4.48.0":
@@ -2466,7 +2466,7 @@ supports-preserve-symlinks-flag@^1.0.0:
 
 swiper@^11.2.6:
   version "11.2.10"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-11.2.10.tgz#ed0b17286b56f7fe8d4b46ed61e6e0bd8daaccad"
+  resolved "https://registry.npmjs.org/swiper/-/swiper-11.2.10.tgz"
   integrity sha512-RMeVUUjTQH+6N3ckimK93oxz6Sn5la4aDlgPzB+rBrG/smPdCTicXyhxa+woIpopz+jewEloiEE3lKo1h9w2YQ==
 
 tabbable@^6.0.0:
