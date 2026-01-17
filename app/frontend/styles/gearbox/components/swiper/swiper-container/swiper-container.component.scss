@@ -113,13 +113,13 @@
   overflow: hidden;
 
   .swiper-wrapper {
-    display: flex;
+    // display: flex;
   }
 
   .swiper-slide {
     flex-shrink: 0;
     width: auto;
-    margin-right: 16px; // Fallback before swiper.js initializes (swiper overrides this)
+    // margin-right: 16px; // Fallback before swiper.js initializes (swiper overrides this)
   }
 
   // Pagination dots styling for swiper.js

@@ -28,7 +28,6 @@ export default class SwiperController extends Controller {
   static values = {
     slidesPerView: { type: String, default: 'auto' },
     spaceBetween: { type: Number, default: 16 },
-    loop: { type: Boolean, default: false },
     autoplay: { type: Number, default: 0 },
   };
 
@@ -51,16 +50,15 @@ export default class SwiperController extends Controller {
   }
 
   private initSwiper() {
-    const slidesPerView = this.slidesPerViewValue === 'auto'
-      ? 'auto'
-      : parseInt(this.slidesPerViewValue, 10);
+    const slidesPerView = this.slidesPerViewValue === 'auto' ? 'auto' : parseInt(this.slidesPerViewValue, 10);
 
     this.swiper = new Swiper(this.element as HTMLElement, {
       modules: [Navigation, Pagination],
       slidesPerView,
       spaceBetween: this.spaceBetweenValue,
-      loop: this.loopValue,
       watchOverflow: true,
+      slidesPerGroup: 1,
+      centeredSlides: true,
       pagination: {
         el: this.element.querySelector('.swiper-pagination') as HTMLElement | null,
         clickable: true,
