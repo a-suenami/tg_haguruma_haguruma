@@ -74,7 +74,7 @@ module UserArea
     def format_content_date(datetime)
       return '' if datetime.nil?
 
-      datetime.strftime('%Y.%m.%d')
+      datetime.strftime('%Y.%m.%d.%a').upcase
     end
 
     # Get published version from an entry

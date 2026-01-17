@@ -7,16 +7,6 @@
   font-weight: var(--gearbox-font-weight-semibold);
   line-height: var(--gearbox-line-height-relaxed);
   font-family: var(--theme-caption-font-family, var(--gearbox-font-family-primary));
+  font-size: var(--gearbox-font-size-body-medium);
 }
 
-@include breakpoints.media-up(sm) {
-  [cog-date-label] {
-    font-size: var(--gearbox-font-size-body-medium);
-  }
-}
-
-@include breakpoints.media-down(sm) {
-  [cog-date-label] {
-    font-size: var(--gearbox-font-size-body-large);
-  }
-}

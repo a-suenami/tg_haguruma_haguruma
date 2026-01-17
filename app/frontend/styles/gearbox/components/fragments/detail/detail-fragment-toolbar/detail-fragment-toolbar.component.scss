@@ -1,6 +1,10 @@
 [cog-detail-fragment-toolbar] {
   display: flex;
-  justify-content: flex-start;
-  gap: var(--gearbox-spacing-10);
+  justify-content: space-between;
+  gap: var(--gearbox-spacing-8);
   align-items: center;
+  & + [cog-detail-fragment-toolbar] {
+    margin-top: var(--gearbox-spacing-16);
+  }
 }
+

@@ -1,11 +1,10 @@
 [cog-header-menu-item] {
   display: inline-block;
-  color: var(--theme-navigation-text-color, #333333);
+  color: var(--theme-navigation-text-color);
   font-family: var(--theme-navigation-font-family, var(--gearbox-font-family-heading));
-  font-size: var(--gearbox-font-size-body-medium);
+  font-size: var(--gearbox-font-size-body-grand);
   font-weight: var(--gearbox-font-weight-bold);
-  letter-spacing: 0.064rem;
-  line-height: 1.8;
+  line-height: 1.6;
   text-decoration: none;
   transition: opacity 0.2s ease;
   white-space: nowrap;
@@ -21,6 +20,34 @@
   &:focus-visible {
     outline: 2px solid var(--gearbox-primary);
     outline-offset: 2px;
+  }
+
+  // Auth action button styles (マイページ, ログイン, 会員登録)
+  &.auth-action-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    width: 76px;
+    font-family: var(--theme-general-font-family);
+    font-size: var(--gearbox-font-size-label-small);
+    font-weight: var(--gearbox-font-weight-semibold);
+    line-height: var(--gearbox-line-height-normal);
+    color: var(--theme-button-secondary-border-color, #004678);
+
+    .auth-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      overflow: hidden;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 }
 

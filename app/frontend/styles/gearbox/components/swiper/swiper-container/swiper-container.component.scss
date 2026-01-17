@@ -26,7 +26,7 @@
 }
 
 // Wrapper with navigation buttons - horizontal flexbox layout
-.swiper-wrapper {
+.swiper-nav-wrapper {
   display: flex;
   align-items: center;
   width: 100%;
@@ -62,6 +62,109 @@
       font-size: 24px;
       line-height: 1;
       color: var(--theme-general-text-color, #333);
+    }
+  }
+}
+
+// Wrapper with dot pagination - vertical layout
+.swiper-pagination-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+
+  [cog-swiper-container] {
+    width: 100%;
+  }
+
+  .swiper-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+  }
+
+  .swiper-dot {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--theme-tab-inactive-underline-color);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    padding: 0;
+
+    &:hover {
+      background-color: var(--theme-tab-active-underline-color);
+      transform: scale(1.1);
+    }
+
+    &.active {
+      background-color: var(--theme-tab-active-underline-color);
+    }
+  }
+}
+
+// Swiper.js integration styles
+.swiper {
+  width: 100%;
+  overflow: hidden;
+
+  // FOUC対策: 初期化完了までフェードアウト
+  opacity: 0;
+  transition: opacity 0.15s ease;
+
+  &.swiper-initialized {
+    opacity: 1;
+  }
+
+  .swiper-wrapper {
+    display: flex;
+  }
+
+  .swiper-slide {
+    flex-shrink: 0;
+    width: auto;
+  }
+
+  // Styles for when all slides fit within the container (Swiper disabled)
+  &.swiper--fits {
+    .swiper-wrapper {
+      display: flex !important;
+      justify-content: center;
+      transform: none !important;
+    }
+
+    .swiper-slide {
+      flex-shrink: 0;
+    }
+
+    .swiper-slide:last-child {
+      margin-right: 0 !important;
+    }
+  }
+
+  // Pagination dots styling for swiper.js
+  .swiper-pagination {
+    position: relative;
+    margin-top: 16px;
+  }
+
+  .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background-color: var(--theme-tab-inactive-underline-color);
+    opacity: 1;
+    transition: background-color 0.2s, transform 0.2s;
+
+    &:hover {
+      background-color: var(--theme-tab-active-underline-color);
+      transform: scale(1.1);
+    }
+
+    &-active {
+      background-color: var(--theme-tab-active-underline-color);
     }
   }
 }

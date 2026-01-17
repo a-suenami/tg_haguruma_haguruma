@@ -1,4 +1,9 @@
 [cog-landing-section-content] {
   display: block;
   width: 100%;
+
+  &:has(.banner-swiper) {
+    width: calc(100% + var(--landing-section-horizontal-padding, var(--gearbox-spacing-56)) * 2);
+    margin-inline: calc(var(--landing-section-horizontal-padding, var(--gearbox-spacing-56)) * -1);
+  }
 }

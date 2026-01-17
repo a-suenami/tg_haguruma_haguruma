@@ -2,13 +2,15 @@
 
 [cog-footer-menu-item] {
   display: inline-block;
-  color: var(--gearbox-on-secondary-container);
+  color: var(--theme-navigation-text-color, #0a0804);
   cursor: pointer;
-  line-height: var(--gearbox-line-height-loose);
+  text-decoration: none;
+  font-weight: 900;
+
 }
 
 [cog-footer-menu-item]:focus-visible {
-  outline: 2px solid var(--gearbox-secondary-on-container);
+  outline: 2px solid var(--theme-button-secondary-border-color);
   outline-offset: 2px;
 }
 
@@ -17,17 +19,19 @@
     opacity: 0.7;
   }
 }
+
 @include breakpoints.media-up(lg) {
   [cog-footer-menu-item] {
-    font-family: var(--gearbox-font-family-system);
-    font-size: var(--gearbox-font-size-body-grand);
-    font-weight: var(--gearbox-font-weight-bold);
+    font-family: var(--theme-title-font-family, var(--gearbox-font-family-heading));
+    font-size: 19px;
+    line-height: 1.8;
   }
 }
+
 @include breakpoints.media-down(lg) {
   [cog-footer-menu-item] {
-    font-family: var(--gearbox-font-family-heading);
-    font-size: var(--gearbox-font-size-body-gigantic);
-    font-weight: var(--gearbox-font-weight-semibold);
+    font-family: var(--theme-title-font-family, var(--gearbox-font-family-heading));
+    font-size: 24px;
+    line-height: 1;
   }
 }
