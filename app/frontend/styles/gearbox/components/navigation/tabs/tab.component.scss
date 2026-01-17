@@ -7,11 +7,12 @@
   cursor: pointer;
   position: relative;
   text-align: center;
-  min-width: 100px;
+  min-width: 120px;
   width: auto;
   flex: 0 0 auto;
   box-sizing: border-box;
   padding: 0;
+  flex-grow: 1;
 
   @media (pointer: fine) {
     &:hover {
@@ -46,8 +47,8 @@
     color: var(--theme-tab-inactive-text-color, var(--gearbox-secondary));
     padding: var(--gearbox-spacing-8) var(--gearbox-spacing-16);
     font-family: var(--theme-tab-font-family, var(--gearbox-font-family-primary));
-    font-weight: var(--gearbox-font-weight-semibold);
-    font-size: var(--gearbox-font-size-body-small);
+    font-weight: var(--gearbox-font-weight-regular);
+    font-size: var(--gearbox-font-size-body-large);
     opacity: 0.4;
     white-space: nowrap;
   }
@@ -61,7 +62,7 @@
     bottom: -2px;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 3px;
     background-color: var(--theme-tab-active-underline-color, var(--gearbox-primary));
     --deactivate-transform-animation-duration: 75ms;
     --deactivate-opacity-animation-duration: 105ms;
