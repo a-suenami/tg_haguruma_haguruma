@@ -51,6 +51,7 @@
     "recomped": "^1.2.1",
     "stimulus-clipboard": "^4.0.1",
     "stimulus-rails-nested-form": "^4.1.0",
+    "swiper": "^11.2.6",
     "uikit": "^3.17.5",
     "vue": "^3.3.7",
     "vue-axios": "^3.5.2",

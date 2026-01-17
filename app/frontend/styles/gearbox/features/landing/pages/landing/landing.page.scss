@@ -15,14 +15,39 @@
   .main-content {
     display: flex;
     flex-direction: column;
-    gap: var(--gearbox-spacing-56);
+    gap: var(--gearbox-spacing-128);
     padding: var(--gearbox-spacing-56) 0;
   }
 
   .action-button {
     --cog-button-width: 100%;
-    --cog-button-align: space-between;
     flex: 1;
+    position: relative;
+
+    .action-button-text {
+      flex: 1;
+      text-align: center;
+    }
+
+    .action-button-icon {
+      position: absolute;
+      right: var(--gearbox-spacing-16);
+      display: flex;
+      align-items: center;
+      width: 30px;
+      height: 30px;
+    }
+
+    @include breakpoints.media-down(sm) {
+      .action-button-text {
+        text-align: left;
+      }
+
+      .action-button-icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
   }
 
   [cog-swiper-slide] {
@@ -39,8 +64,8 @@
 
   @include breakpoints.media-down(sm) {
     .main-content {
-      padding: var(--gearbox-spacing-16) 0 var(--gearbox-spacing-24);
-      gap: var(--gearbox-spacing-48);
+      padding: var(--gearbox-spacing-24) 0 var(--gearbox-spacing-24);
+      gap: var(--gearbox-spacing-112);
     }
 
     [cog-swiper-slide] {
@@ -55,15 +80,17 @@
       margin-right: 0;
     }
 
-    .banner-swiper .swiper-inner {
-      justify-content: flex-start;
-      padding-left: var(--gearbox-spacing-20);
-      padding-right: var(--gearbox-spacing-20);
-    }
   }
 
   [cog-landing-section].banners {
     --landing-section-horizontal-padding: 0;
+  }
+
+  // Banner swiper - centered with dot pagination (swiper.js)
+  .banner-swiper {
+    .swiper-slide {
+      width: 300px;
+    }
   }
 
   // Blog swiper - smaller slides for blog items

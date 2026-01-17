@@ -4,7 +4,7 @@
 [cog-detail-fragment] {
   display: grid;
   grid-template-rows: auto 1fr auto;
-  gap: var(--gearbox-spacing-32);
+  gap: var(--gearbox-spacing-48);
   height: 100%;
   max-width: map.get(breakpoints.$breakpoints-map, 'breakpoint', 'xl');
   margin: 0 auto;
@@ -12,12 +12,12 @@
 
 @include breakpoints.media-up(sm) {
   [cog-detail-fragment] {
-    padding: var(--gearbox-spacing-56);
+    padding: var(--gearbox-spacing-56) var(--gearbox-spacing-56)  var(--gearbox-spacing-96);
   }
 }
 
 @include breakpoints.media-down(sm) {
   [cog-detail-fragment] {
-    padding: var(--gearbox-spacing-24) var(--gearbox-spacing-16);
+    padding: var(--gearbox-spacing-40) var(--gearbox-spacing-16);
   }
 }
