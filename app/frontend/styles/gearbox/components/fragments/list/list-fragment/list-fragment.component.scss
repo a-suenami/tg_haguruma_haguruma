@@ -9,6 +9,8 @@
   flex-direction: column;
   gap: var(--gearbox-spacing-32);
   margin: 0 auto;
+  padding: var(--list-fragment-padding, 0);
+  --tabs-bar-page-gutter: var(--list-fragment-padding, 0);
 }
 
 @media (max-width: map.get(breakpoints.$breakpoints, 'lg')) and (max-height: 1080px) {
@@ -45,12 +47,12 @@
 
 @include breakpoints.media-up(md) {
   [cog-list-fragment] {
-    padding: var(--gearbox-spacing-56);
+    --list-fragment-padding: var(--gearbox-spacing-56);
   }
 }
 @include breakpoints.media-down(md) {
   [cog-list-fragment] {
-    padding: var(--gearbox-spacing-32) var(--gearbox-spacing-16)
+    --list-fragment-padding: var(--gearbox-spacing-32) var(--gearbox-spacing-16)
       var(--gearbox-spacing-24);
   }
 }
