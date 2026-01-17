@@ -8,6 +8,7 @@
   transition:
     transform 120ms cubic-bezier(0.4, 0, 0.2, 1),
     opacity 75ms linear;
+  align-items: start;
 
   &:active {
     transform: scale(0.98);
@@ -42,7 +43,7 @@
     font-size: 0.875rem;
     font-weight: 600;
     line-height: 1.8;
-    font-family: var(--theme-general-font-family, sans-serif);
+    font-family: var(--theme-title-font-family, sans-serif);
     font-size: var(--gearbox-font-size-body-large);
     color: var(--theme-title-text-color, #000000);
     text-overflow: ellipsis;

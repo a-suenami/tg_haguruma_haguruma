@@ -1,55 +1,68 @@
-<% content_for :title do %>
-  <%= feature_label(:news) %> - <%= current_tenant&.name || 'Fan Club' %>
-<% end %>
+<div class="layout-list-page">
+  <% content_for :title do %>
+    <%= feature_label(:news) %> - <%= current_tenant&.name || 'Fan Club' %>
+  <% end %>
 
-<%= render 'user_area/alpha/shared/page_header' %>
+  <%= render 'user_area/alpha/shared/page_header' %>
 
-<main class="main">
-  <section cog-list-fragment>
-    <div cog-list-fragment-title>
-      <div cog-feature-title-image feature="news">
-        <div class="title-image"><%= feature_label(:news) %></div>
+  <main class="main">
+    <section cog-list-fragment>
+      <div cog-list-fragment-title>
+        <div cog-feature-title-image feature="news">
+          <div class="title-image"><%= feature_label(:news) %></div>
+        </div>
       </div>
-    </div>
 
-    <div cog-list-fragment-actions>
-      <%= render 'user_area/alpha/shared/content/category_tabs',
-                 categories: categories,
-                 current_category: current_category,
-                 path_helper: ->(cat) { user_area_news_index_path(category: cat) } %>
-    </div>
+      <div cog-list-fragment-actions>
+        <%= render 'user_area/alpha/shared/content/category_tabs',
+                   categories: categories,
+                   current_category: current_category,
+                   path_helper: ->(cat) { user_area_news_index_path(category: cat) } %>
+      </div>
 
-    <div cog-list-fragment-content>
-      <div cog-news-list>
-        <div class="list">
-          <% @entries.each_with_index do |entry, i| %>
-            <% version = published_version(entry) %>
-            <% next if version.nil? %>
-            <a href="<%= user_area_news_path(entry) %>" cog-news-item>
-              <div class="category">
-                <% category_field = field_by_identifier(version, 'category') %>
-                <% category_option = selected_option(category_field) %>
-                <span cog-category-label><%= category_option&.display_name || '-' %></span>
+      <div cog-list-fragment-content>
+        <div cog-news-list>
+          <% if @entries.empty? %>
+            <div class="empty-state">
+              <% if current_category.present? %>
+                <% category_display_name = categories.find { |c| c.unique_name == current_category }&.display_name %>
+                <p><%= category_display_name %>の<%= feature_label(:news) %>はありません</p>
+              <% else %>
+                <p><%= feature_label(:news) %>がありません</p>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="list">
+              <% @entries.each_with_index do |entry, i| %>
+                <% version = published_version(entry) %>
+                <% next if version.nil? %>
+                <a href="<%= user_area_news_path(entry) %>" cog-news-item>
+                  <div class="category">
+                    <% category_field = field_by_identifier(version, 'category') %>
+                    <% category_option = selected_option(category_field) %>
+                    <span cog-category-label><%= category_option&.display_name || '-' %></span>
+                  </div>
+                  <div class="date">
+                    <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                  </div>
+                  <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
+                </a>
+                <% unless i == @entries.length - 1 %>
+                  <div class="divider"></div>
+                <% end %>
+              <% end %>
+            </div>
+
+            <% if @entries.length >= 20 %>
+              <div class="pagination-button-container">
+                <button cog-button primary outlined>VIEW ALL</button>
               </div>
-              <div class="date">
-                <span cog-date-label><%= format_content_date(version.published_at) %></span>
-              </div>
-              <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
-            </a>
-            <% unless i == @entries.length - 1 %>
-              <div class="divider"></div>
             <% end %>
           <% end %>
         </div>
-
-        <% if @entries.length >= 20 %>
-          <div class="pagination-button-container">
-            <button cog-button primary outlined>VIEW ALL</button>
-          </div>
-        <% end %>
       </div>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
 
-<%= render 'user_area/alpha/shared/page_footer' %>
+  <%= render 'user_area/alpha/shared/page_footer' %>
+</div>

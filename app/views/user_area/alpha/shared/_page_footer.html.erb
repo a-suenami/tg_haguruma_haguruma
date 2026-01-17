@@ -13,6 +13,9 @@
     <% if feature_enabled?(:ticket) %>
       <a cog-footer-menu-item href="<%= user_area_tickets_path %>"><%= feature_label(:ticket, :menu_label) %></a>
     <% end %>
+    <% if feature_enabled?(:schedule) %>
+      <a cog-footer-menu-item href="<%= user_area_schedules_path %>"><%= feature_label(:schedule, :menu_label) %></a>
+    <% end %>
   </nav>
 
   <div cog-legal-links>
