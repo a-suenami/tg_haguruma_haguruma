@@ -7,7 +7,7 @@
   align-items: center;
   column-gap: var(--gearbox-spacing-8);
   row-gap: var(--gearbox-spacing-4);
-  padding: var(--gearbox-spacing-12) var(--gearbox-spacing-8);
+  padding: var(--gearbox-spacing-12) var(--gearbox-spacing-4);
   cursor: pointer;
 
   .category {
@@ -16,16 +16,21 @@
 
   .date {
     grid-area: date;
-    justify-self: start;
+    justify-self: end;
   }
 
   .title {
     grid-area: title;
     font-family: var(--gearbox-font-family-primary);
-    font-weight: var(--gearbox-font-weight-semibold);
-    font-size: var(--gearbox-font-size-body-medium);
+    font-weight: var(--gearbox-font-weight-bold);
+    font-size: var(--gearbox-font-size-title-small);
     line-height: var(--gearbox-line-height-relaxed);
     letter-spacing: 0.04em;
     color: var(--gearbox-secondary);
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
