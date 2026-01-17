@@ -8,12 +8,13 @@
 
   .list {
     display: grid;
+    align-items: start;
     width: 100%;
+    justify-content: space-between;
 
     @include breakpoints.media-up(md) {
       gap: 40px 24px;
       grid-template-columns: repeat(3, 1fr);
-      justify-content: space-between;
     }
 
     @include breakpoints.media-down(md) {
