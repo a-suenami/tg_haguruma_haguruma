@@ -55,15 +55,38 @@
       margin-right: 0;
     }
 
-    .banner-swiper .swiper-inner {
-      justify-content: flex-start;
-      padding-left: var(--gearbox-spacing-20);
-      padding-right: var(--gearbox-spacing-20);
-    }
   }
 
   [cog-landing-section].banners {
     --landing-section-horizontal-padding: 0;
+  }
+
+  // Banner swiper - centered with dot pagination
+  .banner-swiper {
+    [cog-swiper-slide] {
+      --cog-swiper-slide-width: 300px;
+      scroll-snap-align: center;
+    }
+
+    [cog-swiper-slide]:first-of-type {
+      margin-left: 0;
+    }
+
+    [cog-swiper-slide]:last-of-type {
+      margin-right: 0;
+    }
+
+    .swiper-inner {
+      justify-content: flex-start;
+      padding-left: calc(50% - 150px);
+      padding-right: calc(50% - 150px);
+    }
+
+    @include breakpoints.media-down(sm) {
+      [cog-swiper-slide] {
+        --cog-swiper-slide-width: 300px;
+      }
+    }
   }
 
   // Blog swiper - smaller slides for blog items

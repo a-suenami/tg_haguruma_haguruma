@@ -65,3 +65,43 @@
     }
   }
 }
+
+// Wrapper with dot pagination - vertical layout
+.swiper-pagination-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+
+  [cog-swiper-container] {
+    width: 100%;
+  }
+
+  .swiper-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+  }
+
+  .swiper-dot {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--theme-border-color, #e0e0e0);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    padding: 0;
+
+    &:hover {
+      background-color: var(--theme-accent-color, #666);
+      transform: scale(1.1);
+    }
+
+    &.active {
+      background-color: var(--theme-accent-color, #f06292);
+    }
+  }
+}
