@@ -9,10 +9,17 @@ module UserArea
       sig { void }
       def index
         @kv_image_url = load_kv_image_url
-        @news_entries = query_for(:news, limit: 3)
-        @blog_entries = query_for(:blog, limit: 5)
+        @news_entries = query_for(:news, limit: 4)
+        @blog_entries = query_for(:blog, limit: 6, category: current_blog_category)
+        @blog_categories = load_blog_categories
         @biography_entries = query_for(:biography)
       end
+
+      sig { returns(T.nilable(String)) }
+      def current_blog_category
+        params[:blog_category]
+      end
+      helper_method :current_blog_category
 
       private
 
@@ -31,15 +38,24 @@ module UserArea
         image_field&.media_asset&.media_asset&.url
       end
 
-      sig { params(content_type_key: Symbol, limit: T.nilable(Integer)).returns(T::Array[ContentEntry]) }
-      def query_for(content_type_key, limit: nil)
+      sig { params(content_type_key: Symbol, limit: T.nilable(Integer), category: T.nilable(String)).returns(T::Array[ContentEntry]) }
+      def query_for(content_type_key, limit: nil, category: nil)
         query = UserQueries::ContentEntriesQuery.new
                   .by_content_type(content_type_key.to_s)
                   .published
                   .authorized_for(current_user)
                   .ordered_by_published_at
+        query = query.by_select_option('category', category) if category.present?
         query = query.limit(limit) if limit
         query.resolve
+      end
+
+      sig { returns(T::Array[ContentType::FieldSelectOption]) }
+      def load_blog_categories
+        content_type = ContentType.find_by(unique_name: 'blog')
+        return [] unless content_type
+
+        content_type.fields.find_by(api_identifier: 'category')&.select&.options&.order(:position)&.to_a || []
       end
     end
   end
