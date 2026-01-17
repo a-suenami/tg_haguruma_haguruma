@@ -1,10 +1,11 @@
 [cog-copyright] {
-  --cog-copyright-color: var(--gearbox-on-secondary-container);
+  --cog-copyright-color: var(--theme-navigation-text-color, #0a0804);
 
   display: block;
-  font-family: var(--gearbox-font-family-system);
-  font-size: var(--gearbox-font-size-caption-medium);
-  font-weight: var(--gearbox-font-weight-medium);
+  font-size: var(--gearbox-font-size-label-small);
+  font-weight: 300;
   line-height: var(--gearbox-line-height-normal);
+  text-align: center;
   color: var(--cog-copyright-color);
+  width: 100%;
 }

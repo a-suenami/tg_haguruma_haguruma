@@ -12,8 +12,8 @@
   --cog-button-filled-outline-color: var(--theme-button-primary-background-color, #1E3A5F);
 
   // Outlined variant (default: Secondary button - white bg, navy border/text)
-  --cog-button-outlined-color: var(--theme-button-secondary-text-color, #1E3A5F);
-  --cog-button-outlined-background-color: var(--theme-button-secondary-background-color, #FFFFFF);
+  --cog-button-outlined-color: var(--theme-button-primary-background-color, #1E3A5F);
+  --cog-button-outlined-background-color: var(--theme-button-primary-text-color, #1E3A5F);
   --cog-button-outlined-outline-color: var(--theme-button-secondary-border-color, #1E3A5F);
 
   // Base styles

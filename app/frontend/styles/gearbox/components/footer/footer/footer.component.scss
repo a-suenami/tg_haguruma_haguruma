@@ -1,12 +1,21 @@
+@use '../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
 [cog-footer] {
   display: flex;
   flex-direction: column;
-  gap: var(--gearbox-spacing-24);
-  padding: var(--gearbox-spacing-24) var(--gearbox-spacing-16);
-  background-color: var(--gearbox-secondary-container);
+  align-items: center;
+  // FIXME: Resolve hardcoded color
+  background-color: #fff;
   width: 100%;
 
-  .copyright {
-    margin: 0 auto;
+  @include breakpoints.media-up(lg) {
+    gap: var(--gearbox-spacing-24);
+    padding: var(--gearbox-spacing-40) var(--gearbox-spacing-24);
+  }
+
+  @include breakpoints.media-down(lg) {
+    gap: var(--gearbox-spacing-32);
+    padding: var(--gearbox-spacing-32) var(--gearbox-spacing-16);
+    align-items: flex-start;
   }
 }
