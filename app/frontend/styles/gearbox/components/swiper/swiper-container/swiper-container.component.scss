@@ -113,13 +113,25 @@
   overflow: hidden;
 
   .swiper-wrapper {
-    // display: flex;
+    display: flex;
   }
 
   .swiper-slide {
     flex-shrink: 0;
     width: auto;
-    // margin-right: 16px; // Fallback before swiper.js initializes (swiper overrides this)
+  }
+
+  // Styles for when all slides fit within the container (Swiper disabled)
+  &.swiper--fits {
+    .swiper-wrapper {
+      display: flex !important;
+      justify-content: center;
+      transform: none !important;
+    }
+
+    .swiper-slide {
+      flex-shrink: 0;
+    }
   }
 
   // Pagination dots styling for swiper.js
