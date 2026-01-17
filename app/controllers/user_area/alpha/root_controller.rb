@@ -36,7 +36,7 @@ module UserArea
         version = entry.versions.published.first
         return nil unless version
 
-        content_type_field = content_type.fields.find_by(api_identifier: api_identifier)
+        content_type_field = content_type.fields.find_by(api_identifier:)
         return nil unless content_type_field
 
         image_field = version.fields.find_by(content_type_field_id: content_type_field.id)
