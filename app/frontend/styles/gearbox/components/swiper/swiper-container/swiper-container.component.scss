@@ -139,6 +139,10 @@
     .swiper-slide {
       flex-shrink: 0;
     }
+
+    .swiper-slide:last-child {
+      margin-right: 0 !important;
+    }
   }
 
   // Pagination dots styling for swiper.js

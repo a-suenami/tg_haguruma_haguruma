@@ -8,7 +8,8 @@ module UserArea
 
       sig { void }
       def index
-        @kv_image_url = load_kv_image_url
+        @kv_pc_image_url = load_kv_image_url('image_pc')
+        @kv_sp_image_url = load_kv_image_url('image_sp')
         @banners = load_banners
         @news_entries = query_for(:news, limit: 4)
         @blog_entries = query_for(:blog, limit: 6, category: current_blog_category)
@@ -24,8 +25,8 @@ module UserArea
 
       private
 
-      sig { returns(T.nilable(String)) }
-      def load_kv_image_url
+      sig { params(api_identifier: String).returns(T.nilable(String)) }
+      def load_kv_image_url(api_identifier)
         content_type = ContentType.find_by(unique_name: 'kv', is_collection: false)
         return nil unless content_type
 
@@ -35,7 +36,10 @@ module UserArea
         version = entry.versions.published.first
         return nil unless version
 
-        image_field = version.fields.find_by(field_type: :media_asset)
+        content_type_field = content_type.fields.find_by(api_identifier:)
+        return nil unless content_type_field
+
+        image_field = version.fields.find_by(content_type_field_id: content_type_field.id)
         image_field&.media_asset&.media_asset&.url
       end
 
