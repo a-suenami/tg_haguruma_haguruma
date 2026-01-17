@@ -1,4 +1,5 @@
 import { Application } from '@hotwired/stimulus';
+import AccordionController from './accordion_controller';
 import ReactLexicalController from './react_lexical_controller';
 import AutosaveFormController from './autosave_form_controller';
 import AutosaveFieldController from './autosave_field_controller';
@@ -11,6 +12,7 @@ import SwiperNavigationController from './swiper_navigation_controller';
 const application = Application.start();
 
 // Register controllers
+application.register('accordion', AccordionController);
 application.register('react-lexical', ReactLexicalController);
 application.register('autosave-form', AutosaveFormController);
 application.register('autosave-field', AutosaveFieldController);

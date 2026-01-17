@@ -1,0 +1,226 @@
+<% content_for :title do %>
+  入会特典 | <%= current_tenant&.name || 'Fan Club' %>
+<% end %>
+
+<div cog-privilege>
+<%= render 'user_area/alpha/shared/page_header' %>
+
+<main class="main">
+  <div class="main-content">
+    <%# Logo Section %>
+    <section cog-privilege-section class="logo-section">
+      <div cog-privilege-section-inner>
+        <div cog-privilege-section-content>
+          <div cog-logo class="privilege-logo">
+            <img src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%# Key Visual Section %>
+    <section cog-privilege-section class="kv-section">
+      <div cog-privilege-section-inner>
+        <div cog-privilege-kv>
+          <div class="kv-pc">
+            <%= inline_svg('privilege-kv-pc.svg', base: :frontend) %>
+          </div>
+          <div class="kv-sp">
+            <%= inline_svg('privilege-kv-sp.svg', base: :frontend) %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%# Join Button %>
+    <section cog-privilege-section class="join-button-section">
+      <div cog-privilege-section-inner>
+        <div cog-privilege-section-content>
+          <a href="#" cog-button class="privilege-join-button">
+            <span>ファンクラブ入会</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <%# Introduction Section %>
+    <section cog-privilege-section class="intro-section">
+      <div cog-privilege-section-inner>
+        <div cog-privilege-section-content>
+          <div cog-privilege-intro>
+            <p>八代目 尾上菊五郎・六代目 尾上菊之助のファンクラブ『斧琴菊（よきこときく）』です。</p>
+            <p>八代目菊五郎・六代目菊之助を応援することを目的として発足いたしました。</p>
+            <br>
+            <p>「斧琴菊」とは江戸時代に流行した判じ物の文様で、「斧」と「琴」と「菊」で「良きこと聞く」という縁起の良い意味になり、三代目菊五郎が愛用したとも言われています。音羽屋の柄として代々大切にされてきました。</p>
+            <p>会員の皆さまへも「良きこと」をお届けできますよう、吉祥の思いを込めてファンクラブの名称とさせていただきました。</p>
+            <br>
+            <p>会員になられた方には、会員限定特典がございます。</p>
+            <p>ご入会いただき、益々お引き立て賜りますようお願い申し上げます。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%# Benefits Section %>
+    <section cog-privilege-section class="benefits-section">
+      <div cog-privilege-section-inner>
+        <div cog-privilege-section-title>
+          <span>会員特典</span>
+        </div>
+        <div cog-privilege-section-content>
+          <div cog-privilege-benefits-card>
+            <div class="card-pc">
+              <%= inline_svg('privilege-benefits-pc.svg', base: :frontend) %>
+            </div>
+            <div class="card-sp">
+              <%= inline_svg('privilege-benefits-sp.svg', base: :frontend) %>
+            </div>
+          </div>
+
+          <%# Join Button in Benefits Section %>
+          <a href="#" cog-button class="privilege-join-button">
+            <span>ファンクラブ入会</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <%# Fee Section %>
+    <section cog-privilege-section class="fee-section">
+      <div cog-privilege-section-inner>
+        <div cog-privilege-section-title>
+          <span>会費</span>
+        </div>
+        <div cog-privilege-section-content>
+          <div cog-privilege-fee-card>
+            <div class="card-pc">
+              <%= inline_svg('privilege-fee-pc.svg', base: :frontend) %>
+            </div>
+            <div class="card-sp">
+              <%= inline_svg('privilege-fee-sp.svg', base: :frontend) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%# How to Join Section %>
+    <section cog-privilege-section class="how-to-join-section">
+      <div cog-privilege-section-inner>
+        <div cog-privilege-section-content>
+          <div cog-privilege-join-card>
+            <div class="card-pc">
+              <%= inline_svg('privilege-howto-pc.svg', base: :frontend) %>
+            </div>
+            <div class="card-sp">
+              <%= inline_svg('privilege-howto-sp.svg', base: :frontend) %>
+            </div>
+          </div>
+
+          <%# Join Button %>
+          <a href="#" cog-button class="privilege-join-button">
+            <span>ファンクラブ入会</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <%# FAQ Section %>
+    <section cog-privilege-section class="faq-section">
+      <div cog-privilege-section-inner>
+        <div cog-privilege-section-title>
+          <span>よくある質問</span>
+        </div>
+        <div cog-privilege-section-content>
+          <div cog-privilege-faq-list data-controller="accordion">
+            <details cog-privilege-faq-item data-accordion-target="item">
+              <summary>
+                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
+                <span class="toggle-icon"></span>
+              </summary>
+              <div class="answer">
+                <div>
+                  <p>説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります</p>
+                </div>
+              </div>
+            </details>
+            <details cog-privilege-faq-item data-accordion-target="item">
+              <summary>
+                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
+                <span class="toggle-icon"></span>
+              </summary>
+              <div class="answer">
+                <div>
+                  <p>説明テキストがここに入ります。</p>
+                </div>
+              </div>
+            </details>
+            <details cog-privilege-faq-item data-accordion-target="item">
+              <summary>
+                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
+                <span class="toggle-icon"></span>
+              </summary>
+              <div class="answer">
+                <div>
+                  <p>説明テキストがここに入ります。</p>
+                </div>
+              </div>
+            </details>
+            <details cog-privilege-faq-item data-accordion-target="item">
+              <summary>
+                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
+                <span class="toggle-icon"></span>
+              </summary>
+              <div class="answer">
+                <div>
+                  <p>説明テキストがここに入ります。</p>
+                </div>
+              </div>
+            </details>
+            <details cog-privilege-faq-item data-accordion-target="item">
+              <summary>
+                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
+                <span class="toggle-icon"></span>
+              </summary>
+              <div class="answer">
+                <div>
+                  <p>説明テキストがここに入ります。</p>
+                </div>
+              </div>
+            </details>
+            <details cog-privilege-faq-item data-accordion-target="item">
+              <summary>
+                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
+                <span class="toggle-icon"></span>
+              </summary>
+              <div class="answer">
+                <div>
+                  <p>説明テキストがここに入ります。</p>
+                </div>
+              </div>
+            </details>
+            <details cog-privilege-faq-item data-accordion-target="item">
+              <summary>
+                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
+                <span class="toggle-icon"></span>
+              </summary>
+              <div class="answer">
+                <div>
+                  <p>説明テキストがここに入ります。</p>
+                </div>
+              </div>
+            </details>
+          </div>
+
+          <%# Join Button %>
+          <a href="#" cog-button class="privilege-join-button">
+            <span>ファンクラブ入会</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<%= render 'user_area/alpha/shared/page_footer' %>
+</div>

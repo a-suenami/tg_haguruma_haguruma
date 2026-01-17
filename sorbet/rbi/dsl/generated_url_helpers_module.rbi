@@ -445,6 +445,9 @@ module GeneratedUrlHelpersModule
   def user_area_news_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_privilege_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_profile_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
