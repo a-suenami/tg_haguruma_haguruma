@@ -26,7 +26,7 @@
 }
 
 // Wrapper with navigation buttons - horizontal flexbox layout
-.swiper-wrapper {
+.swiper-nav-wrapper {
   display: flex;
   align-items: center;
   width: 100%;
@@ -101,6 +101,46 @@
     }
 
     &.active {
+      background-color: var(--theme-tab-active-underline-color);
+    }
+  }
+}
+
+// Swiper.js integration styles
+// Base styles to prevent FOUC (Flash of Unstyled Content)
+.swiper {
+  width: 100%;
+  overflow: hidden;
+
+  .swiper-wrapper {
+    display: flex;
+  }
+
+  .swiper-slide {
+    flex-shrink: 0;
+    width: auto;
+    margin-right: 16px; // Fallback before swiper.js initializes (swiper overrides this)
+  }
+
+  // Pagination dots styling for swiper.js
+  .swiper-pagination {
+    position: relative;
+    margin-top: 16px;
+  }
+
+  .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background-color: var(--theme-tab-inactive-underline-color);
+    opacity: 1;
+    transition: background-color 0.2s, transform 0.2s;
+
+    &:hover {
+      background-color: var(--theme-tab-active-underline-color);
+      transform: scale(1.1);
+    }
+
+    &-active {
       background-color: var(--theme-tab-active-underline-color);
     }
   }

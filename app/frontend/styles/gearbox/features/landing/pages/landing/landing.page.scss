@@ -15,7 +15,7 @@
   .main-content {
     display: flex;
     flex-direction: column;
-    gap: var(--gearbox-spacing-56);
+    gap: var(--gearbox-spacing-128);
     padding: var(--gearbox-spacing-56) 0;
   }
 
@@ -40,7 +40,7 @@
   @include breakpoints.media-down(sm) {
     .main-content {
       padding: var(--gearbox-spacing-16) 0 var(--gearbox-spacing-24);
-      gap: var(--gearbox-spacing-48);
+      gap: var(--gearbox-spacing-112);
     }
 
     [cog-swiper-slide] {
@@ -61,31 +61,15 @@
     --landing-section-horizontal-padding: 0;
   }
 
-  // Banner swiper - centered with dot pagination
+  // Banner swiper - centered with dot pagination (swiper.js)
   .banner-swiper {
-    [cog-swiper-slide] {
-      --cog-swiper-slide-width: 300px;
-      scroll-snap-align: center;
+    .swiper-slide {
+      width: 300px;
     }
 
-    [cog-swiper-slide]:first-of-type {
-      margin-left: 0;
-    }
-
-    [cog-swiper-slide]:last-of-type {
-      margin-right: 0;
-    }
-
-    .swiper-inner {
-      justify-content: flex-start;
-      padding-left: calc(50% - 150px);
-      padding-right: calc(50% - 150px);
-    }
-
-    @include breakpoints.media-down(sm) {
-      [cog-swiper-slide] {
-        --cog-swiper-slide-width: 300px;
-      }
+    .swiper-wrapper {
+      // Center slides when they fit, scroll when overflow
+      justify-content: center;
     }
   }
 
