@@ -27,10 +27,12 @@
         <div cog-landing-section-content>
           <div cog-landing-section-actions>
             <a href="<%= user_area_auth_start_path %>" cog-button filled class="action-button">
-              <span><%= login_label %></span>
+              <span class="action-button-text"><%= login_label %></span>
+              <span class="action-button-icon"><%= icon_svg('sign-in-indicator') %></span>
             </a>
             <a href="<%= user_area_auth_start_path %>" cog-button outlined class="action-button">
-              <span><%= signup_label %></span>
+              <span class="action-button-text"><%= signup_label %></span>
+              <span class="action-button-icon"><%= icon_svg('sign-up-indicator') %></span>
             </a>
           </div>
         </div>
