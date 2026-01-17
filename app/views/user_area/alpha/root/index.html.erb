@@ -8,8 +8,13 @@
 <main class="main">
   <section cog-landing-hero-image-section>
     <div cog-landing-hero-image>
-      <% if @kv_image_url %>
-        <img src="<%= @kv_image_url %>" alt="<%= current_tenant&.name || '' %>">
+      <% if @kv_pc_image_url || @kv_sp_image_url %>
+        <picture>
+          <% if @kv_sp_image_url %>
+            <source media="(max-width: 767px)" srcset="<%= @kv_sp_image_url %>">
+          <% end %>
+          <img src="<%= @kv_pc_image_url || @kv_sp_image_url %>" alt="<%= current_tenant&.name || '' %>">
+        </picture>
       <% else %>
         <img src="https://placehold.co/1920x1080/333333/666666?text=Hero+Image" alt="Hero Image">
       <% end %>
