@@ -94,24 +94,27 @@
     <% end %>
 
     <% if @blog_entries.present? %>
-      <section cog-landing-section>
-        <div cog-landing-section-title>
-          <div cog-feature-title-image feature="blog">
-            <div class="title-image"><%= feature_label(:blog) %></div>
+      <%= turbo_frame_tag "blog-section" do %>
+        <section cog-landing-section>
+          <div cog-landing-section-title>
+            <div cog-feature-title-image feature="blog">
+              <div class="title-image"><%= feature_label(:blog) %></div>
+            </div>
           </div>
-        </div>
-        <div cog-landing-section-content>
-          <div class="swiper-wrapper" data-controller="swiper-navigation">
-            <button type="button" class="swiper-nav-button prev" data-swiper-navigation-target="prevButton" data-action="swiper-navigation#prev" aria-label="前へ">
-              <span class="icon">&lsaquo;</span>
-            </button>
-            <div cog-swiper-container class="blog-swiper" data-swiper-navigation-target="scroller">
-              <div class="swiper-inner">
-                <% @blog_entries.each do |entry| %>
-                  <% version = published_version(entry) %>
-                  <% next if version.nil? %>
-                  <div cog-swiper-slide>
-                    <a href="<%= user_area_blog_path(entry) %>" cog-blog-item>
+          <div cog-landing-section-actions>
+            <%= render 'user_area/alpha/shared/content/category_tabs',
+                      categories: @blog_categories,
+                      current_category: current_blog_category,
+                      path_helper: ->(cat) { user_area_root_path(blog_category: cat) } %>
+          </div>
+          <div cog-landing-section-content>
+            <% if @blog_entries.present? %>
+              <div cog-blog-list>
+                <div class="list">
+                  <% @blog_entries.each do |entry| %>
+                    <% version = published_version(entry) %>
+                    <% next if version.nil? %>
+                    <a href="<%= user_area_blog_path(entry) %>" cog-blog-item data-turbo-frame="_top">
                       <div class="thumbnail">
                         <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
                         <img draggable="false" src="<%= thumbnail_url || 'https://placehold.co/600x400/e8e8e8/999999?text=No+Image' %>" alt="Blog Thumbnail">
@@ -126,16 +129,18 @@
                         <span cog-date-label><%= format_content_date(version.published_at) %></span>
                       </div>
                     </a>
+                  <% end %>
+                </div>
+                <% if @blog_entries.length >= 6 %>
+                  <div class="overview-page-indicator">
+                    <a href="<%= user_area_blog_index_path(category: current_blog_category) %>" cog-button primary outlined data-turbo-frame="_top">VIEW ALL</a>
                   </div>
                 <% end %>
               </div>
-            </div>
-            <button type="button" class="swiper-nav-button next" data-swiper-navigation-target="nextButton" data-action="swiper-navigation#next" aria-label="次へ">
-              <span class="icon">&rsaquo;</span>
-            </button>
+            <% end %>
           </div>
-        </div>
-      </section>
+        </section>
+      <% end %>
     <% end %>
 
     <% if @biography_entries.present? %>

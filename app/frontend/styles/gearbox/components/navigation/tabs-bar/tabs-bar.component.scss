@@ -1,7 +1,4 @@
 [cog-tabs-bar] {
-  --inner-page-gutter: var(--tabs-bar-page-gutter, 0)
-  margin-inline: calc(var(--inner-page-gutter) * -1);
-  padding-inline: var(--inner-page-gutter);
   display: block;
   position: relative;
   overflow-x: auto;
@@ -10,7 +7,6 @@
   box-sizing: border-box;
   -ms-overflow-style: none;
   width: 100%;
-  max-width: 700px;
 
   &::-webkit-scrollbar {
     display: none;
