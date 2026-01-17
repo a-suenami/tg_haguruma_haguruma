@@ -13,10 +13,10 @@
     height: 1px;
     background-image: repeating-linear-gradient(
       to right,
-      var(--gearbox-outline-primary) 0,
-      var(--gearbox-outline-primary) 2px,
-      transparent 2px,
-      transparent 4px
+      var(--theme-border-color) 0,
+      var(--theme-border-color) 1.5px,
+      transparent 1.5px,
+      transparent 5.5px
     );
   }
 
