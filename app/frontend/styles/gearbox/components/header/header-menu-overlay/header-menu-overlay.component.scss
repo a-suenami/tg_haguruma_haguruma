@@ -1,6 +1,5 @@
 [cog-header-menu-overlay] {
   --gearbox-header-height: 76px;
-  background-color: var(--gearbox-surface-scrim);
   display: block;
   position: fixed;
   top: var(--gearbox-header-height);
@@ -31,11 +30,14 @@
   }
 
   .inner {
-    background-color: var(--gearbox-background);
+    padding: var(--gearbox-spacing-32) 0;
+    // FIXME: Resolve hardcoded color
+    background-color: #ffffff;
     width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    gap: var(--gearbox-spacing-48);
     height: 100%;
     overflow-y: auto;
   }
