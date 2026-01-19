@@ -1,7 +1,8 @@
 <header cog-header>
   <a href="<%= user_area_root_path %>" cog-header-logo-button>
     <div cog-logo>
-      <img src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>">
+      <%# FIXME(#14): width/heightを動的に設定 %>
+      <img src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>" width=104 height=53>
     </div>
   </a>
 
