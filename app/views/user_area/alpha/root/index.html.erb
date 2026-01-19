@@ -155,24 +155,6 @@
       <% end %>
     <% end %>
 
-    <% if @biography_entries.present? %>
-      <section cog-landing-section>
-        <div cog-landing-section-title>
-          <div cog-feature-title-image feature="biography">
-            <div class="title-image"><%= feature_label(:biography) %></div>
-          </div>
-        </div>
-        <div cog-landing-section-content>
-          <% @biography_entries.each do |entry| %>
-            <% version = published_version(entry) %>
-            <% next if version.nil? %>
-            <div cog-rich-content-viewer>
-              <%= raw render_richtext_field(field_by_identifier(version, 'body')) %>
-            </div>
-          <% end %>
-        </div>
-      </section>
-    <% end %>
   </div>
 </main>
 
