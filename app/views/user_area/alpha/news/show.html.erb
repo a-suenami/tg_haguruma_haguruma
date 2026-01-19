@@ -12,13 +12,13 @@
     <article cog-detail-fragment>
       <header cog-detail-fragment-header>
         <div cog-detail-fragment-toolbar>
-          <h1 cog-detail-fragment-title><%= title_text %></h1>
-        </div>
-        <div cog-detail-fragment-toolbar>
           <% category_field = field_by_identifier(version, 'category') %>
           <% category_option = selected_option(category_field) %>
           <span cog-category-label><%= category_option&.display_name || '-' %></span>
           <span cog-date-label><%= format_content_date(version&.published_at) %></span>
+        </div>
+        <div cog-detail-fragment-toolbar>
+          <h1 cog-detail-fragment-title><%= title_text %></h1>
         </div>
       </header>
 
