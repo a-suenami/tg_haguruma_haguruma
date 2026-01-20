@@ -133,83 +133,23 @@
         </div>
         <div cog-privilege-section-content>
           <div cog-privilege-faq-list data-controller="accordion">
-            <details cog-privilege-faq-item data-accordion-target="item">
-              <summary>
-                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
-                <span class="toggle-icon"></span>
-              </summary>
-              <div class="answer">
-                <div>
-                  <p>説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります説明テキストがここに入ります</p>
+            <% @faq_entries.each do |entry| %>
+              <% version = published_version(entry) %>
+              <% next if version.nil? %>
+              <% question = render_text_field(field_by_identifier(version, 'title')) %>
+              <% answer = render_richtext_field(field_by_identifier(version, 'answer')) %>
+              <details cog-privilege-faq-item data-accordion-target="item">
+                <summary>
+                  <span class="question"><%= question %></span>
+                  <span class="toggle-icon"></span>
+                </summary>
+                <div class="answer">
+                  <div cog-rich-content-viewer>
+                    <%= raw answer %>
+                  </div>
                 </div>
-              </div>
-            </details>
-            <details cog-privilege-faq-item data-accordion-target="item">
-              <summary>
-                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
-                <span class="toggle-icon"></span>
-              </summary>
-              <div class="answer">
-                <div>
-                  <p>説明テキストがここに入ります。</p>
-                </div>
-              </div>
-            </details>
-            <details cog-privilege-faq-item data-accordion-target="item">
-              <summary>
-                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
-                <span class="toggle-icon"></span>
-              </summary>
-              <div class="answer">
-                <div>
-                  <p>説明テキストがここに入ります。</p>
-                </div>
-              </div>
-            </details>
-            <details cog-privilege-faq-item data-accordion-target="item">
-              <summary>
-                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
-                <span class="toggle-icon"></span>
-              </summary>
-              <div class="answer">
-                <div>
-                  <p>説明テキストがここに入ります。</p>
-                </div>
-              </div>
-            </details>
-            <details cog-privilege-faq-item data-accordion-target="item">
-              <summary>
-                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
-                <span class="toggle-icon"></span>
-              </summary>
-              <div class="answer">
-                <div>
-                  <p>説明テキストがここに入ります。</p>
-                </div>
-              </div>
-            </details>
-            <details cog-privilege-faq-item data-accordion-target="item">
-              <summary>
-                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
-                <span class="toggle-icon"></span>
-              </summary>
-              <div class="answer">
-                <div>
-                  <p>説明テキストがここに入ります。</p>
-                </div>
-              </div>
-            </details>
-            <details cog-privilege-faq-item data-accordion-target="item">
-              <summary>
-                <span class="question">質問タイトルがここに入ります質問タイトルがここに入ります</span>
-                <span class="toggle-icon"></span>
-              </summary>
-              <div class="answer">
-                <div>
-                  <p>説明テキストがここに入ります。</p>
-                </div>
-              </div>
-            </details>
+              </details>
+            <% end %>
           </div>
 
           <%# Join Button %>
