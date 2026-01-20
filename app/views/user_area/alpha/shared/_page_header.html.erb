@@ -33,7 +33,7 @@
             <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
             <span><%= login_label %></span>
           </a>
-          <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
+          <a href="<%= user_area_auth_start_path(signup: true) %>" cog-header-menu-item class="auth-action-button">
             <span class="auth-icon"><%= icon_svg('sign-up-indicator') %></span>
             <span><%= signup_label %></span>
           </a>
@@ -60,7 +60,7 @@
               <span><%= login_label %></span>
               <span class="overlay-icon"><%= icon_svg('sign-in-indicator') %></span>
             </a>
-            <a href="<%= user_area_auth_start_path %>" cog-button outlined class="overlay-action-button">
+            <a href="<%= user_area_auth_start_path(signup: true) %>" cog-button outlined class="overlay-action-button">
               <span><%= signup_label %></span>
               <span class="overlay-icon"><%= icon_svg('sign-up-indicator') %></span>
             </a>
