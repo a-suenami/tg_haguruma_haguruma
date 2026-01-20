@@ -135,7 +135,7 @@ class TenantSiteSettings < ApplicationRecord
 
     items = menu_items.dup
     missing_features.each_with_index do |key, idx|
-      defaults = DEFAULT_FEATURES[key]
+      defaults = T.must(DEFAULT_FEATURES[key])
       items << {
         'type' => 'feature',
         'key' => key,
@@ -181,7 +181,7 @@ class TenantSiteSettings < ApplicationRecord
     return if menu_items.blank?
 
     # Convert ActionController::Parameters to array of hashes and normalize values
-    self.menu_items = T.must(menu_items).map do |item|
+    self.menu_items = menu_items.map do |item|
       item = item.to_h if item.respond_to?(:to_h)
       normalized = {
         'type' => item['type'] || item[:type],
