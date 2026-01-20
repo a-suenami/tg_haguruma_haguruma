@@ -8,8 +8,14 @@
 <main class="main">
   <section cog-landing-hero-image-section>
     <div cog-landing-hero-image>
-      <% if @kv_image_url %>
-        <img src="<%= @kv_image_url %>" alt="<%= current_tenant&.name || '' %>">
+      <% if @kv_pc_image_url || @kv_sp_image_url %>
+        <picture>
+          <% if @kv_sp_image_url %>
+            <%# FIXME(#14): width/heightを動的に設定 %>
+            <source media="(max-width: 767px)" srcset="<%= @kv_sp_image_url %>" width=390 height=420>
+          <% end %>
+          <img src="<%= @kv_pc_image_url || @kv_sp_image_url %>" alt="<%= current_tenant&.name || '' %>" width=1440 height=600>
+        </picture>
       <% else %>
         <img src="https://placehold.co/1920x1080/333333/666666?text=Hero+Image" alt="Hero Image">
       <% end %>
@@ -22,39 +28,45 @@
         <div cog-landing-section-content>
           <div cog-landing-section-actions>
             <a href="<%= user_area_auth_start_path %>" cog-button filled class="action-button">
-              <span><%= login_label %></span>
+              <span class="action-button-text"><%= login_label %></span>
+              <span class="action-button-icon"><%= icon_svg('sign-in-indicator') %></span>
             </a>
             <a href="<%= user_area_auth_start_path(signup: true) %>" cog-button outlined class="action-button">
-              <span><%= signup_label %></span>
+              <span class="action-button-text"><%= signup_label %></span>
+              <span class="action-button-icon"><%= icon_svg('sign-up-indicator') %></span>
             </a>
           </div>
         </div>
-      </section>
-    <% end %>
-
-    <section cog-landing-section class="banners">
-      <div cog-landing-section-content>
-        <div class="swiper-wrapper" data-controller="swiper-navigation">
-          <button type="button" class="swiper-nav-button prev" data-swiper-navigation-target="prevButton" data-action="swiper-navigation#prev" aria-label="前へ">
-            <span class="icon">&lsaquo;</span>
-          </button>
-          <div cog-swiper-container class="banner-swiper" data-swiper-navigation-target="scroller">
-            <div class="swiper-inner">
-              <% 5.times do |i| %>
-                <div cog-swiper-slide>
-                  <a href="#" cog-landing-banner>
-                    <img src="https://placehold.co/800x400/e8e8e8/999999?text=Banner+<%= i + 1 %>" alt="Banner <%= i + 1 %>">
-                  </a>
-                </div>
-              <% end %>
+        <% if @banners.present? %>
+          <div cog-landing-section-content>
+            <div class="swiper banner-swiper" data-controller="swiper">
+              <div class="swiper-wrapper">
+                <% @banners.each do |entry| %>
+                  <% version = published_version(entry) %>
+                  <% next if version.nil? %>
+                  <% image_url = media_asset_url(field_by_identifier(version, 'image')) %>
+                  <% link_url = render_text_field(field_by_identifier(version, 'link_url')) %>
+                  <% alt_text = render_text_field(field_by_identifier(version, 'alt_text')) %>
+                  <div class="swiper-slide">
+                    <% if link_url.present? %>
+                      <a href="<%= link_url %>" cog-landing-banner>
+                        <%# FIXME(#14): width/heightを動的に設定 %>
+                        <img src="<%= image_url %>" alt="<%= alt_text %>" width=300 height=90>
+                      </a>
+                    <% else %>
+                      <div cog-landing-banner>
+                        <img src="<%= image_url %>" alt="<%= alt_text %>"  width=300 height=90>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+              <div class="swiper-pagination"></div>
             </div>
           </div>
-          <button type="button" class="swiper-nav-button next" data-swiper-navigation-target="nextButton" data-action="swiper-navigation#next" aria-label="次へ">
-            <span class="icon">&rsaquo;</span>
-          </button>
-        </div>
-      </div>
-    </section>
+        <% end %>
+      </section>
+    <% end %>
 
     <% if @news_entries.present? %>
       <section cog-landing-section>
@@ -94,27 +106,30 @@
     <% end %>
 
     <% if @blog_entries.present? %>
-      <section cog-landing-section>
-        <div cog-landing-section-title>
-          <div cog-feature-title-image feature="blog">
-            <div class="title-image"><%= feature_label(:blog) %></div>
+      <%= turbo_frame_tag "blog-section" do %>
+        <section cog-landing-section>
+          <div cog-landing-section-title>
+            <div cog-feature-title-image feature="blog">
+              <div class="title-image"><%= feature_label(:blog) %></div>
+            </div>
           </div>
-        </div>
-        <div cog-landing-section-content>
-          <div class="swiper-wrapper" data-controller="swiper-navigation">
-            <button type="button" class="swiper-nav-button prev" data-swiper-navigation-target="prevButton" data-action="swiper-navigation#prev" aria-label="前へ">
-              <span class="icon">&lsaquo;</span>
-            </button>
-            <div cog-swiper-container class="blog-swiper" data-swiper-navigation-target="scroller">
-              <div class="swiper-inner">
-                <% @blog_entries.each do |entry| %>
-                  <% version = published_version(entry) %>
-                  <% next if version.nil? %>
-                  <div cog-swiper-slide>
-                    <a href="<%= user_area_blog_path(entry) %>" cog-blog-item>
+          <div cog-landing-section-actions>
+            <%= render 'user_area/alpha/shared/content/category_tabs',
+                      categories: @blog_categories,
+                      current_category: current_blog_category,
+                      path_helper: ->(cat) { user_area_root_path(blog_category: cat) } %>
+          </div>
+          <div cog-landing-section-content>
+            <% if @blog_entries.present? %>
+              <div cog-blog-list>
+                <div class="list">
+                  <% @blog_entries.each do |entry| %>
+                    <% version = published_version(entry) %>
+                    <% next if version.nil? %>
+                    <a href="<%= user_area_blog_path(entry) %>" cog-blog-item data-turbo-frame="_top">
                       <div class="thumbnail">
                         <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
-                        <img draggable="false" src="<%= thumbnail_url || 'https://placehold.co/600x400/e8e8e8/999999?text=No+Image' %>" alt="Blog Thumbnail">
+                        <img draggable="false" src="<%= thumbnail_url || '/images/yokikotokiku/noimage.svg' %>" alt="Blog Thumbnail">
                         <div class="label">
                           <% category_field = field_by_identifier(version, 'category') %>
                           <% category_option = selected_option(category_field) %>
@@ -126,36 +141,20 @@
                         <span cog-date-label><%= format_content_date(version.published_at) %></span>
                       </div>
                     </a>
+                  <% end %>
+                </div>
+                <% if @blog_entries.length >= 6 %>
+                  <div class="overview-page-indicator">
+                    <a href="<%= user_area_blog_index_path(category: current_blog_category) %>" cog-button primary outlined data-turbo-frame="_top">VIEW ALL</a>
                   </div>
                 <% end %>
               </div>
-            </div>
-            <button type="button" class="swiper-nav-button next" data-swiper-navigation-target="nextButton" data-action="swiper-navigation#next" aria-label="次へ">
-              <span class="icon">&rsaquo;</span>
-            </button>
+            <% end %>
           </div>
-        </div>
-      </section>
+        </section>
+      <% end %>
     <% end %>
 
-    <% if @biography_entries.present? %>
-      <section cog-landing-section>
-        <div cog-landing-section-title>
-          <div cog-feature-title-image feature="biography">
-            <div class="title-image"><%= feature_label(:biography) %></div>
-          </div>
-        </div>
-        <div cog-landing-section-content>
-          <% @biography_entries.each do |entry| %>
-            <% version = published_version(entry) %>
-            <% next if version.nil? %>
-            <div cog-rich-content-viewer>
-              <%= raw render_richtext_field(field_by_identifier(version, 'body')) %>
-            </div>
-          <% end %>
-        </div>
-      </section>
-    <% end %>
   </div>
 </main>
 

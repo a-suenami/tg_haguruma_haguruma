@@ -1,6 +1,8 @@
 [cog-header-menu-banner] {
   display: block;
   cursor: pointer;
+  width: 100%;
+  max-width: 400px;
 
   &:active {
     opacity: 0.8;
@@ -9,5 +11,9 @@
   &:focus-visible {
     outline: 2px solid var(--gearbox-primary);
     outline-offset: 2px;
+  }
+  img {
+    width: 100%;
+    height: auto;
   }
 }

@@ -12,8 +12,8 @@
   --cog-button-filled-outline-color: var(--theme-button-primary-background-color, #1E3A5F);
 
   // Outlined variant (default: Secondary button - white bg, navy border/text)
-  --cog-button-outlined-color: var(--theme-button-secondary-text-color, #1E3A5F);
-  --cog-button-outlined-background-color: var(--theme-button-secondary-background-color, #FFFFFF);
+  --cog-button-outlined-color: var(--theme-button-primary-background-color, #1E3A5F);
+  --cog-button-outlined-background-color: var(--theme-button-primary-text-color, #1E3A5F);
   --cog-button-outlined-outline-color: var(--theme-button-secondary-border-color, #1E3A5F);
 
   // Base styles
@@ -23,9 +23,9 @@
   gap: var(--gearbox-spacing-4);
   padding: var(--gearbox-spacing-8) var(--gearbox-spacing-16);
   border-radius: var(--cog-button-radius);
-  border: 3px solid transparent;
+  border: 1px solid transparent;
   font-family: var(--theme-button-font-family, var(--gearbox-font-family-primary));
-  font-size: var(--gearbox-font-size-body-medium);
+  font-size: var(--gearbox-font-size-body-large);
   font-weight: var(--gearbox-font-weight-semibold);
   line-height: var(--gearbox-line-height-loose);
   letter-spacing: 0.04em; // Better than fixed px for letter spacing

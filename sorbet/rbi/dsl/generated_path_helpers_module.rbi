@@ -445,6 +445,9 @@ module GeneratedPathHelpersModule
   def user_area_news_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_privilege_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_profile_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }

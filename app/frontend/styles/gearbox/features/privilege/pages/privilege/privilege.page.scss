@@ -1,0 +1,349 @@
+@use 'shared/theme/breakpoints/breakpoints' as breakpoints;
+
+// Page-specific color (accent for join button)
+$privilege-accent: #c4a95a;
+
+[cog-privilege] {
+  // Horizontal spacing variable
+  --privilege-horizontal-spacing: var(--gearbox-spacing-56);
+
+  @include breakpoints.media-down(sm) {
+    --privilege-horizontal-spacing: var(--gearbox-spacing-16);
+  }
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #fff;
+
+  // Responsive display helpers for PC/SP switching
+  .card-pc,
+  .kv-pc {
+    display: block;
+
+    @include breakpoints.media-down(sm) {
+      display: none;
+    }
+  }
+
+  .card-sp,
+  .kv-sp {
+    display: none;
+
+    @include breakpoints.media-down(sm) {
+      display: block;
+    }
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--gearbox-spacing-24);
+  }
+
+  .privilege-logo {
+    max-width: 130px;
+    margin: 0 auto;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  // Alternate background colors for sections
+  .benefits-section,
+  .faq-section {
+    background-color: var(--theme-page-background-color);
+    padding: var(--gearbox-spacing-56) var(--privilege-horizontal-spacing);
+
+    @include breakpoints.media-down(sm) {
+      padding: var(--gearbox-spacing-40) var(--privilege-horizontal-spacing);
+    }
+  }
+
+  .fee-section {
+    padding: var(--gearbox-spacing-56) var(--privilege-horizontal-spacing) 0;
+
+    @include breakpoints.media-down(sm) {
+      padding: var(--gearbox-spacing-40) var(--privilege-horizontal-spacing) 0;
+    }
+  }
+  .how-to-join-section {
+    padding: var(--gearbox-spacing-56) var(--privilege-horizontal-spacing);
+
+    @include breakpoints.media-down(sm) {
+      padding: var(--gearbox-spacing-40) var(--privilege-horizontal-spacing);
+    }
+  }
+
+  .logo-section {
+    padding-bottom: var(--gearbox-spacing-24);
+  }
+
+  .kv-section {
+    padding: 0 var(--privilege-horizontal-spacing);
+  }
+
+  .join-button-section {
+    padding: var(--gearbox-spacing-24) var(--privilege-horizontal-spacing);
+  }
+
+  .intro-section {
+    padding-bottom: var(--gearbox-spacing-56);
+  }
+}
+
+// Privilege Section
+[cog-privilege-section] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  padding: 0 var(--privilege-horizontal-spacing);
+}
+
+[cog-privilege-section-inner] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  gap: var(--gearbox-spacing-32);
+
+  @include breakpoints.media-down(sm) {
+    gap: var(--gearbox-spacing-24);
+  }
+}
+
+[cog-privilege-section-title] {
+  font-family: var(--theme-title-font-family);
+  font-weight: var(--gearbox-font-weight-bold);
+  font-size: var(--gearbox-font-size-heading-small);
+  line-height: var(--gearbox-line-height-tight);
+  color: var(--theme-title-text-color);
+  text-align: center;
+}
+
+[cog-privilege-section-content] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 768px;
+  gap: var(--gearbox-spacing-32);
+
+  @include breakpoints.media-down(sm) {
+    gap: var(--gearbox-spacing-24);
+  }
+}
+
+// Key Visual - SVG container
+[cog-privilege-kv] {
+  width: 100%;
+  max-width: 768px;
+
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+// Join Button - extends [cog-button]
+.privilege-join-button {
+  --cog-button-radius: 10px;
+  --cog-button-width: 100%;
+  --cog-button-filled-background-color: var(--theme-label-background-color);
+  --cog-button-filled-color: var(--theme-label-text-color);
+  --cog-button-filled-outline-color: var(--theme-label-background-color);
+
+  max-width: 274px;
+  height: 60px;
+  font-family: var(--theme-button-font-family);
+  font-size: var(--gearbox-font-size-body-large);
+  font-weight: var(--gearbox-font-weight-bold);
+}
+
+// Introduction
+[cog-privilege-intro] {
+  font-family: var(--theme-general-font-family);
+  font-weight: var(--gearbox-font-weight-regular);
+  font-size: var(--gearbox-font-size-body-medium);
+  line-height: var(--gearbox-line-height-loose);
+  color: var(--theme-general-text-color);
+  text-align: left;
+  width: 100%;
+  max-width: 768px;
+
+  @include breakpoints.media-down(sm) {
+    padding: 0 var(--privilege-horizontal-spacing);
+  }
+
+  p {
+    margin: 0;
+  }
+
+  br {
+    display: block;
+    content: '';
+    margin-bottom: var(--gearbox-spacing-16);
+  }
+}
+
+// Benefits Card - SVG container
+[cog-privilege-benefits-card] {
+  width: 100%;
+
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+// Fee Card - SVG container
+[cog-privilege-fee-card] {
+  width: 100%;
+
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+// Join Card (How to Join) - SVG container
+[cog-privilege-join-card] {
+  width: 100%;
+
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+// FAQ List
+[cog-privilege-faq-list] {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gearbox-spacing-8);
+
+  @include breakpoints.media-up(sm) {
+    padding: 0 var(--privilege-horizontal-spacing);
+  }
+
+}
+
+// FAQ Item
+[cog-privilege-faq-item] {
+  background-color: #fff;
+  border-radius: 7px;
+  overflow: hidden;
+  transition: grid-template-rows 120ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gearbox-spacing-16);
+    cursor: pointer;
+    gap: var(--gearbox-spacing-16);
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::marker {
+      display: none;
+    }
+  }
+
+  .question {
+    flex: 1;
+    font-family: var(--theme-title-font-family);
+    font-weight: var(--gearbox-font-weight-bold);
+    font-size: var(--gearbox-font-size-body-medium);
+    line-height: var(--gearbox-line-height-relaxed);
+    letter-spacing: -0.01em;
+    color: var(--theme-general-text-color);
+  }
+
+  .toggle-icon {
+    flex-shrink: 0;
+    position: relative;
+    width: 24px;
+    height: 24px;
+
+    // Horizontal bar (always visible)
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 14px;
+      height: 2px;
+      background-color: var(--theme-button-secondary-border-color);
+      transform: translate(-50%, -50%);
+    }
+
+    // Vertical bar (hidden when open)
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 14px;
+      background-color: var(--theme-button-secondary-border-color);
+      transform: translate(-50%, -50%) scale(1);
+      transition: transform 120ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  &[open] {
+    .toggle-icon {
+      &::after {
+        transform: translate(-50%, -50%) scale(0);
+      }
+    }
+
+    summary {
+      border-bottom: 1px solid var(--theme-border-color);
+    }
+  }
+
+  .answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 120ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    > div {
+      overflow: hidden;
+    }
+
+    p {
+      margin: 0;
+      padding: var(--gearbox-spacing-16);
+      font-family: var(--theme-general-font-family);
+      font-weight: var(--gearbox-font-weight-regular);
+      font-size: var(--gearbox-font-size-body-medium);
+      line-height: var(--gearbox-line-height-loose);
+      color: var(--theme-general-text-color);
+    }
+  }
+
+  &[open] .answer {
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}

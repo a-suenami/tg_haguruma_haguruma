@@ -30,5 +30,6 @@ namespace :user_area, path: '' do
     resources :blog, only: [:index, :show]
     resources :schedules, only: [:index, :show]
     resource :biography, only: [:show]
+    resource :privilege, only: [:show]
   end
 end
