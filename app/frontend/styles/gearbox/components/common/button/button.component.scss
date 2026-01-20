@@ -88,9 +88,9 @@
 // Secondary color (uses new theme variables)
 [cog-button][secondary] {
   // Filled: Primary button (navy bg, white text)
-  --cog-button-filled-color: var(--theme-button-primary-text-color, var(--gearbox-on-secondary));
-  --cog-button-filled-background-color: var(--theme-button-primary-background-color, var(--gearbox-secondary));
-  --cog-button-filled-outline-color: var(--theme-button-primary-background-color, var(--gearbox-secondary));
+  --cog-button-filled-color: var(--theme-button-secondary-text-color, var(--gearbox-on-secondary));
+  --cog-button-filled-background-color: var(--theme-button-secondary-background-color, var(--gearbox-secondary));
+  --cog-button-filled-outline-color: var(--theme-button-secondary-background-color, var(--gearbox-secondary));
 
   // Outlined: Secondary button (white bg, navy border/text)
   --cog-button-outlined-color: var(--theme-button-secondary-text-color, var(--gearbox-on-secondary-container));
