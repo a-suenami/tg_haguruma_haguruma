@@ -123,22 +123,35 @@
       position: absolute;
       display: flex;
       top: 50%;
-      right: 40px;
+      right: 28px;
       transform: translateY(-50%);
-      transition: transform .2s ease-out, opacity .05s ease-out;
+      transition: transform .2s ease-out, opacity .2s ease-out;
       opacity: 0;
     }
 
-    &:hover {
-      --header-transform-x: 20px;
+    @media (any-hover: hover) {
+      &:hover {
+        opacity: 1;
+        & > .action-text {
+          transform: translateX(-20px);
+          opacity: 1;
+        }
+        & > .action-icon {
+          transform: translateY(-50%) translateX(8px);
+          transition: transform .2s ease-out, opacity .1s ease-out;
+          opacity: 1;
+        }
+      }
+    }
+    @media (any-hover: none) {
       opacity: 1;
       & > .action-text {
-        transform: translateX(calc(-1 * var(--header-transform-x)));
+        transform: translateX(-20px);
         opacity: 1;
       }
       & > .action-icon {
-        transform: translateY(-50%) translateX(var(--header-transform-x));
-        transition: transform .2s ease-out, opacity .1s .1s ease-out;
+        transform: translateY(-50%) translateX(8px);
+        transition: transform .2s ease-out, opacity .1s ease-out;
         opacity: 1;
       }
     }

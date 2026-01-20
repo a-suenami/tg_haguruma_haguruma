@@ -43,8 +43,9 @@
           </p>
         </div>
 
-        <a href="<%= user_area_privilege_path %>" cog-button filled secondary class="primary-action">
-          <span class="primary-action-button-text">入会のご案内</span>
+        <a href="<%= user_area_privilege_path %>" class="primary-action">
+          <span class="action-text">入会のご案内</span>
+          <span class="action-icon"><%= icon_svg('right-arrow') %></span>
         </a>
         <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
           既にご入会済みの方はこちら
@@ -84,7 +85,7 @@
               <% end %>
             </div>
             <div class="overview-page-indicator">
-              <a href="<%= user_area_news_index_path %>" cog-button primary outlined>VIEW ALL</a>
+              <a href="<%= user_area_news_index_path %>" cog-button primary outlined>全ての記事を見る</a>
             </div>
           </div>
         </div>

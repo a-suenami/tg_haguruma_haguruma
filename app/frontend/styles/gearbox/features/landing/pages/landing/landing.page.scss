@@ -113,31 +113,69 @@
       flex: 1;
       position: relative;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+      background: var(--theme-button-secondary-background-color);
+      color: var(--theme-button-secondary-text-color);
+      border-radius: 100px;
+      transition: transform .2s ease-out;
 
-      .primary-action-button-text {
+      .action-text {
         flex: 1;
         text-align: center;
         font-size: 22px;
         font-weight: var(--gearbox-font-weight-bold);
+        transition: transform .2s ease-out;
       }
 
-      .primary-action-button-icon {
+      .action-icon {
         position: absolute;
-        right: 14px;
+        right: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform .2s ease-out, opacity .2s ease-out;
         display: flex;
         align-items: center;
         width: 28px;
         aspect-ratio: 1/1;
+        opacity: 0;
+      }
+
+      @media (any-hover: hover) {
+        &:hover {
+          --header-transform-x: 20px;
+          opacity: 1;
+          & > .action-text {
+            transform: translateX(calc(-1 * var(--header-transform-x)));
+            opacity: 1;
+          }
+          & > .action-icon {
+            transform: translateY(-50%) translateX(var(--header-transform-x));
+            transition: transform .2s ease-out, opacity .1s .1s ease-out;
+            opacity: 1;
+          }
+        }
+      }
+      @media (any-hover: none) {
+        --header-transform-x: 20px;
+          opacity: 1;
+          & > .action-text {
+            transform: translateX(calc(-1 * var(--header-transform-x)));
+            opacity: 1;
+          }
+          & > .action-icon {
+            transform: translateY(-50%) translateX(var(--header-transform-x));
+            transition: transform .2s ease-out, opacity .05s ease-out;
+            opacity: 1;
+          }
       }
 
       @include breakpoints.media-down(sm) {
         width: 300px;
 
-        .primary-action-button-text {
+        .action-text {
           font-size: 18px;
         }
 
-        .primary-action-button-icon {
+        .action-icon {
           width: 24px;
         }
       }

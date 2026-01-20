@@ -16,7 +16,7 @@
   align-items: center;
   justify-content: center;
 
-  &:after {
+  &::after {
     content: '';
     display: block;
     position: absolute;
@@ -24,7 +24,7 @@
     left: 50%;
     transform: translateX(-50%);
     height: 2px;
-    background-color: var(--theme-button-primary-background-color);
+    background-color: var(--theme-button-secondary-background-color);
     transition: width .2s ease-out, opacity .2s ease-out;
     width: 0;
     opacity: 0;
@@ -34,8 +34,7 @@
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       opacity: 1;
-      // transform: translateY(-2px);
-      color: #004678;
+      color: var(--theme-button-secondary-background-color);
       &:after {
         width: 110%;
         opacity: 1;
@@ -50,6 +49,10 @@
 }
 
 [cog-header-menu-item].active {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  color: var(--theme-button-primary-background-color);
+  &::after {
+    background-color: var(--theme-button-primary-background-color);
+    width: 110%;
+    opacity: 1;
+  }
 }

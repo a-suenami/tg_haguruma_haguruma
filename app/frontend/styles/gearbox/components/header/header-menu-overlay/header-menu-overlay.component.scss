@@ -1,8 +1,7 @@
 [cog-header-menu-overlay] {
-  --gearbox-header-height: 76px;
   display: block;
   position: fixed;
-  top: var(--gearbox-header-height);
+  top: 64px;
   left: 0;
   right: 0;
   bottom: 0;
