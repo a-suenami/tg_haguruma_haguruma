@@ -28,30 +28,52 @@
 </div>
 
 <div class="uk-card uk-card-default uk-card-body uk-margin">
-  <h4 class="uk-card-title">機能設定</h4>
-  <table class="uk-table uk-table-divider">
+  <h4 class="uk-card-title">機能設定・メニュー順序</h4>
+  <table class="uk-table uk-table-divider uk-table-small">
     <thead>
       <tr>
-        <th>機能</th>
+        <th style="width: 50px;">順序</th>
+        <th>種別</th>
         <th>有効</th>
         <th>ラベル</th>
-        <th>メニューラベル</th>
+        <th>リンク先</th>
       </tr>
     </thead>
     <tbody>
-      <% TenantSiteSettings::DEFAULT_FEATURES.each do |key, defaults| %>
-        <% feature = @site_setting.send(:merged_features)[key] %>
+      <% @site_setting.all_menu_items_for_form.each_with_index do |item, index| %>
         <tr>
-          <td><%= key %></td>
-          <td>
-            <% if feature['enabled'] %>
-              <span class="uk-label uk-label-success">有効</span>
-            <% else %>
-              <span class="uk-label">無効</span>
-            <% end %>
-          </td>
-          <td><%= feature['label'] %></td>
-          <td><%= feature['menu_label'] %></td>
+          <td><%= index + 1 %></td>
+          <% if item['type'] == 'feature' %>
+            <td><span class="uk-label"><%= item['key'].upcase %></span></td>
+            <td>
+              <% if item['enabled'] %>
+                <span class="uk-label uk-label-success">有効</span>
+              <% else %>
+                <span class="uk-label">無効</span>
+              <% end %>
+            </td>
+            <td><%= item['label'] %></td>
+            <td><code>/<%= item['key'] %></code></td>
+          <% else %>
+            <td>
+              <span class="uk-label uk-label-warning">カスタム</span>
+              <code class="uk-text-small uk-margin-small-left"><%= item['key'] %></code>
+            </td>
+            <td>
+              <% if item['enabled'] %>
+                <span class="uk-label uk-label-success">有効</span>
+              <% else %>
+                <span class="uk-label">無効</span>
+              <% end %>
+            </td>
+            <td><%= item['label'] %></td>
+            <td>
+              <a href="<%= item['url'] %>" target="_blank" rel="noopener">
+                <%= item['url'] %>
+                <span uk-icon="icon: link; ratio: 0.8"></span>
+              </a>
+            </td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>

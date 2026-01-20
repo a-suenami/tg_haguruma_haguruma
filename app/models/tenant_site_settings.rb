@@ -28,6 +28,9 @@ class TenantSiteSettings < ApplicationRecord
   belongs_to :tenant, primary_key: :id
 
   before_save :normalize_features
+  before_save :normalize_menu_items
+
+  validate :unique_menu_item_keys
 
   # Default feature configuration (all disabled by default - must be enabled per tenant)
   DEFAULT_FEATURES = T.let({
@@ -108,6 +111,59 @@ class TenantSiteSettings < ApplicationRecord
     landing_config['sections_order'] || DEFAULT_LANDING['sections_order']
   end
 
+  # Get ordered menu items (features + custom links combined)
+  # Returns array sorted by position for rendering in header/footer
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def ordered_menu_items
+    all_menu_items_for_form
+      .select { |item| item['enabled'] == true }
+      .sort_by { |item| item['position'].to_i }
+  end
+
+  # Get all menu items for ruler form (includes disabled features and custom links)
+  # Uses unified menu_items if present, otherwise builds from defaults
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def all_menu_items_for_form
+    # If menu_items is empty, build default from DEFAULT_FEATURES
+    if menu_items.blank?
+      return build_default_menu_items
+    end
+
+    # Ensure all default features exist in menu_items (in case new features added)
+    existing_keys = menu_items.select { |i| i['type'] == 'feature' }.pluck('key')
+    missing_features = DEFAULT_FEATURES.keys - existing_keys
+
+    items = menu_items.dup
+    missing_features.each_with_index do |key, idx|
+      defaults = DEFAULT_FEATURES[key]
+      items << {
+        'type' => 'feature',
+        'key' => key,
+        'enabled' => false,
+        'label' => defaults['label'],
+        'menu_label' => defaults['menu_label'],
+        'position' => 100 + idx, # Add at the end
+      }
+    end
+
+    items.sort_by { |item| item['position'].to_i }
+  end
+
+  # Build default menu items from DEFAULT_FEATURES
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def build_default_menu_items
+    DEFAULT_FEATURES.map.with_index do |(key, config), index|
+      {
+        'type' => 'feature',
+        'key' => key,
+        'enabled' => config['enabled'],
+        'label' => config['label'],
+        'menu_label' => config['menu_label'],
+        'position' => index + 1,
+      }
+    end
+  end
+
   private
 
   sig { void }
@@ -116,7 +172,31 @@ class TenantSiteSettings < ApplicationRecord
 
     T.must(features).each_value do |config|
       config['enabled'] = ActiveModel::Type::Boolean.new.cast(config['enabled'])
+      config['menu_order'] = config['menu_order'].to_i if config['menu_order'].present?
     end
+  end
+
+  sig { void }
+  def normalize_menu_items
+    return if menu_items.blank?
+
+    # Convert ActionController::Parameters to array of hashes and normalize values
+    self.menu_items = T.must(menu_items).map do |item|
+      item = item.to_h if item.respond_to?(:to_h)
+      normalized = {
+        'type' => item['type'] || item[:type],
+        'key' => item['key'] || item[:key],
+        'enabled' => ActiveModel::Type::Boolean.new.cast(item['enabled'] || item[:enabled]),
+        'label' => item['label'] || item[:label],
+        'menu_label' => item['menu_label'] || item[:menu_label],
+        'position' => (item['position'] || item[:position]).to_i,
+      }
+      # Only include url for custom links
+      if normalized['type'] == 'custom'
+        normalized['url'] = item['url'] || item[:url]
+      end
+      normalized
+    end.reject { |item| item['key'].blank? }
   end
 
   sig { params(feature_key: String).returns(T::Hash[String, T.untyped]) }
@@ -134,5 +214,17 @@ class TenantSiteSettings < ApplicationRecord
   sig { returns(T::Hash[String, T.untyped]) }
   def landing_config
     DEFAULT_LANDING.merge(landing || {})
+  end
+
+  sig { void }
+  def unique_menu_item_keys
+    return if menu_items.blank?
+
+    keys = menu_items.map { |item| item['key'] || item[:key] }.compact
+    duplicates = keys.group_by(&:itself).select { |_, v| v.size > 1 }.keys
+
+    return if duplicates.empty?
+
+    errors.add(:menu_items, "に重複するキーがあります: #{duplicates.join(', ')}")
   end
 end
