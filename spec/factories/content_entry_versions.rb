@@ -23,6 +23,8 @@
 #  index_content_entry_versions_on_tenant_is_public           (tenant_id,is_public)
 #  index_content_entry_versions_on_tenant_type_entry_version  (tenant_id,content_type_id,content_entry_id,version) UNIQUE
 #  index_content_entry_versions_on_tenant_visibility          (tenant_id,visibility)
+#  index_content_entry_versions_unique_draft_per_entry        (content_entry_id) UNIQUE WHERE (status = 1)
+#  index_content_entry_versions_unique_published_per_entry    (content_entry_id) UNIQUE WHERE (status = 3)
 #
 # Foreign Keys
 #

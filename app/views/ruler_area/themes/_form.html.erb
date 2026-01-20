@@ -1,0 +1,163 @@
+<%= form_with model: @theme, url: ruler_area_tenant_theme_path(@tenant), method: :patch, local: true, scope: :theme, multipart: true do |form| %>
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <h4 class="uk-card-title">ロゴ</h4>
+    <% if @theme.logo_media_asset.present? %>
+      <div class="uk-margin">
+        <p class="uk-text-meta">現在のロゴ:</p>
+        <img src="<%= @theme.logo_url %>" alt="現在のロゴ" style="max-height: 80px; max-width: 300px;">
+      </div>
+    <% end %>
+    <div class="uk-margin">
+      <%= form.label :logo_file, @theme.logo_media_asset.present? ? 'ロゴを変更' : 'ロゴを設定', class: 'uk-form-label' %>
+      <div class="uk-form-controls">
+        <%= form.file_field :logo_file, accept: 'image/*', class: 'uk-input', style: 'padding: 8px;' %>
+        <p class="uk-text-meta uk-margin-small-top">対応形式: JPEG, PNG, GIF, WebP など</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <h4 class="uk-card-title">ページ</h4>
+    <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :page_background_color, label: '背景色' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <h4 class="uk-card-title">テキスト</h4>
+    <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :general_text_color, label: '一般テキスト色' %>
+      </div>
+      <div>
+        <%= form.label :general_font_family, '一般フォント', class: 'uk-form-label' %>
+        <div class="uk-form-controls">
+          <%= form.text_field :general_font_family, class: 'uk-input' %>
+        </div>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :title_text_color, label: 'タイトル色' %>
+      </div>
+      <div>
+        <%= form.label :title_font_family, 'タイトルフォント', class: 'uk-form-label' %>
+        <div class="uk-form-controls">
+          <%= form.text_field :title_font_family, class: 'uk-input' %>
+        </div>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :navigation_text_color, label: 'ナビゲーション色' %>
+      </div>
+      <div>
+        <%= form.label :navigation_font_family, 'ナビゲーションフォント', class: 'uk-form-label' %>
+        <div class="uk-form-controls">
+          <%= form.text_field :navigation_font_family, class: 'uk-input' %>
+        </div>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :link_text_color, label: 'リンク色' %>
+      </div>
+      <div>
+        <%= form.label :link_underline, 'リンク下線', class: 'uk-form-label' %>
+        <div class="uk-form-controls">
+          <%= form.check_box :link_underline, class: 'uk-checkbox' %> 表示する
+        </div>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :caption_text_color, label: 'キャプション色' %>
+      </div>
+      <div>
+        <%= form.label :caption_font_family, 'キャプションフォント', class: 'uk-form-label' %>
+        <div class="uk-form-controls">
+          <%= form.text_field :caption_font_family, class: 'uk-input' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <h4 class="uk-card-title">ボタン</h4>
+    <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
+      <div>
+        <%= form.label :button_font_family, 'ボタンフォント', class: 'uk-form-label' %>
+        <div class="uk-form-controls">
+          <%= form.text_field :button_font_family, class: 'uk-input' %>
+        </div>
+      </div>
+      <div></div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :button_primary_background_color, label: 'Primary 背景色' %>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :button_primary_text_color, label: 'Primary テキスト色' %>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :button_secondary_background_color, label: 'Secondary 背景色' %>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :button_secondary_text_color, label: 'Secondary テキスト色' %>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :button_secondary_border_color, label: 'Secondary ボーダー色' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <h4 class="uk-card-title">ラベル</h4>
+    <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :label_background_color, label: '背景色' %>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :label_text_color, label: 'テキスト色' %>
+      </div>
+      <div>
+        <%= form.label :label_font_family, 'フォント', class: 'uk-form-label' %>
+        <div class="uk-form-controls">
+          <%= form.text_field :label_font_family, class: 'uk-input' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <h4 class="uk-card-title">ボーダー</h4>
+    <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :border_color, label: 'ボーダー色' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <h4 class="uk-card-title">タブ</h4>
+    <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
+      <div>
+        <%= form.label :tab_font_family, 'タブフォント', class: 'uk-form-label' %>
+        <div class="uk-form-controls">
+          <%= form.text_field :tab_font_family, class: 'uk-input' %>
+        </div>
+      </div>
+      <div></div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :tab_active_text_color, label: 'アクティブタブ テキスト色' %>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :tab_active_underline_color, label: 'アクティブタブ 下線色' %>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :tab_inactive_text_color, label: '非アクティブタブ テキスト色' %>
+      </div>
+      <div>
+        <%= render 'ruler_area/shared/color_field', form: form, field: :tab_inactive_underline_color, label: '非アクティブタブ 下線色' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.submit '保存', class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_tenant_theme_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>

@@ -30,24 +30,24 @@ create-deploy-merge-request:
   stage: prepare
   cache: {}
   only:
-    - master
+    - main
   except:
     - schedules
   variables:
     GITLAB_API_ENDPOINT: https://git.l.twogate.net/api/v4
-    GITLAB_API_PRIVATE_TOKEN: $GITLAB_API_PRIVATE_TOKEN
+    GITLAB_API_PRIVATE_TOKEN: $CI_JOB_TOKEN
   script:
     - gem install gitlab
     - >
       gitlab create_merge_request $CI_PROJECT_ID "" '{
         "title": "Build staging",
-        "source_branch": "master",
+        "source_branch": "main",
         "target_branch": "deploy-staging"
       }' || true
     - >
       gitlab create_merge_request $CI_PROJECT_ID "" '{
         "title": "Draft: Build production",
-        "source_branch": "master",
+        "source_branch": "main",
         "target_branch": "deploy-production"
       }' || true
 

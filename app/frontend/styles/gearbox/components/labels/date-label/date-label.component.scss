@@ -3,10 +3,10 @@
 [cog-date-label] {
   opacity: 0.4;
   display: inline-block;
-  color: var(--gearbox-secondary);
+  color: var(--theme-caption-text-color, var(--gearbox-secondary));
   font-weight: var(--gearbox-font-weight-semibold);
   line-height: var(--gearbox-line-height-relaxed);
-  font-family: var(--gearbox-font-family-primary);
+  font-family: var(--theme-caption-font-family, var(--gearbox-font-family-primary));
 }
 
 @include breakpoints.media-up(sm) {

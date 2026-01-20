@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  TICKET - <%= current_tenant&.name || 'Fan Club' %>
+  <%= feature_label(:ticket) %> - <%= current_tenant&.name || 'Fan Club' %>
 <% end %>
 
 <%= render 'user_area/alpha/shared/page_header' %>
@@ -8,56 +8,43 @@
   <section cog-list-fragment>
     <div cog-list-fragment-title>
       <div cog-feature-title-image feature="ticket">
-        <div class="title-image">TICKET</div>
+        <div class="title-image"><%= feature_label(:ticket) %></div>
       </div>
     </div>
 
     <div cog-list-fragment-actions>
-      <nav cog-tabs-bar>
-        <div cog-tabs>
-          <button cog-tab class="active">
-            <div class="text">すべて</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">ライブ</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">イベント</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">先行販売</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">一般販売</div>
-            <div class="current-line"></div>
-          </button>
-        </div>
-      </nav>
+      <%= render 'user_area/alpha/shared/content/category_tabs',
+                 categories: categories,
+                 current_category: current_category,
+                 path_helper: ->(cat) { user_area_tickets_path(category: cat) } %>
     </div>
 
     <div cog-list-fragment-content>
       <div cog-blog-list>
         <div class="list">
-          <% 10.times do |i| %>
-            <a href="<%= user_area_ticket_path(i + 1) %>" cog-blog-item>
+          <% @entries.each do |entry| %>
+            <% version = published_version(entry) %>
+            <% next if version.nil? %>
+            <a href="<%= user_area_ticket_path(entry) %>" cog-blog-item>
               <div class="thumbnail">
-                <img draggable="false" src="https://placehold.co/600x400/e8e8e8/999999?text=Ticket+<%= i + 1 %>" alt="Ticket Thumbnail">
+                <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
+                <img draggable="false" src="<%= thumbnail_url || 'https://placehold.co/600x400/e8e8e8/999999?text=No+Image' %>" alt="Ticket Thumbnail">
                 <div class="label">
-                  <span cog-category-label>ライブ</span>
+                  <% category_field = field_by_identifier(version, 'category') %>
+                  <% category_option = selected_option(category_field) %>
+                  <span cog-category-label><%= category_option&.display_name || '-' %></span>
                 </div>
               </div>
-              <div class="title">サンプルチケット <%= i + 1 %> - 2025年春ツアー</div>
+              <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
             </a>
           <% end %>
         </div>
 
-        <div class="pagination-button-container">
-          <button cog-button primary outlined>VIEW MORE</button>
-        </div>
+        <% if @entries.length >= 20 %>
+          <div class="pagination-button-container">
+            <button cog-button primary outlined>VIEW MORE</button>
+          </div>
+        <% end %>
       </div>
     </div>
   </section>

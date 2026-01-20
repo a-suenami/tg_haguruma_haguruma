@@ -63,30 +63,102 @@ module UserQueries
       chain(@scope.where(content_type_id: content_type.id))
     end
 
-    # Filter to only published entries
+    # Filter to only published entries (each entry has at most one published version)
     sig { returns(T.self_type) }
     def published
-      chain(@scope.joins(:versions).merge(ContentEntry::Version.published).distinct)
+      chain(@scope.joins(:versions).merge(ContentEntry::Version.published))
     end
 
-    # Filter by authorization for a user
+    # Filter by authorization for a user using SQL JOIN
+    # - Anonymous users: only public content (visibility = 0)
+    # - Logged-in users: content where user has matching authorization tags
     sig { params(user: T.nilable(User)).returns(T.self_type) }
     def authorized_for(user)
       @user = user
-      self
+
+      if user.nil?
+        # Anonymous: only public content
+        chain(
+          @scope.joins(:versions)
+            .merge(ContentEntry::Version.published)
+            .where(content_entry_versions: { visibility: 0 }),
+        )
+      else
+        # Ensure user has system tags (for users created before system tag feature)
+        ensure_system_tags_assigned(user)
+
+        # Logged-in: filter by matching tags via subquery
+        # Using subquery to avoid PG::InvalidColumnReference error when combining
+        # DISTINCT with ORDER BY (e.g., ordered_by_published_at)
+        #
+        # Performance note: If authorized entries grow to tens of thousands,
+        # consider switching to EXISTS subquery for guaranteed semi-join optimization.
+        # Current IN subquery relies on PostgreSQL query planner optimization.
+        authorized_entry_ids = ContentEntry
+          .joins(versions: { content_entry_authorizations: { content_authorization_tag: :user_tags } })
+          .merge(ContentEntry::Version.published)
+          .where(user_tags: { user_id: user.id })
+          .select(:id)
+
+        chain(@scope.where(id: authorized_entry_ids))
+      end
     end
 
-    # Override resolve to apply authorization filtering
-    # Always filters content based on authorization:
-    # - Public content (no tags): accessible to all
-    # - Restricted content (with tags): only accessible to users with matching tags
+    # Filter by select field option
+    # field_identifier: the api_identifier of the ContentType::Field
+    # option_unique_name: the unique_name of the ContentType::FieldSelectOption
+    sig { params(field_identifier: String, option_unique_name: T.nilable(String)).returns(T.self_type) }
+    def by_select_option(field_identifier, option_unique_name)
+      return self if option_unique_name.blank?
+
+      chain(
+        @scope
+          .joins(versions: { fields: [:content_type_field, { select: { selections: :option } }] })
+          .where(content_type_fields: { api_identifier: field_identifier })
+          .where(content_type_field_select_options: { unique_name: option_unique_name })
+          .merge(ContentEntry::Version.published),
+      )
+    end
+
+    # Order by published_at descending
+    sig { returns(T.self_type) }
+    def ordered_by_published_at
+      chain(
+        @scope
+          .joins(:versions)
+          .merge(ContentEntry::Version.published)
+          .order('content_entry_versions.published_at DESC'),
+      )
+    end
+
+    # Apply offset
+    sig { params(count: Integer).returns(T.self_type) }
+    def offset(count)
+      chain(@scope.offset(count))
+    end
+
+    # Apply limit
+    sig { params(count: Integer).returns(T.self_type) }
+    def limit(count)
+      chain(@scope.limit(count))
+    end
+
+    # Resolve the query - authorization is now handled in SQL via authorized_for
     sig { override.returns(T::Array[EntityType]) }
     def resolve
-      entries = T.unsafe(call.to_a)
-      entries.select { |entry| self.class.authorized?(entry, user: @user) }
+      T.unsafe(call.to_a)
     end
 
     private
+
+    sig { params(user: User).void }
+    def ensure_system_tags_assigned(user)
+      public_tag = ContentAuthorizationTag.public_tag
+      member_tag = ContentAuthorizationTag.member_tag
+
+      UserTag.find_or_create_by!(user:, content_authorization_tag: public_tag)
+      UserTag.find_or_create_by!(user:, content_authorization_tag: member_tag)
+    end
 
     sig { override.returns(ActiveRecord::Relation) }
     def base_scope

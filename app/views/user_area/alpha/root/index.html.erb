@@ -8,7 +8,11 @@
 <main class="main">
   <section cog-landing-hero-image-section>
     <div cog-landing-hero-image>
-      <img src="https://placehold.co/1920x1080/333333/666666?text=Hero+Image" alt="Hero Image">
+      <% if @kv_image_url %>
+        <img src="<%= @kv_image_url %>" alt="<%= current_tenant&.name || '' %>">
+      <% else %>
+        <img src="https://placehold.co/1920x1080/333333/666666?text=Hero+Image" alt="Hero Image">
+      <% end %>
     </div>
   </section>
 
@@ -18,10 +22,10 @@
         <div cog-landing-section-content>
           <div cog-landing-section-actions>
             <a href="<%= user_area_auth_start_path %>" cog-button filled class="action-button">
-              <span>ログイン</span>
+              <span><%= login_label %></span>
             </a>
-            <a href="<%= user_area_auth_start_path %>" cog-button outlined class="action-button">
-              <span>新規会員登録</span>
+            <a href="<%= user_area_auth_start_path(signup: true) %>" cog-button outlined class="action-button">
+              <span><%= signup_label %></span>
             </a>
           </div>
         </div>
@@ -30,50 +34,128 @@
 
     <section cog-landing-section class="banners">
       <div cog-landing-section-content>
-        <div cog-swiper-container class="banner-swiper">
-          <div class="swiper-inner">
-            <% 5.times do |i| %>
-              <div cog-swiper-slide>
-                <a href="#" cog-landing-banner>
-                  <img src="https://placehold.co/800x400/e8e8e8/999999?text=Banner+<%= i + 1 %>" alt="Banner <%= i + 1 %>">
-                </a>
-              </div>
-            <% end %>
+        <div class="swiper-wrapper" data-controller="swiper-navigation">
+          <button type="button" class="swiper-nav-button prev" data-swiper-navigation-target="prevButton" data-action="swiper-navigation#prev" aria-label="前へ">
+            <span class="icon">&lsaquo;</span>
+          </button>
+          <div cog-swiper-container class="banner-swiper" data-swiper-navigation-target="scroller">
+            <div class="swiper-inner">
+              <% 5.times do |i| %>
+                <div cog-swiper-slide>
+                  <a href="#" cog-landing-banner>
+                    <img src="https://placehold.co/800x400/e8e8e8/999999?text=Banner+<%= i + 1 %>" alt="Banner <%= i + 1 %>">
+                  </a>
+                </div>
+              <% end %>
+            </div>
           </div>
+          <button type="button" class="swiper-nav-button next" data-swiper-navigation-target="nextButton" data-action="swiper-navigation#next" aria-label="次へ">
+            <span class="icon">&rsaquo;</span>
+          </button>
         </div>
       </div>
     </section>
 
-    <section cog-landing-section>
-      <div cog-landing-section-title>
-        <div cog-feature-title-image feature="news">
-          <div class="title-image"><%= feature_title_svg('news') %></div>
+    <% if @news_entries.present? %>
+      <section cog-landing-section>
+        <div cog-landing-section-title>
+          <div cog-feature-title-image feature="news">
+            <div class="title-image"><%= feature_label(:news) %></div>
+          </div>
         </div>
-      </div>
-      <div cog-landing-section-content>
-        <div cog-news-list overview>
-          <div class="list">
-            <% 3.times do |i| %>
-              <a href="<%= user_area_news_path(i + 1) %>" cog-news-item>
-                <div class="category">
-                  <span cog-category-label>ニュース</span>
-                </div>
-                <div class="date">
-                  <span cog-date-label>2024.12.<%= 15 - i %></span>
-                </div>
-                <div class="title">サンプルニュースタイトル <%= i + 1 %></div>
-              </a>
-              <% unless i == 2 %>
-                <div class="divider"></div>
+        <div cog-landing-section-content>
+          <div cog-news-list overview>
+            <div class="list">
+              <% @news_entries.each_with_index do |entry, i| %>
+                <% version = published_version(entry) %>
+                <% next if version.nil? %>
+                <a href="<%= user_area_news_path(entry) %>" cog-news-item>
+                  <div class="category">
+                    <% category_field = field_by_identifier(version, 'category') %>
+                    <% category_option = selected_option(category_field) %>
+                    <span cog-category-label><%= category_option&.display_name || '-' %></span>
+                  </div>
+                  <div class="date">
+                    <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                  </div>
+                  <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
+                </a>
+                <% unless i == @news_entries.length - 1 %>
+                  <div class="divider"></div>
+                <% end %>
               <% end %>
-            <% end %>
-          </div>
-          <div class="overview-page-indicator">
-            <a href="<%= user_area_news_index_path %>" cog-button primary outlined>VIEW ALL</a>
+            </div>
+            <div class="overview-page-indicator">
+              <a href="<%= user_area_news_index_path %>" cog-button primary outlined>VIEW ALL</a>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    <% end %>
+
+    <% if @blog_entries.present? %>
+      <section cog-landing-section>
+        <div cog-landing-section-title>
+          <div cog-feature-title-image feature="blog">
+            <div class="title-image"><%= feature_label(:blog) %></div>
+          </div>
+        </div>
+        <div cog-landing-section-content>
+          <div class="swiper-wrapper" data-controller="swiper-navigation">
+            <button type="button" class="swiper-nav-button prev" data-swiper-navigation-target="prevButton" data-action="swiper-navigation#prev" aria-label="前へ">
+              <span class="icon">&lsaquo;</span>
+            </button>
+            <div cog-swiper-container class="blog-swiper" data-swiper-navigation-target="scroller">
+              <div class="swiper-inner">
+                <% @blog_entries.each do |entry| %>
+                  <% version = published_version(entry) %>
+                  <% next if version.nil? %>
+                  <div cog-swiper-slide>
+                    <a href="<%= user_area_blog_path(entry) %>" cog-blog-item>
+                      <div class="thumbnail">
+                        <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
+                        <img draggable="false" src="<%= thumbnail_url || 'https://placehold.co/600x400/e8e8e8/999999?text=No+Image' %>" alt="Blog Thumbnail">
+                        <div class="label">
+                          <% category_field = field_by_identifier(version, 'category') %>
+                          <% category_option = selected_option(category_field) %>
+                          <span cog-category-label><%= category_option&.display_name || '-' %></span>
+                        </div>
+                      </div>
+                      <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
+                      <div class="date">
+                        <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                      </div>
+                    </a>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <button type="button" class="swiper-nav-button next" data-swiper-navigation-target="nextButton" data-action="swiper-navigation#next" aria-label="次へ">
+              <span class="icon">&rsaquo;</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    <% end %>
+
+    <% if @biography_entries.present? %>
+      <section cog-landing-section>
+        <div cog-landing-section-title>
+          <div cog-feature-title-image feature="biography">
+            <div class="title-image"><%= feature_label(:biography) %></div>
+          </div>
+        </div>
+        <div cog-landing-section-content>
+          <% @biography_entries.each do |entry| %>
+            <% version = published_version(entry) %>
+            <% next if version.nil? %>
+            <div cog-rich-content-viewer>
+              <%= raw render_richtext_field(field_by_identifier(version, 'body')) %>
+            </div>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
   </div>
 </main>
 

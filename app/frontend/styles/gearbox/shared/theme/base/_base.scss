@@ -19,9 +19,12 @@ html {
   box-sizing: border-box;
 }
 
-// Remove default margins
+// Remove default margins and set background
 body {
   margin: 0;
+  background-color: var(--theme-page-background-color, #ffffff);
+  color: var(--theme-general-text-color, #333333);
+  font-family: var(--theme-general-font-family, sans-serif);
 }
 
 p,

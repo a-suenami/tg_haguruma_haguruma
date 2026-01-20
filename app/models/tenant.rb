@@ -15,6 +15,8 @@ class Tenant < ApplicationRecord
 
   has_many :admins, dependent: :destroy
   has_one :oauth_provider
+  has_one :theme, class_name: 'TenantTheme', dependent: :destroy
+  has_one :site_settings, class_name: 'TenantSiteSettings', dependent: :destroy
 
   validates :id, :name, presence: true
   validates :id, uniqueness: { case_sensitive: false }
@@ -75,6 +77,18 @@ class Tenant < ApplicationRecord
     )
 
     uri.to_s
+  end
+
+  # Returns theme or a null object with defaults
+  sig { returns(TenantTheme) }
+  def theme_or_default
+    theme || TenantTheme.new
+  end
+
+  # Returns site settings or a null object with defaults
+  sig { returns(TenantSiteSettings) }
+  def site_settings_or_default
+    site_settings || TenantSiteSettings.new
   end
 
   # TODO: Add these methods when config model is ported

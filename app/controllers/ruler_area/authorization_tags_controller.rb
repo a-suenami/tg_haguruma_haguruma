@@ -9,7 +9,7 @@ module RulerArea
     before_action :set_authorization_tag, only: [:edit, :update, :destroy]
 
     def index
-      @authorization_tags = ContentAuthorizationTag.order(:name)
+      @authorization_tags = ContentAuthorizationTag.searchable.order(:name)
     end
 
     def new
@@ -21,6 +21,7 @@ module RulerArea
     def create
       @authorization_tag = ContentAuthorizationTag.new(authorization_tag_params)
       @authorization_tag.tenant_id = @tenant.id
+      @authorization_tag.provider = 'ruler'
 
       if @authorization_tag.save
         redirect_to ruler_area_tenant_authorization_tags_path(@tenant),
@@ -42,7 +43,13 @@ module RulerArea
     end
 
     def destroy
-      if @authorization_tag.remote_id.present?
+      if @authorization_tag.system?
+        redirect_to ruler_area_tenant_authorization_tags_path(@tenant),
+                    alert: t('ruler_area.authorization_tags.cannot_delete_system')
+        return
+      end
+
+      if @authorization_tag.idp?
         redirect_to ruler_area_tenant_authorization_tags_path(@tenant),
                     alert: t('ruler_area.authorization_tags.cannot_delete_external')
         return
@@ -67,7 +74,7 @@ module RulerArea
     end
 
     def authorization_tag_params
-      params.require(:content_authorization_tag).permit(:name)
+      params.require(:content_authorization_tag).permit(:name, :unique_id)
     end
   end
 end

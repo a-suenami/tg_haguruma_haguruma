@@ -5,10 +5,10 @@
 #
 # Table name: content_type_field_selects
 #
-#  id                :bigint           not null, primary key
-#  display_format    :integer          default(1), not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id             :bigint           not null, primary key
+#  display_format :integer          default("dropdown"), not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 class ContentType::FieldSelect < ApplicationRecord
   DISPLAY_FORMATS = {

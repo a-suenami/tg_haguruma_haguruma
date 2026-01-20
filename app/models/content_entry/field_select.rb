@@ -6,9 +6,17 @@
 # Table name: content_entry_field_selects
 #
 #  id         :bigint           not null, primary key
-#  tenant_id  :citext           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  tenant_id  :citext           not null
+#
+# Indexes
+#
+#  index_content_entry_field_selects_on_tenant_id_and_id  (tenant_id,id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (tenant_id => tenants.id)
 #
 class ContentEntry::FieldSelect < ApplicationRecord
   has_many :selections,

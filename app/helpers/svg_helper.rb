@@ -12,13 +12,6 @@ module SvgHelper
     svg_content.html_safe
   end
 
-  # Renders a feature title image SVG
-  # @param feature [String] Feature name (news, blog, schedule, etc.)
-  # @return [ActiveSupport::SafeBuffer] The SVG content
-  def feature_title_svg(feature)
-    inline_svg("features/#{feature}/#{feature}-overview-title.svg")
-  end
-
   # Renders an icon SVG
   # @param icon_name [String] Icon name (sign-in-indicator, sign-up-indicator, etc.)
   # @return [ActiveSupport::SafeBuffer] The SVG content

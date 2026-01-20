@@ -92,6 +92,23 @@
           </ul>
 
           <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
+            <li class="uk-nav-header">サイト設定</li>
+            <li class="uk-nav-divider"></li>
+            <li class="<%= 'uk-active' if controller_name == 'site_settings' %>">
+              <%= link_to 'サイト設定', ruler_area_tenant_site_setting_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'themes' %>">
+              <%= link_to 'テーマ', ruler_area_tenant_theme_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'pages' %>">
+              <%= link_to ruler_area_tenant_pages_path(@tenant) do %>
+                ページ設定
+                <span class="uk-badge uk-margin-small-left">準備中</span>
+              <% end %>
+            </li>
+          </ul>
+
+          <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
             <li class="uk-nav-header">開発・テスト（内部向け）</li>
             <li class="uk-nav-divider"></li>
             <li class="<%= 'uk-active' if controller_name == 'users' %>">

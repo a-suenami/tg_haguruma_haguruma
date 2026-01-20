@@ -9,6 +9,20 @@
 
 ## 進行中
 
+- [ ] KV画像のサイズ制限
+  - 現状: max-heightなし、cropなしで画像全体を表示
+  - 課題: 極端に大きな画像をアップロードされるとファーストビューが埋まる
+  - 検討案:
+    - max-height + object-fit: cover（cropを許容）
+    - max-height + object-fit: contain（左右余白を許容）
+    - アップロード時に推奨アスペクト比を運用ルール化
+
+- [ ] ContentType 作成用サービスクラスを作成する
+  - 現状: `RulerArea::ContentTypesController` で `ContentType.new` を直接使用
+  - fixtures でも `create_content_type` ヘルパーで直接 ActiveRecord 操作している
+  - ADR の「サービスクラス使用原則」に則り、サービスクラスに抽出すべき
+  - フィールド作成も含めた `RulerArea::ContentTypes::CreateService` を検討
+
 - [ ] S3 のパスが返っているので CloudFront の URL にする
 - [ ] Triple と oauth_provider テーブルを比較して差分を分析（必要なら修正）
   - IDP を使った動作確認

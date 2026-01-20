@@ -29,6 +29,8 @@ class ApplicationController
     include ::LexicalHelper
     include ::RulerArea::ApplicationHelper
     include ::SvgHelper
+    include ::UserArea::ContentFieldHelper
+    include ::UserArea::SiteSettingsHelper
   end
 
   class HelperProxy < ::ActionView::Base

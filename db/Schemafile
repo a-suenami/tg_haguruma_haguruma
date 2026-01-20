@@ -3,6 +3,8 @@ ActiveRecord::Schema.enable_extension(:citext)
 
 # tenants
 require 'schemas/tenants.schema'
+require 'schemas/tenant_themes.schema'
+require 'schemas/tenant_site_settings.schema'
 
 # oauth providers
 require 'schemas/oauth_providers.schema'

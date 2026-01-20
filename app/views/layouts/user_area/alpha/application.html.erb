@@ -14,6 +14,11 @@
   <%= vite_client_tag %>
   <%= vite_typescript_tag 'entrypoints/user_area/application' %>
   <%= vite_stylesheet_tag 'entrypoints/user_area/application.scss', skip_preload_tags: true %>
+
+  <%# Tenant theme CSS variables - must come AFTER Vite CSS to override defaults %>
+  <style>
+    <%= theme_css_style_tag %>
+  </style>
   <%= yield(:head) %>
 </head>
 <body cog-layout>
