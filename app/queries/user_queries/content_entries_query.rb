@@ -84,6 +84,9 @@ module UserQueries
             .where(content_entry_versions: { visibility: 0 }),
         )
       else
+        # Ensure user has system tags (for users created before system tag feature)
+        ensure_system_tags_assigned(user)
+
         # Logged-in: filter by matching tags via subquery
         # Using subquery to avoid PG::InvalidColumnReference error when combining
         # DISTINCT with ORDER BY (e.g., ordered_by_published_at)
@@ -147,6 +150,15 @@ module UserQueries
     end
 
     private
+
+    sig { params(user: User).void }
+    def ensure_system_tags_assigned(user)
+      public_tag = ContentAuthorizationTag.public_tag
+      member_tag = ContentAuthorizationTag.member_tag
+
+      UserTag.find_or_create_by!(user:, content_authorization_tag: public_tag)
+      UserTag.find_or_create_by!(user:, content_authorization_tag: member_tag)
+    end
 
     sig { override.returns(ActiveRecord::Relation) }
     def base_scope
