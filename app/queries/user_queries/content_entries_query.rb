@@ -84,14 +84,20 @@ module UserQueries
             .where(content_entry_versions: { visibility: 0 }),
         )
       else
-        # Logged-in: filter by matching tags via INNER JOIN
-        chain(
-          @scope
-            .joins(versions: { content_entry_authorizations: { content_authorization_tag: :user_tags } })
-            .merge(ContentEntry::Version.published)
-            .where(user_tags: { user_id: user.id })
-            .distinct,
-        )
+        # Logged-in: filter by matching tags via subquery
+        # Using subquery to avoid PG::InvalidColumnReference error when combining
+        # DISTINCT with ORDER BY (e.g., ordered_by_published_at)
+        #
+        # Performance note: If authorized entries grow to tens of thousands,
+        # consider switching to EXISTS subquery for guaranteed semi-join optimization.
+        # Current IN subquery relies on PostgreSQL query planner optimization.
+        authorized_entry_ids = ContentEntry
+          .joins(versions: { content_entry_authorizations: { content_authorization_tag: :user_tags } })
+          .merge(ContentEntry::Version.published)
+          .where(user_tags: { user_id: user.id })
+          .select(:id)
+
+        chain(@scope.where(id: authorized_entry_ids))
       end
     end
 
