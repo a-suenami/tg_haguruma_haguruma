@@ -22,52 +22,38 @@
     </div>
   </section>
 
-  <div class="main-content">
-    <% unless user_signed_in? %>
-      <section cog-landing-section>
-        <div cog-landing-section-content>
-          <div cog-landing-section-actions>
-            <a href="<%= user_area_auth_start_path %>" cog-button filled class="action-button">
-              <span class="action-button-text"><%= login_label %></span>
-              <span class="action-button-icon"><%= icon_svg('sign-in-indicator') %></span>
-            </a>
-            <a href="<%= user_area_auth_start_path %>" cog-button outlined class="action-button">
-              <span class="action-button-text"><%= signup_label %></span>
-              <span class="action-button-icon"><%= icon_svg('sign-up-indicator') %></span>
-            </a>
-          </div>
-        </div>
-        <% if @banners.present? %>
-          <div cog-landing-section-content>
-            <div class="swiper banner-swiper" data-controller="swiper">
-              <div class="swiper-wrapper">
-                <% @banners.each do |entry| %>
-                  <% version = published_version(entry) %>
-                  <% next if version.nil? %>
-                  <% image_url = media_asset_url(field_by_identifier(version, 'image')) %>
-                  <% link_url = render_text_field(field_by_identifier(version, 'link_url')) %>
-                  <% alt_text = render_text_field(field_by_identifier(version, 'alt_text')) %>
-                  <div class="swiper-slide">
-                    <% if link_url.present? %>
-                      <a href="<%= link_url %>" cog-landing-banner>
-                        <%# FIXME(#14): width/heightを動的に設定 %>
-                        <img src="<%= image_url %>" alt="<%= alt_text %>" width=300 height=90>
-                      </a>
-                    <% else %>
-                      <div cog-landing-banner>
-                        <img src="<%= image_url %>" alt="<%= alt_text %>"  width=300 height=90>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
-              </div>
-              <div class="swiper-pagination"></div>
-            </div>
-          </div>
-        <% end %>
-      </section>
-    <% end %>
+  <% unless user_signed_in? %>
+    <section cog-landing-introduction>
+      <div class="introduction-content">
+        <%# FIXME(#14): width/heightを動的に設定 %>
+        <img class="logo" src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>" width=104 height=53>
 
+        <div class="description">
+          <p>
+            八代目 尾上菊五郎・六代目 尾上菊之助のファンクラブ『斧琴菊（よきこときく）』です。<br>
+            八代目菊五郎・六代目菊之助を応援することを目的として発足いたしました。
+          </p>
+          <p>
+            「斧琴菊」とは江戸時代に流行した判じ物の文様で、「斧」と「琴」と「菊」で「良きこと聞く」という縁起の良い意味になり、三代目菊五郎が愛用したとも言われています。音羽屋の柄として代々大切にされてきました。<br>
+            会員の皆さまへも「良きこと」をお届けできますよう、吉祥の思いを込めてファンクラブの名称とさせていただきました。
+          </p>
+          <p>
+            会員になられた方には、会員限定特典がございます。<br>
+            ご入会いただき、益々お引き立て賜りますようお願い申し上げます。
+          </p>
+        </div>
+
+        <a href="<%= user_area_privilege_path %>" cog-button filled secondary class="primary-action">
+          <span class="primary-action-button-text">入会のご案内</span>
+        </a>
+        <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
+          既にご入会済みの方はこちら
+        </a>
+      </div>
+    </section>
+  <% end %>
+
+  <div class="main-content">
     <% if @news_entries.present? %>
       <section cog-landing-section>
         <div cog-landing-section-title>
@@ -82,15 +68,15 @@
                 <% version = published_version(entry) %>
                 <% next if version.nil? %>
                 <a href="<%= user_area_news_path(entry) %>" cog-news-item>
+                  <div class="date">
+                    <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                  </div>
+                  <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
                   <div class="category">
                     <% category_field = field_by_identifier(version, 'category') %>
                     <% category_option = selected_option(category_field) %>
                     <span cog-category-label><%= category_option&.display_name || '-' %></span>
                   </div>
-                  <div class="date">
-                    <span cog-date-label><%= format_content_date(version.published_at) %></span>
-                  </div>
-                  <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
                 </a>
                 <% unless i == @news_entries.length - 1 %>
                   <div class="divider"></div>

@@ -9,24 +9,26 @@
   <%# PC header uses 'features' (enabled_features) %>
   <div class="menu-container browser">
     <nav cog-header-menu>
-      <a href="<%= user_area_root_path %>" cog-header-menu-item>TOP</a>
+      <a href="<%= user_area_root_path %>" cog-header-menu-item>トップ</a>
       <% enabled_features.each do |feature| %>
         <a href="<%= feature_path(feature['key']) %>" cog-header-menu-item><%= feature['label'] %></a>
       <% end %>
-      <div class="auth-action-buttons">
+      <div class="action-buttons">
         <% if user_signed_in? %>
-          <a href="#" cog-header-menu-item class="auth-action-button">
-            <span class="auth-icon"><%= icon_svg('user-circle') %></span>
+          <a href="<%= user_area_auth_start_path %>" class="auth-action-button">
+            <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
             <span>マイページ</span>
           </a>
         <% else %>
-          <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
+          <a href="<%= user_area_auth_start_path %>" class="auth-action-button">
             <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
             <span><%= login_label %></span>
           </a>
-          <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
-            <span class="auth-icon"><%= icon_svg('sign-up-indicator') %></span>
-            <span><%= signup_label %></span>
+          <a href="<%= user_area_privilege_path %>" class="register-action-button">
+            <span class="action-text">
+              入会のご案内
+            </span>
+            <span class="action-icon"><%= icon_svg('right-arrow') %></span>
           </a>
         <% end %>
       </div>

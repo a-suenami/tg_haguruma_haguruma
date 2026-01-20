@@ -92,9 +92,11 @@
       > p {
         font-family: var(--theme-general-font-family);
         font-weight: var(--gearbox-font-weight-medium);
-        margin-bottom: var(--gearbox-spacing-16);
         font-size: 20px;
-        line-height: 2;
+        line-height: 2.25;
+        & + & {
+          margin-top: 1.5em;
+        }
       }
 
       @include breakpoints.media-down(sm) {
@@ -110,6 +112,7 @@
       margin-bottom: 10px;
       flex: 1;
       position: relative;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 
       .primary-action-button-text {
         flex: 1;
