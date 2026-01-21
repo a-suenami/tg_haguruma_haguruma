@@ -1,4 +1,6 @@
 <%= form_with model: @site_setting, url: ruler_area_tenant_site_setting_path(@tenant), method: :patch, local: true, scope: :site_setting do |form| %>
+  <%= render 'ruler_area/shared/form_error', target: @site_setting %>
+
   <div class="uk-card uk-card-default uk-card-body uk-margin">
     <h4 class="uk-card-title">認証ボタンラベル</h4>
 
@@ -17,8 +19,10 @@
     </div>
   </div>
 
+  <%# PC Header Features - uses 'features' JSONB column %>
   <div class="uk-card uk-card-default uk-card-body uk-margin">
-    <h4 class="uk-card-title">機能設定</h4>
+    <h4 class="uk-card-title">機能設定・PCヘッダー</h4>
+    <p class="uk-text-muted uk-text-small uk-margin-bottom">PCヘッダーに表示する機能を設定します。</p>
 
     <% TenantSiteSettings::DEFAULT_FEATURES.each do |key, defaults| %>
       <% feature = @site_setting.send(:merged_features)[key] %>
@@ -54,6 +58,196 @@
         </div>
       </div>
     <% end %>
+  </div>
+
+  <%# SP Menu - uses 'menu_items' JSONB column %>
+  <div class="uk-card uk-card-default uk-card-body uk-margin" data-controller="menu-settings">
+    <h4 class="uk-card-title">SPメニュー</h4>
+    <p class="uk-text-muted uk-text-small uk-margin-bottom">スマートフォン用メニューの項目を設定します。ドラッグ&ドロップで順序を変更できます。</p>
+
+    <div uk-sortable="handle: .sortable-handle" data-menu-settings-target="container">
+      <% @site_setting.all_menu_items_for_form.each_with_index do |item, index| %>
+        <% is_logout = item['key'] == 'logout' %>
+        <div class="uk-card uk-card-secondary uk-card-body uk-card-small uk-margin-small"
+             data-menu-settings-target="item"
+             data-item-type="<%= item['type'] %>">
+
+          <% if item['type'] == 'feature' %>
+            <% defaults = TenantSiteSettings::DEFAULT_FEATURES[item['key']] %>
+
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+              <div class="uk-width-auto">
+                <span class="sortable-handle" uk-icon="icon: menu" style="cursor: grab;"></span>
+              </div>
+              <div class="uk-width-auto">
+                <label class="uk-form-label uk-margin-remove">
+                  <%= hidden_field_tag "site_setting[menu_items][][enabled]", 'false' %>
+                  <%= check_box_tag "site_setting[menu_items][][enabled]",
+                      'true',
+                      item['enabled'] == true %>
+                </label>
+              </div>
+              <div class="uk-width-small">
+                <span class="uk-label <%= item['enabled'] ? 'uk-label-success' : '' %>">
+                  <%= item['key'].upcase %>
+                </span>
+              </div>
+              <div class="uk-width-expand">
+                <%= text_field_tag "site_setting[menu_items][][label]",
+                    item['label'],
+                    class: 'uk-input uk-form-small',
+                    placeholder: defaults['label'] %>
+              </div>
+              <%= hidden_field_tag "site_setting[menu_items][][type]", 'feature' %>
+              <%= hidden_field_tag "site_setting[menu_items][][key]", item['key'] %>
+              <%= hidden_field_tag "site_setting[menu_items][][position]",
+                  index + 1,
+                  data: { position_input: true } %>
+            </div>
+
+          <% elsif is_logout %>
+            <%# Logout link - always enabled, can be reordered but cannot be deleted %>
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+              <div class="uk-width-auto">
+                <span class="sortable-handle" uk-icon="icon: menu" style="cursor: grab;"></span>
+              </div>
+              <div class="uk-width-auto">
+                <span class="uk-label uk-label-danger">ログアウト</span>
+              </div>
+              <div class="uk-width-expand">
+                <%= text_field_tag "site_setting[menu_items][][label]",
+                    item['label'],
+                    class: 'uk-input uk-form-small',
+                    placeholder: 'ログアウト' %>
+              </div>
+              <div class="uk-width-expand">
+                <input type="text" class="uk-input uk-form-small" value="/logout" disabled>
+                <p class="uk-text-small uk-text-muted uk-margin-remove">URLは固定です</p>
+              </div>
+              <%= hidden_field_tag "site_setting[menu_items][][type]", 'custom' %>
+              <%= hidden_field_tag "site_setting[menu_items][][key]", 'logout' %>
+              <%= hidden_field_tag "site_setting[menu_items][][url]", '/logout' %>
+              <%= hidden_field_tag "site_setting[menu_items][][enabled]", 'true' %>
+              <%= hidden_field_tag "site_setting[menu_items][][position]",
+                  index + 1,
+                  data: { position_input: true } %>
+              <div class="uk-width-auto">
+                <%# Cannot delete logout - show lock icon %>
+                <span class="uk-text-muted" uk-icon="icon: lock" uk-tooltip="削除不可"></span>
+              </div>
+            </div>
+
+          <% else %>
+            <%# Custom link (not logout) %>
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+              <div class="uk-width-auto">
+                <span class="sortable-handle" uk-icon="icon: menu" style="cursor: grab;"></span>
+              </div>
+              <div class="uk-width-auto">
+                <label class="uk-form-label uk-margin-remove">
+                  <%= hidden_field_tag "site_setting[menu_items][][enabled]", 'false' %>
+                  <%= check_box_tag "site_setting[menu_items][][enabled]",
+                      'true',
+                      item['enabled'] == true %>
+                </label>
+              </div>
+              <div class="uk-width-auto">
+                <span class="uk-label uk-label-warning">カスタム</span>
+              </div>
+              <div class="uk-width-small">
+                <%= text_field_tag "site_setting[menu_items][][key]",
+                    item['key'],
+                    class: 'uk-input uk-form-small',
+                    placeholder: 'キー' %>
+              </div>
+              <div class="uk-width-expand">
+                <%= text_field_tag "site_setting[menu_items][][label]",
+                    item['label'],
+                    class: 'uk-input uk-form-small',
+                    placeholder: 'ラベル' %>
+              </div>
+              <div class="uk-width-expand">
+                <%= text_field_tag "site_setting[menu_items][][url]",
+                    item['url'],
+                    class: 'uk-input uk-form-small',
+                    placeholder: 'URL（例: https://example.com）' %>
+              </div>
+              <%= hidden_field_tag "site_setting[menu_items][][type]", 'custom' %>
+              <%= hidden_field_tag "site_setting[menu_items][][position]",
+                  index + 1,
+                  data: { position_input: true } %>
+              <div class="uk-width-auto">
+                <button type="button"
+                        class="uk-button uk-button-danger uk-button-small"
+                        data-action="click->menu-settings#removeItem">
+                  <span uk-icon="icon: trash; ratio: 0.8"></span>
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="uk-margin-top">
+      <button type="button"
+              class="uk-button uk-button-default uk-button-small"
+              data-action="click->menu-settings#addCustomLink">
+        <span uk-icon="icon: plus; ratio: 0.8"></span>
+        カスタムリンクを追加
+      </button>
+    </div>
+
+    <template data-menu-settings-target="template">
+      <div class="uk-card uk-card-secondary uk-card-body uk-card-small uk-margin-small"
+           data-menu-settings-target="item"
+           data-item-type="custom">
+        <div class="uk-grid-small uk-flex-middle" uk-grid>
+          <div class="uk-width-auto">
+            <span class="sortable-handle" uk-icon="icon: menu" style="cursor: grab;"></span>
+          </div>
+          <div class="uk-width-auto">
+            <label class="uk-form-label uk-margin-remove">
+              <input type="hidden" name="site_setting[menu_items][][enabled]" value="false">
+              <input type="checkbox" name="site_setting[menu_items][][enabled]" value="true" checked>
+            </label>
+          </div>
+          <div class="uk-width-auto">
+            <span class="uk-label uk-label-warning">カスタム</span>
+          </div>
+          <div class="uk-width-small">
+            <input type="text"
+                   name="site_setting[menu_items][][key]"
+                   class="uk-input uk-form-small"
+                   placeholder="キー">
+          </div>
+          <div class="uk-width-expand">
+            <input type="text"
+                   name="site_setting[menu_items][][label]"
+                   class="uk-input uk-form-small"
+                   placeholder="ラベル">
+          </div>
+          <div class="uk-width-expand">
+            <input type="text"
+                   name="site_setting[menu_items][][url]"
+                   class="uk-input uk-form-small"
+                   placeholder="URL（例: https://example.com）">
+          </div>
+          <input type="hidden" name="site_setting[menu_items][][type]" value="custom">
+          <input type="hidden"
+                 name="site_setting[menu_items][][position]"
+                 data-position-input
+                 value="">
+          <div class="uk-width-auto">
+            <button type="button"
+                    class="uk-button uk-button-danger uk-button-small"
+                    data-action="click->menu-settings#removeItem">
+              <span uk-icon="icon: trash; ratio: 0.8"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 
   <div class="uk-margin">

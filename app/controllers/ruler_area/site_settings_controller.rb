@@ -27,14 +27,20 @@ module RulerArea
     end
 
     def site_setting_params
-      permitted_features = TenantSiteSettings::DEFAULT_FEATURES.keys.index_with do
-        %i[enabled label menu_label]
-      end
-      params.require(:site_setting).permit(
+      permitted = params.require(:site_setting).permit(
         :login_label,
         :signup_label,
-        features: permitted_features,
+        menu_items: %i[type key enabled label menu_label url position],
       )
+
+      # Filter out empty menu_items (custom links with no key)
+      if permitted[:menu_items].present?
+        permitted[:menu_items] = permitted[:menu_items].reject do |item|
+          item[:key].blank?
+        end
+      end
+
+      permitted
     end
   end
 end
