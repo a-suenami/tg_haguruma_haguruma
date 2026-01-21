@@ -13,6 +13,8 @@
   color: var(--cog-sns-icon-color);
   padding: var(--gearbox-spacing-8);
   svg {
+    width: 24px;
+    height: 24px;
     transition: fill .2s ease-out;
   }
 
