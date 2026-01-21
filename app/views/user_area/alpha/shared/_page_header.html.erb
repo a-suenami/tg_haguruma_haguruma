@@ -9,24 +9,27 @@
   <%# PC header uses 'features' (enabled_features) %>
   <div class="menu-container browser">
     <nav cog-header-menu>
-      <a href="<%= user_area_root_path %>" cog-header-menu-item>TOP</a>
+      <a href="<%= user_area_root_path %>" cog-header-menu-item>トップ</a>
+      <%# TODO: activeにする %>
       <% enabled_features.each do |feature| %>
         <a href="<%= feature_path(feature['key']) %>" cog-header-menu-item><%= feature['label'] %></a>
       <% end %>
-      <div class="auth-action-buttons">
+      <div class="action-buttons">
         <% if user_signed_in? %>
-          <a href="#" cog-header-menu-item class="auth-action-button">
+          <a href="<%= idp_mypage_url %>" class="auth-action-button">
             <span class="auth-icon"><%= icon_svg('user-circle') %></span>
             <span>マイページ</span>
           </a>
         <% else %>
-          <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
+          <a href="<%= user_area_auth_start_path %>" class="auth-action-button">
             <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
             <span><%= login_label %></span>
           </a>
-          <a href="<%= user_area_auth_start_path(signup: true) %>" cog-header-menu-item class="auth-action-button">
-            <span class="auth-icon"><%= icon_svg('sign-up-indicator') %></span>
-            <span><%= signup_label %></span>
+          <a href="<%= user_area_privilege_path %>" class="register-action-button">
+            <span class="action-text">
+              入会のご案内
+            </span>
+            <span class="action-icon"><%= icon_svg('right-arrow') %></span>
           </a>
         <% end %>
       </div>
@@ -43,75 +46,49 @@
 
     <div cog-header-menu-overlay data-mobile-menu-target="overlay">
       <div class="inner">
-        <div cog-header-menu-overlay-head>
-          <div cog-header-menu-overlay-actions>
-            <% if user_signed_in? %>
-              <a href="#" cog-button outlined class="overlay-action-button in-vertical">
-                <span class="mypage-text">マイページ</span>
-                <span class="overlay-icon"><%= icon_svg('user-circle-bold') %></span>
+        <% unless user_signed_in? %>
+          <div cog-header-menu-overlay-head>
+            <div cog-header-menu-overlay-actions>
+              <a href="<%= user_area_privilege_path %>" class="primary-action">
+                <span class="action-text">入会のご案内</span>
+                <span class="action-icon"><%= icon_svg('right-arrow') %></span>
               </a>
-            <% else %>
-              <a href="<%= user_area_auth_start_path %>" cog-button filled class="overlay-action-button">
-                <span><%= login_label %></span>
-                <span class="overlay-icon"><%= icon_svg('sign-in-indicator') %></span>
+              <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
+                既にご入会済みの方はこちら
               </a>
-              <a href="<%= user_area_auth_start_path(signup: true) %>" cog-button outlined class="overlay-action-button">
-                <span><%= signup_label %></span>
-                <span class="overlay-icon"><%= icon_svg('sign-up-indicator') %></span>
-              </a>
-            <% end %>
+            </div>
           </div>
-        </div>
+        <% end %>
 
         <div cog-header-menu-overlay-content>
           <nav cog-menu-items>
             <a cog-menu-item href="<%= user_area_root_path %>">TOP</a>
-            <% ordered_menu_items.each do |item| %>
-              <% url = menu_item_url(item) %>
-              <% is_logout = item['key'] == 'logout' %>
-              <%# Skip logout if user not signed in %>
-              <% next if is_logout && !user_signed_in? %>
-              <% if is_logout %>
-                <a cog-menu-item href="<%= url %>" data-turbo-method="delete"><%= item['label'] %></a>
-              <% elsif external_url?(url) %>
-                <a cog-menu-item href="<%= url %>" target="_blank" rel="noopener"><%= item['label'] %></a>
-              <% else %>
-                <a cog-menu-item href="<%= url %>"><%= item['label'] %></a>
-              <% end %>
+            <% if feature_enabled?(:biography) %>
+              <a cog-menu-item href="<%= user_area_biography_path %>"><%= feature_label(:biography, :menu_label) %></a>
+            <% end %>
+            <% if feature_enabled?(:news) %>
+              <a cog-menu-item href="<%= user_area_news_index_path %>"><%= feature_label(:news, :menu_label) %></a>
+            <% end %>
+            <% if feature_enabled?(:blog) %>
+              <a cog-menu-item href="<%= user_area_blog_index_path %>"><%= feature_label(:blog, :menu_label) %></a>
+            <% end %>
+            <% if feature_enabled?(:ticket) %>
+              <a cog-menu-item href="<%= user_area_tickets_path %>"><%= feature_label(:ticket, :menu_label) %></a>
+            <% end %>
+            <% if feature_enabled?(:schedule) %>
+              <a cog-menu-item href="<%= user_area_schedules_path %>"><%= feature_label(:schedule, :menu_label) %></a>
             <% end %>
             <% if user_signed_in? %>
-              <a cog-menu-item href="#">MYPAGE</a>
+              <a cog-menu-item href="<%= idp_mypage_url %>">マイページ</a>
             <% end %>
           </nav>
 
           <div cog-sns-items>
-            <a cog-sns-item href="#" target="_blank" rel="noopener"><%= icon_svg('sns-x') %></a>
-            <a cog-sns-item href="#" target="_blank" rel="noopener"><%= icon_svg('sns-instagram') %></a>
+            <a cog-sns-item href="<%= sns_x_url %>" target="_blank" rel="noopener"><%= icon_svg('sns-x') %></a>
+            <a cog-sns-item href="<%= sns_instagram_url %>" target="_blank" rel="noopener"><%= icon_svg('sns-instagram') %></a>
           </div>
         </div>
 
-        <% if @banners.present? %>
-          <div cog-header-menu-overlay-footer>
-            <div cog-header-menu-banners>
-              <% @banners.each do |entry| %>
-                <% version = published_version(entry) %>
-                <% next if version.nil? %>
-                <% image_url = media_asset_url(field_by_identifier(version, 'image')) %>
-                <% link_url = render_text_field(field_by_identifier(version, 'link_url')) %>
-                <% alt_text = render_text_field(field_by_identifier(version, 'alt_text')) %>
-                <% if link_url.present? %>
-                  <a cog-header-menu-banner href="<%= link_url %>">
-                    <img src="<%= image_url %>" alt="<%= alt_text %>">
-                  </a>
-                <% else %>
-                  <div cog-header-menu-banner>
-                    <img src="<%= image_url %>" alt="<%= alt_text %>">
-                  </div>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
       </div>
     </div>
   </div>

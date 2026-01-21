@@ -1,6 +1,8 @@
 [cog-detail-fragment-header] {
   display: block;
   width: 100%;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
 
   .bars {
     display: flex;
@@ -8,16 +10,5 @@
     width: 100%;
     gap: var(--gearbox-spacing-16);
     padding-bottom: var(--gearbox-spacing-16);
-  }
-
-  .divider {
-    height: 1px;
-    background-image: repeating-linear-gradient(
-      to right,
-      var(--gearbox-outline-primary) 0,
-      var(--gearbox-outline-primary) 2px,
-      transparent 2px,
-      transparent 4px
-    );
   }
 }

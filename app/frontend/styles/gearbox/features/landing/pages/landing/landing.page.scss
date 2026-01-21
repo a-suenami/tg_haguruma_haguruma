@@ -1,6 +1,12 @@
 @use 'shared/theme/breakpoints/breakpoints' as breakpoints;
 
 [cog-landing] {
+  --landing-horizontal-padding: var(--gearbox-spacing-56);
+
+  @include breakpoints.media-down(sm) {
+    --landing-horizontal-padding: var(--gearbox-spacing-16);
+  }
+
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -17,37 +23,8 @@
     flex-direction: column;
     gap: var(--gearbox-spacing-128);
     padding: var(--gearbox-spacing-56) 0;
-  }
-
-  .action-button {
-    --cog-button-width: 100%;
-    flex: 1;
-    position: relative;
-
-    .action-button-text {
-      flex: 1;
-      text-align: center;
-    }
-
-    .action-button-icon {
-      position: absolute;
-      right: var(--gearbox-spacing-16);
-      display: flex;
-      align-items: center;
-      width: 30px;
-      height: 30px;
-    }
-
-    @include breakpoints.media-down(sm) {
-      .action-button-text {
-        text-align: left;
-      }
-
-      .action-button-icon {
-        width: 24px;
-        height: 24px;
-      }
-    }
+    width: 100%;
+    margin: 0;
   }
 
   [cog-swiper-slide] {
@@ -84,6 +61,149 @@
 
   [cog-landing-section].banners {
     --landing-section-horizontal-padding: 0;
+  }
+
+  [cog-landing-introduction] {
+    padding-top: 64px;
+    padding-bottom: 80px;
+    background: #fff;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-inline: var(--landing-horizontal-padding);
+
+    .introduction-content {
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      margin-bottom: var(--gearbox-spacing-24);
+      height: 100px;
+      width: auto;
+      display: block;
+    }
+
+    .description {
+      margin-bottom: 40px;
+      > p {
+        font-family: var(--theme-general-font-family);
+        font-weight: var(--gearbox-font-weight-medium);
+        font-size: 20px;
+        line-height: 2.25;
+      }
+      p + p {
+        margin-top: 1.2em;
+      }
+
+      @include breakpoints.media-down(sm) {
+        > p {
+          font-size: 18px;
+        }
+      }
+    }
+
+    .primary-action {
+      width: 336px;
+      padding-block: 12px;
+      margin-bottom: 10px;
+      flex: 1;
+      position: relative;
+      color: var(--theme-button-secondary-text-color);
+      transition: transform .2s ease-out;
+      isolation: isolate;
+
+      &::after {
+        content: '';
+        z-index: -1;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 100px;
+        width: 100%;
+        height: 100%;
+        background: var(--theme-button-secondary-background-color);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+        transition: transform .2s ease-out;
+      }
+
+      .action-text {
+        flex: 1;
+        text-align: center;
+        font-size: 22px;
+        font-weight: var(--gearbox-font-weight-bold);
+        transition: transform .2s ease-out;
+      }
+
+      .action-icon {
+        position: absolute;
+        right: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform .2s ease-out, opacity .2s ease-out;
+        display: flex;
+        align-items: center;
+        width: 28px;
+        aspect-ratio: 1/1;
+        opacity: 0;
+      }
+
+      @media (any-hover: hover) {
+        &:hover {
+          --header-transform-x: 20px;
+          opacity: 1;
+          box-shadow: none;
+
+          &::after {
+            box-shadow: none;
+            transform: translate(-50%, -50%) scale(1.05);
+          }
+
+          & > .action-text {
+            opacity: 1;
+          }
+          & > .action-icon {
+            transform: translateY(-50%) translateX(8px);
+            transition: transform .2s ease-out, opacity .2s ease-out;
+            opacity: 1;
+          }
+        }
+      }
+      @media (any-hover: none) {
+        --header-transform-x: 20px;
+        opacity: 1;
+        & > .action-text {
+          opacity: 1;
+        }
+        & > .action-icon {
+          transform: translateY(-50%) translateX(8px);
+          transition: transform .2s ease-out, opacity .05s ease-out;
+          opacity: 1;
+        }
+      }
+
+      @include breakpoints.media-down(sm) {
+        width: 300px;
+
+        .action-text {
+          font-size: 18px;
+        }
+
+        .action-icon {
+          width: 24px;
+        }
+      }
+    }
+
+    .secondary-action {
+      font-size: 14px;
+      font-weight: var(--gearbox-font-weight-bold);
+    }
+
   }
 
   // Banner swiper - centered with dot pagination (swiper.js)

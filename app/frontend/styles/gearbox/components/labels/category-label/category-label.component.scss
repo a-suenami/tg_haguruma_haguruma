@@ -5,10 +5,9 @@
   align-items: center;
   background-color: var(--theme-label-background-color, var(--gearbox-primary));
   color: var(--theme-label-text-color, var(--gearbox-on-primary));
-  padding: 0 var(--gearbox-spacing-8) 1px;
-  border-radius: 5px;
+  padding: 2px 10px;
+  border-radius: 2px;
   font-family: var(--theme-label-font-family, var(--gearbox-font-family-primary));
-  font-size: var(--gearbox-font-size-label-medium);
+  font-size: 13px;
   font-weight: var(--gearbox-font-weight-regular);
-  line-height: var(--gearbox-line-height-loose);
 }
