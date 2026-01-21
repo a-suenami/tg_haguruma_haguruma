@@ -125,7 +125,7 @@
       top: 50%;
       right: 28px;
       transform: translateY(-50%);
-      transition: transform .2s ease-out, opacity .2s ease-out;
+      transition: transform .2s ease-out, opacity .1s ease-out;
       opacity: 0;
     }
 
@@ -138,7 +138,7 @@
         }
         & > .action-icon {
           transform: translateY(-50%) translateX(8px);
-          transition: transform .2s ease-out, opacity .1s ease-out;
+          transition: transform .2s ease-out, opacity .1s .1s ease-out;
           opacity: 1;
         }
       }
@@ -151,7 +151,6 @@
       }
       & > .action-icon {
         transform: translateY(-50%) translateX(8px);
-        transition: transform .2s ease-out, opacity .1s ease-out;
         opacity: 1;
       }
     }
