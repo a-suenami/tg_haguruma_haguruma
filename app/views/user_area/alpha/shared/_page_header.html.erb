@@ -16,8 +16,8 @@
       <% end %>
       <div class="action-buttons">
         <% if user_signed_in? %>
-          <a href="<%= user_area_auth_start_path %>" class="auth-action-button">
-            <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
+          <a href="<%= idp_mypage_url %>" class="auth-action-button">
+            <span class="auth-icon"><%= icon_svg('user-circle') %></span>
             <span>マイページ</span>
           </a>
         <% else %>
@@ -46,17 +46,19 @@
 
     <div cog-header-menu-overlay data-mobile-menu-target="overlay">
       <div class="inner">
-        <div cog-header-menu-overlay-head>
-          <div cog-header-menu-overlay-actions>
-            <a href="<%= user_area_privilege_path %>" class="primary-action">
-              <span class="action-text">入会のご案内</span>
-              <span class="action-icon"><%= icon_svg('right-arrow') %></span>
-            </a>
-            <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
-              既にご入会済みの方はこちら
-            </a>
+        <% unless user_signed_in? %>
+          <div cog-header-menu-overlay-head>
+            <div cog-header-menu-overlay-actions>
+              <a href="<%= user_area_privilege_path %>" class="primary-action">
+                <span class="action-text">入会のご案内</span>
+                <span class="action-icon"><%= icon_svg('right-arrow') %></span>
+              </a>
+              <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
+                既にご入会済みの方はこちら
+              </a>
+            </div>
           </div>
-        </div>
+        <% end %>
 
         <div cog-header-menu-overlay-content>
           <nav cog-menu-items>
@@ -77,7 +79,7 @@
               <a cog-menu-item href="<%= user_area_schedules_path %>"><%= feature_label(:schedule, :menu_label) %></a>
             <% end %>
             <% if user_signed_in? %>
-              <a cog-menu-item href="#">マイページ</a>
+              <a cog-menu-item href="<%= idp_mypage_url %>">マイページ</a>
             <% end %>
           </nav>
 
