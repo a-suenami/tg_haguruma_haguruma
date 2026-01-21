@@ -99,8 +99,19 @@ module UserArea
     # DELETE /logout
     sig { void }
     def destroy
+      oauth_provider = current_tenant&.oauth_provider
+
+      # Clear local session first
       reset_session
-      redirect_to user_area_login_path, notice: t('user_area.sessions.logged_out_successfully')
+
+      # Redirect to IDP logout to clear IDP session
+      if oauth_provider.present?
+        redirect_to idp_logout_url(oauth_provider), allow_other_host: true
+        return
+      end
+
+      # Fallback: no OAuth provider configured
+      redirect_to user_area_root_path, notice: t('user_area.sessions.logged_out_successfully')
     end
 
     # GET /auth/failure
@@ -154,6 +165,20 @@ module UserArea
     sig { returns(String) }
     def user_area_callback_url
       url_for(action: :callback, controller: 'user_area/sessions', only_path: false)
+    end
+
+    sig { params(oauth_provider: OauthProvider).returns(String) }
+    def idp_logout_url(oauth_provider)
+      endpoint_base = oauth_provider.endpoint_base.chomp('/')
+      client_id = oauth_provider.client_id
+      return_to = CGI.escape(user_area_root_url)
+
+      "#{endpoint_base}/logout?client_id=#{client_id}&returnTo=#{return_to}"
+    end
+
+    sig { returns(String) }
+    def user_area_root_url
+      url_for(action: :index, controller: 'user_area/alpha/root', only_path: false)
     end
   end
 end

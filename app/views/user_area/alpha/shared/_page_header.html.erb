@@ -19,6 +19,11 @@
             <span class="auth-icon"><%= icon_svg('user-circle') %></span>
             <span>マイページ</span>
           </a>
+          <%= form_with url: user_area_logout_path, method: :delete, data: { turbo: false }, class: 'logout-form-inline' do %>
+            <button type="submit" cog-header-menu-item class="auth-action-button logout-button">
+              <span>ログアウト</span>
+            </button>
+          <% end %>
         <% else %>
           <a href="<%= user_area_auth_start_path %>" cog-header-menu-item class="auth-action-button">
             <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
@@ -72,7 +77,9 @@
               <%# Skip logout if user not signed in %>
               <% next if is_logout && !user_signed_in? %>
               <% if is_logout %>
-                <a cog-menu-item href="<%= url %>" data-turbo-method="delete"><%= item['label'] %></a>
+                <%= form_with url: user_area_logout_path, method: :delete, data: { turbo: false }, class: 'logout-form-inline' do %>
+                  <button type="submit" cog-menu-item><%= item['label'] %></button>
+                <% end %>
               <% elsif external_url?(url) %>
                 <a cog-menu-item href="<%= url %>" target="_blank" rel="noopener"><%= item['label'] %></a>
               <% else %>
