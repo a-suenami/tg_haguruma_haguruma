@@ -40,11 +40,27 @@ module RulerArea
         end
       end
 
+      # Handle features (nested hash with dynamic keys for each feature)
+      permitted[:features] = process_features(params[:site_setting][:features])
+
       # Handle footer links (array of hashes with dynamic keys)
       permitted[:footer_main_links] = process_footer_links(params[:site_setting][:footer_main_links])
       permitted[:footer_sub_links] = process_footer_links(params[:site_setting][:footer_sub_links])
 
       permitted
+    end
+
+    def process_features(features_params)
+      return {} if features_params.blank?
+
+      features_params.to_unsafe_h.transform_values do |config|
+        {
+          'enabled' => config[:enabled] == 'true',
+          'label' => config[:label],
+          'menu_label' => config[:menu_label],
+          'menu_order' => config[:menu_order].to_i,
+        }.compact
+      end
     end
 
     def process_footer_links(links_params)
