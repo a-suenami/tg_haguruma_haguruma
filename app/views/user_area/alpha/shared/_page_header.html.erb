@@ -19,11 +19,6 @@
             <span class="auth-icon"><%= icon_svg('user-circle') %></span>
             <span>マイページ</span>
           </a>
-          <%= form_with url: user_area_logout_path, method: :delete, data: { turbo: false }, class: 'logout-form-inline' do %>
-            <button type="submit" cog-header-menu-item class="auth-action-button logout-button">
-              <span>ログアウト</span>
-            </button>
-          <% end %>
         <% else %>
           <a href="<%= user_area_auth_start_path %>" class="auth-action-button">
             <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
