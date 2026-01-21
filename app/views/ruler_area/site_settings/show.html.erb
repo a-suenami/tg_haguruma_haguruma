@@ -57,3 +57,84 @@
     </tbody>
   </table>
 </div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">フッター設定</h4>
+
+  <h5>メインリンク</h5>
+  <table class="uk-table uk-table-divider uk-table-small">
+    <thead>
+      <tr>
+        <th>ラベル</th>
+        <th>URL</th>
+        <th>PC</th>
+        <th>SP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @site_setting.all_footer_main_links_for_form.each do |link| %>
+        <tr>
+          <td>
+            <%= link['label'] %>
+            <% if link['is_logout'] %>
+              <span class="uk-label uk-label-warning uk-margin-small-left">ログアウト</span>
+            <% end %>
+          </td>
+          <td><code><%= link['url'] %></code></td>
+          <td>
+            <% if link['show_pc'] %>
+              <span class="uk-label uk-label-success">表示</span>
+            <% else %>
+              <span class="uk-label">非表示</span>
+            <% end %>
+          </td>
+          <td>
+            <% if link['show_sp'] %>
+              <span class="uk-label uk-label-success">表示</span>
+            <% else %>
+              <span class="uk-label">非表示</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h5 class="uk-margin-top">サブリンク</h5>
+  <% if @site_setting.all_footer_sub_links_for_form.any? %>
+    <table class="uk-table uk-table-divider uk-table-small">
+      <thead>
+        <tr>
+          <th>ラベル</th>
+          <th>URL</th>
+          <th>PC</th>
+          <th>SP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @site_setting.all_footer_sub_links_for_form.each do |link| %>
+          <tr>
+            <td><%= link['label'] %></td>
+            <td><code><%= link['url'] %></code></td>
+            <td>
+              <% if link['show_pc'] %>
+                <span class="uk-label uk-label-success">表示</span>
+              <% else %>
+                <span class="uk-label">非表示</span>
+              <% end %>
+            </td>
+            <td>
+              <% if link['show_sp'] %>
+                <span class="uk-label uk-label-success">表示</span>
+              <% else %>
+                <span class="uk-label">非表示</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="uk-text-muted">サブリンクは設定されていません</p>
+  <% end %>
+</div>

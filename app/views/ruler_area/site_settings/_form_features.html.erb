@@ -1,0 +1,38 @@
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">機能設定</h4>
+
+  <% TenantSiteSettings::DEFAULT_FEATURES.each do |key, defaults| %>
+    <% feature = @site_setting.send(:merged_features)[key] %>
+    <div class="uk-card uk-card-secondary uk-card-body uk-margin-small">
+      <h5><%= key.upcase %></h5>
+
+      <div class="uk-grid-small uk-child-width-1-3@m" uk-grid>
+        <div>
+          <label class="uk-form-label">
+            <%= hidden_field_tag "site_setting[features][#{key}][enabled]", 'false' %>
+            <%= check_box_tag "site_setting[features][#{key}][enabled]",
+                'true',
+                feature['enabled'] == true %>
+            有効
+          </label>
+        </div>
+        <div>
+          <%= label_tag "site_setting_features_#{key}_label", 'ラベル', class: 'uk-form-label' %>
+          <%= text_field_tag "site_setting[features][#{key}][label]",
+              feature['label'],
+              id: "site_setting_features_#{key}_label",
+              class: 'uk-input uk-form-small',
+              placeholder: defaults['label'] %>
+        </div>
+        <div>
+          <%= label_tag "site_setting_features_#{key}_menu_label", 'メニューラベル', class: 'uk-form-label' %>
+          <%= text_field_tag "site_setting[features][#{key}][menu_label]",
+              feature['menu_label'],
+              id: "site_setting_features_#{key}_menu_label",
+              class: 'uk-input uk-form-small',
+              placeholder: defaults['menu_label'] %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

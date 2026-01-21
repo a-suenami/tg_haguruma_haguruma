@@ -30,11 +30,34 @@ module RulerArea
       permitted_features = TenantSiteSettings::DEFAULT_FEATURES.keys.index_with do
         %i[enabled label menu_label]
       end
-      params.require(:site_setting).permit(
+
+      permitted = params.require(:site_setting).permit(
         :login_label,
         :signup_label,
         features: permitted_features,
       )
+
+      # Handle footer links (array of hashes with dynamic keys)
+      permitted[:footer_main_links] = process_footer_links(params[:site_setting][:footer_main_links])
+      permitted[:footer_sub_links] = process_footer_links(params[:site_setting][:footer_sub_links])
+
+      permitted
+    end
+
+    def process_footer_links(links_params)
+      return [] if links_params.blank?
+
+      links_params.values.map do |link|
+        {
+          'key' => link[:key],
+          'label' => link[:label],
+          'url' => link[:url],
+          'show_pc' => link[:show_pc] == 'true',
+          'show_sp' => link[:show_sp] == 'true',
+          'position' => link[:position].to_i,
+          'is_logout' => link[:is_logout] == 'true',
+        }.compact
+      end.sort_by { |link| link['position'] }
     end
   end
 end

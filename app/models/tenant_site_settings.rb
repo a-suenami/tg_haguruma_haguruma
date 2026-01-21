@@ -28,6 +28,7 @@ class TenantSiteSettings < ApplicationRecord
   belongs_to :tenant, primary_key: :id
 
   before_save :normalize_features
+  before_save :normalize_footer_links
 
   # Default feature configuration (all disabled by default - must be enabled per tenant)
   DEFAULT_FEATURES = T.let({
@@ -72,6 +73,19 @@ class TenantSiteSettings < ApplicationRecord
     'sections_order' => %w[auth news blog],
   }.freeze, T::Hash[String, T.untyped],)
 
+  # Default footer main link (logout only - shown on PC)
+  DEFAULT_FOOTER_MAIN_LINKS = T.let([
+    {
+      'key' => 'logout',
+      'label' => 'LOGOUT',
+      'url' => '/logout',
+      'show_pc' => true,
+      'show_sp' => false,
+      'position' => 0,
+      'is_logout' => true,
+    },
+  ].freeze, T::Array[T::Hash[String, T.untyped]],)
+
   # Check if a feature is enabled
   sig { params(feature_key: T.any(String, Symbol)).returns(T::Boolean) }
   def feature_enabled?(feature_key)
@@ -108,6 +122,36 @@ class TenantSiteSettings < ApplicationRecord
     landing_config['sections_order'] || DEFAULT_LANDING['sections_order']
   end
 
+  # Get footer main links for a specific device (pc or sp)
+  sig { params(device: Symbol).returns(T::Array[T::Hash[String, T.untyped]]) }
+  def ordered_footer_main_links(device:)
+    device_key = device == :pc ? 'show_pc' : 'show_sp'
+    merged_footer_main_links
+      .select { |link| link[device_key] == true }
+      .sort_by { |link| link['position'] || 999 }
+  end
+
+  # Get footer sub links for a specific device (pc or sp)
+  sig { params(device: Symbol).returns(T::Array[T::Hash[String, T.untyped]]) }
+  def ordered_footer_sub_links(device:)
+    device_key = device == :pc ? 'show_pc' : 'show_sp'
+    merged_footer_sub_links
+      .select { |link| link[device_key] == true }
+      .sort_by { |link| link['position'] || 999 }
+  end
+
+  # Get all footer main links for form (including logout)
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def all_footer_main_links_for_form
+    merged_footer_main_links.sort_by { |link| link['position'] || 999 }
+  end
+
+  # Get all footer sub links for form
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def all_footer_sub_links_for_form
+    merged_footer_sub_links.sort_by { |link| link['position'] || 999 }
+  end
+
   private
 
   sig { void }
@@ -134,5 +178,40 @@ class TenantSiteSettings < ApplicationRecord
   sig { returns(T::Hash[String, T.untyped]) }
   def landing_config
     DEFAULT_LANDING.merge(landing || {})
+  end
+
+  sig { void }
+  def normalize_footer_links
+    normalize_footer_link_array(:footer_main_links)
+    normalize_footer_link_array(:footer_sub_links)
+  end
+
+  sig { params(attr_name: Symbol).void }
+  def normalize_footer_link_array(attr_name)
+    links = send(attr_name)
+    return if links.blank?
+
+    links.each_with_index do |link, index|
+      link['show_pc'] = ActiveModel::Type::Boolean.new.cast(link['show_pc'])
+      link['show_sp'] = ActiveModel::Type::Boolean.new.cast(link['show_sp'])
+      link['position'] = index if link['position'].blank?
+      link['is_logout'] = ActiveModel::Type::Boolean.new.cast(link['is_logout']) if link.key?('is_logout')
+    end
+  end
+
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def merged_footer_main_links
+    stored = footer_main_links || []
+    # Ensure logout link always exists
+    has_logout = stored.any? { |link| link['is_logout'] == true || link['key'] == 'logout' }
+    return stored if has_logout
+
+    # Add default logout if not present
+    DEFAULT_FOOTER_MAIN_LINKS + stored
+  end
+
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def merged_footer_sub_links
+    footer_sub_links || []
   end
 end

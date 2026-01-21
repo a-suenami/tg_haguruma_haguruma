@@ -9,6 +9,14 @@ create_table :tenant_site_settings, force: :cascade, id: :uuid, default: -> { 'g
   # Structure: { "sections_order": [...], "external_link": { ... } }
   t.jsonb :landing, null: false, default: {}
 
+  # Footer main links (replaces enabled_features in footer)
+  # Structure: [{ "label": "...", "url": "...", "show_pc": true, "show_sp": false, "position": N, "is_logout": false }]
+  t.jsonb :footer_main_links, null: false, default: []
+
+  # Footer sub links (legal links area)
+  # Structure: [{ "label": "...", "url": "...", "show_pc": true, "show_sp": true, "position": N }]
+  t.jsonb :footer_sub_links, null: false, default: []
+
   # Auth button labels
   t.string :login_label, null: false, default: 'ログイン'
   t.string :signup_label, null: false, default: '新規会員登録'
