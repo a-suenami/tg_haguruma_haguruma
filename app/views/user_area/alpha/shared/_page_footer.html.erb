@@ -1,13 +1,9 @@
+<%# Footer uses 'features' (enabled_features) same as PC header %>
 <footer cog-footer>
   <nav cog-footer-menu>
     <a cog-footer-menu-item href="<%= user_area_root_path %>">TOP</a>
-    <% ordered_menu_items.each do |item| %>
-      <% url = menu_item_url(item) %>
-      <% if external_url?(url) %>
-        <a cog-footer-menu-item href="<%= url %>" target="_blank" rel="noopener"><%= item['label'] %></a>
-      <% else %>
-        <a cog-footer-menu-item href="<%= url %>"><%= item['label'] %></a>
-      <% end %>
+    <% enabled_features.each do |feature| %>
+      <a cog-footer-menu-item href="<%= feature_path(feature['key']) %>"><%= feature['label'] %></a>
     <% end %>
   </nav>
 

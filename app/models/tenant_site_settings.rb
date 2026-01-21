@@ -112,7 +112,7 @@ class TenantSiteSettings < ApplicationRecord
   end
 
   # Get ordered menu items (features + custom links combined)
-  # Returns array sorted by position for rendering in header/footer
+  # Returns array sorted by position for rendering in SP/mobile menu
   sig { returns(T::Array[T::Hash[String, T.untyped]]) }
   def ordered_menu_items
     all_menu_items_for_form
@@ -129,11 +129,12 @@ class TenantSiteSettings < ApplicationRecord
       return build_default_menu_items
     end
 
+    items = menu_items.dup
+
     # Ensure all default features exist in menu_items (in case new features added)
-    existing_keys = menu_items.select { |i| i['type'] == 'feature' }.pluck('key')
+    existing_keys = items.select { |i| i['type'] == 'feature' }.pluck('key')
     missing_features = DEFAULT_FEATURES.keys - existing_keys
 
-    items = menu_items.dup
     missing_features.each_with_index do |key, idx|
       defaults = T.must(DEFAULT_FEATURES[key])
       items << {
@@ -146,13 +147,26 @@ class TenantSiteSettings < ApplicationRecord
       }
     end
 
+    # Ensure logout link exists (added by default, cannot be deleted)
+    logout_exists = items.any? { |i| i['key'] == 'logout' }
+    unless logout_exists
+      items << {
+        'type' => 'custom',
+        'key' => 'logout',
+        'enabled' => true,
+        'label' => 'ログアウト',
+        'url' => '/logout',
+        'position' => 999, # Add at the very end
+      }
+    end
+
     items.sort_by { |item| item['position'].to_i }
   end
 
-  # Build default menu items from DEFAULT_FEATURES
+  # Build default menu items from DEFAULT_FEATURES + logout link
   sig { returns(T::Array[T::Hash[String, T.untyped]]) }
   def build_default_menu_items
-    DEFAULT_FEATURES.map.with_index do |(key, config), index|
+    items = DEFAULT_FEATURES.map.with_index do |(key, config), index|
       {
         'type' => 'feature',
         'key' => key,
@@ -162,6 +176,18 @@ class TenantSiteSettings < ApplicationRecord
         'position' => index + 1,
       }
     end
+
+    # Add default logout link at the end (like IDP)
+    items << {
+      'type' => 'custom',
+      'key' => 'logout',
+      'enabled' => true,
+      'label' => 'ログアウト',
+      'url' => '/logout',
+      'position' => items.size + 1,
+    }
+
+    items
   end
 
   private

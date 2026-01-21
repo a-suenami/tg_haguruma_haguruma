@@ -19,12 +19,55 @@
     </div>
   </div>
 
+  <%# PC Header Features - uses 'features' JSONB column %>
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <h4 class="uk-card-title">機能設定・PCヘッダー</h4>
+    <p class="uk-text-muted uk-text-small uk-margin-bottom">PCヘッダーに表示する機能を設定します。</p>
+
+    <% TenantSiteSettings::DEFAULT_FEATURES.each do |key, defaults| %>
+      <% feature = @site_setting.send(:merged_features)[key] %>
+      <div class="uk-card uk-card-secondary uk-card-body uk-margin-small">
+        <h5><%= key.upcase %></h5>
+
+        <div class="uk-grid-small uk-child-width-1-3@m" uk-grid>
+          <div>
+            <label class="uk-form-label">
+              <%= hidden_field_tag "site_setting[features][#{key}][enabled]", 'false' %>
+              <%= check_box_tag "site_setting[features][#{key}][enabled]",
+                  'true',
+                  feature['enabled'] == true %>
+              有効
+            </label>
+          </div>
+          <div>
+            <%= label_tag "site_setting_features_#{key}_label", 'ラベル', class: 'uk-form-label' %>
+            <%= text_field_tag "site_setting[features][#{key}][label]",
+                feature['label'],
+                id: "site_setting_features_#{key}_label",
+                class: 'uk-input uk-form-small',
+                placeholder: defaults['label'] %>
+          </div>
+          <div>
+            <%= label_tag "site_setting_features_#{key}_menu_label", 'メニューラベル', class: 'uk-form-label' %>
+            <%= text_field_tag "site_setting[features][#{key}][menu_label]",
+                feature['menu_label'],
+                id: "site_setting_features_#{key}_menu_label",
+                class: 'uk-input uk-form-small',
+                placeholder: defaults['menu_label'] %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# SP Menu - uses 'menu_items' JSONB column %>
   <div class="uk-card uk-card-default uk-card-body uk-margin" data-controller="menu-settings">
-    <h4 class="uk-card-title">機能設定・メニュー順序</h4>
-    <p class="uk-text-muted uk-text-small uk-margin-bottom">ドラッグ&ドロップでメニューの表示順を変更できます。カスタムリンクも追加可能です。</p>
+    <h4 class="uk-card-title">SPメニュー</h4>
+    <p class="uk-text-muted uk-text-small uk-margin-bottom">スマートフォン用メニューの項目を設定します。ドラッグ&ドロップで順序を変更できます。</p>
 
     <div uk-sortable="handle: .sortable-handle" data-menu-settings-target="container">
       <% @site_setting.all_menu_items_for_form.each_with_index do |item, index| %>
+        <% is_logout = item['key'] == 'logout' %>
         <div class="uk-card uk-card-secondary uk-card-body uk-card-small uk-margin-small"
              data-menu-settings-target="item"
              data-item-type="<%= item['type'] %>">
@@ -62,8 +105,40 @@
                   data: { position_input: true } %>
             </div>
 
+          <% elsif is_logout %>
+            <%# Logout link - always enabled, can be reordered but cannot be deleted %>
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+              <div class="uk-width-auto">
+                <span class="sortable-handle" uk-icon="icon: menu" style="cursor: grab;"></span>
+              </div>
+              <div class="uk-width-auto">
+                <span class="uk-label uk-label-danger">ログアウト</span>
+              </div>
+              <div class="uk-width-expand">
+                <%= text_field_tag "site_setting[menu_items][][label]",
+                    item['label'],
+                    class: 'uk-input uk-form-small',
+                    placeholder: 'ログアウト' %>
+              </div>
+              <div class="uk-width-expand">
+                <input type="text" class="uk-input uk-form-small" value="/logout" disabled>
+                <p class="uk-text-small uk-text-muted uk-margin-remove">URLは固定です</p>
+              </div>
+              <%= hidden_field_tag "site_setting[menu_items][][type]", 'custom' %>
+              <%= hidden_field_tag "site_setting[menu_items][][key]", 'logout' %>
+              <%= hidden_field_tag "site_setting[menu_items][][url]", '/logout' %>
+              <%= hidden_field_tag "site_setting[menu_items][][enabled]", 'true' %>
+              <%= hidden_field_tag "site_setting[menu_items][][position]",
+                  index + 1,
+                  data: { position_input: true } %>
+              <div class="uk-width-auto">
+                <%# Cannot delete logout - show lock icon %>
+                <span class="uk-text-muted" uk-icon="icon: lock" uk-tooltip="削除不可"></span>
+              </div>
+            </div>
+
           <% else %>
-            <%# Custom link %>
+            <%# Custom link (not logout) %>
             <div class="uk-grid-small uk-flex-middle" uk-grid>
               <div class="uk-width-auto">
                 <span class="sortable-handle" uk-icon="icon: menu" style="cursor: grab;"></span>

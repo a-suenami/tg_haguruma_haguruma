@@ -27,8 +27,43 @@
   </table>
 </div>
 
+<%# PC Header Features - uses 'features' JSONB column %>
 <div class="uk-card uk-card-default uk-card-body uk-margin">
-  <h4 class="uk-card-title">機能設定・メニュー順序</h4>
+  <h4 class="uk-card-title">機能設定・PCヘッダー</h4>
+  <p class="uk-text-muted uk-text-small uk-margin-bottom">PCヘッダーに表示する機能の設定です。</p>
+  <table class="uk-table uk-table-divider uk-table-small">
+    <thead>
+      <tr>
+        <th>機能</th>
+        <th>有効</th>
+        <th>ラベル</th>
+        <th>メニューラベル</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% TenantSiteSettings::DEFAULT_FEATURES.each do |key, defaults| %>
+        <% feature = @site_setting.send(:merged_features)[key] %>
+        <tr>
+          <td><span class="uk-label"><%= key.upcase %></span></td>
+          <td>
+            <% if feature['enabled'] %>
+              <span class="uk-label uk-label-success">有効</span>
+            <% else %>
+              <span class="uk-label">無効</span>
+            <% end %>
+          </td>
+          <td><%= feature['label'].presence || defaults['label'] %></td>
+          <td><%= feature['menu_label'].presence || defaults['menu_label'] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%# SP Menu - uses 'menu_items' JSONB column %>
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">SPメニュー</h4>
+  <p class="uk-text-muted uk-text-small uk-margin-bottom">スマートフォン用メニューの項目設定です。</p>
   <table class="uk-table uk-table-divider uk-table-small">
     <thead>
       <tr>
@@ -41,6 +76,7 @@
     </thead>
     <tbody>
       <% @site_setting.all_menu_items_for_form.each_with_index do |item, index| %>
+        <% is_logout = item['key'] == 'logout' %>
         <tr>
           <td><%= index + 1 %></td>
           <% if item['type'] == 'feature' %>
@@ -54,6 +90,14 @@
             </td>
             <td><%= item['label'] %></td>
             <td><code>/<%= item['key'] %></code></td>
+          <% elsif is_logout %>
+            <td>
+              <span class="uk-label uk-label-danger">ログアウト</span>
+              <span class="uk-text-muted uk-margin-small-left" uk-icon="icon: lock; ratio: 0.7" uk-tooltip="削除不可"></span>
+            </td>
+            <td>-</td>
+            <td><%= item['label'] %></td>
+            <td><code>/logout</code></td>
           <% else %>
             <td>
               <span class="uk-label uk-label-warning">カスタム</span>
@@ -68,10 +112,14 @@
             </td>
             <td><%= item['label'] %></td>
             <td>
-              <a href="<%= item['url'] %>" target="_blank" rel="noopener">
-                <%= item['url'] %>
-                <span uk-icon="icon: link; ratio: 0.8"></span>
-              </a>
+              <% if item['url'].present? %>
+                <a href="<%= item['url'] %>" target="_blank" rel="noopener">
+                  <%= item['url'] %>
+                  <span uk-icon="icon: link; ratio: 0.8"></span>
+                </a>
+              <% else %>
+                -
+              <% end %>
             </td>
           <% end %>
         </tr>

@@ -6,16 +6,12 @@
     </div>
   </a>
 
+  <%# PC header uses 'features' (enabled_features) %>
   <div class="menu-container browser">
     <nav cog-header-menu>
       <a href="<%= user_area_root_path %>" cog-header-menu-item>TOP</a>
-      <% ordered_menu_items.each do |item| %>
-        <% url = menu_item_url(item) %>
-        <% if external_url?(url) %>
-          <a href="<%= url %>" cog-header-menu-item target="_blank" rel="noopener"><%= item['label'] %></a>
-        <% else %>
-          <a href="<%= url %>" cog-header-menu-item><%= item['label'] %></a>
-        <% end %>
+      <% enabled_features.each do |feature| %>
+        <a href="<%= feature_path(feature['key']) %>" cog-header-menu-item><%= feature['label'] %></a>
       <% end %>
       <div class="auth-action-buttons">
         <% if user_signed_in? %>
@@ -37,6 +33,7 @@
     </nav>
   </div>
 
+  <%# SP/mobile menu uses 'menu_items' (ordered_menu_items) %>
   <div class="menu-container mobile" data-controller="mobile-menu">
     <button type="button" cog-header-menu-button data-action="click->mobile-menu#toggle">
       <span class="icon" data-mobile-menu-target="menuIcon"><%= icon_svg('hamburger-menu') %></span>
@@ -71,7 +68,12 @@
             <a cog-menu-item href="<%= user_area_root_path %>">TOP</a>
             <% ordered_menu_items.each do |item| %>
               <% url = menu_item_url(item) %>
-              <% if external_url?(url) %>
+              <% is_logout = item['key'] == 'logout' %>
+              <%# Skip logout if user not signed in %>
+              <% next if is_logout && !user_signed_in? %>
+              <% if is_logout %>
+                <a cog-menu-item href="<%= url %>" data-turbo-method="delete"><%= item['label'] %></a>
+              <% elsif external_url?(url) %>
                 <a cog-menu-item href="<%= url %>" target="_blank" rel="noopener"><%= item['label'] %></a>
               <% else %>
                 <a cog-menu-item href="<%= url %>"><%= item['label'] %></a>

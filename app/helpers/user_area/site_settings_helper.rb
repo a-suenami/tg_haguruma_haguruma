@@ -32,7 +32,10 @@ module UserArea
     # Get landing sections in order
     delegate :landing_sections_order, to: :current_site_settings
 
-    # Get ordered menu items (features + custom links combined)
+    # Get enabled features for PC header
+    delegate :enabled_features, to: :current_site_settings
+
+    # Get ordered menu items for SP/mobile menu (features + custom links combined)
     delegate :ordered_menu_items, to: :current_site_settings
 
     # Get URL for menu item
