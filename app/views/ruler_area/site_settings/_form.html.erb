@@ -1,6 +1,9 @@
 <%= form_with model: @site_setting, url: ruler_area_tenant_site_setting_path(@tenant), method: :patch, local: true, scope: :site_setting do |form| %>
+  <%= render 'ruler_area/shared/form_error', target: @site_setting %>
+
   <%= render 'form_auth_labels', form: form %>
-  <%= render 'form_features' %>
+  <%= render 'form_pc_features' %>
+  <%= render 'form_sp_menu' %>
   <%= render 'form_footer_links' %>
 
   <div class="uk-margin">

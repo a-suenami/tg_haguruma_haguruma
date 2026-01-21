@@ -268,6 +268,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.jsonb "landing", default: {}, null: false
     t.jsonb "footer_main_links", default: [], null: false
     t.jsonb "footer_sub_links", default: [], null: false
+    t.jsonb "menu_items", default: [], null: false
     t.string "login_label", default: "ログイン", null: false
     t.string "signup_label", default: "新規会員登録", null: false
     t.datetime "created_at", null: false

@@ -1,5 +1,7 @@
+<%# PC Header Features - uses 'features' JSONB column %>
 <div class="uk-card uk-card-default uk-card-body uk-margin">
-  <h4 class="uk-card-title">機能設定</h4>
+  <h4 class="uk-card-title">機能設定・PCヘッダー</h4>
+  <p class="uk-text-muted uk-text-small uk-margin-bottom">PCヘッダーに表示する機能を設定します。</p>
 
   <% TenantSiteSettings::DEFAULT_FEATURES.each do |key, defaults| %>
     <% feature = @site_setting.send(:merged_features)[key] %>

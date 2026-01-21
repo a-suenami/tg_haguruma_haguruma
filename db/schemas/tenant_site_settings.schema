@@ -17,6 +17,10 @@ create_table :tenant_site_settings, force: :cascade, id: :uuid, default: -> { 'g
   # Structure: [{ "label": "...", "url": "...", "show_pc": true, "show_sp": true, "position": N }]
   t.jsonb :footer_sub_links, null: false, default: []
 
+  # Unified menu items (features + custom links combined)
+  # Structure: [{ "type": "feature"|"custom", "key": "...", "enabled": true, "label": "...", "menu_label": "...", "url": "...", "position": N }]
+  t.jsonb :menu_items, null: false, default: []
+
   # Auth button labels
   t.string :login_label, null: false, default: 'ログイン'
   t.string :signup_label, null: false, default: '新規会員登録'
