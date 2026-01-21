@@ -37,7 +37,7 @@
     margin-bottom: var(--gearbox-spacing-16);
     margin-top: var(--gearbox-spacing-16);
     line-height: var(--gearbox-line-height-loose);
-    font-size: 20px;
+    font-size: var(--gearbox-font-size-body-large);
 
     &:empty {
       min-height: 1em;

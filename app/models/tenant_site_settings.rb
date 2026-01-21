@@ -28,6 +28,10 @@ class TenantSiteSettings < ApplicationRecord
   belongs_to :tenant, primary_key: :id
 
   before_save :normalize_features
+  before_save :normalize_menu_items
+  before_save :normalize_footer_links
+
+  validate :unique_menu_item_keys
 
   # Default feature configuration (all disabled by default - must be enabled per tenant)
   DEFAULT_FEATURES = T.let({
@@ -72,6 +76,19 @@ class TenantSiteSettings < ApplicationRecord
     'sections_order' => %w[auth news blog],
   }.freeze, T::Hash[String, T.untyped],)
 
+  # Default footer main link (logout only - shown on PC)
+  DEFAULT_FOOTER_MAIN_LINKS = T.let([
+    {
+      'key' => 'logout',
+      'label' => 'LOGOUT',
+      'url' => '/logout',
+      'show_pc' => true,
+      'show_sp' => false,
+      'position' => 0,
+      'is_logout' => true,
+    },
+  ].freeze, T::Array[T::Hash[String, T.untyped]],)
+
   # Check if a feature is enabled
   sig { params(feature_key: T.any(String, Symbol)).returns(T::Boolean) }
   def feature_enabled?(feature_key)
@@ -108,6 +125,115 @@ class TenantSiteSettings < ApplicationRecord
     landing_config['sections_order'] || DEFAULT_LANDING['sections_order']
   end
 
+  # Get ordered menu items (features + custom links combined)
+  # Returns array sorted by position for rendering in SP/mobile menu
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def ordered_menu_items
+    all_menu_items_for_form
+      .select { |item| item['enabled'] == true }
+      .sort_by { |item| item['position'].to_i }
+  end
+
+  # Get all menu items for ruler form (includes disabled features and custom links)
+  # Uses unified menu_items if present, otherwise builds from defaults
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def all_menu_items_for_form
+    # If menu_items is empty, build default from DEFAULT_FEATURES
+    if menu_items.blank?
+      return build_default_menu_items
+    end
+
+    items = menu_items.dup
+
+    # Ensure all default features exist in menu_items (in case new features added)
+    existing_keys = items.select { |i| i['type'] == 'feature' }.pluck('key')
+    missing_features = DEFAULT_FEATURES.keys - existing_keys
+
+    missing_features.each_with_index do |key, idx|
+      defaults = T.must(DEFAULT_FEATURES[key])
+      items << {
+        'type' => 'feature',
+        'key' => key,
+        'enabled' => false,
+        'label' => defaults['label'],
+        'menu_label' => defaults['menu_label'],
+        'position' => 100 + idx, # Add at the end
+      }
+    end
+
+    # Ensure logout link exists (added by default, cannot be deleted)
+    logout_exists = items.any? { |i| i['key'] == 'logout' }
+    unless logout_exists
+      items << {
+        'type' => 'custom',
+        'key' => 'logout',
+        'enabled' => true,
+        'label' => 'ログアウト',
+        'url' => '/logout',
+        'position' => 999, # Add at the very end
+      }
+    end
+
+    items.sort_by { |item| item['position'].to_i }
+  end
+
+  # Build default menu items from DEFAULT_FEATURES + logout link
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def build_default_menu_items
+    items = DEFAULT_FEATURES.map.with_index do |(key, config), index|
+      {
+        'type' => 'feature',
+        'key' => key,
+        'enabled' => config['enabled'],
+        'label' => config['label'],
+        'menu_label' => config['menu_label'],
+        'position' => index + 1,
+      }
+    end
+
+    # Add default logout link at the end (like IDP)
+    items << {
+      'type' => 'custom',
+      'key' => 'logout',
+      'enabled' => true,
+      'label' => 'ログアウト',
+      'url' => '/logout',
+      'position' => items.size + 1,
+    }
+
+    items
+  end
+
+  # Get footer main links for a specific device (pc or sp)
+  sig { params(device: Symbol).returns(T::Array[T::Hash[String, T.untyped]]) }
+  def ordered_footer_main_links(device:)
+    device_key = device == :pc ? 'show_pc' : 'show_sp'
+    merged_footer_main_links
+      .select { |link| link[device_key] == true }
+      .sort_by { |link| link['position'] || 999 }
+  end
+
+  # Get footer sub links for a specific device (pc or sp)
+  sig { params(device: Symbol).returns(T::Array[T::Hash[String, T.untyped]]) }
+  def ordered_footer_sub_links(device:)
+    device_key = device == :pc ? 'show_pc' : 'show_sp'
+    merged_footer_sub_links
+      .select { |link| link[device_key] == true }
+      .sort_by { |link| link['position'] || 999 }
+  end
+
+  # Get all footer main links for form (including logout)
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def all_footer_main_links_for_form
+    merged_footer_main_links.sort_by { |link| link['position'] || 999 }
+  end
+
+  # Get all footer sub links for form
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def all_footer_sub_links_for_form
+    merged_footer_sub_links.sort_by { |link| link['position'] || 999 }
+  end
+
   private
 
   sig { void }
@@ -116,6 +242,49 @@ class TenantSiteSettings < ApplicationRecord
 
     T.must(features).each_value do |config|
       config['enabled'] = ActiveModel::Type::Boolean.new.cast(config['enabled'])
+      config['menu_order'] = config['menu_order'].to_i if config['menu_order'].present?
+    end
+  end
+
+  sig { void }
+  def normalize_menu_items
+    return if menu_items.blank?
+
+    # Convert ActionController::Parameters to array of hashes and normalize values
+    self.menu_items = menu_items.map do |item|
+      item = item.to_h if item.respond_to?(:to_h)
+      normalized = {
+        'type' => item['type'] || item[:type],
+        'key' => item['key'] || item[:key],
+        'enabled' => ActiveModel::Type::Boolean.new.cast(item['enabled'] || item[:enabled]),
+        'label' => item['label'] || item[:label],
+        'menu_label' => item['menu_label'] || item[:menu_label],
+        'position' => (item['position'] || item[:position]).to_i,
+      }
+      # Only include url for custom links
+      if normalized['type'] == 'custom'
+        normalized['url'] = item['url'] || item[:url]
+      end
+      normalized
+    end.reject { |item| item['key'].blank? }
+  end
+
+  sig { void }
+  def normalize_footer_links
+    normalize_footer_link_array(:footer_main_links)
+    normalize_footer_link_array(:footer_sub_links)
+  end
+
+  sig { params(attr_name: Symbol).void }
+  def normalize_footer_link_array(attr_name)
+    links = send(attr_name)
+    return if links.blank?
+
+    links.each_with_index do |link, index|
+      link['show_pc'] = ActiveModel::Type::Boolean.new.cast(link['show_pc'])
+      link['show_sp'] = ActiveModel::Type::Boolean.new.cast(link['show_sp'])
+      link['position'] = index if link['position'].blank?
+      link['is_logout'] = ActiveModel::Type::Boolean.new.cast(link['is_logout']) if link.key?('is_logout')
     end
   end
 
@@ -134,5 +303,33 @@ class TenantSiteSettings < ApplicationRecord
   sig { returns(T::Hash[String, T.untyped]) }
   def landing_config
     DEFAULT_LANDING.merge(landing || {})
+  end
+
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def merged_footer_main_links
+    stored = footer_main_links || []
+    # Ensure logout link always exists
+    has_logout = stored.any? { |link| link['is_logout'] == true || link['key'] == 'logout' }
+    return stored if has_logout
+
+    # Add default logout if not present
+    DEFAULT_FOOTER_MAIN_LINKS + stored
+  end
+
+  sig { returns(T::Array[T::Hash[String, T.untyped]]) }
+  def merged_footer_sub_links
+    footer_sub_links || []
+  end
+
+  sig { void }
+  def unique_menu_item_keys
+    return if menu_items.blank?
+
+    keys = menu_items.map { |item| item['key'] || item[:key] }.compact
+    duplicates = keys.group_by(&:itself).select { |_, v| v.size > 1 }.keys
+
+    return if duplicates.empty?
+
+    errors.add(:menu_items, "に重複するキーがあります: #{duplicates.join(', ')}")
   end
 end
