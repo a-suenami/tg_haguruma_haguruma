@@ -69,15 +69,17 @@
                 <% version = published_version(entry) %>
                 <% next if version.nil? %>
                 <a href="<%= user_area_news_path(entry) %>" cog-news-item>
+                <div class="header">
                   <div class="date">
                     <span cog-date-label><%= format_content_date(version.published_at) %></span>
                   </div>
-                  <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
                   <div class="category">
                     <% category_field = field_by_identifier(version, 'category') %>
                     <% category_option = selected_option(category_field) %>
                     <span cog-category-label><%= category_option&.display_name || '-' %></span>
                   </div>
+                </div>
+                  <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
                 </a>
                 <% unless i == @news_entries.length - 1 %>
                   <div class="divider"></div>
