@@ -14,35 +14,6 @@
   padding: 0;
   flex-grow: 1;
 
-  @media (pointer: fine) {
-    &:hover {
-      .text {
-        opacity: 1;
-      }
-    }
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  &.active {
-    .text {
-      opacity: 1;
-    }
-    .current-line {
-      opacity: 1;
-      transform: scaleX(1);
-
-      --activate-transform-animation-duration: 120ms;
-      --activate-opacity-animation-duration: 150ms;
-      transition:
-        transform var(--activate-transform-animation-duration)
-          cubic-bezier(0.4, 0, 0.2, 1),
-        opacity var(--activate-opacity-animation-duration) linear;
-    }
-  }
-
   .text {
     color: var(--theme-tab-inactive-text-color, var(--gearbox-secondary));
     padding: var(--gearbox-spacing-8) var(--gearbox-spacing-16);
@@ -53,24 +24,43 @@
     white-space: nowrap;
   }
 
-  &.active .text {
-    color: var(--theme-tab-active-text-color, var(--gearbox-secondary));
-  }
-
-  .current-line {
+  &::after {
+    content: '';
+    display: block;
     position: absolute;
     bottom: -2px;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
     height: 3px;
-    background-color: var(--theme-tab-active-underline-color, var(--gearbox-primary));
-    --deactivate-transform-animation-duration: 75ms;
-    --deactivate-opacity-animation-duration: 105ms;
-    transform: scaleX(0.16);
+    background-color: var(--theme-button-secondary-background-color);
+    transition: width .2s ease-out, opacity .2s ease-out;
+    width: 0;
     opacity: 0;
-    transition:
-      transform var(--deactivate-transform-animation-duration)
-        cubic-bezier(0, 0, 0.2, 1),
-      opacity var(--deactivate-opacity-animation-duration) linear;
+  }
+
+  @media (any-hover: hover)  {
+    &:hover {
+      opacity: 1;
+      .text {
+        color: var(--theme-button-secondary-background-color);
+        opacity: 1;
+      }
+      &::after {
+        width: 100%;
+        opacity: 1;
+      }
+    }
+  }
+
+  &.active {
+    .text {
+      color: var(--theme-tab-active-text-color, var(--gearbox-secondary));
+      opacity: 1;
+    }
+    &:after {
+      background-color: var(--theme-button-primary-background-color);
+      width: 100%;
+      opacity: 1;
+    }
   }
 }
