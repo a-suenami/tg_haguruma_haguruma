@@ -79,6 +79,21 @@
   }
 }
 
+[cog-privilege] .sub-action {
+  display: flex;
+  width: 380px;
+  height: 55px;
+  position: relative;
+
+  & > .action-icon {
+    display: flex;
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
 [cog-privilege] .title {
   font-family: var(--theme-title-font-family);
   font-weight: var(--gearbox-font-weight-bold);

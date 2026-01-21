@@ -14,10 +14,9 @@
         <% if @kv_pc_image_url || @kv_sp_image_url %>
           <picture class="introduction-kv">
             <% if @kv_sp_image_url %>
-              <%# FIXME(#14): width/heightを動的に設定 %>
-              <source media="(max-width: 767px)" srcset="<%= @kv_sp_image_url %>" width=390 height=420>
+              <source media="(max-width: 767px)" srcset="<%= @kv_sp_image_url %>">
             <% end %>
-            <img src="<%= @kv_pc_image_url || @kv_sp_image_url %>" alt="<%= current_tenant&.name || '' %>" width=1440 height=600>
+            <img src="<%= @kv_pc_image_url || @kv_sp_image_url %>" alt="<%= current_tenant&.name || '' %>">
           </picture>
         <% end %>
 
@@ -49,10 +48,9 @@
 
         <picture class="card">
           <% if @kv_sp_image_url %>
-            <%# FIXME(#14): width/heightを動的に設定 %>
-            <source media="(max-width: 767px)" srcset="/images/yokikotokiku/privilege_detail_sp.png" width=390 height=420>
+            <source media="(max-width: 767px)" srcset="/images/yokikotokiku/privilege_detail_sp.png">
           <% end %>
-          <img src="/images/yokikotokiku/privilege_detail_pc.png" alt="<%= current_tenant&.name || '' %>" width=1440 height=600>
+          <img src="/images/yokikotokiku/privilege_detail_pc.png" alt="<%= current_tenant&.name || '' %>">
         </picture>
 
         <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
@@ -67,12 +65,17 @@
         <h2 class="title">年会費</h2>
 
         <picture class="card">
-          <% if @kv_sp_image_url %>
-            <%# FIXME(#14): width/heightを動的に設定 %>
-            <source media="(max-width: 767px)" srcset="/images/yokikotokiku/privilege_detail_sp.png" width=390 height=420>
-          <% end %>
-          <img src="/images/yokikotokiku/privilege_detail_pc.png" alt="<%= current_tenant&.name || '' %>" width=1440 height=600>
+          <source media="(max-width: 767px)" srcset="/images/yokikotokiku/fees_sp.png">
+          <img src="/images/yokikotokiku/fees_pc.png" alt="<%= current_tenant&.name || '' %>">
         </picture>
+
+
+        <% # FIXME(#14): URLを動的に設定%>
+        <a href="https://agrain.jp/#inquiry" cog-button primary outlined class="sub-action">
+          <span class="action-text">お問い合わせはこちら</span>
+          <span class="action-icon"><%= icon_svg('chevron') %></span>
+        </a>
+      </div>
     </section>
 
     <section class="howto-container">
@@ -81,10 +84,9 @@
 
           <picture class="card">
             <% if @kv_sp_image_url %>
-              <%# FIXME(#14): width/heightを動的に設定 %>
-              <source media="(max-width: 767px)" srcset="/images/yokikotokiku/howto_sp.png" width=390 height=420>
+              <source media="(max-width: 767px)" srcset="/images/yokikotokiku/howto_sp.png">
             <% end %>
-            <img src="/images/yokikotokiku/howto_pc.png" alt="<%= current_tenant&.name || '' %>" width=1440 height=600>
+            <img src="/images/yokikotokiku/howto_pc.png" alt="<%= current_tenant&.name || '' %>">
           </picture>
 
           <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
