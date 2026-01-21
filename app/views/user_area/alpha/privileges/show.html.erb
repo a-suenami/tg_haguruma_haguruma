@@ -36,7 +36,7 @@
           </p>
         </div>
 
-        <a href="<%= user_area_privilege_path %>" class="action">
+        <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
           <span class="action-text">ご入会手続きに進む</span>
           <span class="action-icon"><%= icon_svg('external-link') %></span>
         </a>
@@ -55,7 +55,7 @@
           <img src="/images/yokikotokiku/privilege_detail_pc.png" alt="<%= current_tenant&.name || '' %>" width=1440 height=600>
         </picture>
 
-        <a href="<%= user_area_privilege_path %>" class="action">
+        <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
           <span class="action-text">ご入会手続きに進む</span>
           <span class="action-icon"><%= icon_svg('external-link') %></span>
         </a>
@@ -87,7 +87,7 @@
             <img src="/images/yokikotokiku/howto_pc.png" alt="<%= current_tenant&.name || '' %>" width=1440 height=600>
           </picture>
 
-          <a href="<%= user_area_privilege_path %>" class="action">
+          <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
             <span class="action-text">ご入会手続きに進む</span>
             <span class="action-icon"><%= icon_svg('external-link') %></span>
           </a>
