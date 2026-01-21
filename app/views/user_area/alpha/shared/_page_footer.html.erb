@@ -1,18 +1,49 @@
-<%# Footer uses 'features' (enabled_features) same as PC header %>
+<%# Footer uses configurable footer_main_links and footer_sub_links %>
 <footer cog-footer>
-  <nav cog-footer-menu>
-    <a cog-footer-menu-item href="<%= user_area_root_path %>">TOP</a>
-    <% enabled_features.each do |feature| %>
-      <a cog-footer-menu-item href="<%= feature_path(feature['key']) %>"><%= feature['label'] %></a>
-    <% end %>
-  </nav>
+  <%# PC Footer - visible on large screens %>
+  <div class="browser">
+    <nav cog-footer-menu>
+      <% current_site_settings.ordered_footer_main_links(device: :pc).each do |link| %>
+        <% next if link['is_logout'] && !user_signed_in? %>
+        <% if link['is_logout'] %>
+          <%= link_to link['label'], link['url'], method: :delete, "cog-footer-menu-item": "" %>
+        <% else %>
+          <a cog-footer-menu-item href="<%= link['url'] %>"><%= link['label'] %></a>
+        <% end %>
+      <% end %>
+    </nav>
 
-  <div cog-legal-links>
-    <a cog-legal-link href="#">利用規約・チケット規約</a>
-    <a cog-legal-link href="#">個人情報の取り扱いについて</a>
-    <a cog-legal-link href="#">プライバシーポリシー</a>
-    <a cog-legal-link href="#">特定商取引法に基づく表記</a>
-    <a cog-legal-link href="#">FAQ / お問い合わせ</a>
+    <% sub_links = current_site_settings.ordered_footer_sub_links(device: :pc) %>
+    <% if sub_links.any? %>
+      <div cog-legal-links>
+        <% sub_links.each do |link| %>
+          <a cog-legal-link href="<%= link['url'] %>"><%= link['label'] %></a>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# SP Footer - visible on small screens %>
+  <div class="mobile">
+    <nav cog-footer-menu>
+      <% current_site_settings.ordered_footer_main_links(device: :sp).each do |link| %>
+        <% next if link['is_logout'] && !user_signed_in? %>
+        <% if link['is_logout'] %>
+          <%= link_to link['label'], link['url'], method: :delete, "cog-footer-menu-item": "" %>
+        <% else %>
+          <a cog-footer-menu-item href="<%= link['url'] %>"><%= link['label'] %></a>
+        <% end %>
+      <% end %>
+    </nav>
+
+    <% sub_links_sp = current_site_settings.ordered_footer_sub_links(device: :sp) %>
+    <% if sub_links_sp.any? %>
+      <div cog-legal-links>
+        <% sub_links_sp.each do |link| %>
+          <a cog-legal-link href="<%= link['url'] %>"><%= link['label'] %></a>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <div cog-sns-items>

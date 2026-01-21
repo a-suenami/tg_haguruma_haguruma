@@ -674,6 +674,96 @@ class TenantSiteSettings
     sig { void }
     def features_will_change!; end
 
+    sig { returns(T.untyped) }
+    def footer_main_links; end
+
+    sig { params(value: T.untyped).returns(T.untyped) }
+    def footer_main_links=(value); end
+
+    sig { returns(T::Boolean) }
+    def footer_main_links?; end
+
+    sig { returns(T.untyped) }
+    def footer_main_links_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def footer_main_links_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def footer_main_links_came_from_user?; end
+
+    sig { returns(T.nilable([T.untyped, T.untyped])) }
+    def footer_main_links_change; end
+
+    sig { returns(T.nilable([T.untyped, T.untyped])) }
+    def footer_main_links_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def footer_main_links_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.untyped) }
+    def footer_main_links_in_database; end
+
+    sig { returns(T.nilable([T.untyped, T.untyped])) }
+    def footer_main_links_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def footer_main_links_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.untyped) }
+    def footer_main_links_previously_was; end
+
+    sig { returns(T.untyped) }
+    def footer_main_links_was; end
+
+    sig { void }
+    def footer_main_links_will_change!; end
+
+    sig { returns(T.untyped) }
+    def footer_sub_links; end
+
+    sig { params(value: T.untyped).returns(T.untyped) }
+    def footer_sub_links=(value); end
+
+    sig { returns(T::Boolean) }
+    def footer_sub_links?; end
+
+    sig { returns(T.untyped) }
+    def footer_sub_links_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def footer_sub_links_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def footer_sub_links_came_from_user?; end
+
+    sig { returns(T.nilable([T.untyped, T.untyped])) }
+    def footer_sub_links_change; end
+
+    sig { returns(T.nilable([T.untyped, T.untyped])) }
+    def footer_sub_links_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def footer_sub_links_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.untyped) }
+    def footer_sub_links_in_database; end
+
+    sig { returns(T.nilable([T.untyped, T.untyped])) }
+    def footer_sub_links_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def footer_sub_links_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.untyped) }
+    def footer_sub_links_previously_was; end
+
+    sig { returns(T.untyped) }
+    def footer_sub_links_was; end
+
+    sig { void }
+    def footer_sub_links_will_change!; end
+
     sig { returns(::String) }
     def id; end
 
@@ -906,6 +996,12 @@ class TenantSiteSettings
     def restore_features!; end
 
     sig { void }
+    def restore_footer_main_links!; end
+
+    sig { void }
+    def restore_footer_sub_links!; end
+
+    sig { void }
     def restore_id!; end
 
     sig { void }
@@ -940,6 +1036,18 @@ class TenantSiteSettings
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_features?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.untyped, T.untyped])) }
+    def saved_change_to_footer_main_links; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_footer_main_links?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([T.untyped, T.untyped])) }
+    def saved_change_to_footer_sub_links; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_footer_sub_links?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_id; end
@@ -1129,6 +1237,12 @@ class TenantSiteSettings
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_features?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_footer_main_links?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_footer_sub_links?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
