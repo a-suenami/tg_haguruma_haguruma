@@ -1,11 +1,7 @@
 @use 'shared/theme/breakpoints/breakpoints' as breakpoints;
 
 [cog-privilege] {
-  --padding-inline: 30px;
-
-  @include breakpoints.media-down(md) {
-    --padding-inline: 32px;
-  }
+  --padding-inline: 32px;
 }
 
 [cog-privilege] .action  {
@@ -77,6 +73,34 @@
       }
     }
   }
+
+  @include breakpoints.media-down(sm) {
+    height: 60px;
+
+    .action-text {
+      font-size: 20px;
+    }
+
+    .action-icon {
+      width: 24px;
+    }
+  }
+}
+
+[cog-privilege] .sub-action {
+  display: flex;
+  max-width: 380px;
+  width: 100%;
+  height: 55px;
+  position: relative;
+
+  & > .action-icon {
+    display: flex;
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
 
 [cog-privilege] .title {
@@ -86,6 +110,10 @@
   line-height: var(--gearbox-line-height-tight);
   color: var(--theme-title-text-color);
   text-align: center;
+
+  @include breakpoints.media-down(sm) {
+    font-size: 28px;
+  }
 }
 
 [cog-privilege]  .introduction-container  {
@@ -97,6 +125,10 @@
   .introduction-logo {
     height: 100px;
     width: auto;
+
+    @include breakpoints.media-down(sm) {
+      height: 70px;
+    }
   }
 
   .introduction {
@@ -116,7 +148,6 @@
   }
 
   .introduction-description {
-    margin-bottom: 40px;
     > p {
       font-family: var(--theme-general-font-family);
       font-weight: var(--gearbox-font-weight-medium);
@@ -133,6 +164,10 @@
       }
     }
   }
+
+  @include breakpoints.media-down(sm) {
+    padding: 24px var(--padding-inline) 64px;
+  }
 }
 
 [cog-privilege] .privilege-details-container {
@@ -146,21 +181,36 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 50px;
     margin-inline: auto;
+  }
+
+  .title {
+    margin-bottom: 50px;
+  }
+
+  .card {
+    margin-bottom: 40px;
   }
 
   .card > img {
     width: 100%;
     height: auto;
+
+    @include breakpoints.media-down(md) {
+      max-width: 450px;
+      width: 100%;
+    }
+  }
+
+  @include breakpoints.media-down(sm) {
+    padding: 50px var(--padding-inline) 64px;
   }
 }
 
 [cog-privilege] .fees-container {
   background: #fff;
-  padding: 100px var(--padding-inline) 100px;
+  padding: 100px var(--padding-inline) 0;
   width: 100%;
-  padding-bottom: 0px;
 
   .fees {
     max-width: 900px;
@@ -168,13 +218,30 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 50px;
     margin-inline: auto;
+  }
+
+  .title {
+    margin-bottom: 50px;
+  }
+
+  .card {
+    margin-bottom: 40px;
   }
 
   .card > img {
     width: 100%;
     height: auto;
+
+    @include breakpoints.media-down(md) {
+      max-width: 450px;
+      width: 100%;
+    }
+  }
+
+  @include breakpoints.media-down(sm) {
+    padding: 50px var(--padding-inline) 0;
+    gap: 40px;
   }
 }
 
@@ -189,13 +256,25 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 50px;
     margin-inline: auto;
+  }
+
+  .title {
+    margin-bottom: 50px;
+  }
+
+  .card {
+    margin-bottom: 40px;
   }
 
   .card > img {
     width: 100%;
     height: auto;
+
+    @include breakpoints.media-down(md) {
+      max-width: 450px;
+      width: 100%;
+    }
   }
 }
 
@@ -206,6 +285,7 @@
 
   .title {
     font-size: 26px;
+    margin-bottom: 50px;
   }
 
   .faq {
@@ -214,8 +294,12 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 50px;
     margin-inline: auto;
+  }
+
+  @include breakpoints.media-down(sm) {
+    padding: 50px var(--padding-inline) 64px;
+    gap: 40px;
   }
 }
 
@@ -252,12 +336,12 @@
     }
 
     @media (any-hover: hover) {
-    &:hover {
-      .question {
-        color: var(--theme-button-secondary-background-color);
+      &:hover {
+        .question {
+          color: var(--theme-button-secondary-background-color);
+        }
       }
     }
-  }
   }
 
   .label {
@@ -278,6 +362,14 @@
 
     & > .label {
       color: var(--theme-button-primary-background-color);
+    }
+
+    @include breakpoints.media-down(sm) {
+      font-size: 17px;
+
+      & > .label {
+        font-size: 17px;
+      }
     }
   }
 

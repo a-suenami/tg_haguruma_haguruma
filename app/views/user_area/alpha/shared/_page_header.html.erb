@@ -9,10 +9,9 @@
   <%# PC header uses 'features' (enabled_features) %>
   <div class="menu-container browser">
     <nav cog-header-menu>
-      <a href="<%= user_area_root_path %>" cog-header-menu-item>トップ</a>
-      <%# TODO: activeにする %>
+      <a href="<%= user_area_root_path %>" cog-header-menu-item class="<%= 'active' if current_page?(user_area_root_path) %>">トップ</a>
       <% enabled_features.each do |feature| %>
-        <a href="<%= feature_path(feature['key']) %>" cog-header-menu-item><%= feature['label'] %></a>
+        <a href="<%= feature_path(feature['key']) %>" cog-header-menu-item class="<%= 'active' if current_page?(feature_path(feature['key'])) %>"><%= feature['label'] %></a>
       <% end %>
       <div class="action-buttons">
         <% if user_signed_in? %>
@@ -20,11 +19,6 @@
             <span class="auth-icon"><%= icon_svg('user-circle') %></span>
             <span>マイページ</span>
           </a>
-          <%= form_with url: user_area_logout_path, method: :delete, data: { turbo: false }, class: 'logout-form-inline' do %>
-            <button type="submit" cog-header-menu-item class="auth-action-button logout-button">
-              <span>ログアウト</span>
-            </button>
-          <% end %>
         <% else %>
           <a href="<%= user_area_auth_start_path %>" class="auth-action-button">
             <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
@@ -67,7 +61,7 @@
 
         <div cog-header-menu-overlay-content>
           <nav cog-menu-items>
-            <a cog-menu-item href="<%= user_area_root_path %>">TOP</a>
+            <a cog-menu-item href="<%= user_area_root_path %>">トップ</a>
             <% ordered_menu_items.each do |item| %>
               <% url = menu_item_url(item) %>
               <% is_logout = item['key'] == 'logout' %>
