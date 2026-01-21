@@ -5,6 +5,7 @@
   <table class="uk-table uk-table-divider uk-table-small">
     <thead>
       <tr>
+        <th>順序</th>
         <th>機能</th>
         <th>有効</th>
         <th>ラベル</th>
@@ -12,9 +13,14 @@
       </tr>
     </thead>
     <tbody>
-      <% TenantSiteSettings::DEFAULT_FEATURES.each do |key, defaults| %>
-        <% feature = @site_setting.send(:merged_features)[key] %>
+      <% # Sort features by menu_order for display %>
+      <% sorted_features = TenantSiteSettings::DEFAULT_FEATURES.map do |key, defaults|
+           feature = @site_setting.send(:merged_features)[key]
+           [key, defaults, feature, feature['menu_order'] || defaults['landing_order'] || 999]
+         end.sort_by(&:last) %>
+      <% sorted_features.each_with_index do |(key, defaults, feature, _order), index| %>
         <tr>
+          <td><%= index + 1 %></td>
           <td><span class="uk-label"><%= key.upcase %></span></td>
           <td>
             <% if feature['enabled'] %>

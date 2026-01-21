@@ -58,6 +58,7 @@ module RulerArea
           'enabled' => config[:enabled] == 'true',
           'label' => config[:label],
           'menu_label' => config[:menu_label],
+          'menu_order' => config[:menu_order].to_i,
         }.compact
       end
     end
