@@ -3,6 +3,7 @@
 [cog-footer-menu] {
   display: flex;
   width: 100%;
+  margin-bottom: 6px;
 }
 
 @include breakpoints.media-up(lg) {
@@ -20,5 +21,6 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    margin-bottom: 16px;
   }
 }
