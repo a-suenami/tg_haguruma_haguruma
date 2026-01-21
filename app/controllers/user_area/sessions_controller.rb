@@ -26,7 +26,8 @@ module UserArea
       session[:oauth_state] = state
 
       # Redirect to OAuth authorization endpoint
-      redirect_to oauth_authorization_url(oauth_provider, state:), allow_other_host: true
+      signup = params[:signup].present?
+      redirect_to oauth_authorization_url(oauth_provider, state:, signup:), allow_other_host: true
     end
 
     # GET /auth/callback - OAuth callback
@@ -152,14 +153,16 @@ module UserArea
       state_param.present? && stored_state.present? && ActiveSupport::SecurityUtils.secure_compare(state_param.to_s, stored_state.to_s)
     end
 
-    sig { params(oauth_provider: OauthProvider, state: String).returns(String) }
-    def oauth_authorization_url(oauth_provider, state:)
+    sig { params(oauth_provider: OauthProvider, state: String, signup: T::Boolean).returns(String) }
+    def oauth_authorization_url(oauth_provider, state:, signup: false)
       endpoint_base = oauth_provider.endpoint_base.chomp('/')
       client_id = oauth_provider.client_id
       redirect_uri = CGI.escape(user_area_callback_url)
       scopes = oauth_provider.scopes.presence || 'openid profile email'
 
-      "#{endpoint_base}/oauth/authorize?client_id=#{client_id}&redirect_uri=#{redirect_uri}&response_type=code&scope=#{CGI.escape(scopes)}&state=#{state}"
+      url = "#{endpoint_base}/oauth/authorize?client_id=#{client_id}&redirect_uri=#{redirect_uri}&response_type=code&scope=#{CGI.escape(scopes)}&state=#{state}"
+      url += '&on_no_session=sign_up' if signup
+      url
     end
 
     sig { returns(String) }

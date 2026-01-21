@@ -4,12 +4,10 @@
   <div cog-tabs>
     <%= link_to path_helper.call(nil), "cog-tab": '', class: current_category.blank? ? 'active' : '' do %>
       <div class="text"><%= t('user_area.alpha.categories.all') %></div>
-      <div class="current-line"></div>
     <% end %>
     <% categories.each do |category| %>
       <%= link_to path_helper.call(category.unique_name), "cog-tab": '', class: current_category == category.unique_name ? 'active' : '' do %>
         <div class="text"><%= category.display_name %></div>
-        <div class="current-line"></div>
       <% end %>
     <% end %>
   </div>

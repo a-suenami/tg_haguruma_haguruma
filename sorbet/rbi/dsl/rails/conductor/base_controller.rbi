@@ -30,6 +30,7 @@ class Rails::Conductor::BaseController
     include ::RulerArea::ApplicationHelper
     include ::SvgHelper
     include ::UserArea::ContentFieldHelper
+    include ::UserArea::ExternalUrlsHelper
     include ::UserArea::SiteSettingsHelper
   end
 

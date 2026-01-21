@@ -1,0 +1,26 @@
+[cog-link] {
+  --inline-color: var(--theme-link-text-color);
+  align-items: center;
+  color: var(--inline-color);
+  cursor: pointer;
+  display: inline-flex;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:visited {
+    color: var(--inline-color);
+  }
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &[variant-underline] {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  &[variant-none] {
+    text-decoration: none;
+  }
+}
