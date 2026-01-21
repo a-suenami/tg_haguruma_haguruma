@@ -5,14 +5,17 @@
 #
 # Table name: tenant_site_settings
 #
-#  id           :uuid             not null, primary key
-#  features     :jsonb            not null
-#  landing      :jsonb            not null
-#  login_label  :string           default("ログイン"), not null
-#  signup_label :string           default("新規会員登録"), not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  tenant_id    :string           not null
+#  id                :uuid             not null, primary key
+#  features          :jsonb            not null
+#  footer_main_links :jsonb            not null
+#  footer_sub_links  :jsonb            not null
+#  landing           :jsonb            not null
+#  login_label       :string           default("ログイン"), not null
+#  menu_items        :jsonb            not null
+#  signup_label      :string           default("新規会員登録"), not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  tenant_id         :string           not null
 #
 # Indexes
 #

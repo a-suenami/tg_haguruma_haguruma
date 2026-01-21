@@ -14,36 +14,31 @@
   // Outlined variant (default: Secondary button - white bg, navy border/text)
   --cog-button-outlined-color: var(--theme-button-primary-background-color, #1E3A5F);
   --cog-button-outlined-background-color: var(--theme-button-primary-text-color, #1E3A5F);
-  --cog-button-outlined-outline-color: var(--theme-button-secondary-border-color, #1E3A5F);
+  --cog-button-outlined-outline-color: var(--theme-button-primary-border-color, #1E3A5F);
 
   // Base styles
   display: inline-flex;
   align-items: center;
   justify-content: var(--cog-button-align, center);
   gap: var(--gearbox-spacing-4);
-  padding: var(--gearbox-spacing-8) var(--gearbox-spacing-16);
+  padding: 4px 32px;
   border-radius: var(--cog-button-radius);
-  border: 1px solid transparent;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
   font-family: var(--theme-button-font-family, var(--gearbox-font-family-primary));
-  font-size: var(--gearbox-font-size-body-large);
+  font-size: 17px;
   font-weight: var(--gearbox-font-weight-semibold);
   line-height: var(--gearbox-line-height-loose);
   letter-spacing: 0.04em; // Better than fixed px for letter spacing
   text-align: center;
   white-space: nowrap;
   cursor: pointer;
-  box-sizing: border-box;
-  width: var(--cog-button-width);
   text-decoration: none;
-  white-space: nowrap;
 
   // Default styles (filled)
   background-color: var(--cog-button-filled-background-color);
   color: var(--cog-button-filled-color);
   border-color: var(--cog-button-filled-outline-color);
-
-  // Apply button animations
-  @include animations.button-base-animations();
 
   // Disabled state
   &[disabled] {
@@ -55,6 +50,13 @@
   // Remove default button styles
   &:focus {
     outline: none;
+  }
+
+  transition: box-shadow .2s ease-out, transform .2s ease-out;
+  &:hover {
+    box-shadow: none;
+    transform: translateY(2px);
+    opacity: 1;
   }
 }
 
@@ -75,22 +77,22 @@
 // Primary color (uses new theme variables)
 [cog-button][primary] {
   // Filled: Primary button (navy bg, white text)
-  --cog-button-filled-color: var(--theme-button-primary-text-color, var(--gearbox-on-secondary));
-  --cog-button-filled-background-color: var(--theme-button-primary-background-color, var(--gearbox-secondary));
-  --cog-button-filled-outline-color: var(--theme-button-primary-background-color, var(--gearbox-secondary));
+  --cog-button-filled-color: var(--theme-button-primary-text-color, var(--gearbox-on-primary));
+  --cog-button-filled-background-color: var(--theme-button-primary-background-color, var(--gearbox-primary));
+  --cog-button-filled-outline-color: var(--theme-button-primary-background-color, var(--gearbox-primary));
 
   // Outlined: Secondary button (white bg, navy border/text)
-  --cog-button-outlined-color: var(--theme-button-secondary-text-color, var(--gearbox-secondary));
-  --cog-button-outlined-background-color: var(--theme-button-secondary-background-color, #FFFFFF);
-  --cog-button-outlined-outline-color: var(--theme-button-secondary-border-color, var(--gearbox-secondary));
+  --cog-button-outlined-color: var(--theme-button-primary-background-color, var(--gearbox-primary));
+  --cog-button-outlined-background-color: #fff;
+  --cog-button-outlined-outline-color: var(--theme-button-primary-background-color, var(--gearbox-primary));
 }
 
 // Secondary color (uses new theme variables)
 [cog-button][secondary] {
   // Filled: Primary button (navy bg, white text)
-  --cog-button-filled-color: var(--theme-button-primary-text-color, var(--gearbox-on-secondary));
-  --cog-button-filled-background-color: var(--theme-button-primary-background-color, var(--gearbox-secondary));
-  --cog-button-filled-outline-color: var(--theme-button-primary-background-color, var(--gearbox-secondary));
+  --cog-button-filled-color: var(--theme-button-secondary-text-color, var(--gearbox-on-secondary));
+  --cog-button-filled-background-color: var(--theme-button-secondary-background-color, var(--gearbox-secondary));
+  --cog-button-filled-outline-color: var(--theme-button-secondary-background-color, var(--gearbox-secondary));
 
   // Outlined: Secondary button (white bg, navy border/text)
   --cog-button-outlined-color: var(--theme-button-secondary-text-color, var(--gearbox-on-secondary-container));
