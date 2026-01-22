@@ -77,22 +77,23 @@
       </section>
     <% end %>
 
-    <% if @blog_entries.present? %>
-      <%= turbo_frame_tag "blog-section" do %>
-        <section cog-landing-section>
-          <div cog-landing-section-title>
-            <div cog-feature-title-image feature="blog">
-              <div class="title-image"><%= feature_label(:blog) %></div>
-            </div>
+    <% if @blog_categories.present? || @blog_entries.present? %>
+      <section cog-landing-section>
+        <div cog-landing-section-title>
+          <div cog-feature-title-image feature="blog">
+            <div class="title-image"><%= feature_label(:blog) %></div>
           </div>
-          <% if @blog_categories.present? %>
-            <div cog-landing-section-actions>
-              <%= render 'user_area/alpha/shared/content/category_tabs',
-                        categories: @blog_categories,
-                        current_category: current_blog_category,
-                        path_helper: ->(cat) { user_area_root_path(blog_category: cat) } %>
-            </div>
-          <% end %>
+        </div>
+        <% if @blog_categories.present? %>
+          <div cog-landing-section-actions>
+            <%= render 'user_area/alpha/shared/content/category_tabs',
+                      categories: @blog_categories,
+                      current_category: current_blog_category,
+                      path_helper: ->(cat) { user_area_root_path(blog_category: cat) },
+                      frame_id: "blog-section" %>
+          </div>
+        <% end %>
+        <%= turbo_frame_tag "blog-section" do %>
           <div cog-landing-section-content>
             <% if @blog_entries.present? %>
               <div cog-blog-list>
@@ -125,8 +126,8 @@
               </div>
             <% end %>
           </div>
-        </section>
-      <% end %>
+        <% end %>
+      </section>
     <% end %>
 
   </div>
