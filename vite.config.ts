@@ -24,6 +24,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        api: 'modern-compiler',
         includePaths: [
           path.resolve(__dirname, 'app/frontend/styles/gearbox'),
           path.resolve(__dirname, 'app/frontend/styles/gearbox/shared'),

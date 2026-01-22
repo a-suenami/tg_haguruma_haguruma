@@ -63,6 +63,7 @@ const theme = {
   code: "editor-code",
   image: "editor-image",
   video: "editor-video",
+  link: "editor-link",
 };
 
 const nodes = [

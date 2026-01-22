@@ -82,12 +82,25 @@ export function getSupportedEmbedTypes(): string[] {
   return EMBED_CONFIGS.map(config => config.type);
 }
 
+// Type for synchronous embed match result
+export interface EmbedMatchResult {
+  url: string;
+  id: string;
+  data?: Record<string, unknown>;
+}
+
+export interface ParsedEmbed {
+  config: EmbedConfig;
+  result: EmbedMatchResult;
+}
+
 // Helper function to parse any supported URL
-export function parseAnyEmbedUrl(text: string) {
+export function parseAnyEmbedUrl(text: string): ParsedEmbed | null {
   for (const config of EMBED_CONFIGS) {
     const result = config.parseUrl(text);
-    if (result) {
-      return { config, result };
+    // Our implementations are synchronous, so we can safely cast
+    if (result && !(result instanceof Promise)) {
+      return { config, result: result as EmbedMatchResult };
     }
   }
   return null;
