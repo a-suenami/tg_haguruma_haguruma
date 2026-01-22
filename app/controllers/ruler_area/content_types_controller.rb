@@ -73,7 +73,7 @@ class RulerArea::ContentTypesController < RulerArea::ApplicationController
             :id,
             :display_format,
             :_destroy,
-            { options_attributes: %i[id display_name unique_name position _destroy] },
+            { options_attributes: %i[id display_name unique_name position status _destroy] },
           ],
         },
       ],

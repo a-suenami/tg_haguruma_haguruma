@@ -13,12 +13,14 @@
         </div>
       </div>
 
-      <div cog-list-fragment-actions>
-        <%= render 'user_area/alpha/shared/content/category_tabs',
-                   categories: categories,
-                   current_category: current_category,
-                   path_helper: ->(cat) { user_area_blog_index_path(category: cat) } %>
-      </div>
+      <% if categories.present? %>
+        <div cog-list-fragment-actions>
+          <%= render 'user_area/alpha/shared/content/category_tabs',
+                     categories: categories,
+                     current_category: current_category,
+                     path_helper: ->(cat) { user_area_blog_index_path(category: cat) } %>
+        </div>
+      <% end %>
 
       <%= turbo_frame_tag "content-list" do %>
         <div cog-list-fragment-content>

@@ -157,6 +157,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.string "unique_name", null: false
     t.text "display_name", null: false
     t.integer "position", default: 0, null: false
+    t.integer "status", limit: 2, default: 1, null: false, comment: "0: disabled, 1: enabled"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["field_select_id", "position"], name: "idx_on_field_select_id_position_9d0ef88527"

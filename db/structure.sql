@@ -1,4 +1,4 @@
-\restrict I0TYNf1JN72ykCHxLb3fhHuEFcVWdSAgazQtE7SraXJTQz0CTLe9iM3MJZFAx0v
+\restrict rby1dEJXIz9KhTWykgAHS95MbfzNpzYMcRqAxw2M0iEROrb3vLmfMgvEZOTM0Qa
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -450,9 +450,17 @@ CREATE TABLE public.content_type_field_select_options (
     unique_name character varying NOT NULL,
     display_name text NOT NULL,
     "position" integer DEFAULT 0 NOT NULL,
+    status smallint DEFAULT 1 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: COLUMN content_type_field_select_options.status; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.content_type_field_select_options.status IS '0: disabled, 1: enabled';
 
 
 --
@@ -696,6 +704,9 @@ CREATE TABLE public.tenant_site_settings (
     tenant_id character varying NOT NULL,
     features jsonb DEFAULT '{}'::jsonb NOT NULL,
     landing jsonb DEFAULT '{}'::jsonb NOT NULL,
+    footer_main_links jsonb DEFAULT '[]'::jsonb NOT NULL,
+    footer_sub_links jsonb DEFAULT '[]'::jsonb NOT NULL,
+    menu_items jsonb DEFAULT '[]'::jsonb NOT NULL,
     login_label character varying DEFAULT 'ログイン'::character varying NOT NULL,
     signup_label character varying DEFAULT '新規会員登録'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -1828,7 +1839,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict I0TYNf1JN72ykCHxLb3fhHuEFcVWdSAgazQtE7SraXJTQz0CTLe9iM3MJZFAx0v
+\unrestrict rby1dEJXIz9KhTWykgAHS95MbfzNpzYMcRqAxw2M0iEROrb3vLmfMgvEZOTM0Qa
 
 SET search_path TO "$user", public;
 

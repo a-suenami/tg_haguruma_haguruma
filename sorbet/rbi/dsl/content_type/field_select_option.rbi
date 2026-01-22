@@ -8,6 +8,7 @@
 class ContentType::FieldSelectOption
   include GeneratedAssociationMethods
   include GeneratedAttributeMethods
+  include EnumMethodsModule
   extend CommonRelationMethods
   extend GeneratedRelationMethods
 
@@ -24,6 +25,9 @@ class ContentType::FieldSelectOption
       ).returns(::ContentType::FieldSelectOption)
     end
     def new(attributes = nil, &block); end
+
+    sig { returns(T::Hash[T.any(String, Symbol), Integer]) }
+    def statuses; end
   end
 
   module CommonRelationMethods
@@ -426,6 +430,20 @@ class ContentType::FieldSelectOption
     def third_to_last!; end
   end
 
+  module EnumMethodsModule
+    sig { void }
+    def disabled!; end
+
+    sig { returns(T::Boolean) }
+    def disabled?; end
+
+    sig { void }
+    def enabled!; end
+
+    sig { returns(T::Boolean) }
+    def enabled?; end
+  end
+
   module GeneratedAssociationMethods
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType::FieldSelect) }
     def build_field_select(*args, &blk); end
@@ -453,6 +471,20 @@ class ContentType::FieldSelectOption
 
     sig { void }
     def reset_field_select; end
+
+    sig { returns(T::Array[T.untyped]) }
+    def selection_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def selection_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `ContentType::FieldSelectOption` class because it declared `has_many :selections`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::ContentEntry::FieldSelectSelection::PrivateCollectionProxy) }
+    def selections; end
+
+    sig { params(value: T::Enumerable[::ContentEntry::FieldSelectSelection]).void }
+    def selections=(value); end
   end
 
   module GeneratedAssociationRelationMethods
@@ -471,11 +503,17 @@ class ContentType::FieldSelectOption
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def create_with(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def disabled(*args, &blk); end
+
     sig { params(value: T::Boolean).returns(PrivateAssociationRelation) }
     def distinct(value = true); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def eager_load(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def enabled(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def except(*args, &blk); end
@@ -527,6 +565,12 @@ class ContentType::FieldSelectOption
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def none(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def not_disabled(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def not_enabled(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def null_relation?(*args, &blk); end
@@ -897,6 +941,9 @@ class ContentType::FieldSelectOption
     def restore_position!; end
 
     sig { void }
+    def restore_status!; end
+
+    sig { void }
     def restore_unique_name!; end
 
     sig { void }
@@ -939,6 +986,12 @@ class ContentType::FieldSelectOption
     def saved_change_to_position?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable([::String, ::String])) }
+    def saved_change_to_status; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_status?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_unique_name; end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -949,6 +1002,51 @@ class ContentType::FieldSelectOption
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_updated_at?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(::String) }
+    def status; end
+
+    sig { params(value: T.any(::String, ::Symbol, ::Integer)).returns(T.any(::String, ::Symbol, ::Integer)) }
+    def status=(value); end
+
+    sig { returns(T::Boolean) }
+    def status?; end
+
+    sig { returns(T.nilable(::String)) }
+    def status_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def status_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def status_came_from_user?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def status_change; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def status_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def status_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def status_in_database; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def status_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def status_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def status_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def status_was; end
+
+    sig { void }
+    def status_will_change!; end
 
     sig { returns(::String) }
     def unique_name; end
@@ -1059,6 +1157,9 @@ class ContentType::FieldSelectOption
     def will_save_change_to_position?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_status?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_unique_name?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -1081,11 +1182,17 @@ class ContentType::FieldSelectOption
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def create_with(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def disabled(*args, &blk); end
+
     sig { params(value: T::Boolean).returns(PrivateRelation) }
     def distinct(value = true); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def eager_load(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def enabled(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def except(*args, &blk); end
@@ -1137,6 +1244,12 @@ class ContentType::FieldSelectOption
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def none(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def not_disabled(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def not_enabled(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def null_relation?(*args, &blk); end
