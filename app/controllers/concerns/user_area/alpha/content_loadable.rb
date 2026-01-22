@@ -48,7 +48,7 @@ module UserArea
 
       sig { params(field: String).returns(T::Array[ContentType::FieldSelectOption]) }
       def categories(field: 'category')
-        content_type&.fields&.find_by(api_identifier: field)&.select&.options&.order(:position)&.to_a || []
+        content_type&.fields&.find_by(api_identifier: field)&.select&.available_options&.to_a || []
       end
 
       sig { returns(T.nilable(String)) }

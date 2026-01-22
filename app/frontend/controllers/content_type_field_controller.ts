@@ -5,6 +5,8 @@ interface SelectOption {
   display_name: string;
   unique_name: string;
   position: number;
+  status?: 'enabled' | 'disabled';
+  deletable: boolean;
 }
 
 interface SelectData {
@@ -187,7 +189,7 @@ export default class ContentTypeFieldController extends Controller {
             selectData.display_format || 'dropdown';
           if (selectData.options?.length > 0) {
             selectData.options.forEach((opt) => {
-              this.addSelectOptionWithValues(opt.display_name, opt.unique_name, opt.id);
+              this.addSelectOptionWithValues(opt.display_name, opt.unique_name, opt.id, opt.status, opt.deletable);
             });
           }
         } catch {
@@ -319,6 +321,11 @@ export default class ContentTypeFieldController extends Controller {
           'position',
           opt.position.toString(),
         );
+        hiddenFieldsHtml += this.hiddenInput(
+          optAttr,
+          'status',
+          opt.status || 'enabled',
+        );
       });
 
       // Build select data JSON for edit functionality
@@ -327,6 +334,7 @@ export default class ContentTypeFieldController extends Controller {
         options: options.map((o) => ({
           display_name: o.display_name,
           unique_name: o.unique_name,
+          status: o.status || 'enabled',
         })),
       });
     }
@@ -419,6 +427,10 @@ export default class ContentTypeFieldController extends Controller {
               'beforeend',
               this.hiddenInput(optAttr, 'position', opt.position.toString()),
             );
+            hiddenContainer.insertAdjacentHTML(
+              'beforeend',
+              this.hiddenInput(optAttr, 'status', opt.status || 'enabled'),
+            );
             optionIndex++;
           });
 
@@ -480,6 +492,7 @@ export default class ContentTypeFieldController extends Controller {
               id: o.id,
               display_name: o.display_name,
               unique_name: o.unique_name,
+              status: o.status || 'enabled',
             })),
           });
           editLink.dataset.selectData = selectDataJson;
@@ -539,11 +552,29 @@ export default class ContentTypeFieldController extends Controller {
     displayName: string,
     identifier: string,
     dbId?: string,
+    status: 'enabled' | 'disabled' = 'enabled',
+    deletable: boolean = true,
   ): void {
     const optionId = this.selectOptionCounter++;
     const dbIdAttr = dbId ? ` data-db-id="${dbId}"` : '';
+    const isDisabled = status === 'disabled';
+    const rowStyle = isDisabled ? ' style="opacity: 0.5;"' : '';
+    const deleteButton = deletable
+      ? `<button type="button"
+                class="uk-button uk-button-danger uk-button-small"
+                data-action="content-type-field#removeSelectOptionById"
+                data-option-id="${optionId}">
+          <span uk-icon="icon: trash; ratio: 0.8"></span>
+        </button>`
+      : `<button type="button"
+                class="uk-button uk-button-default uk-button-small"
+                uk-tooltip="title: 使用中のため削除できません"
+                disabled
+                style="opacity: 0.5; cursor: not-allowed;">
+          <span uk-icon="icon: trash; ratio: 0.8"></span>
+        </button>`;
     const optionHtml = `
-      <div class="uk-margin-small select-option-row" data-option-id="${optionId}"${dbIdAttr}>
+      <div class="uk-margin-small select-option-row" data-option-id="${optionId}"${dbIdAttr}${rowStyle}>
         <div class="uk-grid-small uk-flex-middle" uk-grid>
           <div class="uk-width-auto">
             <a href="#" uk-icon="icon: menu; ratio: 0.8" class="option-drag-handle" style="cursor: move;"></a>
@@ -561,25 +592,32 @@ export default class ContentTypeFieldController extends Controller {
                    value="${this.escapeHtml(identifier)}">
           </div>
           <div class="uk-width-auto">
-            <button type="button"
-                    class="uk-button uk-button-danger uk-button-small"
-                    data-action="content-type-field#removeSelectOptionById"
-                    data-option-id="${optionId}">
-              <span uk-icon="icon: trash; ratio: 0.8"></span>
-            </button>
+            <label class="toggle-switch" style="cursor: pointer;">
+              <input type="checkbox"
+                     class="toggle-switch-input option-status"
+                     ${isDisabled ? '' : 'checked'}
+                     data-action="change->content-type-field#toggleOptionStatus"
+                     data-option-id="${optionId}">
+              <span class="toggle-switch-slider"></span>
+            </label>
+          </div>
+          <div class="uk-width-auto">
+            ${deleteButton}
           </div>
         </div>
       </div>
     `;
     this.selectOptionsContainerTarget.insertAdjacentHTML('beforeend', optionHtml);
 
-    // Initialize UIkit icon for the new drag handle
+    // Initialize UIkit icon for the new drag handle and trash icon
     const newRow = this.selectOptionsContainerTarget.querySelector(
-      `.select-option-row[data-option-id="${optionId}"] [uk-icon]`,
+      `.select-option-row[data-option-id="${optionId}"]`,
     );
     if (newRow) {
-      // @ts-expect-error UIkit is global
-      UIkit.icon(newRow);
+      newRow.querySelectorAll('[uk-icon]').forEach((icon) => {
+        // @ts-expect-error UIkit is global
+        UIkit.icon(icon);
+      });
     }
   }
 
@@ -597,6 +635,19 @@ export default class ContentTypeFieldController extends Controller {
     }
   }
 
+  toggleOptionStatus(event: Event): void {
+    const checkbox = event.currentTarget as HTMLInputElement;
+    const optionId = checkbox.dataset.optionId;
+    if (!optionId) return;
+
+    const row = this.selectOptionsContainerTarget.querySelector<HTMLElement>(
+      `.select-option-row[data-option-id="${optionId}"]`,
+    );
+    if (row) {
+      row.style.opacity = checkbox.checked ? '1' : '0.5';
+    }
+  }
+
   private getSelectOptions(): SelectOption[] {
     const options: SelectOption[] = [];
     const rows = this.selectOptionsContainerTarget.querySelectorAll<HTMLElement>('.select-option-row');
@@ -605,9 +656,11 @@ export default class ContentTypeFieldController extends Controller {
         row.querySelector<HTMLInputElement>('.option-display-name')?.value.trim() || '';
       const uniqueName =
         row.querySelector<HTMLInputElement>('.option-unique-name')?.value.trim() || '';
+      const statusCheckbox = row.querySelector<HTMLInputElement>('.option-status');
+      const status: 'enabled' | 'disabled' = statusCheckbox?.checked ? 'enabled' : 'disabled';
       const dbId = row.dataset.dbId;
       if (displayName && uniqueName) {
-        const option: SelectOption = { display_name: displayName, unique_name: uniqueName, position: index };
+        const option: SelectOption = { display_name: displayName, unique_name: uniqueName, position: index, status };
         if (dbId) {
           option.id = dbId;
         }

@@ -3,6 +3,7 @@ create_table :content_type_field_select_options, force: :cascade do |t|
   t.string :unique_name, null: false
   t.text :display_name, null: false
   t.integer :position, null: false, default: 0
+  t.integer :status, limit: 1, null: false, default: 1, comment: '0: disabled, 1: enabled'
 
   t.timestamps null: false
 end
