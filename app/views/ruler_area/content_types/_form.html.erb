@@ -71,6 +71,7 @@
               <%= option_form.hidden_field :display_name %>
               <%= option_form.hidden_field :unique_name %>
               <%= option_form.hidden_field :position %>
+              <%= option_form.hidden_field :status %>
             <% end %>
           <% end %>
         <% end %>
@@ -98,7 +99,7 @@
               {
                 display_format: field.select.display_format,
                 options: field.select.options.order(:position).map { |o|
-                  { id: o.id, display_name: o.display_name, unique_name: o.unique_name }
+                  { id: o.id, display_name: o.display_name, unique_name: o.unique_name, status: o.status, deletable: o.deletable? }
                 }
               }.to_json
             else

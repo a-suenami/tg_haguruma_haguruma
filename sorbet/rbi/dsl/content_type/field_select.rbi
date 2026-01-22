@@ -452,6 +452,20 @@ class ContentType::FieldSelect
 
   module GeneratedAssociationMethods
     sig { returns(T::Array[T.untyped]) }
+    def available_option_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def available_option_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `ContentType::FieldSelect` class because it declared `has_many :available_options`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::ContentType::FieldSelectOption::PrivateCollectionProxy) }
+    def available_options; end
+
+    sig { params(value: T::Enumerable[::ContentType::FieldSelectOption]).void }
+    def available_options=(value); end
+
+    sig { returns(T::Array[T.untyped]) }
     def option_ids; end
 
     sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
