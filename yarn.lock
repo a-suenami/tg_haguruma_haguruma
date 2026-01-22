@@ -335,7 +335,7 @@
 
 "@lexical/link@0.39.0", "@lexical/link@^0.39.0":
   version "0.39.0"
-  resolved "https://registry.yarnpkg.com/@lexical/link/-/link-0.39.0.tgz#add566f30bf573636c3cbdc320b96945847241a9"
+  resolved "https://registry.npmjs.org/@lexical/link/-/link-0.39.0.tgz"
   integrity sha512-L1jSF2BVRHDqIQbKYFcQt3CqtVIphRA3QAW2VooYPNlKeaAb/yfFS+C60GX1cj96b0rMlHKrNC17ik2aEBZKLQ==
   dependencies:
     "@lexical/extension" "0.39.0"
@@ -1911,7 +1911,7 @@ lodash@^4.16.3:
 
 lucide-react@^0.562.0:
   version "0.562.0"
-  resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.562.0.tgz#217796c2f57624f012b484ea7f08505067c90d51"
+  resolved "https://registry.npmjs.org/lucide-react/-/lucide-react-0.562.0.tgz"
   integrity sha512-82hOAu7y0dbVuFfmO4bYF1XEwYk/mEbM5E+b1jgci/udUBEE/R7LF5Ip0CCEmXe8AybRM8L+04eP+LGZeDvkiw==
 
 magic-string@^0.30.17:
