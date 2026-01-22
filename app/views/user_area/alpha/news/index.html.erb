@@ -20,44 +20,46 @@
                    path_helper: ->(cat) { user_area_news_index_path(category: cat) } %>
       </div>
 
-      <div cog-list-fragment-content>
-        <div cog-news-list>
-          <% if @entries.empty? %>
-            <div class="empty-state">
-              <% if current_category.present? %>
-                <% category_display_name = categories.find { |c| c.unique_name == current_category }&.display_name %>
-                <p><%= category_display_name %>の<%= feature_label(:news) %>はありません</p>
-              <% else %>
-                <p><%= feature_label(:news) %>がありません</p>
-              <% end %>
-            </div>
-          <% else %>
-            <div class="list">
-              <% @entries.each_with_index do |entry, i| %>
-                <% version = published_version(entry) %>
-                <% next if version.nil? %>
-                <a href="<%= user_area_news_path(entry) %>" cog-news-item>
-                <div class="header">
-                  <div class="date">
-                    <span cog-date-label><%= format_content_date(version.published_at) %></span>
-                  </div>
-                  <div class="category">
-                    <% category_field = field_by_identifier(version, 'category') %>
-                    <% category_option = selected_option(category_field) %>
-                    <span cog-category-label><%= category_option&.display_name || '-' %></span>
-                  </div>
-                </div>
-                  <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
-                </a>
-                <% unless i == @entries.length - 1 %>
-                  <div class="divider"></div>
+      <%= turbo_frame_tag "content-list" do %>
+        <div cog-list-fragment-content>
+          <div cog-news-list>
+            <% if @entries.empty? %>
+              <div class="empty-state">
+                <% if current_category.present? %>
+                  <% category_display_name = categories.find { |c| c.unique_name == current_category }&.display_name %>
+                  <p><%= category_display_name %>の<%= feature_label(:news) %>はありません</p>
+                <% else %>
+                  <p><%= feature_label(:news) %>がありません</p>
                 <% end %>
-              <% end %>
-            </div>
+              </div>
+            <% else %>
+              <div class="list">
+                <% @entries.each_with_index do |entry, i| %>
+                  <% version = published_version(entry) %>
+                  <% next if version.nil? %>
+                  <a href="<%= user_area_news_path(entry) %>" cog-news-item>
+                  <div class="header">
+                    <div class="date">
+                      <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                    </div>
+                    <div class="category">
+                      <% category_field = field_by_identifier(version, 'category') %>
+                      <% category_option = selected_option(category_field) %>
+                      <span cog-category-label><%= category_option&.display_name || '-' %></span>
+                    </div>
+                  </div>
+                    <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
+                  </a>
+                  <% unless i == @entries.length - 1 %>
+                    <div class="divider"></div>
+                  <% end %>
+                <% end %>
+              </div>
 
-          <% end %>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
     </section>
   </main>
 

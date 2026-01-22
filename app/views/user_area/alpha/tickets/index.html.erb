@@ -20,44 +20,46 @@
                    path_helper: ->(cat) { user_area_tickets_path(category: cat) } %>
       </div>
 
-      <div cog-list-fragment-content>
-        <div cog-blog-list>
-          <% if @entries.empty? %>
-            <div class="empty-state">
-              <% if current_category.present? %>
-                <% category_display_name = categories.find { |c| c.unique_name == current_category }&.display_name %>
-                <p><%= category_display_name %>の<%= feature_label(:ticket) %>はありません</p>
-              <% else %>
-                <p><%= feature_label(:ticket) %>がありません</p>
-              <% end %>
-            </div>
-          <% else %>
-            <div class="list">
-              <% @entries.each do |entry| %>
-                <% version = published_version(entry) %>
-                <% next if version.nil? %>
-                <a href="<%= user_area_ticket_path(entry) %>" cog-blog-item>
-                  <div class="thumbnail">
-                    <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
-                    <img draggable="false" src="<%= thumbnail_url || '/images/yokikotokiku/noimage.svg' %>" alt="Ticket Thumbnail">
-                    <div class="label">
-                      <% category_field = field_by_identifier(version, 'category') %>
-                      <% category_option = selected_option(category_field) %>
-                      <span cog-category-label><%= category_option&.display_name || '-' %></span>
+      <%= turbo_frame_tag "content-list" do %>
+        <div cog-list-fragment-content>
+          <div cog-blog-list>
+            <% if @entries.empty? %>
+              <div class="empty-state">
+                <% if current_category.present? %>
+                  <% category_display_name = categories.find { |c| c.unique_name == current_category }&.display_name %>
+                  <p><%= category_display_name %>の<%= feature_label(:ticket) %>はありません</p>
+                <% else %>
+                  <p><%= feature_label(:ticket) %>がありません</p>
+                <% end %>
+              </div>
+            <% else %>
+              <div class="list">
+                <% @entries.each do |entry| %>
+                  <% version = published_version(entry) %>
+                  <% next if version.nil? %>
+                  <a href="<%= user_area_ticket_path(entry) %>" cog-blog-item>
+                    <div class="thumbnail">
+                      <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
+                      <img draggable="false" src="<%= thumbnail_url || '/images/yokikotokiku/noimage.svg' %>" alt="Ticket Thumbnail">
+                      <div class="label">
+                        <% category_field = field_by_identifier(version, 'category') %>
+                        <% category_option = selected_option(category_field) %>
+                        <span cog-category-label><%= category_option&.display_name || '-' %></span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="texts">
-                    <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
-                    <div class="date">
-                      <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                    <div class="texts">
+                      <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
+                      <div class="date">
+                        <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                      </div>
                     </div>
-                  </div>
-                </a>
-              <% end %>
-            </div>
-          <% end %>
+                  </a>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
     </section>
   </main>
 
