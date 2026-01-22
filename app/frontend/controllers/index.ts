@@ -11,6 +11,7 @@ import SwiperController from './swiper_controller';
 import MobileMenuController from './mobile_menu_controller';
 import FooterLinksController from './footer_links_controller';
 import MenuSettingsController from './menu_settings_controller';
+import PcFeaturesController from './pc_features_controller';
 
 const application = Application.start();
 
@@ -27,5 +28,6 @@ application.register('mobile-menu', MobileMenuController);
 application.register('swiper', SwiperController);
 application.register('footer-links', FooterLinksController);
 application.register('menu-settings', MenuSettingsController);
+application.register('pc-features', PcFeaturesController);
 
 export { application };

@@ -10,8 +10,8 @@ export default class PcFeaturesController extends Controller {
   }
 
   private initSortable(): void {
-    // @ts-expect-error UIkit is global
-    UIkit.util.on(this.containerTarget, 'stop', () => {
+    // UIkit sortable fires 'moved' event when item is reordered
+    this.containerTarget.addEventListener('moved', () => {
       this.updatePositions();
     });
   }
