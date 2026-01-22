@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
@@ -85,6 +86,14 @@ export default function LexicalEditor({
   hiddenFieldId,
   editable = true,
 }: LexicalEditorProps) {
+  const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
+
+  const onRef = (elem: HTMLDivElement | null) => {
+    if (elem !== null) {
+      setFloatingAnchorElem(elem);
+    }
+  };
+
   const initialConfig = {
     namespace: "RichTextEditor",
     theme,
@@ -99,7 +108,7 @@ export default function LexicalEditor({
     <div className={`editor-container${editable ? '' : ' editor-readonly'}`}>
       <LexicalComposer initialConfig={initialConfig}>
         {editable && <ToolbarPlugin />}
-        <div className="editor-content">
+        <div className="editor-content" ref={onRef}>
           <RichTextPlugin
             contentEditable={
               <ContentEditable className="editor-input" />
@@ -119,7 +128,9 @@ export default function LexicalEditor({
           {editable && <MarkdownShortcutPlugin transformers={TRANSFORMERS} />}
           {editable && <FileDragDropPlugin />}
           {editable && <AutoEmbedPluginComponent />}
-          {editable && <DraggableBlockPlugin />}
+          {editable && floatingAnchorElem && (
+            <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+          )}
           {editable && hiddenFieldId && (
             <HiddenFieldSyncPlugin hiddenFieldId={hiddenFieldId} />
           )}
