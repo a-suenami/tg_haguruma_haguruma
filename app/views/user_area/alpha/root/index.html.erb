@@ -22,21 +22,21 @@
     </div>
   </section>
 
+  <% unless user_signed_in? %>
+    <section cog-landing-introduction>
+      <div class="introduction-content">
+        <a href="<%= user_area_privilege_path %>" class="primary-action">
+          <span class="action-text">入会のご案内</span>
+          <span class="action-icon"><%= icon_svg('right-arrow') %></span>
+        </a>
+        <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
+          既にご入会済みの方はこちら
+        </a>
+      </div>
+    </section>
+  <% end %>
 
   <div class="main-content">
-    <% unless user_signed_in? %>
-      <section cog-landing-introduction>
-        <div class="introduction-content">
-          <a href="<%= user_area_privilege_path %>" class="primary-action">
-            <span class="action-text">入会のご案内</span>
-            <span class="action-icon"><%= icon_svg('right-arrow') %></span>
-          </a>
-          <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
-            既にご入会済みの方はこちら
-          </a>
-        </div>
-      </section>
-    <% end %>
 
     <% if @news_entries.present? %>
       <section cog-landing-section>
