@@ -1,12 +1,13 @@
 <%# Category tabs for content list pages %>
-<%# Usage: render 'user_area/alpha/shared/content/category_tabs', categories: categories, current_category: current_category, path_helper: -> (cat) { path_with_category(cat) } %>
+<%# Usage: render 'user_area/alpha/shared/content/category_tabs', categories: categories, current_category: current_category, path_helper: -> (cat) { path_with_category(cat) }, frame_id: "content-list" %>
+<% frame_id ||= "content-list" %>
 <nav cog-tabs-bar data-controller="category-tabs">
   <div cog-tabs>
     <%= link_to path_helper.call(nil),
           "cog-tab": '',
           class: current_category.blank? ? 'active' : '',
           data: {
-            turbo_frame: "content-list",
+            turbo_frame: frame_id,
             turbo_action: "advance",
             category_tabs_target: "tab",
             action: "click->category-tabs#select"
@@ -14,7 +15,7 @@
       <div class="text"><%= t('user_area.alpha.categories.all') %></div>
     <% end %>
     <% categories.each do |category| %>
-      <%= link_to path_helper.call(category.unique_name), "cog-tab": '', class: current_category == category.unique_name ? 'active' : '', data: { turbo_frame: "content-list", turbo_action: "advance", category_tabs_target: "tab", action: "click->category-tabs#select" } do %>
+      <%= link_to path_helper.call(category.unique_name), "cog-tab": '', class: current_category == category.unique_name ? 'active' : '', data: { turbo_frame: frame_id, turbo_action: "advance", category_tabs_target: "tab", action: "click->category-tabs#select" } do %>
         <div class="text"><%= category.display_name %></div>
       <% end %>
     <% end %>
