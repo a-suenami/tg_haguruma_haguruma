@@ -39,7 +39,7 @@
                 <% @entries.each_with_index do |entry, i| %>
                   <% version = published_version(entry) %>
                   <% next if version.nil? %>
-                  <a href="<%= user_area_news_path(entry) %>" cog-news-item>
+                  <a href="<%= user_area_news_path(entry) %>" cog-news-item data-turbo-frame="_top">
                   <div class="header">
                     <div class="date">
                       <span cog-date-label><%= format_content_date(version.published_at) %></span>

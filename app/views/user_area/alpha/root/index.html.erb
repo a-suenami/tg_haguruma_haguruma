@@ -22,21 +22,21 @@
     </div>
   </section>
 
+  <% unless user_signed_in? %>
+    <section cog-landing-introduction>
+      <div class="introduction-content">
+        <a href="<%= user_area_privilege_path %>" class="primary-action">
+          <span class="action-text">入会のご案内</span>
+          <span class="action-icon"><%= icon_svg('right-arrow') %></span>
+        </a>
+        <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
+          既にご入会済みの方はこちら
+        </a>
+      </div>
+    </section>
+  <% end %>
 
   <div class="main-content">
-    <% unless user_signed_in? %>
-      <section cog-landing-introduction>
-        <div class="introduction-content">
-          <a href="<%= user_area_privilege_path %>" class="primary-action">
-            <span class="action-text">入会のご案内</span>
-            <span class="action-icon"><%= icon_svg('right-arrow') %></span>
-          </a>
-          <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
-            既にご入会済みの方はこちら
-          </a>
-        </div>
-      </section>
-    <% end %>
 
     <% if @news_entries.present? %>
       <section cog-landing-section>
@@ -77,22 +77,23 @@
       </section>
     <% end %>
 
-    <% if @blog_entries.present? %>
-      <%= turbo_frame_tag "blog-section" do %>
-        <section cog-landing-section>
-          <div cog-landing-section-title>
-            <div cog-feature-title-image feature="blog">
-              <div class="title-image"><%= feature_label(:blog) %></div>
-            </div>
+    <% if @blog_categories.present? || @blog_entries.present? %>
+      <section cog-landing-section>
+        <div cog-landing-section-title>
+          <div cog-feature-title-image feature="blog">
+            <div class="title-image"><%= feature_label(:blog) %></div>
           </div>
-          <% if @blog_categories.present? %>
-            <div cog-landing-section-actions>
-              <%= render 'user_area/alpha/shared/content/category_tabs',
-                        categories: @blog_categories,
-                        current_category: current_blog_category,
-                        path_helper: ->(cat) { user_area_root_path(blog_category: cat) } %>
-            </div>
-          <% end %>
+        </div>
+        <% if @blog_categories.present? %>
+          <div cog-landing-section-actions>
+            <%= render 'user_area/alpha/shared/content/category_tabs',
+                      categories: @blog_categories,
+                      current_category: current_blog_category,
+                      path_helper: ->(cat) { user_area_root_path(blog_category: cat) },
+                      frame_id: "blog-section" %>
+          </div>
+        <% end %>
+        <%= turbo_frame_tag "blog-section" do %>
           <div cog-landing-section-content>
             <% if @blog_entries.present? %>
               <div cog-blog-list>
@@ -125,8 +126,8 @@
               </div>
             <% end %>
           </div>
-        </section>
-      <% end %>
+        <% end %>
+      </section>
     <% end %>
 
   </div>
