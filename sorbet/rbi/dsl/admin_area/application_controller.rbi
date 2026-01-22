@@ -23,7 +23,12 @@ class AdminArea::ApplicationController
     include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
     include ::ApplicationHelper
+    include ::LexicalHelper
     include ::RulerArea::ApplicationHelper
+    include ::SvgHelper
+    include ::UserArea::ContentFieldHelper
+    include ::UserArea::ExternalUrlsHelper
+    include ::UserArea::SiteSettingsHelper
     include ::ApplicationController::HelperMethods
 
     sig { returns(T.nilable(::Admin)) }

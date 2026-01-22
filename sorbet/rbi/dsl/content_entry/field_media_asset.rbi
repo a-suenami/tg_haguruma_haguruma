@@ -6,6 +6,7 @@
 
 
 class ContentEntry::FieldMediaAsset
+  include GeneratedAssociationMethods
   include GeneratedAttributeMethods
   include EnumMethodsModule
   extend CommonRelationMethods
@@ -453,6 +454,35 @@ class ContentEntry::FieldMediaAsset
 
     sig { returns(T::Boolean) }
     def video?; end
+  end
+
+  module GeneratedAssociationMethods
+    sig { params(args: T.untyped, blk: T.untyped).returns(::MediaAsset) }
+    def build_media_asset(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::MediaAsset) }
+    def create_media_asset(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::MediaAsset) }
+    def create_media_asset!(*args, &blk); end
+
+    sig { returns(T.nilable(::MediaAsset)) }
+    def media_asset; end
+
+    sig { params(value: T.nilable(::MediaAsset)).void }
+    def media_asset=(value); end
+
+    sig { returns(T::Boolean) }
+    def media_asset_changed?; end
+
+    sig { returns(T::Boolean) }
+    def media_asset_previously_changed?; end
+
+    sig { returns(T.nilable(::MediaAsset)) }
+    def reload_media_asset; end
+
+    sig { void }
+    def reset_media_asset; end
   end
 
   module GeneratedAssociationRelationMethods

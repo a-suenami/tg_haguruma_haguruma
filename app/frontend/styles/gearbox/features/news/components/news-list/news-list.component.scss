@@ -1,0 +1,24 @@
+[cog-news-list] {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  gap: var(--gearbox-spacing-24);
+
+  .list {
+    display: block;
+    width: 100%;
+  }
+
+  .divider {
+    height: 1px;
+    background-color: rgba(0,0,0,0.12);
+  }
+
+  .overview-page-indicator,
+  .pagination-button-container {
+    display: flex;
+    justify-content: center;
+  }
+}

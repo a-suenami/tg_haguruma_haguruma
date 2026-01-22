@@ -27,10 +27,22 @@ module Users
             uid: @uid,
             last_authenticated_at: Time.zone.now,
           )
+          assign_system_tags(user)
         end
       end
 
       T.must(user)
+    end
+
+    private
+
+    sig { params(user: User).void }
+    def assign_system_tags(user)
+      public_tag = ContentAuthorizationTag.public_tag
+      member_tag = ContentAuthorizationTag.member_tag
+
+      UserTag.create!(user:, content_authorization_tag: public_tag)
+      UserTag.create!(user:, content_authorization_tag: member_tag)
     end
   end
 end

@@ -7,13 +7,11 @@
       "Bash(bin/rubocop*)",
       "Bash(bin/brakeman*)",
       "Bash(bin/kamal*)",
-      "Bash(bundle*)",
+      "Bash(bundle:*)",
       "Bash(git status)",
-      "Bash(git diff*)",
-      "Bash(git log*)",
-      "Bash(git add*)",
-      "Bash(git commit*)",
-      "Bash(ls*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(ls:*)",
       "Bash(pwd)",
       "Bash(ruby -v)",
       "Bash(node -v)",
@@ -22,5 +20,40 @@
       "MultiEdit(.claude/tmp/*)"
     ],
     "deny": []
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/post-edit-ruby.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/pre-commit.sh"
+          }
+        ]
+      }
+    ]
   }
 }

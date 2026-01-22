@@ -1,0 +1,13 @@
+@use '../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-category-label] {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--theme-label-background-color, var(--gearbox-primary));
+  color: var(--theme-label-text-color, var(--gearbox-on-primary));
+  padding: 2px 10px;
+  border-radius: 2px;
+  font-family: var(--theme-label-font-family, var(--gearbox-font-family-primary));
+  font-size: 13px;
+  font-weight: var(--gearbox-font-weight-regular);
+}

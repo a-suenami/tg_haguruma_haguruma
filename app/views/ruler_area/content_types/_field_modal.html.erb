@@ -1,0 +1,119 @@
+<div id="field-type-modal"
+     uk-modal="container: false"
+     data-content-type-field-target="fieldTypeModal">
+  <div class="uk-modal-dialog uk-modal-body" style="width: 800px;">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <h2 class="uk-modal-title">フィールドの種別の選択</h2>
+
+    <div class="uk-margin-top">
+      <div class="uk-grid-collapse uk-child-width-1-3@m uk-grid-match" uk-grid>
+        <!-- Text Field -->
+        <div style="padding: 5px;">
+          <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-card-small"
+               style="cursor: pointer;"
+               data-action="click->content-type-field#addField"
+               data-field-type="text">
+            <div style="margin-bottom: 10px;">
+              <span uk-icon="icon: pencil; ratio: 2"></span>
+            </div>
+            <h4 class="uk-margin-remove">ショートテキスト</h4>
+            <p class="uk-text-small uk-text-muted uk-margin-small-top">タイトルや名前などの短いテキスト</p>
+          </div>
+        </div>
+
+        <!-- RichText Field -->
+        <div style="padding: 5px;">
+          <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-card-small"
+               style="cursor: pointer;"
+               data-action="click->content-type-field#addField"
+               data-field-type="richtext">
+            <div style="margin-bottom: 10px;">
+              <span uk-icon="icon: file-edit; ratio: 2"></span>
+            </div>
+            <h4 class="uk-margin-remove">リッチテキスト</h4>
+            <p class="uk-text-small uk-text-muted uk-margin-small-top">スタイルや画像、動画などのメディアを含めたテキスト</p>
+          </div>
+        </div>
+
+        <!-- Media Asset Field -->
+        <div style="padding: 5px;">
+          <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-card-small"
+               style="cursor: pointer;"
+               data-action="click->content-type-field#addField"
+               data-field-type="media_asset">
+            <div style="margin-bottom: 10px;">
+              <span uk-icon="icon: image; ratio: 2"></span>
+            </div>
+            <h4 class="uk-margin-remove">メディア</h4>
+            <p class="uk-text-small uk-text-muted uk-margin-small-top">画像や動画、PDFなどのファイル用</p>
+          </div>
+        </div>
+
+        <!-- Disabled placeholders for future field types -->
+        <div style="padding: 5px;">
+          <div class="uk-card uk-card-default uk-card-body uk-card-small" style="opacity: 0.4;">
+            <div style="margin-bottom: 10px;">
+              <span uk-icon="icon: tag; ratio: 2"></span>
+            </div>
+            <h4 class="uk-margin-remove">カテゴリ</h4>
+            <p class="uk-text-small uk-text-muted uk-margin-small-top">Admin画面で設定するカテゴリ</p>
+          </div>
+        </div>
+
+        <!-- Select Field -->
+        <div style="padding: 5px;">
+          <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-card-small"
+               style="cursor: pointer;"
+               data-action="click->content-type-field#addField"
+               data-field-type="select_field">
+            <div style="margin-bottom: 10px;">
+              <span uk-icon="icon: list; ratio: 2"></span>
+            </div>
+            <h4 class="uk-margin-remove">セレクト</h4>
+            <p class="uk-text-small uk-text-muted uk-margin-small-top">ドロップダウン、チェックボックス、ラジオボタン</p>
+          </div>
+        </div>
+
+        <div style="padding: 5px;">
+          <div class="uk-card uk-card-default uk-card-body uk-card-small" style="opacity: 0.4;">
+            <div style="margin-bottom: 10px;">
+              <span uk-icon="icon: calendar; ratio: 2"></span>
+            </div>
+            <h4 class="uk-margin-remove">日付、日時</h4>
+            <p class="uk-text-small uk-text-muted uk-margin-small-top">日付か日時</p>
+          </div>
+        </div>
+
+        <div style="padding: 5px;">
+          <div class="uk-card uk-card-default uk-card-body uk-card-small" style="opacity: 0.4;">
+            <div style="margin-bottom: 10px;">
+              <span uk-icon="icon: check; ratio: 2"></span>
+            </div>
+            <h4 class="uk-margin-remove">真理値</h4>
+            <p class="uk-text-small uk-text-muted uk-margin-small-top">true or false</p>
+          </div>
+        </div>
+
+        <div style="padding: 5px;">
+          <div class="uk-card uk-card-default uk-card-body uk-card-small" style="opacity: 0.4;">
+            <div style="margin-bottom: 10px;">
+              <span uk-icon="icon: link; ratio: 2"></span>
+            </div>
+            <h4 class="uk-margin-remove">リファレンス</h4>
+            <p class="uk-text-small uk-text-muted uk-margin-small-top">外部リンクやHaguruma内のコンテンツ</p>
+          </div>
+        </div>
+
+        <div style="padding: 5px;">
+          <div class="uk-card uk-card-default uk-card-body uk-card-small" style="opacity: 0.4;">
+            <div style="margin-bottom: 10px;">
+              <span uk-icon="icon: code; ratio: 2"></span>
+            </div>
+            <h4 class="uk-margin-remove">JSON</h4>
+            <p class="uk-text-small uk-text-muted uk-margin-small-top">Json形式のデータ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

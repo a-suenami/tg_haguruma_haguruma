@@ -10,133 +10,19 @@ module GeneratedPathHelpersModule
   include ::ActionDispatch::Routing::PolymorphicRoutes
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_auth_auth0_callback_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_auth_failure_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_categories_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_all_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_by_content_type_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_collection_entries_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_collection_entry_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_collection_entry_publication_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_mobile_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_root_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_singleton_entry_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_singleton_entry_publication_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_login_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_logout_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_media_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_profiles_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_root_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_ruler_area_tenant_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
   def api_v1_auth_provider_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def api_v1_auth_session_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def edit_admin_area_contents_collection_entry_path(*args); end
+  def api_v1_content_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def edit_admin_area_contents_singleton_entry_path(*args); end
+  def api_v1_contents_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def edit_admin_area_profiles_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_ruler_area_profiles_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_ruler_area_tenant_admin_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_ruler_area_tenant_oauth_provider_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_ruler_area_tenant_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_admin_area_contents_collection_entry_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_rails_conductor_inbound_email_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_rails_conductor_inbound_email_source_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_ruler_area_tenant_admin_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_ruler_area_tenant_oauth_provider_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_ruler_area_tenant_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_blob_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_blob_representation_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_blob_representation_proxy_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_conductor_inbound_email_incinerate_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_conductor_inbound_email_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_conductor_inbound_email_reroute_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_conductor_inbound_email_sources_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_conductor_inbound_emails_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_direct_uploads_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_disk_service_path(*args); end
+  def api_v1_me_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def rails_health_check_path(*args); end
@@ -157,83 +43,5 @@ module GeneratedPathHelpersModule
   def rails_mailers_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def rails_mailgun_inbound_emails_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_mandrill_inbound_emails_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_mandrill_inbound_health_check_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_postmark_inbound_emails_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_relay_inbound_emails_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_representation_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_sendgrid_inbound_emails_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_service_blob_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_service_blob_proxy_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_storage_proxy_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_storage_redirect_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_auth_auth0_callback_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_auth_failure_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_login_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_logout_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_profiles_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_root_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_admin_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_admins_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_oauth_provider_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_oauth_providers_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenants_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def turbo_recede_historical_location_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def turbo_refresh_historical_location_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def turbo_resume_historical_location_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def update_rails_disk_service_path(*args); end
+  def test_auth_bypass_path(*args); end
 end

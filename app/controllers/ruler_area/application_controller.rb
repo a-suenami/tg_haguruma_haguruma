@@ -27,13 +27,6 @@ module RulerArea
       current_ruler.present?
     end
 
-    private
-
-    def set_tenant
-      @tenant = Tenant.find(params[:tenant_id])
-      RequestStore.store[:current_tenant] = @tenant.id
-      Tenant.current
-    end
 
     # TODO: Add activity logging when ActivityLog model is available
     # def log_activity

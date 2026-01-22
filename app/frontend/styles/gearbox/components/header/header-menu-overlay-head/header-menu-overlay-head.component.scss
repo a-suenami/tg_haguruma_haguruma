@@ -1,0 +1,22 @@
+[cog-header-menu-overlay-head] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gearbox-spacing-16);
+  padding: 0 var(--gearbox-spacing-16);
+
+  .actions {
+    display: block;
+    padding: var(--gearbox-spacing-16);
+  }
+
+  .divider {
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--gearbox-outline-primary) 0,
+      var(--gearbox-outline-primary) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  }
+}

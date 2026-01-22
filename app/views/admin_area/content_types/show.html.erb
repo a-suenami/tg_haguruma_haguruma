@@ -1,0 +1,133 @@
+<% content_for :title, @content_type.display_name %>
+
+<div class="custom-container">
+  <%= render 'admin_area/contents/sidebar' %>
+
+  <main class="custom-main">
+    <div class="breadcrumb">
+      <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <%= link_to 'コンテンツタイプ管理', admin_area_content_types_path, class: 'breadcrumb-link' %>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current"><%= @content_type.display_name %></span>
+    </div>
+
+    <header class="main-header">
+      <div>
+        <h2><%= @content_type.display_name %></h2>
+        <p class="text-muted">
+          <code><%= @content_type.unique_name %></code>
+          <% if @content_type.is_collection %>
+            <span class="badge badge-info">コレクション</span>
+          <% else %>
+            <span class="badge badge-secondary">シングルトン</span>
+          <% end %>
+        </p>
+      </div>
+      <div class="header-actions">
+        <%= link_to edit_admin_area_content_type_path(@content_type), class: 'btn btn-secondary' do %>
+          <i class="fas fa-edit icon-prefix"></i>
+          設定編集
+        <% end %>
+      </div>
+    </header>
+
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success"><%= flash[:notice] %></div>
+    <% end %>
+
+    <% if @content_type.description.present? %>
+      <div class="content-description">
+        <p><%= @content_type.description %></p>
+      </div>
+    <% end %>
+
+    <section class="content-section">
+      <header class="section-header">
+        <h3>フィールド定義</h3>
+        <%= link_to new_admin_area_content_type_field_path(@content_type), class: 'btn btn-primary btn-sm' do %>
+          <i class="fas fa-plus icon-prefix"></i>
+          フィールド追加
+        <% end %>
+      </header>
+
+      <% if @content_type.fields.any? %>
+        <table class="table" id="fields-table">
+          <thead>
+            <tr>
+              <th style="width: 40px;"></th>
+              <th>ラベル</th>
+              <th>API識別子</th>
+              <th>タイプ</th>
+              <th>必須</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="sortable-fields">
+            <% @content_type.fields.each do |field| %>
+              <tr data-field-id="<%= field.id %>">
+                <td class="drag-handle">
+                  <i class="fas fa-grip-vertical"></i>
+                </td>
+                <td><%= field.label %></td>
+                <td><code><%= field.api_identifier %></code></td>
+                <td>
+                  <% case field.field_type %>
+                  <% when 'text' %>
+                    <span class="badge badge-primary">テキスト</span>
+                  <% when 'richtext' %>
+                    <span class="badge badge-success">リッチテキスト</span>
+                  <% when 'media_asset' %>
+                    <span class="badge badge-warning">メディア</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% if field.required %>
+                    <span class="text-danger">必須</span>
+                  <% else %>
+                    <span class="text-muted">任意</span>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to '編集', edit_admin_area_content_type_field_path(@content_type, field), class: 'link' %>
+                  <%= button_to '削除', admin_area_content_type_field_path(@content_type, field),
+                                method: :delete,
+                                class: 'link link-danger',
+                                form: { style: 'display: inline;' },
+                                data: { confirm: 'フィールドを削除しますか？既存のデータも削除されます。' } %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="empty-state">
+          <p>フィールドがまだ定義されていません。</p>
+          <%= link_to new_admin_area_content_type_field_path(@content_type), class: 'btn btn-primary' do %>
+            <i class="fas fa-plus icon-prefix"></i>
+            最初のフィールドを追加
+          <% end %>
+        </div>
+      <% end %>
+    </section>
+
+    <section class="content-section">
+      <header class="section-header">
+        <h3>コンテンツエントリー</h3>
+        <% if @content_type.is_collection %>
+          <%= link_to admin_area_contents_by_content_type_path(content_type_id: @content_type.id), class: 'btn btn-secondary btn-sm' do %>
+            <i class="fas fa-list icon-prefix"></i>
+            一覧を表示
+          <% end %>
+        <% end %>
+      </header>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value"><%= @content_type.content_entries.count %></div>
+          <div class="stat-label">エントリー数</div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

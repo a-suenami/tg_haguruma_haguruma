@@ -1,0 +1,53 @@
+<%= form_with model: [:admin_area, @content_type], local: true, class: 'content-form' do |form| %>
+  <% if @content_type.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% @content_type.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field-group">
+    <%= form.label :display_name, '表示名', class: 'field-label' %>
+    <%= form.text_field :display_name, class: 'field-input', required: true, placeholder: '例: ブログ記事' %>
+    <p class="field-description">管理画面で表示される名前です</p>
+  </div>
+
+  <div class="field-group">
+    <%= form.label :unique_name, 'API識別子', class: 'field-label' %>
+    <%= form.text_field :unique_name, class: 'field-input', required: true, placeholder: '例: blog_posts', pattern: '[a-z][a-z0-9_]*' %>
+    <p class="field-description">APIで使用される一意の識別子です（英小文字・数字・アンダースコアのみ）</p>
+  </div>
+
+  <div class="field-group">
+    <%= form.label :description, '説明', class: 'field-label' %>
+    <%= form.text_area :description, class: 'field-input', rows: 3, placeholder: 'このコンテンツタイプの説明...' %>
+  </div>
+
+  <div class="field-group">
+    <%= form.label :is_collection, 'タイプ', class: 'field-label' %>
+    <div class="radio-group">
+      <label class="radio-label">
+        <%= form.radio_button :is_collection, true, checked: @content_type.is_collection? || @content_type.new_record? %>
+        <span class="radio-text">
+          <strong>コレクション</strong>
+          <small>複数のエントリーを持つ（例: ブログ記事、ニュース）</small>
+        </span>
+      </label>
+      <label class="radio-label">
+        <%= form.radio_button :is_collection, false %>
+        <span class="radio-text">
+          <strong>シングルトン</strong>
+          <small>1つのエントリーのみ（例: 会社概要、プライバシーポリシー）</small>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit @content_type.new_record? ? '作成' : '更新', class: 'btn btn-primary' %>
+    <%= link_to 'キャンセル', @content_type.new_record? ? admin_area_content_types_path : admin_area_content_type_path(@content_type), class: 'btn btn-secondary' %>
+  </div>
+<% end %>

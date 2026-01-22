@@ -1,0 +1,46 @@
+[cog-header-menu-overlay] {
+  display: block;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--gearbox-header-menu-overlay-z-index);
+
+  &:not(.show) {
+    --exit-animation-duration: 75ms;
+    --gearbox-header-menu-overlay-z-index: -1;
+    opacity: 0;
+    transform: scale(0.985);
+    transition:
+      opacity var(--exit-animation-duration) cubic-bezier(0.4, 0, 0.2, 1),
+      transform var(--exit-animation-duration) linear;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  &.show {
+    --enter-animation-duration: 150ms;
+    --gearbox-header-menu-overlay-z-index: 1000;
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity var(--enter-animation-duration) cubic-bezier(0.4, 0, 0.2, 1),
+      transform var(--enter-animation-duration) linear,
+      visibility 0s;
+  }
+
+  .inner {
+    padding: var(--gearbox-spacing-32) 0;
+    // FIXME: Resolve hardcoded color
+    background-color: #ffffff;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gearbox-spacing-48);
+    height: 100%;
+    overflow-y: auto;
+  }
+}

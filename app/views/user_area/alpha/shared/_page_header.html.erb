@@ -1,0 +1,94 @@
+<header cog-header>
+  <a href="<%= user_area_root_path %>" cog-header-logo-button>
+    <div cog-logo>
+      <%# FIXME(#14): width/heightを動的に設定 %>
+      <img src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>" width=104 height=53>
+    </div>
+  </a>
+
+  <%# PC header uses 'features' (enabled_features) %>
+  <div class="menu-container browser">
+    <nav cog-header-menu>
+      <a href="<%= user_area_root_path %>" cog-header-menu-item class="<%= 'active' if current_page?(user_area_root_path) %>">トップ</a>
+      <% enabled_features.each do |feature| %>
+        <a href="<%= feature_path(feature['key']) %>" cog-header-menu-item class="<%= 'active' if current_page?(feature_path(feature['key'])) %>"><%= feature['label'] %></a>
+      <% end %>
+      <div class="action-buttons">
+        <% if user_signed_in? %>
+          <a href="<%= idp_mypage_url %>" class="auth-action-button">
+            <span class="auth-icon"><%= icon_svg('user-circle') %></span>
+            <span>マイページ</span>
+          </a>
+        <% else %>
+          <a href="<%= user_area_auth_start_path %>" class="auth-action-button">
+            <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
+            <span><%= login_label %></span>
+          </a>
+          <a href="<%= user_area_privilege_path %>" class="register-action-button">
+            <span class="action-text">
+              入会のご案内
+            </span>
+            <span class="action-icon"><%= icon_svg('right-arrow') %></span>
+          </a>
+        <% end %>
+      </div>
+    </nav>
+  </div>
+
+  <%# SP/mobile menu uses 'menu_items' (ordered_menu_items) %>
+  <div class="menu-container mobile" data-controller="mobile-menu">
+    <button type="button" cog-header-menu-button data-action="click->mobile-menu#toggle">
+      <span class="icon" data-mobile-menu-target="menuIcon"><%= icon_svg('hamburger-menu') %></span>
+      <span class="icon" data-mobile-menu-target="closeIcon" style="display: none;"><%= icon_svg('peke') %></span>
+      <span class="text" data-mobile-menu-target="text">MENU</span>
+    </button>
+
+    <div cog-header-menu-overlay data-mobile-menu-target="overlay">
+      <div class="inner">
+        <% unless user_signed_in? %>
+          <div cog-header-menu-overlay-head>
+            <div cog-header-menu-overlay-actions>
+              <a href="<%= user_area_privilege_path %>" class="primary-action">
+                <span class="action-text">入会のご案内</span>
+                <span class="action-icon"><%= icon_svg('right-arrow') %></span>
+              </a>
+              <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
+                既にご入会済みの方はこちら
+              </a>
+            </div>
+          </div>
+        <% end %>
+
+        <div cog-header-menu-overlay-content>
+          <nav cog-menu-items>
+            <a cog-menu-item href="<%= user_area_root_path %>">トップ</a>
+            <% ordered_menu_items.each do |item| %>
+              <% url = menu_item_url(item) %>
+              <% is_logout = item['key'] == 'logout' %>
+              <%# Skip logout if user not signed in %>
+              <% next if is_logout && !user_signed_in? %>
+              <% if is_logout %>
+                <%= form_with url: user_area_logout_path, method: :delete, data: { turbo: false }, class: 'logout-form-inline' do %>
+                  <button type="submit" cog-menu-item><%= item['label'] %></button>
+                <% end %>
+              <% elsif external_url?(url) %>
+                <a cog-menu-item href="<%= url %>" target="_blank" rel="noopener"><%= item['label'] %></a>
+              <% else %>
+                <a cog-menu-item href="<%= url %>"><%= item['label'] %></a>
+              <% end %>
+            <% end %>
+            <% if user_signed_in? %>
+              <a cog-menu-item href="<%= idp_mypage_url %>">マイページ</a>
+            <% end %>
+          </nav>
+
+          <div cog-sns-items>
+            <a cog-sns-item href="<%= sns_x_url %>" target="_blank" rel="noopener"><%= icon_svg('sns-x') %></a>
+            <a cog-sns-item href="<%= sns_instagram_url %>" target="_blank" rel="noopener"><%= icon_svg('sns-instagram') %></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>

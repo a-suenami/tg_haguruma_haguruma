@@ -1,0 +1,20 @@
+@use '../../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-list-fragment-title] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .title-image {
+    height: 100%;
+    width: auto;
+  }
+
+  @include breakpoints.media-up(md) {
+    height: 64px;
+  }
+
+  @include breakpoints.media-down(md) {
+    height: 36px;
+  }
+}

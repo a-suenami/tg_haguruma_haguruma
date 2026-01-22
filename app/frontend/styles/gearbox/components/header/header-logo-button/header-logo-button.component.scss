@@ -1,0 +1,20 @@
+[cog-header-logo-button] {
+  display: inline-flex;
+  align-items: center;
+}
+
+a {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gearbox-primary);
+    outline-offset: 2px;
+  }
+}

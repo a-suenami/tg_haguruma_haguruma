@@ -1,6 +1,7 @@
 // Ruler Area TypeScript Entry Point
 import '@hotwired/turbo-rails';
 import './application.scss';
+import '../../controllers';
 
 interface RulerAreaConfig {
   tableSelector: string;
@@ -113,22 +114,18 @@ class RulerArea {
   }
 }
 
-// Initialize on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
+function initRulerArea(): void {
   new RulerArea({
     tableSelector: '.table',
     searchInputSelector: '.search-input',
     filterSelectSelector: '.filter-select'
   });
-});
+}
+
+// Initialize on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initRulerArea);
 
 // Re-initialize on Turbo navigation
-document.addEventListener('turbo:load', () => {
-  new RulerArea({
-    tableSelector: '.table',
-    searchInputSelector: '.search-input',
-    filterSelectSelector: '.filter-select'
-  });
-});
+document.addEventListener('turbo:load', initRulerArea);
 
 export default RulerArea;

@@ -1,0 +1,98 @@
+<% content_for :title do %>
+  <%= feature_label(:schedule) %> - <%= current_tenant&.name || 'Fan Club' %>
+<% end %>
+
+<div cog-schedule-overview>
+<%= render 'user_area/alpha/shared/page_header' %>
+
+<main class="main">
+  <section cog-list-fragment>
+    <div cog-list-fragment-title>
+      <div cog-feature-title-image feature="schedule">
+        <div class="title-image"><%= feature_label(:schedule) %></div>
+      </div>
+    </div>
+
+    <div cog-list-fragment-actions>
+      <nav cog-tabs-bar>
+        <div cog-tabs>
+          <button cog-tab class="active">
+            <div class="text">すべて</div>
+          </button>
+          <button cog-tab>
+            <div class="text">EVENT</div>
+          </button>
+          <button cog-tab>
+            <div class="text">RADIO</div>
+          </button>
+          <button cog-tab>
+            <div class="text">OTHER</div>
+          </button>
+        </div>
+      </nav>
+    </div>
+
+    <div cog-list-fragment-content>
+      <div cog-schedule-container>
+        <div class="pane date">
+          <div class="calendar browser-only">
+            <div cog-inline-calendar>
+              <%= render 'user_area/alpha/schedules/calendar', year: 2024, month: 12 %>
+            </div>
+          </div>
+          <div class="date-picker tablet-only">
+            <div cog-date-picker>
+              <button type="button" class="arrow-icon-button prev">
+                <span class="arrow-icon">&lt;</span>
+              </button>
+              <div class="trigger">
+                <button type="button" class="trigger-button">
+                  <span>2024年12月</span>
+                  <span class="triangle-icon">▼</span>
+                </button>
+              </div>
+              <button type="button" class="arrow-icon-button next">
+                <span class="arrow-icon">&gt;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider browser-only"></div>
+
+        <div class="pane list">
+          <div cog-monthly-schedule-list>
+          <div cog-monthly-schedule-group>
+            <div cog-monthly-schedule-group-partition>
+              <div class="period">
+                <div class="month">12</div>
+                <div class="year">2024</div>
+              </div>
+              <div class="line"></div>
+            </div>
+            <div cog-daily-schedule-items>
+              <% [[25, 'クリスマスライブ'], [28, '年末特番出演'], [31, 'カウントダウンライブ']].each do |day, title| %>
+                <a href="<%= user_area_schedule_path(day) %>" cog-daily-schedule-item>
+                  <div class="date">
+                    <span class="number"><%= day %></span>
+                    <span class="day"><%= %w[日 月 火 水 木 金 土][(Date.new(2024, 12, day).wday)] %></span>
+                  </div>
+                  <div class="schedule-content">
+                    <div class="label">
+                      <span cog-category-label>EVENT</span>
+                    </div>
+                    <div class="title"><%= title %></div>
+                  </div>
+                </a>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%= render 'user_area/alpha/shared/page_footer' %>
+</div>

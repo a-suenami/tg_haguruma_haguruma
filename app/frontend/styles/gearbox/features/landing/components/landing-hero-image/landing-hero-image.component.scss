@@ -1,0 +1,17 @@
+[cog-landing-hero-image] {
+  display: block;
+  width: 100%;
+
+  > img,
+  > picture {
+    display: block;
+    width: 100%;
+    height: auto;
+
+    > img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+}

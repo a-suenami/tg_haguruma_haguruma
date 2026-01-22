@@ -1,0 +1,65 @@
+<div class="layout-list-page">
+  <% content_for :title do %>
+    <%= feature_label(:blog) %> - <%= current_tenant&.name || 'Fan Club' %>
+  <% end %>
+
+  <%= render 'user_area/alpha/shared/page_header' %>
+
+  <main class="main">
+    <section cog-list-fragment>
+      <div cog-list-fragment-title>
+        <div cog-feature-title-image feature="blog">
+          <div class="title-image"><%= feature_label(:blog) %></div>
+        </div>
+      </div>
+
+      <div cog-list-fragment-actions>
+        <%= render 'user_area/alpha/shared/content/category_tabs',
+                   categories: categories,
+                   current_category: current_category,
+                   path_helper: ->(cat) { user_area_blog_index_path(category: cat) } %>
+      </div>
+
+      <div cog-list-fragment-content>
+        <div cog-blog-list>
+          <% if @entries.empty? %>
+            <div class="empty-state">
+              <% if current_category.present? %>
+                <% category_display_name = categories.find { |c| c.unique_name == current_category }&.display_name %>
+                <p><%= category_display_name %>の<%= feature_label(:blog) %>はありません</p>
+              <% else %>
+                <p><%= feature_label(:blog) %>がありません</p>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="list">
+              <% @entries.each do |entry| %>
+                <% version = published_version(entry) %>
+                <% next if version.nil? %>
+                <a href="<%= user_area_blog_path(entry) %>" cog-blog-item>
+                  <div class="thumbnail">
+                    <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
+                    <img draggable="false" src="<%= thumbnail_url || '/images/yokikotokiku/noimage.svg' %>" alt="Blog Thumbnail">
+                    <div class="label">
+                      <% category_field = field_by_identifier(version, 'category') %>
+                      <% category_option = selected_option(category_field) %>
+                      <span cog-category-label><%= category_option&.display_name || '-' %></span>
+                    </div>
+                  </div>
+                  <div class="texts">
+                    <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
+                    <div class="date">
+                      <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                    </div>
+                  </div>
+                </a>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <%= render 'user_area/alpha/shared/page_footer' %>
+</div>

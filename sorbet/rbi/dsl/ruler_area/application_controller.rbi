@@ -27,6 +27,11 @@ class RulerArea::ApplicationController
     include ::ActionController::Base::HelperMethods
     include ::RulerArea::ApplicationHelper
     include ::ApplicationHelper
+    include ::LexicalHelper
+    include ::SvgHelper
+    include ::UserArea::ContentFieldHelper
+    include ::UserArea::ExternalUrlsHelper
+    include ::UserArea::SiteSettingsHelper
 
     sig { returns(T.untyped) }
     def current_ruler; end

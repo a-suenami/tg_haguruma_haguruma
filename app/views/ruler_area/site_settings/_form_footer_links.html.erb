@@ -1,0 +1,195 @@
+<div class="uk-card uk-card-default uk-card-body uk-margin" data-controller="footer-links">
+  <h4 class="uk-card-title">フッター設定</h4>
+
+  <h5>メインリンク</h5>
+  <p class="uk-text-muted uk-text-small">ログアウトリンクは削除できません。ドラッグして並び替えできます。</p>
+
+  <table class="uk-table uk-table-divider uk-table-small">
+    <thead>
+      <tr>
+        <th style="width: 40px;"></th>
+        <th>ラベル</th>
+        <th>URL</th>
+        <th style="width: 80px;">PC</th>
+        <th style="width: 80px;">SP</th>
+        <th style="width: 40px;"></th>
+      </tr>
+    </thead>
+    <tbody data-footer-links-target="mainLinksBody" uk-sortable="handle: .drag-handle">
+      <% @site_setting.all_footer_main_links_for_form.each_with_index do |link, index| %>
+        <tr data-is-logout="<%= link['is_logout'] %>">
+          <td class="uk-text-center">
+            <a href="#" uk-icon="icon: menu" class="drag-handle" style="cursor: move;"></a>
+          </td>
+          <td>
+            <%= text_field_tag "site_setting[footer_main_links][#{index}][label]",
+                link['label'],
+                class: 'uk-input uk-form-small',
+                placeholder: 'ラベル' %>
+            <%= hidden_field_tag "site_setting[footer_main_links][#{index}][key]", link['key'] %>
+            <%= hidden_field_tag "site_setting[footer_main_links][#{index}][is_logout]", link['is_logout'] %>
+            <%= hidden_field_tag "site_setting[footer_main_links][#{index}][position]", index, class: 'position-input' %>
+          </td>
+          <td>
+            <%= text_field_tag "site_setting[footer_main_links][#{index}][url]",
+                link['url'],
+                class: 'uk-input uk-form-small',
+                placeholder: 'URL',
+                readonly: link['is_logout'] %>
+          </td>
+          <td class="uk-text-center">
+            <%= check_box_tag "site_setting[footer_main_links][#{index}][show_pc]",
+                'true',
+                link['show_pc'] == true,
+                class: 'uk-checkbox' %>
+          </td>
+          <td class="uk-text-center">
+            <%= check_box_tag "site_setting[footer_main_links][#{index}][show_sp]",
+                'true',
+                link['show_sp'] == true,
+                class: 'uk-checkbox' %>
+          </td>
+          <td class="uk-text-center">
+            <% unless link['is_logout'] %>
+              <a href="#"
+                 data-action="footer-links#removeMainLink"
+                 uk-icon="icon: trash"
+                 style="color: #f0506e;"></a>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="uk-margin-small">
+    <button type="button" class="uk-button uk-button-default uk-button-small" data-action="footer-links#addMainLink">
+      + リンクを追加
+    </button>
+  </div>
+
+  <hr>
+
+  <h5>サブリンク</h5>
+  <p class="uk-text-muted uk-text-small">利用規約やプライバシーポリシーなどのリンク</p>
+
+  <table class="uk-table uk-table-divider uk-table-small">
+    <thead>
+      <tr>
+        <th style="width: 40px;"></th>
+        <th>ラベル</th>
+        <th>URL</th>
+        <th style="width: 80px;">PC</th>
+        <th style="width: 80px;">SP</th>
+        <th style="width: 40px;"></th>
+      </tr>
+    </thead>
+    <tbody data-footer-links-target="subLinksBody" uk-sortable="handle: .drag-handle">
+      <% @site_setting.all_footer_sub_links_for_form.each_with_index do |link, index| %>
+        <tr>
+          <td class="uk-text-center">
+            <a href="#" uk-icon="icon: menu" class="drag-handle" style="cursor: move;"></a>
+          </td>
+          <td>
+            <%= text_field_tag "site_setting[footer_sub_links][#{index}][label]",
+                link['label'],
+                class: 'uk-input uk-form-small',
+                placeholder: 'ラベル' %>
+            <%= hidden_field_tag "site_setting[footer_sub_links][#{index}][position]", index, class: 'position-input' %>
+          </td>
+          <td>
+            <%= text_field_tag "site_setting[footer_sub_links][#{index}][url]",
+                link['url'],
+                class: 'uk-input uk-form-small',
+                placeholder: 'URL' %>
+          </td>
+          <td class="uk-text-center">
+            <%= check_box_tag "site_setting[footer_sub_links][#{index}][show_pc]",
+                'true',
+                link['show_pc'] == true,
+                class: 'uk-checkbox' %>
+          </td>
+          <td class="uk-text-center">
+            <%= check_box_tag "site_setting[footer_sub_links][#{index}][show_sp]",
+                'true',
+                link['show_sp'] == true,
+                class: 'uk-checkbox' %>
+          </td>
+          <td class="uk-text-center">
+            <a href="#"
+               data-action="footer-links#removeSubLink"
+               uk-icon="icon: trash"
+               style="color: #f0506e;"></a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="uk-margin-small">
+    <button type="button" class="uk-button uk-button-default uk-button-small" data-action="footer-links#addSubLink">
+      + リンクを追加
+    </button>
+  </div>
+
+  <style>
+    [data-footer-links-target] .uk-sortable-drag {
+      display: table;
+      width: 100%;
+      background: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    [data-footer-links-target] .uk-sortable-placeholder {
+      opacity: 0.3;
+    }
+  </style>
+
+  <!-- Templates for new rows -->
+  <template data-footer-links-target="mainLinkTemplate">
+    <tr>
+      <td class="uk-text-center">
+        <a href="#" uk-icon="icon: menu" class="drag-handle" style="cursor: move;"></a>
+      </td>
+      <td>
+        <input type="text" name="site_setting[footer_main_links][INDEX][label]" class="uk-input uk-form-small" placeholder="ラベル">
+        <input type="hidden" name="site_setting[footer_main_links][INDEX][position]" value="INDEX" class="position-input">
+      </td>
+      <td>
+        <input type="text" name="site_setting[footer_main_links][INDEX][url]" class="uk-input uk-form-small" placeholder="URL">
+      </td>
+      <td class="uk-text-center">
+        <input type="checkbox" name="site_setting[footer_main_links][INDEX][show_pc]" value="true" class="uk-checkbox" checked>
+      </td>
+      <td class="uk-text-center">
+        <input type="checkbox" name="site_setting[footer_main_links][INDEX][show_sp]" value="true" class="uk-checkbox">
+      </td>
+      <td class="uk-text-center">
+        <a href="#" data-action="footer-links#removeMainLink" uk-icon="icon: trash" style="color: #f0506e;"></a>
+      </td>
+    </tr>
+  </template>
+
+  <template data-footer-links-target="subLinkTemplate">
+    <tr>
+      <td class="uk-text-center">
+        <a href="#" uk-icon="icon: menu" class="drag-handle" style="cursor: move;"></a>
+      </td>
+      <td>
+        <input type="text" name="site_setting[footer_sub_links][INDEX][label]" class="uk-input uk-form-small" placeholder="ラベル">
+        <input type="hidden" name="site_setting[footer_sub_links][INDEX][position]" value="INDEX" class="position-input">
+      </td>
+      <td>
+        <input type="text" name="site_setting[footer_sub_links][INDEX][url]" class="uk-input uk-form-small" placeholder="URL">
+      </td>
+      <td class="uk-text-center">
+        <input type="checkbox" name="site_setting[footer_sub_links][INDEX][show_pc]" value="true" class="uk-checkbox" checked>
+      </td>
+      <td class="uk-text-center">
+        <input type="checkbox" name="site_setting[footer_sub_links][INDEX][show_sp]" value="true" class="uk-checkbox">
+      </td>
+      <td class="uk-text-center">
+        <a href="#" data-action="footer-links#removeSubLink" uk-icon="icon: trash" style="color: #f0506e;"></a>
+      </td>
+    </tr>
+  </template>
+</div>

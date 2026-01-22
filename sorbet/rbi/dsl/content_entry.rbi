@@ -393,6 +393,9 @@ class ContentEntry
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType) }
     def build_content_type(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def build_tenant(*args, &blk); end
+
     sig { returns(T.nilable(::ContentType)) }
     def content_type; end
 
@@ -411,11 +414,35 @@ class ContentEntry
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentType) }
     def create_content_type!(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant!(*args, &blk); end
+
     sig { returns(T.nilable(::ContentType)) }
     def reload_content_type; end
 
+    sig { returns(T.nilable(::Tenant)) }
+    def reload_tenant; end
+
     sig { void }
     def reset_content_type; end
+
+    sig { void }
+    def reset_tenant; end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def tenant; end
+
+    sig { params(value: T.nilable(::Tenant)).void }
+    def tenant=(value); end
+
+    sig { returns(T::Boolean) }
+    def tenant_changed?; end
+
+    sig { returns(T::Boolean) }
+    def tenant_previously_changed?; end
 
     sig { returns(T::Array[T.untyped]) }
     def version_ids; end

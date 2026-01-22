@@ -1,0 +1,11 @@
+<span class="icon-container">
+  @if (!valid() && dirty()) {
+    <cog-icon-peke class="icon" />
+  } @else {
+    <cog-icon-check class="icon" [class.valid]="valid()" />
+  }
+</span>
+
+<span class="text">
+  <ng-content></ng-content>
+</span>

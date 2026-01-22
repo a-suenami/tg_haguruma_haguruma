@@ -7,9 +7,10 @@ create_table :content_type_fields, force: :cascade do |t|
   t.integer :text_id
   t.integer :richtext_id
   t.integer :media_asset_id
+  t.bigint :select_id
   t.text :description, null: false, default: ''
   t.boolean :required, null: false, default: false
-  t.integer :position, null: false
+  t.integer :position, null: false, default: 0
 
   t.timestamps null: false
 end
@@ -23,3 +24,4 @@ add_foreign_key :content_type_fields, :content_types, column: [:tenant_id, :cont
 add_foreign_key :content_type_fields, :content_type_field_texts, column: :text_id
 add_foreign_key :content_type_fields, :content_type_field_richtexts, column: :richtext_id
 add_foreign_key :content_type_fields, :content_type_field_media_assets, column: :media_asset_id
+add_foreign_key :content_type_fields, :content_type_field_selects, column: :select_id

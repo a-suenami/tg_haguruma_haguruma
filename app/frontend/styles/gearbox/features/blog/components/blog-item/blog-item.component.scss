@@ -1,0 +1,86 @@
+@use 'shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-blog-item] {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  cursor: pointer;
+  align-items: start;
+
+  &:hover {
+    opacity: 1;
+    .thumbnail img {
+      transform: scale(1.15);
+    }
+    .title {
+      color: var(--theme-button-secondary-background-color);
+    }
+  }
+
+
+  .thumbnail {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 5 / 3;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s ease-out;
+    }
+  }
+
+  .label {
+    font-size: 0;
+    position: absolute;
+    z-index: 2;
+  }
+
+  .title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    font-family: var(--theme-title-font-family, sans-serif);
+    font-size: var(--gearbox-font-size-title-small);
+    color: var(--theme-title-text-color, #000000);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    transition: color 0.2s ease-out;
+    margin-top: 10px;
+  }
+
+  .date {
+    font-size: 0.75rem;
+    font-family: var(--theme-caption-font-family, sans-serif);
+    color: var(--theme-caption-text-color, #666666);
+    margin-top: 4px;
+  }
+
+  @include breakpoints.media-up(sm) {
+    .thumbnail {
+      border-radius: 10px;
+    }
+    .label {
+      top: 8px;
+      left: 8px;
+    }
+  }
+
+  @include breakpoints.media-down(sm) {
+    .thumbnail {
+      border-radius: 7px;
+    }
+    .label {
+      top: 4px;
+      left: 4px;
+    }
+  }
+}

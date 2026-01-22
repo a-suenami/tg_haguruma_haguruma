@@ -1,0 +1,23 @@
+<ul class="uk-breadcrumb">
+  <li>
+    <%= link_to 'テナント', ruler_area_tenants_path %>
+  </li>
+  <li>
+    <%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %>
+  </li>
+  <li>
+    <%= link_to '認可タグ', ruler_area_tenant_authorization_tags_path(@tenant) %>
+  </li>
+  <li>
+    <span>新規作成</span>
+  </li>
+</ul>
+
+<div class="am-page-header">
+  <h3>認可タグ新規作成</h3>
+</div>
+
+<%= render 'form',
+    form_url: ruler_area_tenant_authorization_tags_path(@tenant),
+    form_method: :post,
+    submit_label: '作成' %>

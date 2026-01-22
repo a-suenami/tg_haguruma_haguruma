@@ -1,0 +1,208 @@
+<%# Renders a single field input based on field type %>
+<%# Local variables: field (ContentType::Field), value (current value), content_type (optional), content_entry (optional) %>
+
+<%
+  # Build autosave URL if content_type and content_entry are provided
+  autosave_url = if defined?(content_type) && defined?(content_entry) && content_type && content_entry&.persisted?
+    case field.field_type
+    when 'text'
+      admin_area_contents_collection_entry_text_field_path(
+        content_type_id: content_type.id,
+        entry_id: content_entry.id,
+        api_identifier: field.api_identifier,
+      )
+    when 'richtext'
+      admin_area_contents_collection_entry_richtext_field_path(
+        content_type_id: content_type.id,
+        entry_id: content_entry.id,
+        api_identifier: field.api_identifier,
+      )
+    when 'media_asset'
+      admin_area_contents_collection_entry_media_asset_field_path(
+        content_type_id: content_type.id,
+        entry_id: content_entry.id,
+        api_identifier: field.api_identifier,
+      )
+    when 'select_field'
+      admin_area_contents_collection_entry_select_field_path(
+        content_type_id: content_type.id,
+        entry_id: content_entry.id,
+        api_identifier: field.api_identifier,
+      )
+    end
+  end
+%>
+
+<div class="field-group"
+     <% if autosave_url %>
+     data-controller="autosave-field"
+     data-autosave-field-url-value="<%= autosave_url %>"
+     data-autosave-field-debounce-ms-value="1000"
+     <% end %>>
+  <div class="field-label-row">
+    <label for="fields_<%= field.api_identifier %>" class="field-label">
+      <%= field.label %>
+      <% if field.required %>
+        <span class="required-mark">*</span>
+      <% end %>
+    </label>
+    <% if autosave_url %>
+      <span data-autosave-field-target="status" class="autosave-status autosave-status--idle"></span>
+    <% end %>
+  </div>
+  <% if field.description.present? %>
+    <p class="field-description"><%= field.description %></p>
+  <% end %>
+
+  <% case field.field_type %>
+  <% when 'text' %>
+    <input type="text"
+           name="fields[<%= field.api_identifier %>]"
+           id="fields_<%= field.api_identifier %>"
+           value="<%= value %>"
+           class="field-input"
+           data-autosave-field-target="input"
+           <%= 'required' if field.required %>>
+
+  <% when 'richtext' %>
+    <div data-controller="react-lexical"
+         data-react-lexical-initial-content-value="<%= html_escape(value.to_json) %>"
+         data-react-lexical-placeholder-value="内容を入力してください..."
+         data-react-lexical-hidden-field-id-value="fields_<%= field.api_identifier %>">
+    </div>
+    <input type="hidden"
+           name="fields[<%= field.api_identifier %>]"
+           id="fields_<%= field.api_identifier %>"
+           value="<%= value.to_json %>"
+           data-autosave-field-target="input">
+
+  <% when 'media_asset' %>
+    <div class="media-asset-field"
+         data-controller="media-asset-field"
+         data-media-asset-field-current-media-id-value="<%= value %>"
+         data-media-asset-field-upload-url-value="<%= upload_admin_area_media_path %>"
+         data-media-asset-field-library-url-value="<%= admin_area_media_path(format: :json) %>">
+
+      <!-- Hidden input for form submission -->
+      <input type="hidden"
+             name="fields[<%= field.api_identifier %>]"
+             id="fields_<%= field.api_identifier %>"
+             value="<%= value %>"
+             data-media-asset-field-target="hiddenInput"
+             data-autosave-field-target="input">
+
+      <!-- Preview area (shown when media is selected) -->
+      <div class="media-preview-area"
+           data-media-asset-field-target="preview"
+           style="<%= value.blank? ? 'display: none;' : '' %>">
+        <div class="media-preview-card">
+          <div class="media-preview-thumbnail" data-media-asset-field-target="thumbnail">
+            <!-- Dynamically populated based on media type -->
+          </div>
+          <div class="media-preview-footer">
+            <div class="media-preview-info">
+              <span class="media-filename" data-media-asset-field-target="filename"></span>
+              <span class="media-type-badge" data-media-asset-field-target="typeBadge"></span>
+            </div>
+            <button type="button"
+                    class="btn btn-xs btn-danger media-remove-btn"
+                    data-action="media-asset-field#removeMedia">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload progress (hidden by default) -->
+      <div class="upload-progress"
+           data-media-asset-field-target="uploadProgress"
+           style="display: none;">
+        <div class="progress-bar">
+          <div class="progress-fill" data-media-asset-field-target="progressFill"></div>
+        </div>
+        <span class="progress-text">アップロード中...</span>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="media-asset-actions" data-media-asset-field-target="actions">
+        <!-- Hidden file input -->
+        <input type="file"
+               data-media-asset-field-target="fileInput"
+               data-action="change->media-asset-field#uploadFile"
+               accept="image/*,video/*,audio/*,.pdf,.doc,.docx"
+               style="display: none;">
+
+        <button type="button"
+                class="btn btn-secondary btn-sm"
+                data-action="media-asset-field#selectFile">
+          <i class="fas fa-upload icon-prefix"></i>
+          ファイルをアップロード
+        </button>
+
+        <button type="button"
+                class="btn btn-secondary btn-sm"
+                data-action="media-asset-field#openLibrary">
+          <i class="fas fa-images icon-prefix"></i>
+          メディアライブラリから選択
+        </button>
+      </div>
+    </div>
+
+  <% when 'select_field' %>
+    <%
+      select_config = field.select
+      display_format = select_config&.display_format || 'dropdown'
+      options = select_config&.options&.order(:position) || []
+      # value is array of selected option IDs
+      selected_ids = Array(value).map(&:to_i)
+    %>
+
+    <% case display_format %>
+    <% when 'dropdown' %>
+      <select name="fields[<%= field.api_identifier %>]"
+              id="fields_<%= field.api_identifier %>"
+              class="field-input field-select"
+              data-autosave-field-target="input"
+              <%= 'required' if field.required %>>
+        <option value="">選択してください</option>
+        <% options.each do |option| %>
+          <option value="<%= option.id %>"
+                  <%= 'selected' if selected_ids.include?(option.id) %>>
+            <%= option.display_name %>
+          </option>
+        <% end %>
+      </select>
+
+    <% when 'checkbox' %>
+      <div class="field-checkbox-group">
+        <% options.each do |option| %>
+          <label class="field-checkbox-label">
+            <input type="checkbox"
+                   name="fields[<%= field.api_identifier %>][]"
+                   value="<%= option.id %>"
+                   class="field-checkbox"
+                   data-autosave-field-target="input"
+                   <%= 'checked' if selected_ids.include?(option.id) %>>
+            <span><%= option.display_name %></span>
+          </label>
+        <% end %>
+      </div>
+
+    <% when 'radio' %>
+      <div class="field-radio-group">
+        <% options.each do |option| %>
+          <label class="field-radio-label">
+            <input type="radio"
+                   name="fields[<%= field.api_identifier %>]"
+                   value="<%= option.id %>"
+                   class="field-radio"
+                   data-autosave-field-target="input"
+                   <%= 'checked' if selected_ids.include?(option.id) %>>
+            <span><%= option.display_name %></span>
+          </label>
+        <% end %>
+      </div>
+    <% end %>
+
+  <% end %>
+</div>

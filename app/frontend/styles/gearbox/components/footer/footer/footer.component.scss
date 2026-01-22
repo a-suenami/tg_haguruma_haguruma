@@ -1,0 +1,37 @@
+@use '../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-footer] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // FIXME: Resolve hardcoded color
+  background-color: #fff;
+  width: 100%;
+
+  // Hide both browser/mobile by default
+  .browser,
+  .mobile {
+    display: none;
+  }
+
+  @include breakpoints.media-up(lg) {
+    gap: var(--gearbox-spacing-24);
+    padding: var(--gearbox-spacing-40) var(--gearbox-spacing-24);
+
+    // Show browser (PC) content on large screens
+    .browser {
+      display: block;
+    }
+  }
+
+  @include breakpoints.media-down(lg) {
+    gap: var(--gearbox-spacing-32);
+    padding: var(--gearbox-spacing-32) var(--gearbox-spacing-16);
+    align-items: flex-start;
+
+    // Show mobile (SP) content on small screens
+    .mobile {
+      display: block;
+    }
+  }
+}

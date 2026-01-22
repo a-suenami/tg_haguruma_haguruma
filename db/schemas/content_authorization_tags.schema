@@ -1,0 +1,18 @@
+create_table :content_authorization_tags, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
+  t.citext :tenant_id, null: false
+  t.uuid :remote_id, comment: 'DEPRECATED: External system ID for synchronization'
+  t.string :provider, comment: 'Tag provider: system, idp, ruler, or NULL for custom'
+  t.string :unique_id, comment: 'Unique identifier within provider scope'
+  t.string :name, null: false
+
+  t.timestamps null: false
+end
+
+add_index :content_authorization_tags, [:tenant_id, :id], unique: true
+add_index :content_authorization_tags, [:tenant_id, :remote_id], unique: true, where: 'remote_id IS NOT NULL'
+add_index :content_authorization_tags, [:tenant_id, :name], unique: true
+add_index :content_authorization_tags, [:tenant_id, :provider, :unique_id], unique: true, where: 'provider IS NOT NULL', name: 'index_content_authorization_tags_on_provider_unique_id'
+
+add_check_constraint :content_authorization_tags, "provider IN ('system', 'idp', 'ruler')", name: 'chk_content_authorization_tags_provider'
+
+add_foreign_key :content_authorization_tags, :tenants, column: :tenant_id, primary_key: :id

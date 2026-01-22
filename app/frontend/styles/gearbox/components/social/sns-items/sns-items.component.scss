@@ -1,0 +1,21 @@
+@use '../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-sns-items] {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+@include breakpoints.media-up(lg) {
+  [cog-sns-items] {
+    justify-content: center;
+  }
+}
+
+@include breakpoints.media-down(lg) {
+  [cog-sns-items] {
+    justify-content: flex-start;
+  }
+}

@@ -10,133 +10,19 @@ module GeneratedUrlHelpersModule
   include ::ActionDispatch::Routing::PolymorphicRoutes
 
   sig { params(args: T.untyped).returns(String) }
-  def admin_area_auth_auth0_callback_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_auth_failure_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_categories_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_all_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_by_content_type_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_collection_entries_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_collection_entry_publication_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_collection_entry_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_mobile_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_root_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_singleton_entry_publication_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_contents_singleton_entry_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_login_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_logout_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_media_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_profiles_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_root_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def admin_area_ruler_area_tenant_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
   def api_v1_auth_provider_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def api_v1_auth_session_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def edit_admin_area_contents_collection_entry_url(*args); end
+  def api_v1_content_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def edit_admin_area_contents_singleton_entry_url(*args); end
+  def api_v1_contents_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def edit_admin_area_profiles_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_ruler_area_profiles_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_ruler_area_tenant_admin_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_ruler_area_tenant_oauth_provider_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def edit_ruler_area_tenant_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_admin_area_contents_collection_entry_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_rails_conductor_inbound_email_source_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_rails_conductor_inbound_email_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_ruler_area_tenant_admin_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_ruler_area_tenant_oauth_provider_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def new_ruler_area_tenant_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_blob_representation_proxy_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_blob_representation_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_blob_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_conductor_inbound_email_incinerate_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_conductor_inbound_email_reroute_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_conductor_inbound_email_sources_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_conductor_inbound_email_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_conductor_inbound_emails_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_direct_uploads_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_disk_service_url(*args); end
+  def api_v1_me_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def rails_health_check_url(*args); end
@@ -157,83 +43,5 @@ module GeneratedUrlHelpersModule
   def rails_mailers_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def rails_mailgun_inbound_emails_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_mandrill_inbound_emails_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_mandrill_inbound_health_check_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_postmark_inbound_emails_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_relay_inbound_emails_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_representation_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_sendgrid_inbound_emails_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_service_blob_proxy_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_service_blob_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_storage_proxy_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def rails_storage_redirect_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_auth_auth0_callback_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_auth_failure_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_login_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_logout_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_profiles_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_root_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_admin_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_admins_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_oauth_provider_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_oauth_providers_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenant_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def ruler_area_tenants_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def turbo_recede_historical_location_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def turbo_refresh_historical_location_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def turbo_resume_historical_location_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
-  def update_rails_disk_service_url(*args); end
+  def test_auth_bypass_url(*args); end
 end

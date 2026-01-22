@@ -1,0 +1,20 @@
+<% content_for :title do %>
+  Login - <%= current_tenant&.name %>
+<% end %>
+
+<div class="card" style="max-width: 400px; margin: 2rem auto;">
+  <h1 style="text-align: center; margin-bottom: 1.5rem;">Login</h1>
+  <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">
+    Sign in to access your content
+  </p>
+
+  <%= form_with url: user_area_login_path, method: :post, data: { turbo: false } do |f| %>
+    <div style="text-align: center;">
+      <%= f.submit 'Login with OAuth', class: 'btn btn-primary', style: 'width: 100%;' %>
+    </div>
+  <% end %>
+
+  <p style="text-align: center; margin-top: 1.5rem; color: var(--text-muted); font-size: 0.875rem;">
+    Secure authentication via OAuth provider
+  </p>
+</div>

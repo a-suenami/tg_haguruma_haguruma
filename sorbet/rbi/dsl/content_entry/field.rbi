@@ -423,6 +423,12 @@ class ContentEntry::Field
     def richtext?; end
 
     sig { void }
+    def select_field!; end
+
+    sig { returns(T::Boolean) }
+    def select_field?; end
+
+    sig { void }
     def text!; end
 
     sig { returns(T::Boolean) }
@@ -438,6 +444,12 @@ class ContentEntry::Field
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldRichtext) }
     def build_richtext(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldSelect) }
+    def build_select(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def build_tenant(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldText) }
     def build_text(*args, &blk); end
@@ -472,6 +484,18 @@ class ContentEntry::Field
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldRichtext) }
     def create_richtext!(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldSelect) }
+    def create_select(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldSelect) }
+    def create_select!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::Tenant) }
+    def create_tenant!(*args, &blk); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::ContentEntry::FieldText) }
     def create_text(*args, &blk); end
 
@@ -499,6 +523,12 @@ class ContentEntry::Field
     sig { returns(T.nilable(::ContentEntry::FieldRichtext)) }
     def reload_richtext; end
 
+    sig { returns(T.nilable(::ContentEntry::FieldSelect)) }
+    def reload_select; end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def reload_tenant; end
+
     sig { returns(T.nilable(::ContentEntry::FieldText)) }
     def reload_text; end
 
@@ -510,6 +540,12 @@ class ContentEntry::Field
 
     sig { void }
     def reset_richtext; end
+
+    sig { void }
+    def reset_select; end
+
+    sig { void }
+    def reset_tenant; end
 
     sig { void }
     def reset_text; end
@@ -525,6 +561,30 @@ class ContentEntry::Field
 
     sig { returns(T::Boolean) }
     def richtext_previously_changed?; end
+
+    sig { returns(T.nilable(::ContentEntry::FieldSelect)) }
+    def select; end
+
+    sig { params(value: T.nilable(::ContentEntry::FieldSelect)).void }
+    def select=(value); end
+
+    sig { returns(T::Boolean) }
+    def select_changed?; end
+
+    sig { returns(T::Boolean) }
+    def select_previously_changed?; end
+
+    sig { returns(T.nilable(::Tenant)) }
+    def tenant; end
+
+    sig { params(value: T.nilable(::Tenant)).void }
+    def tenant=(value); end
+
+    sig { returns(T::Boolean) }
+    def tenant_changed?; end
+
+    sig { returns(T::Boolean) }
+    def tenant_previously_changed?; end
 
     sig { returns(T.nilable(::ContentEntry::FieldText)) }
     def text; end
@@ -622,6 +682,9 @@ class ContentEntry::Field
     def not_richtext(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def not_select_field(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def not_text(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
@@ -676,6 +739,9 @@ class ContentEntry::Field
       ).returns(T::Array[::ContentEntry::Field])
     end
     def select(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
+    def select_field(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def strict_loading(*args, &blk); end
@@ -1095,6 +1161,9 @@ class ContentEntry::Field
     def restore_richtext_id!; end
 
     sig { void }
+    def restore_select_id!; end
+
+    sig { void }
     def restore_tenant_id!; end
 
     sig { void }
@@ -1205,6 +1274,12 @@ class ContentEntry::Field
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_richtext_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def saved_change_to_select_id; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def saved_change_to_select_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_tenant_id; end
 
@@ -1228,6 +1303,51 @@ class ContentEntry::Field
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def saved_change_to_version?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def select_id; end
+
+    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
+    def select_id=(value); end
+
+    sig { returns(T::Boolean) }
+    def select_id?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def select_id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def select_id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def select_id_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def select_id_change; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def select_id_change_to_be_saved; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def select_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def select_id_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def select_id_previous_change; end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def select_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def select_id_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def select_id_was; end
+
+    sig { void }
+    def select_id_will_change!; end
 
     sig { returns(::String) }
     def tenant_id; end
@@ -1437,6 +1557,9 @@ class ContentEntry::Field
     def will_save_change_to_richtext_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
+    def will_save_change_to_select_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
     def will_save_change_to_tenant_id?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { params(from: T.untyped, to: T.untyped).returns(T::Boolean) }
@@ -1532,6 +1655,9 @@ class ContentEntry::Field
     def not_richtext(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def not_select_field(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def not_text(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
@@ -1586,6 +1712,9 @@ class ContentEntry::Field
       ).returns(T::Array[::ContentEntry::Field])
     end
     def select(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
+    def select_field(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def strict_loading(*args, &blk); end

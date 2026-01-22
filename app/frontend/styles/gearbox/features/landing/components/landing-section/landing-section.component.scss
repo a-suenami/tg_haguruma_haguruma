@@ -1,0 +1,19 @@
+@use 'shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-landing-section] {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1000px;
+  padding: 0
+    var(--landing-section-horizontal-padding, var(--gearbox-spacing-56));
+  gap: var(--gearbox-spacing-32);
+}
+
+@include breakpoints.media-down(sm) {
+  [cog-landing-section] {
+    --landing-section-horizontal-padding: var(--gearbox-spacing-16);
+  }
+}

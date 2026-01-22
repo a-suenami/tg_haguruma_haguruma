@@ -1,0 +1,11 @@
+[cog-fab-button-text] {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--gearbox-font-size-sp-body-small);
+  font-weight: var(--gearbox-font-weight-semibold);
+  line-height: var(--gearbox-line-height-solid);
+  white-space: nowrap;
+  position: relative;
+  z-index: 1;
+  font-family: var(--gearbox-font-family-primary);
+}

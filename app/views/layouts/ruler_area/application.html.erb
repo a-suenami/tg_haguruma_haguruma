@@ -9,8 +9,6 @@
     <%# UIKit CSS %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/css/uikit.min.css" />
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "ruler_area/application", "data-turbo-track": "reload" %>
     <%= vite_client_tag %>
     <%= vite_typescript_tag 'entrypoints/ruler_area/application' %>
     <%= vite_stylesheet_tag 'entrypoints/ruler_area/application.scss', skip_preload_tags: true %>
@@ -27,11 +25,14 @@
       <div class="navbar-inner">
         <div class="uk-navbar-left">
           <a href="<%= ruler_area_tenants_path %>" class="uk-navbar-item uk-logo">
-            <%= image_tag 'ruler_area/haguruma-logo.svg', alt: 'Haguruma', width: '120' %>
+            <img src="/images/ruler_area/haguruma-logo.svg" alt="Haguruma" width="120">
           </a>
           <ul class="uk-navbar-nav">
             <li class="<%= 'uk-active' if controller_name == 'tenants' && action_name == 'index' %>">
               <%= link_to 'テナント', ruler_area_tenants_path %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'rulers' %>">
+              <%= link_to 'Ruler管理', ruler_area_rulers_path %>
             </li>
             <li><a href="#">SIDEKIQ</a></li>
             <li><a href="#">マスタ</a></li>
@@ -84,6 +85,37 @@
             </li>
             <li class="<%= 'uk-active' if controller_name == 'oauth_providers' %>">
               <%= link_to '認証プロバイダ', ruler_area_tenant_oauth_providers_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'content_types' %>">
+              <%= link_to 'コンテンツタイプ', ruler_area_tenant_content_types_path(@tenant) %>
+            </li>
+          </ul>
+
+          <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
+            <li class="uk-nav-header">サイト設定</li>
+            <li class="uk-nav-divider"></li>
+            <li class="<%= 'uk-active' if controller_name == 'site_settings' %>">
+              <%= link_to 'サイト設定', ruler_area_tenant_site_setting_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'themes' %>">
+              <%= link_to 'テーマ', ruler_area_tenant_theme_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'pages' %>">
+              <%= link_to ruler_area_tenant_pages_path(@tenant) do %>
+                ページ設定
+                <span class="uk-badge uk-margin-small-left">準備中</span>
+              <% end %>
+            </li>
+          </ul>
+
+          <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
+            <li class="uk-nav-header">開発・テスト（内部向け）</li>
+            <li class="uk-nav-divider"></li>
+            <li class="<%= 'uk-active' if controller_name == 'users' %>">
+              <%= link_to 'ユーザー', ruler_area_tenant_users_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'authorization_tags' %>">
+              <%= link_to '認可タグ', ruler_area_tenant_authorization_tags_path(@tenant) %>
             </li>
           </ul>
 

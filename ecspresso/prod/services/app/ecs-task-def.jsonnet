@@ -34,12 +34,22 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
       "essential": true,
       "image": "843188904699.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-app-prod:" + app_image_tag,
       "logConfiguration": {
-        "logDriver": "awslogs",
+        "logDriver": "awsfirelens",
         "options": {
-          "awslogs-group": "/ecs/haguruma-main-service-app/app",
-          "awslogs-region": "ap-northeast-1",
-          "awslogs-stream-prefix": "app"
-        }
+          "Name": "datadog",
+          "Host": "http-intake.logs.datadoghq.com",
+          "dd_service": "haguruma-app",
+          "dd_source": "app",
+          "dd_tags": "env:production",
+          "TLS": "on",
+          "provider": "ecs"
+        },
+        "secretOptions": [
+          {
+            "name": "apikey",
+            "valueFrom": "/haguruma/prod/ecs/main/datadog_api_key"
+          }
+        ]
       },
       "memoryReservation": rails_memory,
       "name": "app",
@@ -67,12 +77,22 @@ local rails_memory = memory - nginx_memory - fluentbit_memory - datadog_memory;
       "essential": true,
       "image": "843188904699.dkr.ecr.ap-northeast-1.amazonaws.com/haguruma-main-nginx-prod:latest",
       "logConfiguration": {
-        "logDriver": "awslogs",
+        "logDriver": "awsfirelens",
         "options": {
-          "awslogs-group": "/ecs/haguruma-main-service-app/nginx",
-          "awslogs-region": "ap-northeast-1",
-          "awslogs-stream-prefix": "nginx"
-        }
+          "Name": "datadog",
+          "Host": "http-intake.logs.datadoghq.com",
+          "dd_service": "haguruma-nginx",
+          "dd_source": "nginx",
+          "dd_tags": "env:production",
+          "TLS": "on",
+          "provider": "ecs"
+        },
+        "secretOptions": [
+          {
+            "name": "apikey",
+            "valueFrom": "/haguruma/prod/ecs/main/datadog_api_key"
+          }
+        ]
       },
       "name": "nginx",
       "portMappings": [
