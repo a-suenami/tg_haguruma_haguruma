@@ -35,6 +35,9 @@ class UserArea::Alpha::BiographiesController
     sig { params(field: ::String).returns(T::Array[::ContentType::FieldSelectOption]) }
     def categories(field: T.unsafe(nil)); end
 
+    sig { returns(T::Boolean) }
+    def content_authorized?; end
+
     sig { returns(T.nilable(::ContentType)) }
     def content_type; end
 

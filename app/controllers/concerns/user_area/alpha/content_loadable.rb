@@ -29,7 +29,7 @@ module UserArea
 
       included do
         T.bind(self, T.class_of(ActionController::Base))
-        helper_method :content_type, :categories, :current_category
+        helper_method :content_type, :categories, :current_category, :content_authorized?
       end
 
       # Abstract methods provided by ActionController::Base
@@ -61,7 +61,6 @@ module UserArea
         query = UserQueries::ContentEntriesQuery.new
                   .by_content_type(T.unsafe(self.class).source_content_type_key.to_s)
                   .published
-                  .authorized_for(current_user)
                   .ordered_by_published_at
 
         select_options.each do |field, value|
@@ -76,9 +75,13 @@ module UserArea
       sig { params(id: String).returns(ContentEntry) }
       def find_entry(id)
         entry = ContentEntry.find(id)
-        raise ActiveRecord::RecordNotFound unless UserQueries::ContentEntriesQuery.authorized?(entry, user: current_user)
-
+        @content_authorized = UserQueries::ContentEntriesQuery.authorized?(entry, user: current_user)
         entry
+      end
+
+      sig { returns(T::Boolean) }
+      def content_authorized?
+        @content_authorized || false
       end
 
       # Find the single entry for a singleton ContentType (is_collection: false)
