@@ -7,155 +7,123 @@
 
 <main class="main">
   <div class="main-content">
-    <%# Logo Section %>
-    <section cog-privilege-section class="logo-section">
-      <div cog-privilege-section-inner>
-        <div cog-privilege-section-content>
-          <div cog-logo class="privilege-logo">
-            <img src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>">
-          </div>
+    <section class="introduction-container">
+      <div class="introduction">
+        <img class="introduction-logo" src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>">
+
+        <% if @kv_pc_image_url || @kv_sp_image_url %>
+          <picture class="introduction-kv">
+            <% if @kv_sp_image_url %>
+              <source media="(max-width: 767px)" srcset="<%= @kv_sp_image_url %>">
+            <% end %>
+            <img src="<%= @kv_pc_image_url || @kv_sp_image_url %>" alt="<%= current_tenant&.name || '' %>">
+          </picture>
+        <% end %>
+
+        <div class="introduction-description">
+          <p>
+            八代目 尾上菊五郎・六代目 尾上菊之助のファンクラブ『斧琴菊（よきこときく）』です。<br>
+            八代目菊五郎・六代目菊之助を応援することを目的として発足いたしました。
+          </p>
+          <p>
+            「斧琴菊」とは江戸時代に流行した判じ物の文様で、「斧」と「琴」と「菊」で「良きこと聞く」という縁起の良い意味になり、三代目菊五郎が愛用したとも言われています。音羽屋の柄として代々大切にされてきました。<br>
+            会員の皆さまへも「良きこと」をお届けできますよう、吉祥の思いを込めてファンクラブの名称とさせていただきました。
+          </p>
+          <p>
+            会員になられた方には、会員限定特典がございます。<br>
+            ご入会いただき、益々お引き立て賜りますようお願い申し上げます。
+          </p>
         </div>
+
+        <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
+          <span class="action-text">ご入会手続きに進む</span>
+          <span class="action-icon"><%= icon_svg('external-link') %></span>
+        </a>
       </div>
     </section>
 
-    <%# Key Visual Section %>
-    <section cog-privilege-section class="kv-section">
-      <div cog-privilege-section-inner>
-        <div cog-privilege-kv>
-          <div class="kv-pc">
-            <%= inline_svg('privilege-kv-pc.svg', base: :frontend) %>
-          </div>
-          <div class="kv-sp">
-            <%= inline_svg('privilege-kv-sp.svg', base: :frontend) %>
-          </div>
-        </div>
+    <section class="privilege-details-container">
+      <div class="privilege-details">
+        <h2 class="title">会員特典</h2>
+
+        <picture class="card">
+          <% if @kv_sp_image_url %>
+            <source media="(max-width: 767px)" srcset="/images/yokikotokiku/privilege_detail_sp.png">
+          <% end %>
+          <img src="/images/yokikotokiku/privilege_detail_pc.png" alt="<%= current_tenant&.name || '' %>">
+        </picture>
+
+        <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
+          <span class="action-text">ご入会手続きに進む</span>
+          <span class="action-icon"><%= icon_svg('external-link') %></span>
+        </a>
       </div>
     </section>
 
-    <%# Join Button %>
-    <section cog-privilege-section class="join-button-section">
-      <div cog-privilege-section-inner>
-        <div cog-privilege-section-content>
-          <a href="#" cog-button class="privilege-join-button">
-            <span>ファンクラブ入会</span>
+    <section class="fees-container">
+      <div class="fees">
+        <h2 class="title">年会費</h2>
+
+        <picture class="card">
+          <source media="(max-width: 767px)" srcset="/images/yokikotokiku/fees_sp.png">
+          <img src="/images/yokikotokiku/fees_pc.png" alt="<%= current_tenant&.name || '' %>">
+        </picture>
+
+
+        <% # FIXME(#14): URLを動的に設定%>
+        <a href="https://agrain.jp/#inquiry" cog-button primary outlined class="sub-action">
+          <span class="action-text">お問い合わせはこちら</span>
+          <span class="action-icon"><%= icon_svg('chevron') %></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="howto-container">
+      <div class="howto">
+        <h2 class="title">入会方法</h2>
+
+          <picture class="card">
+            <% if @kv_sp_image_url %>
+              <source media="(max-width: 767px)" srcset="/images/yokikotokiku/howto_sp.png">
+            <% end %>
+            <img src="/images/yokikotokiku/howto_pc.png" alt="<%= current_tenant&.name || '' %>">
+          </picture>
+
+          <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
+            <span class="action-text">ご入会手続きに進む</span>
+            <span class="action-icon"><%= icon_svg('external-link') %></span>
           </a>
         </div>
       </div>
     </section>
 
-    <%# Introduction Section %>
-    <section cog-privilege-section class="intro-section">
-      <div cog-privilege-section-inner>
-        <div cog-privilege-section-content>
-          <div cog-privilege-intro>
-            <p>八代目 尾上菊五郎・六代目 尾上菊之助のファンクラブ『斧琴菊（よきこときく）』です。</p>
-            <p>八代目菊五郎・六代目菊之助を応援することを目的として発足いたしました。</p>
-            <br>
-            <p>「斧琴菊」とは江戸時代に流行した判じ物の文様で、「斧」と「琴」と「菊」で「良きこと聞く」という縁起の良い意味になり、三代目菊五郎が愛用したとも言われています。音羽屋の柄として代々大切にされてきました。</p>
-            <p>会員の皆さまへも「良きこと」をお届けできますよう、吉祥の思いを込めてファンクラブの名称とさせていただきました。</p>
-            <br>
-            <p>会員になられた方には、会員限定特典がございます。</p>
-            <p>ご入会いただき、益々お引き立て賜りますようお願い申し上げます。</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <section class="faq-container">
+      <div class="faq">
+        <h2 class="title">よくある質問</h2>
 
-    <%# Benefits Section %>
-    <section cog-privilege-section class="benefits-section">
-      <div cog-privilege-section-inner>
-        <div cog-privilege-section-title>
-          <span>会員特典</span>
-        </div>
-        <div cog-privilege-section-content>
-          <div cog-privilege-benefits-card>
-            <div class="card-pc">
-              <%= inline_svg('privilege-benefits-pc.svg', base: :frontend) %>
-            </div>
-            <div class="card-sp">
-              <%= inline_svg('privilege-benefits-sp.svg', base: :frontend) %>
-            </div>
-          </div>
-
-          <%# Join Button in Benefits Section %>
-          <a href="#" cog-button class="privilege-join-button">
-            <span>ファンクラブ入会</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <%# Fee Section %>
-    <section cog-privilege-section class="fee-section">
-      <div cog-privilege-section-inner>
-        <div cog-privilege-section-title>
-          <span>会費</span>
-        </div>
-        <div cog-privilege-section-content>
-          <div cog-privilege-fee-card>
-            <div class="card-pc">
-              <%= inline_svg('privilege-fee-pc.svg', base: :frontend) %>
-            </div>
-            <div class="card-sp">
-              <%= inline_svg('privilege-fee-sp.svg', base: :frontend) %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <%# How to Join Section %>
-    <section cog-privilege-section class="how-to-join-section">
-      <div cog-privilege-section-inner>
-        <div cog-privilege-section-content>
-          <div cog-privilege-join-card>
-            <div class="card-pc">
-              <%= inline_svg('privilege-howto-pc.svg', base: :frontend) %>
-            </div>
-            <div class="card-sp">
-              <%= inline_svg('privilege-howto-sp.svg', base: :frontend) %>
-            </div>
-          </div>
-
-          <%# Join Button %>
-          <a href="#" cog-button class="privilege-join-button">
-            <span>ファンクラブ入会</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <%# FAQ Section %>
-    <section cog-privilege-section class="faq-section">
-      <div cog-privilege-section-inner>
-        <div cog-privilege-section-title>
-          <span>よくある質問</span>
-        </div>
-        <div cog-privilege-section-content>
-          <div cog-privilege-faq-list data-controller="accordion">
-            <% @faq_entries.each do |entry| %>
-              <% version = published_version(entry) %>
-              <% next if version.nil? %>
-              <% question = render_text_field(field_by_identifier(version, 'title')) %>
-              <% answer = render_richtext_field(field_by_identifier(version, 'answer')) %>
-              <details cog-privilege-faq-item data-accordion-target="item">
-                <summary>
-                  <span class="question"><%= question %></span>
-                  <span class="toggle-icon"></span>
-                </summary>
-                <div class="answer">
+        <div class="faq-list" data-controller="accordion">
+          <% @faq_entries.each do |entry| %>
+            <% version = published_version(entry) %>
+            <% next if version.nil? %>
+            <% question = render_text_field(field_by_identifier(version, 'title')) %>
+            <% answer = render_richtext_field(field_by_identifier(version, 'answer')) %>
+            <details class="faq-item" data-accordion-target="item">
+              <summary>
+                <span class="question">
+                  <span class="label">Q.</span>
+                  <%= question %>
+                </span>
+                <span class="toggle-icon"></span>
+              </summary>
+              <div class="answer">
+                <div class="answer-content">
                   <div cog-rich-content-viewer>
                     <%= raw answer %>
                   </div>
                 </div>
-              </details>
-            <% end %>
-          </div>
-
-          <%# Join Button %>
-          <a href="#" cog-button class="privilege-join-button">
-            <span>ファンクラブ入会</span>
-          </a>
+              </div>
+            </details>
+          <% end %>
         </div>
       </div>
     </section>

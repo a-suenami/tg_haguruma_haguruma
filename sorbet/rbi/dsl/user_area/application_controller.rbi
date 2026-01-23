@@ -27,6 +27,7 @@ class UserArea::ApplicationController
     include ::RulerArea::ApplicationHelper
     include ::SvgHelper
     include ::UserArea::ContentFieldHelper
+    include ::UserArea::ExternalUrlsHelper
     include ::UserArea::SiteSettingsHelper
     include ::ApplicationController::HelperMethods
 

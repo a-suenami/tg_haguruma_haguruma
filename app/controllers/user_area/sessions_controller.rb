@@ -26,7 +26,8 @@ module UserArea
       session[:oauth_state] = state
 
       # Redirect to OAuth authorization endpoint
-      redirect_to oauth_authorization_url(oauth_provider, state:), allow_other_host: true
+      signup = params[:signup].present?
+      redirect_to oauth_authorization_url(oauth_provider, state:, signup:), allow_other_host: true
     end
 
     # GET /auth/callback - OAuth callback
@@ -99,8 +100,19 @@ module UserArea
     # DELETE /logout
     sig { void }
     def destroy
+      oauth_provider = current_tenant&.oauth_provider
+
+      # Clear local session first
       reset_session
-      redirect_to user_area_login_path, notice: t('user_area.sessions.logged_out_successfully')
+
+      # Redirect to IDP logout to clear IDP session
+      if oauth_provider.present?
+        redirect_to idp_logout_url(oauth_provider), allow_other_host: true
+        return
+      end
+
+      # Fallback: no OAuth provider configured
+      redirect_to user_area_root_path, notice: t('user_area.sessions.logged_out_successfully')
     end
 
     # GET /auth/failure
@@ -141,19 +153,35 @@ module UserArea
       state_param.present? && stored_state.present? && ActiveSupport::SecurityUtils.secure_compare(state_param.to_s, stored_state.to_s)
     end
 
-    sig { params(oauth_provider: OauthProvider, state: String).returns(String) }
-    def oauth_authorization_url(oauth_provider, state:)
+    sig { params(oauth_provider: OauthProvider, state: String, signup: T::Boolean).returns(String) }
+    def oauth_authorization_url(oauth_provider, state:, signup: false)
       endpoint_base = oauth_provider.endpoint_base.chomp('/')
       client_id = oauth_provider.client_id
       redirect_uri = CGI.escape(user_area_callback_url)
       scopes = oauth_provider.scopes.presence || 'openid profile email'
 
-      "#{endpoint_base}/oauth/authorize?client_id=#{client_id}&redirect_uri=#{redirect_uri}&response_type=code&scope=#{CGI.escape(scopes)}&state=#{state}"
+      url = "#{endpoint_base}/oauth/authorize?client_id=#{client_id}&redirect_uri=#{redirect_uri}&response_type=code&scope=#{CGI.escape(scopes)}&state=#{state}"
+      url += '&on_no_session=sign_up' if signup
+      url
     end
 
     sig { returns(String) }
     def user_area_callback_url
       url_for(action: :callback, controller: 'user_area/sessions', only_path: false)
+    end
+
+    sig { params(oauth_provider: OauthProvider).returns(String) }
+    def idp_logout_url(oauth_provider)
+      endpoint_base = oauth_provider.endpoint_base.chomp('/')
+      client_id = oauth_provider.client_id
+      return_to = CGI.escape(user_area_root_url)
+
+      "#{endpoint_base}/logout?client_id=#{client_id}&returnTo=#{return_to}"
+    end
+
+    sig { returns(String) }
+    def user_area_root_url
+      url_for(action: :index, controller: 'user_area/alpha/root', only_path: false)
     end
   end
 end

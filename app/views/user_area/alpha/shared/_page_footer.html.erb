@@ -6,7 +6,9 @@
       <% current_site_settings.ordered_footer_main_links(device: :pc).each do |link| %>
         <% next if link['is_logout'] && !user_signed_in? %>
         <% if link['is_logout'] %>
-          <%= link_to link['label'], link['url'], method: :delete, "cog-footer-menu-item": "" %>
+          <%= form_with url: user_area_logout_path, method: :delete, data: { turbo: false }, class: 'logout-form-inline' do %>
+            <button type="submit" cog-footer-menu-item><%= link['label'] %></button>
+          <% end %>
         <% else %>
           <a cog-footer-menu-item href="<%= link['url'] %>"><%= link['label'] %></a>
         <% end %>
@@ -29,7 +31,9 @@
       <% current_site_settings.ordered_footer_main_links(device: :sp).each do |link| %>
         <% next if link['is_logout'] && !user_signed_in? %>
         <% if link['is_logout'] %>
-          <%= link_to link['label'], link['url'], method: :delete, "cog-footer-menu-item": "" %>
+          <%= form_with url: user_area_logout_path, method: :delete, data: { turbo: false }, class: 'logout-form-inline' do %>
+            <button type="submit" cog-footer-menu-item><%= link['label'] %></button>
+          <% end %>
         <% else %>
           <a cog-footer-menu-item href="<%= link['url'] %>"><%= link['label'] %></a>
         <% end %>
@@ -47,11 +51,11 @@
   </div>
 
   <div cog-sns-items>
-    <a cog-sns-item href="#" target="_blank" rel="noopener"><%= icon_svg('sns-x') %></a>
-    <a cog-sns-item href="#" target="_blank" rel="noopener"><%= icon_svg('sns-instagram') %></a>
+    <a cog-sns-item href="<%= sns_x_url %>" target="_blank" rel="noopener"><%= icon_svg('sns-x') %></a>
+    <a cog-sns-item href="<%= sns_instagram_url %>" target="_blank" rel="noopener"><%= icon_svg('sns-instagram') %></a>
   </div>
 
   <div cog-copyright>
-    &copy; <%= Time.current.year %> <%= current_tenant&.name || 'Fan Club' %>
+    &copy; Office TERAJIMA Inc.
   </div>
 </footer>

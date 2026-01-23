@@ -2,7 +2,7 @@
 
 [cog-sns-item] {
   --cog-sns-item-size: 40px;
-  --cog-sns-icon-color: var(--theme-button-secondary-border-color, #004678);
+  --cog-sns-icon-color: var(--theme-button-primary-background-color, #004678);
 
   display: inline-flex;
   align-items: center;
@@ -10,12 +10,13 @@
   width: var(--cog-sns-item-size);
   height: var(--cog-sns-item-size);
   text-decoration: none;
-  transition:
-    transform 120ms cubic-bezier(0, 0, 0.2, 1)  ,
-    opacity 150ms linear;
-  overflow: hidden;
   color: var(--cog-sns-icon-color);
   padding: var(--gearbox-spacing-8);
+  svg {
+    width: 24px;
+    height: 24px;
+    transition: fill .2s ease-out;
+  }
 
   &:active {
     transform: scale(0.95);
@@ -27,8 +28,8 @@
   }
 
   @media (pointer: fine) {
-    &:hover {
-      opacity: 0.9;
+    &:hover svg {
+      fill: var(--theme-button-secondary-background-color);
     }
   }
 }

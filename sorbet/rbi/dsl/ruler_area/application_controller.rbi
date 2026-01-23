@@ -30,6 +30,7 @@ class RulerArea::ApplicationController
     include ::LexicalHelper
     include ::SvgHelper
     include ::UserArea::ContentFieldHelper
+    include ::UserArea::ExternalUrlsHelper
     include ::UserArea::SiteSettingsHelper
 
     sig { returns(T.untyped) }

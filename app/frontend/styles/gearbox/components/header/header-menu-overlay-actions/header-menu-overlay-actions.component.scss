@@ -1,7 +1,108 @@
+@use 'shared/theme/breakpoints/breakpoints' as breakpoints;
+
 [cog-header-menu-overlay-actions] {
   display: flex;
-  gap: var(--gearbox-spacing-8);
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
+  padding-top: 16px;
+
+  .primary-action {
+      width: 336px;
+      padding-block: 12px;
+      margin-bottom: 10px;
+      flex: 1;
+      position: relative;
+      color: var(--theme-button-secondary-text-color);
+      transition: transform .2s ease-out;
+      isolation: isolate;
+
+      &::after {
+        content: '';
+        z-index: -1;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 100px;
+        width: 100%;
+        height: 100%;
+        background: var(--theme-button-secondary-background-color);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+        transition: transform .2s ease-out;
+      }
+
+      .action-text {
+        flex: 1;
+        text-align: center;
+        font-size: 22px;
+        font-weight: var(--gearbox-font-weight-bold);
+        transition: transform .2s ease-out;
+      }
+
+      .action-icon {
+        position: absolute;
+        right: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform .2s ease-out, opacity .2s ease-out;
+        display: flex;
+        align-items: center;
+        width: 28px;
+        aspect-ratio: 1/1;
+        opacity: 0;
+      }
+
+      @media (any-hover: hover) {
+        &:hover {
+          --header-transform-x: 20px;
+          opacity: 1;
+          box-shadow: none;
+
+          &::after {
+            box-shadow: none;
+            transform: translate(-50%, -50%) scale(1.05);
+          }
+
+          & > .action-text {
+            opacity: 1;
+          }
+          & > .action-icon {
+            transform: translateY(-50%) translateX(8px);
+            transition: transform .2s ease-out, opacity .2s ease-out;
+            opacity: 1;
+          }
+        }
+      }
+      @media (any-hover: none) {
+        --header-transform-x: 20px;
+        opacity: 1;
+        & > .action-text {
+          opacity: 1;
+        }
+        & > .action-icon {
+          transform: translateY(-50%) translateX(8px);
+          transition: transform .2s ease-out, opacity .05s ease-out;
+          opacity: 1;
+        }
+      }
+
+    @include breakpoints.media-down(sm) {
+      width: 300px;
+
+      .action-text {
+        font-size: 18px;
+      }
+
+      .action-icon {
+        width: 24px;
+      }
+    }
+  }
+
+  .secondary-action {
+    font-size: 14px;
+    font-weight: var(--gearbox-font-weight-bold);
+  }
 }
