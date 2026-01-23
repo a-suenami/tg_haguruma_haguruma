@@ -38,12 +38,12 @@ create-deploy-merge-request:
     GITLAB_API_PRIVATE_TOKEN: $CI_JOB_TOKEN
   script:
     - gem install gitlab
-    - >
-      gitlab create_merge_request $CI_PROJECT_ID "" '{
-        "title": "Build staging",
-        "source_branch": "main",
-        "target_branch": "deploy-staging"
-      }' || true
+    # - >
+    #   gitlab create_merge_request $CI_PROJECT_ID "" '{
+    #     "title": "Build staging",
+    #     "source_branch": "main",
+    #     "target_branch": "deploy-staging"
+    #   }' || true
     - >
       gitlab create_merge_request $CI_PROJECT_ID "" '{
         "title": "Draft: Build production",
@@ -281,6 +281,7 @@ assets:precompile:
       - public/vite
       - public/assets
   only:
+    - main
     - /^deploy-.*$/
   except:
     - schedules
@@ -311,7 +312,7 @@ build:app:staging:
     - docker
     - x86_64-linux
   only:
-    - deploy-staging
+    - main
   except:
     - schedules
 
@@ -356,7 +357,7 @@ build:app:production:
   before_script:
     - STS=`aws sts assume-role --role-arn $AWS_ASSUME_ROLE_ARN --role-session-name ecspresso-$CI_PROJECT_ID-$CI_JOB_ID`;export AWS_ACCESS_KEY_ID=`echo "${STS}" | jq -r '.Credentials.AccessKeyId'`;export AWS_SECRET_ACCESS_KEY=`echo "${STS}" | jq -r '.Credentials.SecretAccessKey'`;export AWS_SESSION_TOKEN=`echo "${STS}" | jq -r '.Credentials.SessionToken'`
   only:
-    - deploy-staging
+    - main
   except:
     - schedules
 
@@ -371,7 +372,6 @@ build:app:production:
   stage: pre-deploy
   script:
     - ecspresso deploy --dry-run --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/app/config.yaml
-  when: manual
 
 🔧 deploy:migration:staging:
   <<: *deploy-staging-base

@@ -22,6 +22,11 @@ class ContentType::FieldSelect < ApplicationRecord
            dependent: :destroy,
            inverse_of: :field_select
 
+  has_many :available_options,
+           -> { enabled.order(:position) },
+           class_name: 'ContentType::FieldSelectOption',
+           inverse_of: :field_select
+
   enum :display_format, DISPLAY_FORMATS
 
   accepts_nested_attributes_for :options, allow_destroy: true

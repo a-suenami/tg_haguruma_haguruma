@@ -25,36 +25,27 @@
   <% unless user_signed_in? %>
     <section cog-landing-introduction>
       <div class="introduction-content">
-        <%# FIXME(#14): width/heightを動的に設定 %>
-        <img class="logo" src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>" width=104 height=53>
-
-        <div class="description">
-          <p>
-            八代目 尾上菊五郎・六代目 尾上菊之助のファンクラブ『斧琴菊（よきこときく）』です。<br>
-            八代目菊五郎・六代目菊之助を応援することを目的として発足いたしました。
-          </p>
-          <p>
-            「斧琴菊」とは江戸時代に流行した判じ物の文様で、「斧」と「琴」と「菊」で「良きこと聞く」という縁起の良い意味になり、三代目菊五郎が愛用したとも言われています。音羽屋の柄として代々大切にされてきました。<br>
-            会員の皆さまへも「良きこと」をお届けできますよう、吉祥の思いを込めてファンクラブの名称とさせていただきました。
-          </p>
-          <p>
-            会員になられた方には、会員限定特典がございます。<br>
-            ご入会いただき、益々お引き立て賜りますようお願い申し上げます。
-          </p>
-        </div>
-
         <a href="<%= user_area_privilege_path %>" class="primary-action">
           <span class="action-text">入会のご案内</span>
           <span class="action-icon"><%= icon_svg('right-arrow') %></span>
         </a>
-        <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
-          既にご入会済みの方はこちら
-        </a>
+        <% # FIXME(#20) %>
+        <% if false %>
+          <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
+            既にご入会済みの方はこちら
+          </a>
+        <% else %>
+          <p class="pre-open-notice">
+            2026/2/12 12:00より受付を開始いたします。<br/>
+            受付開始までお待ちください
+          </p>
+        <% end %>
       </div>
     </section>
   <% end %>
 
   <div class="main-content">
+
     <% if @news_entries.present? %>
       <section cog-landing-section>
         <div cog-landing-section-title>
@@ -94,20 +85,23 @@
       </section>
     <% end %>
 
-    <% if @blog_entries.present? %>
-      <%= turbo_frame_tag "blog-section" do %>
-        <section cog-landing-section>
-          <div cog-landing-section-title>
-            <div cog-feature-title-image feature="blog">
-              <div class="title-image"><%= feature_label(:blog) %></div>
-            </div>
+    <% if @blog_categories.present? || @blog_entries.present? %>
+      <section cog-landing-section>
+        <div cog-landing-section-title>
+          <div cog-feature-title-image feature="blog">
+            <div class="title-image"><%= feature_label(:blog) %></div>
           </div>
+        </div>
+        <% if @blog_categories.present? %>
           <div cog-landing-section-actions>
             <%= render 'user_area/alpha/shared/content/category_tabs',
                       categories: @blog_categories,
                       current_category: current_blog_category,
-                      path_helper: ->(cat) { user_area_root_path(blog_category: cat) } %>
+                      path_helper: ->(cat) { user_area_root_path(blog_category: cat) },
+                      frame_id: "blog-section" %>
           </div>
+        <% end %>
+        <%= turbo_frame_tag "blog-section" do %>
           <div cog-landing-section-content>
             <% if @blog_entries.present? %>
               <div cog-blog-list>
@@ -140,8 +134,8 @@
               </div>
             <% end %>
           </div>
-        </section>
-      <% end %>
+        <% end %>
+      </section>
     <% end %>
 
   </div>

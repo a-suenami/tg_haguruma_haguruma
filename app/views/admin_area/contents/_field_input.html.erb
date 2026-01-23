@@ -152,7 +152,7 @@
     <%
       select_config = field.select
       display_format = select_config&.display_format || 'dropdown'
-      options = select_config&.options&.order(:position) || []
+      options = select_config&.available_options || []
       # value is array of selected option IDs
       selected_ids = Array(value).map(&:to_i)
     %>

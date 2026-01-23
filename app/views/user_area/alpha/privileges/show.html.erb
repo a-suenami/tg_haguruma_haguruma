@@ -9,16 +9,12 @@
   <div class="main-content">
     <section class="introduction-container">
       <div class="introduction">
-        <img class="introduction-logo" src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>">
+        <img class="introduction-logo" src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>" width="196" height="100">
 
-        <% if @kv_pc_image_url || @kv_sp_image_url %>
-          <picture class="introduction-kv">
-            <% if @kv_sp_image_url %>
-              <source media="(max-width: 767px)" srcset="<%= @kv_sp_image_url %>">
-            <% end %>
-            <img src="<%= @kv_pc_image_url || @kv_sp_image_url %>" alt="<%= current_tenant&.name || '' %>">
-          </picture>
-        <% end %>
+        <picture class="introduction-kv">
+          <source media="(max-width: 767px)" srcset="/images/yokikotokiku/kv_sp.png" width="328" height="353">
+          <img src="/images/yokikotokiku/kv_pc.png" alt="<%= current_tenant&.name || '' %>" width="700" height="291">
+        </picture>
 
         <div class="introduction-description">
           <p>
@@ -35,10 +31,24 @@
           </p>
         </div>
 
-        <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
-          <span class="action-text">ご入会手続きに進む</span>
-          <span class="action-icon"><%= icon_svg('external-link') %></span>
-        </a>
+        <% # FIXME(#20) %>
+        <% if false %>
+          <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
+            <span class="action-text">ご入会手続きに進む</span>
+            <span class="action-icon"><%= icon_svg('external-link') %></span>
+          </a>
+        <% else %>
+          <div class="pre-open">
+            <div class="action">
+              <span class="action-text">ご入会手続きに進む</span>
+              <span class="action-icon"><%= icon_svg('external-link') %></span>
+            </div>
+            <p class="notice">
+              2026/2/12 12:00より受付を開始いたします。<br/>
+              受付開始までお待ちください
+            </p>
+          </div>
+        <% end %>
       </div>
     </section>
 
@@ -47,16 +57,28 @@
         <h2 class="title">会員特典</h2>
 
         <picture class="card">
-          <% if @kv_sp_image_url %>
-            <source media="(max-width: 767px)" srcset="/images/yokikotokiku/privilege_detail_sp.png">
-          <% end %>
-          <img src="/images/yokikotokiku/privilege_detail_pc.png" alt="<%= current_tenant&.name || '' %>">
+          <source media="(max-width: 767px)" srcset="/images/yokikotokiku/privilege_detail_sp.png" width="358" height="462">
+          <img src="/images/yokikotokiku/privilege_detail_pc.png" width="900" height="440">
         </picture>
 
-        <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
-          <span class="action-text">ご入会手続きに進む</span>
-          <span class="action-icon"><%= icon_svg('external-link') %></span>
-        </a>
+        <% # FIXME(#20) %>
+        <% if false %>
+          <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
+            <span class="action-text">ご入会手続きに進む</span>
+            <span class="action-icon"><%= icon_svg('external-link') %></span>
+          </a>
+        <% else %>
+          <div class="pre-open">
+            <div class="action">
+              <span class="action-text">ご入会手続きに進む</span>
+              <span class="action-icon"><%= icon_svg('external-link') %></span>
+            </div>
+            <p class="notice">
+              2026/2/12 12:00より受付を開始いたします。<br/>
+              受付開始までお待ちください
+            </p>
+          </div>
+        <% end %>
       </div>
     </section>
 
@@ -65,8 +87,8 @@
         <h2 class="title">年会費</h2>
 
         <picture class="card">
-          <source media="(max-width: 767px)" srcset="/images/yokikotokiku/fees_sp.png">
-          <img src="/images/yokikotokiku/fees_pc.png" alt="<%= current_tenant&.name || '' %>">
+          <source media="(max-width: 767px)" srcset="/images/yokikotokiku/fees_sp.png" width="358" height="1337">
+          <img src="/images/yokikotokiku/fees_pc.png" width="900" height="658">
         </picture>
 
 
@@ -83,16 +105,28 @@
         <h2 class="title">入会方法</h2>
 
           <picture class="card">
-            <% if @kv_sp_image_url %>
-              <source media="(max-width: 767px)" srcset="/images/yokikotokiku/howto_sp.png">
-            <% end %>
-            <img src="/images/yokikotokiku/howto_pc.png" alt="<%= current_tenant&.name || '' %>">
+            <source media="(max-width: 767px)" srcset="/images/yokikotokiku/howto_sp.png" width="358" height="788">
+            <img src="/images/yokikotokiku/howto_pc.png" width="900" height="372">
           </picture>
 
-          <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
-            <span class="action-text">ご入会手続きに進む</span>
-            <span class="action-icon"><%= icon_svg('external-link') %></span>
-          </a>
+          <% # FIXME(#20) %>
+          <% if false %>
+            <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
+              <span class="action-text">ご入会手続きに進む</span>
+              <span class="action-icon"><%= icon_svg('external-link') %></span>
+            </a>
+          <% else %>
+            <div class="pre-open">
+              <div class="action">
+                <span class="action-text">ご入会手続きに進む</span>
+                <span class="action-icon"><%= icon_svg('external-link') %></span>
+              </div>
+              <p class="notice">
+                2026/2/12 12:00より受付を開始いたします。<br/>
+                受付開始までお待ちください
+              </p>
+            </div>
+          <% end %>
         </div>
       </div>
     </section>
