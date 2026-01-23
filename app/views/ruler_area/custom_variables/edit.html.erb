@@ -9,14 +9,16 @@
   <h3>カスタム変数の編集</h3>
 </div>
 
-<%= form_with url: ruler_area_tenant_custom_variable_path(@tenant, @custom_variable.id), method: :patch, local: true do |form| %>
+<%= form_with model: @custom_variable, url: ruler_area_tenant_custom_variable_path(@tenant, @custom_variable), method: :patch, local: true do |form| %>
+  <%= render 'ruler_area/shared/form_error', target: @custom_variable %>
+
   <dl class="uk-description-list uk-margin">
     <dt>変数キー</dt>
-    <dd><code><%= @custom_variable.key %></code></dd>
+    <dd><code><%= @custom_variable.unique_name %></code></dd>
 
     <dt>タイプ</dt>
     <dd>
-      <% case @custom_variable.type %>
+      <% case @custom_variable.variable_type %>
       <% when 'boolean' %>
         <span class="uk-label uk-label-primary">フラグ</span>
       <% when 'datetime' %>
@@ -31,7 +33,6 @@
     <label class="uk-form-label">説明</label>
     <div class="uk-form-controls">
       <%= form.text_field :description,
-          value: @custom_variable.description,
           class: 'uk-input',
           placeholder: 'この変数の用途を記入' %>
     </div>

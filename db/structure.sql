@@ -1,4 +1,4 @@
-\restrict rby1dEJXIz9KhTWykgAHS95MbfzNpzYMcRqAxw2M0iEROrb3vLmfMgvEZOTM0Qa
+\restrict wYKYerOl20vG8HMj21M4LQwtQAmO5qquIW5eio75KbndhzVLqDjoc1BddgnNXhW
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -696,6 +696,36 @@ CREATE TABLE public.session_tokens (
 
 
 --
+-- Name: site_custom_variables; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.site_custom_variables (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id character varying NOT NULL,
+    unique_name character varying NOT NULL,
+    variable_type smallint NOT NULL,
+    description text DEFAULT ''::text NOT NULL,
+    boolean_value boolean,
+    datetime_value timestamp(6) without time zone,
+    text_value text,
+    archived_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT chk_site_custom_variables_boolean_consistency CHECK (((variable_type <> 1) OR ((boolean_value IS NOT NULL) AND (datetime_value IS NULL) AND (text_value IS NULL)))),
+    CONSTRAINT chk_site_custom_variables_datetime_consistency CHECK (((variable_type <> 2) OR ((datetime_value IS NOT NULL) AND (boolean_value IS NULL) AND (text_value IS NULL)))),
+    CONSTRAINT chk_site_custom_variables_text_consistency CHECK (((variable_type <> 3) OR ((text_value IS NOT NULL) AND (boolean_value IS NULL) AND (datetime_value IS NULL)))),
+    CONSTRAINT chk_site_custom_variables_variable_type CHECK ((variable_type = ANY (ARRAY[1, 2, 3])))
+);
+
+
+--
+-- Name: COLUMN site_custom_variables.variable_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.site_custom_variables.variable_type IS '1: boolean, 2: datetime, 3: text';
+
+
+--
 -- Name: tenant_site_settings; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1112,6 +1142,14 @@ ALTER TABLE ONLY public.session_tokens
 
 
 --
+-- Name: site_custom_variables site_custom_variables_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.site_custom_variables
+    ADD CONSTRAINT site_custom_variables_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tenant_site_settings tenant_site_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1261,6 +1299,20 @@ CREATE INDEX idx_session_tokens_updated_at ON public.session_tokens USING btree 
 --
 
 CREATE INDEX idx_session_tokens_user_id ON public.session_tokens USING btree (user_id);
+
+
+--
+-- Name: idx_site_custom_variables_tenant_archived; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_site_custom_variables_tenant_archived ON public.site_custom_variables USING btree (tenant_id, archived_at);
+
+
+--
+-- Name: idx_site_custom_variables_unique_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_site_custom_variables_unique_name ON public.site_custom_variables USING btree (tenant_id, unique_name) WHERE (archived_at IS NULL);
 
 
 --
@@ -1644,6 +1696,14 @@ ALTER TABLE ONLY public.content_type_field_select_options
 
 
 --
+-- Name: site_custom_variables fk_rails_28fd5e0209; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.site_custom_variables
+    ADD CONSTRAINT fk_rails_28fd5e0209 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: user_tags fk_rails_2f428c3efb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1839,7 +1899,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict rby1dEJXIz9KhTWykgAHS95MbfzNpzYMcRqAxw2M0iEROrb3vLmfMgvEZOTM0Qa
+\unrestrict wYKYerOl20vG8HMj21M4LQwtQAmO5qquIW5eio75KbndhzVLqDjoc1BddgnNXhW
 
 SET search_path TO "$user", public;
 

@@ -9,12 +9,13 @@
   <h3>カスタム変数の新規作成</h3>
 </div>
 
-<%= form_with url: ruler_area_tenant_custom_variables_path(@tenant), method: :post, local: true do |form| %>
+<%= form_with model: @custom_variable, url: ruler_area_tenant_custom_variables_path(@tenant), method: :post, local: true do |form| %>
+  <%= render 'ruler_area/shared/form_error', target: @custom_variable %>
+
   <div class="uk-margin">
     <label class="uk-form-label">変数キー <span class="uk-text-danger">*</span></label>
     <div class="uk-form-controls">
-      <%= form.text_field :key,
-          value: @custom_variable.key,
+      <%= form.text_field :unique_name,
           class: 'uk-input',
           placeholder: 'feature_flag_name',
           pattern: '[a-z_][a-z0-9_]*',
@@ -27,12 +28,12 @@
   <div class="uk-margin">
     <label class="uk-form-label">タイプ <span class="uk-text-danger">*</span></label>
     <div class="uk-form-controls">
-      <%= form.select :type,
+      <%= form.select :variable_type,
           options_for_select([
             ['フラグ（真偽値）', 'boolean'],
             ['日時', 'datetime'],
             ['テキスト', 'text']
-          ], @custom_variable.type),
+          ], @custom_variable.variable_type || 'boolean'),
           {},
           class: 'uk-select' %>
     </div>
@@ -42,7 +43,6 @@
     <label class="uk-form-label">説明</label>
     <div class="uk-form-controls">
       <%= form.text_field :description,
-          value: @custom_variable.description,
           class: 'uk-input',
           placeholder: 'この変数の用途を記入' %>
     </div>

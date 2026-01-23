@@ -31,9 +31,9 @@
     <% else %>
       <% @custom_variables.each do |var| %>
         <tr>
-          <td><code><%= var[:key] %></code></td>
+          <td><code><%= var.unique_name %></code></td>
           <td>
-            <% case var[:type] %>
+            <% case var.variable_type %>
             <% when 'boolean' %>
               <span class="uk-label uk-label-primary">フラグ</span>
             <% when 'datetime' %>
@@ -43,34 +43,34 @@
             <% end %>
           </td>
           <td>
-            <% case var[:type] %>
+            <% case var.variable_type %>
             <% when 'boolean' %>
-              <% if var[:value] %>
+              <% if var.boolean_value %>
                 <span uk-icon="icon: check" style="color: green;"></span> 有効
               <% else %>
                 <span uk-icon="icon: close" style="color: red;"></span> 無効
               <% end %>
             <% when 'datetime' %>
-              <%= var[:value].present? ? Time.zone.parse(var[:value])&.strftime('%Y/%m/%d %H:%M') : '-' %>
+              <%= var.datetime_value.present? ? var.datetime_value.strftime('%Y/%m/%d %H:%M') : '-' %>
             <% when 'text' %>
-              <%= var[:value].present? ? truncate(var[:value], length: 30) : '-' %>
+              <%= var.text_value.present? ? truncate(var.text_value, length: 30) : '-' %>
             <% end %>
           </td>
-          <td class="uk-text-muted"><%= var[:description] %></td>
+          <td class="uk-text-muted"><%= var.description %></td>
           <td>
             <div class="uk-flex uk-flex-right uk-flex-middle">
-              <%= link_to '値を設定', edit_value_ruler_area_tenant_custom_variable_path(@tenant, var[:id]), class: 'uk-button uk-button-small uk-button-primary uk-margin-small-right' %>
+              <%= link_to '値を設定', edit_value_ruler_area_tenant_custom_variable_path(@tenant, var), class: 'uk-button uk-button-small uk-button-primary uk-margin-small-right' %>
               <div class="uk-inline">
                 <a href="#" uk-icon="icon: more-vertical"></a>
                 <div uk-dropdown="mode: click; pos: bottom-right">
                   <ul class="uk-nav uk-dropdown-nav">
                     <li>
-                      <%= link_to edit_ruler_area_tenant_custom_variable_path(@tenant, var[:id]) do %>
+                      <%= link_to edit_ruler_area_tenant_custom_variable_path(@tenant, var) do %>
                         <span uk-icon="icon: pencil; ratio: 0.8"></span> 編集
                       <% end %>
                     </li>
                     <li>
-                      <%= link_to ruler_area_tenant_custom_variable_path(@tenant, var[:id]), data: { turbo_method: :delete, turbo_confirm: 'サイトで使われていないことを確認してください。アーカイブしますか？' }, style: 'color: #f0506e;' do %>
+                      <%= link_to ruler_area_tenant_custom_variable_path(@tenant, var), data: { turbo_method: :delete, turbo_confirm: 'サイトで使われていないことを確認してください。アーカイブしますか？' }, style: 'color: #f0506e;' do %>
                         <span uk-icon="icon: trash; ratio: 0.8"></span> アーカイブ
                       <% end %>
                     </li>

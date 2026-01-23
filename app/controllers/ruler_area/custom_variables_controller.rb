@@ -9,52 +9,60 @@ module RulerArea
     before_action :set_custom_variable, only: %i[edit update destroy edit_value update_value]
 
     def index
-      # TODO: 実際のモデルに置き換え。今はUIプレビュー用のダミーデータ
-      @custom_variables = dummy_variables
+      @custom_variables = SiteCustomVariable.active.order(:created_at)
     end
 
     def new
-      @custom_variable = OpenStruct.new(key: '', type: 'boolean', description: '')
+      @custom_variable = SiteCustomVariable.new
     end
 
     def create
-      # TODO: 実際の保存処理を実装
-      redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: 'カスタム変数を追加しました。'
+      @custom_variable = SiteCustomVariable.new(custom_variable_params)
+      if @custom_variable.save
+        redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: 'カスタム変数を作成しました。'
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
 
     def edit; end
 
     def update
-      # TODO: 実際の保存処理を実装
-      redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: 'カスタム変数を更新しました。'
+      if @custom_variable.update(custom_variable_update_params)
+        redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: 'カスタム変数を更新しました。'
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
 
     def destroy
-      # TODO: 実際のアーカイブ処理を実装
+      @custom_variable.archive!
       redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: 'カスタム変数をアーカイブしました。'
     end
 
     def edit_value; end
 
     def update_value
-      # TODO: 実際の保存処理を実装
-      redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: '値を更新しました。'
+      @custom_variable.value = params.dig(:custom_variable, :value)
+      if @custom_variable.save
+        redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: '値を更新しました。'
+      else
+        render :edit_value, status: :unprocessable_entity
+      end
     end
 
     private
 
     def set_custom_variable
-      # TODO: 実際のモデルに置き換え
-      @custom_variable = dummy_variables.find { |v| v[:id].to_s == params[:id] }
-      @custom_variable = OpenStruct.new(@custom_variable) if @custom_variable
+      @custom_variable = SiteCustomVariable.find(params[:id])
     end
 
-    def dummy_variables
-      [
-        { id: 1, key: 'enable_new_feature', type: 'boolean', value: true, description: '新機能を有効にする' },
-        { id: 2, key: 'campaign_end_date', type: 'datetime', value: '2025-12-31T23:59', description: 'キャンペーン終了日時' },
-        { id: 3, key: 'announcement_message', type: 'text', value: 'メンテナンスのお知らせ', description: 'お知らせメッセージ' },
-      ]
+    def custom_variable_params
+      params.require(:custom_variable).permit(:unique_name, :variable_type, :description)
+    end
+
+    def custom_variable_update_params
+      params.require(:custom_variable).permit(:description)
     end
   end
 end

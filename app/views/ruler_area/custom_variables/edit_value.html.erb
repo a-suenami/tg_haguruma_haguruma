@@ -9,14 +9,16 @@
   <h3>値を設定</h3>
 </div>
 
-<%= form_with url: update_value_ruler_area_tenant_custom_variable_path(@tenant, @custom_variable.id), method: :patch, local: true do |form| %>
+<%= form_with model: @custom_variable, url: update_value_ruler_area_tenant_custom_variable_path(@tenant, @custom_variable), method: :patch, local: true do |form| %>
+  <%= render 'ruler_area/shared/form_error', target: @custom_variable %>
+
   <dl class="uk-description-list uk-margin">
     <dt>変数キー</dt>
-    <dd><code><%= @custom_variable.key %></code></dd>
+    <dd><code><%= @custom_variable.unique_name %></code></dd>
 
     <dt>タイプ</dt>
     <dd>
-      <% case @custom_variable.type %>
+      <% case @custom_variable.variable_type %>
       <% when 'boolean' %>
         <span class="uk-label uk-label-primary">フラグ</span>
       <% when 'datetime' %>
@@ -35,27 +37,27 @@
   <div class="uk-margin">
     <label class="uk-form-label">値</label>
     <div class="uk-form-controls">
-      <% case @custom_variable.type %>
+      <% case @custom_variable.variable_type %>
       <% when 'boolean' %>
         <div class="uk-margin-small">
           <label>
-            <%= form.radio_button :value, 'true', checked: @custom_variable.value == true, class: 'uk-radio' %>
+            <%= form.radio_button :value, 'true', checked: @custom_variable.boolean_value == true, class: 'uk-radio' %>
             有効
           </label>
         </div>
         <div class="uk-margin-small">
           <label>
-            <%= form.radio_button :value, 'false', checked: @custom_variable.value != true, class: 'uk-radio' %>
+            <%= form.radio_button :value, 'false', checked: @custom_variable.boolean_value != true, class: 'uk-radio' %>
             無効
           </label>
         </div>
       <% when 'datetime' %>
         <%= form.datetime_field :value,
-            value: @custom_variable.value,
+            value: @custom_variable.datetime_value&.strftime('%Y-%m-%dT%H:%M'),
             class: 'uk-input' %>
       <% when 'text' %>
         <%= form.text_area :value,
-            value: @custom_variable.value,
+            value: @custom_variable.text_value,
             class: 'uk-textarea',
             rows: 4,
             placeholder: 'テキストを入力' %>

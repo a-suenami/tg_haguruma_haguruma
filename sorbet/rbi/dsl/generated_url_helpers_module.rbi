@@ -160,6 +160,9 @@ module GeneratedUrlHelpersModule
   def edit_ruler_area_tenant_authorization_tag_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_custom_variable_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_oauth_provider_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -173,6 +176,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def edit_user_area_profile_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_value_ruler_area_tenant_custom_variable_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_admin_area_category_url(*args); end
@@ -206,6 +212,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_content_type_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_tenant_custom_variable_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_oauth_provider_url(*args); end
@@ -346,6 +355,12 @@ module GeneratedUrlHelpersModule
   def ruler_area_tenant_content_types_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_custom_variable_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_custom_variables_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_provider_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -401,6 +416,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def update_rails_disk_service_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def update_value_ruler_area_tenant_custom_variable_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def upload_admin_area_media_url(*args); end
