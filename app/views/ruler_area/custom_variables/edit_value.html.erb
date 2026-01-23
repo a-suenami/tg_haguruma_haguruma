@@ -1,0 +1,70 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><%= link_to 'カスタム変数', ruler_area_tenant_custom_variables_path(@tenant) %></li>
+  <li><span>値を設定</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>値を設定</h3>
+</div>
+
+<%= form_with url: update_value_ruler_area_tenant_custom_variable_path(@tenant, @custom_variable.id), method: :patch, local: true do |form| %>
+  <dl class="uk-description-list uk-margin">
+    <dt>変数キー</dt>
+    <dd><code><%= @custom_variable.key %></code></dd>
+
+    <dt>タイプ</dt>
+    <dd>
+      <% case @custom_variable.type %>
+      <% when 'boolean' %>
+        <span class="uk-label uk-label-primary">フラグ</span>
+      <% when 'datetime' %>
+        <span class="uk-label uk-label-warning">日時</span>
+      <% when 'text' %>
+        <span class="uk-label uk-label-success">テキスト</span>
+      <% end %>
+    </dd>
+
+    <% if @custom_variable.description.present? %>
+      <dt>説明</dt>
+      <dd class="uk-text-muted"><%= @custom_variable.description %></dd>
+    <% end %>
+  </dl>
+
+  <div class="uk-margin">
+    <label class="uk-form-label">値</label>
+    <div class="uk-form-controls">
+      <% case @custom_variable.type %>
+      <% when 'boolean' %>
+        <div class="uk-margin-small">
+          <label>
+            <%= form.radio_button :value, 'true', checked: @custom_variable.value == true, class: 'uk-radio' %>
+            有効
+          </label>
+        </div>
+        <div class="uk-margin-small">
+          <label>
+            <%= form.radio_button :value, 'false', checked: @custom_variable.value != true, class: 'uk-radio' %>
+            無効
+          </label>
+        </div>
+      <% when 'datetime' %>
+        <%= form.datetime_field :value,
+            value: @custom_variable.value,
+            class: 'uk-input' %>
+      <% when 'text' %>
+        <%= form.text_area :value,
+            value: @custom_variable.value,
+            class: 'uk-textarea',
+            rows: 4,
+            placeholder: 'テキストを入力' %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.submit '保存', class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_tenant_custom_variables_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>

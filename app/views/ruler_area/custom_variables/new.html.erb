@@ -1,0 +1,55 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><%= link_to 'カスタム変数', ruler_area_tenant_custom_variables_path(@tenant) %></li>
+  <li><span>新規作成</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>カスタム変数の新規作成</h3>
+</div>
+
+<%= form_with url: ruler_area_tenant_custom_variables_path(@tenant), method: :post, local: true do |form| %>
+  <div class="uk-margin">
+    <label class="uk-form-label">変数キー <span class="uk-text-danger">*</span></label>
+    <div class="uk-form-controls">
+      <%= form.text_field :key,
+          value: @custom_variable.key,
+          class: 'uk-input',
+          placeholder: 'feature_flag_name',
+          pattern: '[a-z_][a-z0-9_]*',
+          title: '小文字英字・数字・アンダースコアのみ使用可能（先頭は英字またはアンダースコア）',
+          required: true %>
+      <p class="uk-text-muted uk-text-small uk-margin-small-top">小文字英字・数字・アンダースコアのみ使用可能</p>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <label class="uk-form-label">タイプ <span class="uk-text-danger">*</span></label>
+    <div class="uk-form-controls">
+      <%= form.select :type,
+          options_for_select([
+            ['フラグ（真偽値）', 'boolean'],
+            ['日時', 'datetime'],
+            ['テキスト', 'text']
+          ], @custom_variable.type),
+          {},
+          class: 'uk-select' %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <label class="uk-form-label">説明</label>
+    <div class="uk-form-controls">
+      <%= form.text_field :description,
+          value: @custom_variable.description,
+          class: 'uk-input',
+          placeholder: 'この変数の用途を記入' %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.submit '作成', class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_tenant_custom_variables_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>
