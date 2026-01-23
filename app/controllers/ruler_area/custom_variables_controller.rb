@@ -17,7 +17,7 @@ module RulerArea
     end
 
     def create
-      @custom_variable = SiteCustomVariable.new(custom_variable_params)
+      @custom_variable = SiteCustomVariable.new(custom_variable_create_params)
       if @custom_variable.save
         redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: 'カスタム変数を作成しました。'
       else
@@ -43,7 +43,7 @@ module RulerArea
     def edit_value; end
 
     def update_value
-      @custom_variable.value = params.dig(:custom_variable, :value)
+      @custom_variable.value = params.dig(:site_custom_variable, :value)
       if @custom_variable.save
         redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: '値を更新しました。'
       else
@@ -57,12 +57,12 @@ module RulerArea
       @custom_variable = SiteCustomVariable.find(params[:id])
     end
 
-    def custom_variable_params
-      params.require(:custom_variable).permit(:unique_name, :variable_type, :description)
+    def custom_variable_create_params
+      params.require(:site_custom_variable).permit(:unique_name, :variable_type, :description, :boolean_value, :datetime_value, :text_value)
     end
 
     def custom_variable_update_params
-      params.require(:custom_variable).permit(:description)
+      params.require(:site_custom_variable).permit(:description)
     end
   end
 end

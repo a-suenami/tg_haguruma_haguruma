@@ -43,6 +43,8 @@ class SiteCustomVariable < ApplicationRecord
   scope :active, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
 
+  before_validation :clear_irrelevant_values
+
   sig { returns(T::Boolean) }
   def archived?
     archived_at.present?
@@ -96,6 +98,23 @@ class SiteCustomVariable < ApplicationRecord
       'テキスト'
     else
       variable_type.to_s
+    end
+  end
+
+  private
+
+  sig { void }
+  def clear_irrelevant_values
+    case variable_type
+    when 'boolean'
+      self.datetime_value = nil
+      self.text_value = nil
+    when 'datetime'
+      self.boolean_value = nil
+      self.text_value = nil
+    when 'text'
+      self.boolean_value = nil
+      self.datetime_value = nil
     end
   end
 end

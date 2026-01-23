@@ -49,6 +49,53 @@
   </div>
 
   <div class="uk-margin">
+    <label class="uk-form-label">初期値 <span class="uk-text-danger">*</span></label>
+    <div class="uk-form-controls">
+      <div data-value-type="boolean">
+        <div class="uk-margin-small">
+          <label>
+            <%= radio_button_tag 'site_custom_variable[boolean_value]', 'true', false, class: 'uk-radio' %>
+            有効
+          </label>
+        </div>
+        <div class="uk-margin-small">
+          <label>
+            <%= radio_button_tag 'site_custom_variable[boolean_value]', 'false', true, class: 'uk-radio' %>
+            無効
+          </label>
+        </div>
+      </div>
+      <div data-value-type="datetime" style="display: none;">
+        <%= datetime_field_tag 'site_custom_variable[datetime_value]', nil, class: 'uk-input' %>
+      </div>
+      <div data-value-type="text" style="display: none;">
+        <%= text_area_tag 'site_custom_variable[text_value]', nil, class: 'uk-textarea', rows: 4, placeholder: 'テキストを入力' %>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const typeSelect = document.querySelector('select[name="site_custom_variable[variable_type]"]');
+      const valueContainers = document.querySelectorAll('[data-value-type]');
+
+      function updateValueInput() {
+        const selectedType = typeSelect.value;
+        valueContainers.forEach(function(container) {
+          const isActive = container.dataset.valueType === selectedType;
+          container.style.display = isActive ? '' : 'none';
+          container.querySelectorAll('input, textarea').forEach(function(input) {
+            input.disabled = !isActive;
+          });
+        });
+      }
+
+      typeSelect.addEventListener('change', updateValueInput);
+      updateValueInput();
+    })();
+  </script>
+
+  <div class="uk-margin">
     <%= form.submit '作成', class: 'uk-button uk-button-primary' %>
     <%= link_to 'キャンセル', ruler_area_tenant_custom_variables_path(@tenant), class: 'uk-button uk-button-default' %>
   </div>
