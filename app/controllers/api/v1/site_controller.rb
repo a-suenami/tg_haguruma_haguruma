@@ -19,13 +19,21 @@ module Api
 
       sig { returns(T::Array[T::Hash[Symbol, T.untyped]]) }
       def serialize_custom_variables
-        SiteCustomVariable.active.map do |var|
+        custom_variables.map do |var|
           {
             unique_name: var.unique_name,
             variable_type: var.variable_type,
             value: serialize_value(var),
           }
         end
+      end
+
+      sig { returns(SiteCustomVariable::Collection) }
+      def custom_variables
+        @custom_variables ||= T.let(
+          SiteCustomVariable::Collection.new(SiteCustomVariable.active.to_a),
+          T.nilable(SiteCustomVariable::Collection),
+        )
       end
 
       sig { params(var: SiteCustomVariable).returns(T.nilable(T.any(T::Boolean, String))) }
