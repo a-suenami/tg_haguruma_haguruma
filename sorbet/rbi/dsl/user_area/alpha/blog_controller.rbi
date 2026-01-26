@@ -43,6 +43,9 @@ class UserArea::Alpha::BlogController
 
     sig { returns(T.nilable(::String)) }
     def current_category; end
+
+    sig { params(entry: ::ContentEntry).returns(T::Boolean) }
+    def entry_authorized?(entry); end
   end
 
   class HelperProxy < ::ActionView::Base
