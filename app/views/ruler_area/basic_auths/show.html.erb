@@ -6,35 +6,135 @@
 
 <div class="am-page-header">
   <h3>Basic認証</h3>
-  <div>
-    <%= link_to '編集', edit_ruler_area_tenant_basic_auth_path(@tenant), class: 'uk-button uk-button-primary' %>
-  </div>
 </div>
+
+<style>
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+  }
+  .toggle-switch-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .toggle-switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 22px;
+  }
+  .toggle-switch-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+  }
+  .toggle-switch-input:checked + .toggle-switch-slider {
+    background-color: #1e87f0;
+  }
+  .toggle-switch-input:checked + .toggle-switch-slider:before {
+    transform: translateX(18px);
+  }
+</style>
 
 <div class="uk-card uk-card-default uk-card-body uk-margin">
   <h4 class="uk-card-title">設定</h4>
-  <table class="uk-table uk-table-divider">
-    <tbody>
-      <tr>
-        <th style="width: 200px;">Basic認証</th>
-        <td>
-          <% if @basic_auth.enabled? %>
-            <span class="uk-label uk-label-success">有効</span>
-          <% else %>
-            <span class="uk-label">無効</span>
-          <% end %>
-        </td>
-      </tr>
-      <% if @basic_auth.enabled? %>
-        <tr>
-          <th>ユーザー名</th>
-          <td><%= @basic_auth.username.presence || '-' %></td>
-        </tr>
-        <tr>
-          <th>パスワード</th>
-          <td><%= @basic_auth.password_digest.present? ? '********' : '-' %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+
+  <div class="uk-margin">
+    <%= form_with model: @basic_auth, url: ruler_area_tenant_basic_auth_path(@tenant), method: :patch, local: true, scope: :basic_auth do |form| %>
+      <label class="uk-flex uk-flex-middle" style="cursor: pointer;">
+        <span class="toggle-switch">
+          <%= form.check_box :enabled, class: 'toggle-switch-input', onchange: 'this.form.submit()' %>
+          <span class="toggle-switch-slider"></span>
+        </span>
+        <span class="uk-margin-small-left">Basic認証を有効にする</span>
+      </label>
+    <% end %>
+    <p class="uk-text-small uk-text-muted uk-margin-small-top">
+      有効にすると、ユーザーサイトへのアクセス時にBasic認証が求められます。
+    </p>
+  </div>
 </div>
+
+<% if @basic_auth.enabled? %>
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <div class="uk-flex uk-flex-between uk-flex-middle">
+      <h4 class="uk-card-title uk-margin-remove">認証情報</h4>
+      <button type="button" class="uk-button uk-button-primary uk-button-small" disabled>
+        <span uk-icon="icon: plus; ratio: 0.8"></span> 追加
+      </button>
+    </div>
+
+    <table class="uk-table uk-table-divider uk-table-middle uk-margin-top">
+      <thead>
+        <tr>
+          <th style="width: 200px;">ユーザー名</th>
+          <th>説明</th>
+          <th style="width: 150px;">作成日</th>
+          <th style="width: 120px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%# ===== ダミーデータ（モックアップ用） ===== %>
+        <tr>
+          <td><code>dev-team</code></td>
+          <td class="uk-text-muted">開発チーム用</td>
+          <td class="uk-text-small uk-text-muted">2025/01/20</td>
+          <td class="uk-text-right">
+            <button type="button" class="uk-button uk-button-small uk-button-default" disabled>
+              <span uk-icon="icon: pencil; ratio: 0.7"></span>
+            </button>
+            <button type="button" class="uk-button uk-button-small uk-button-danger" disabled>
+              <span uk-icon="icon: trash; ratio: 0.7"></span>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td><code>reviewer</code></td>
+          <td class="uk-text-muted">レビュー担当者</td>
+          <td class="uk-text-small uk-text-muted">2025/01/25</td>
+          <td class="uk-text-right">
+            <button type="button" class="uk-button uk-button-small uk-button-default" disabled>
+              <span uk-icon="icon: pencil; ratio: 0.7"></span>
+            </button>
+            <button type="button" class="uk-button uk-button-small uk-button-danger" disabled>
+              <span uk-icon="icon: trash; ratio: 0.7"></span>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td><code>client-a</code></td>
+          <td class="uk-text-muted">クライアントA社</td>
+          <td class="uk-text-small uk-text-muted">2025/01/27</td>
+          <td class="uk-text-right">
+            <button type="button" class="uk-button uk-button-small uk-button-default" disabled>
+              <span uk-icon="icon: pencil; ratio: 0.7"></span>
+            </button>
+            <button type="button" class="uk-button uk-button-small uk-button-danger" disabled>
+              <span uk-icon="icon: trash; ratio: 0.7"></span>
+            </button>
+          </td>
+        </tr>
+        <%# ===== /ダミーデータ ===== %>
+      </tbody>
+    </table>
+
+    <p class="uk-text-small uk-text-muted uk-margin-top">
+      <span uk-icon="icon: info; ratio: 0.8"></span>
+      パスワードはセキュリティのため表示できません。変更する場合は編集から再設定してください。
+    </p>
+  </div>
+<% end %>

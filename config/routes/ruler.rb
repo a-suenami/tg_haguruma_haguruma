@@ -38,7 +38,7 @@ namespace :ruler_area, path: :ruler do
     # Site settings
     resource :site_setting, only: [:show, :edit, :update]
     resource :theme, only: [:show, :edit, :update]
-    resource :basic_auth, only: [:show, :edit, :update]
+    resource :basic_auth, only: [:show, :update]
     resources :pages, only: [:index]
     resources :custom_variables, except: [:show] do
       member do

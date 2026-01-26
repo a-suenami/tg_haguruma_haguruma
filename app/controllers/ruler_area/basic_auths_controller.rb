@@ -10,13 +10,11 @@ module RulerArea
 
     def show; end
 
-    def edit; end
-
     def update
       if @basic_auth.update(basic_auth_params)
         redirect_to ruler_area_tenant_basic_auth_path(@tenant), notice: t('ruler_area.basic_auths.updated')
       else
-        render :edit, status: :unprocessable_entity
+        render :show, status: :unprocessable_entity
       end
     end
 
