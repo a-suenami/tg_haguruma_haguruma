@@ -39,5 +39,11 @@ namespace :ruler_area, path: :ruler do
     resource :site_setting, only: [:show, :edit, :update]
     resource :theme, only: [:show, :edit, :update]
     resources :pages, only: [:index]
+    resources :custom_variables, except: [:show] do
+      member do
+        get :edit_value
+        patch :update_value
+      end
+    end
   end
 end

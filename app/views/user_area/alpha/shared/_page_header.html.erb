@@ -20,8 +20,7 @@
             <span>マイページ</span>
           </a>
         <% else %>
-          <% # FIXME(#20) %>
-          <%if false %>
+            <% if custom_variables.enabled?('signup_flow') %>
             <a href="<%= user_area_auth_start_path %>" class="auth-action-button">
               <span class="auth-icon"><%= icon_svg('sign-in-indicator') %></span>
               <span><%= login_label %></span>
@@ -55,8 +54,7 @@
                 <span class="action-text">入会のご案内</span>
                 <span class="action-icon"><%= icon_svg('right-arrow') %></span>
               </a>
-              <% # FIXME(#20) %>
-              <% if false %>
+              <% if custom_variables.enabled?('signup_flow') %>
                 <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
                   既にご入会済みの方はこちら
                 </a>

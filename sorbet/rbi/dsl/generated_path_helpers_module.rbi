@@ -127,6 +127,9 @@ module GeneratedPathHelpersModule
   def api_v1_me_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def api_v1_site_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_category_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -160,6 +163,9 @@ module GeneratedPathHelpersModule
   def edit_ruler_area_tenant_authorization_tag_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_custom_variable_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_oauth_provider_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -173,6 +179,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def edit_user_area_profile_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_value_ruler_area_tenant_custom_variable_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_admin_area_category_path(*args); end
@@ -206,6 +215,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_content_type_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_tenant_custom_variable_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_oauth_provider_path(*args); end
@@ -346,6 +358,12 @@ module GeneratedPathHelpersModule
   def ruler_area_tenant_content_types_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_custom_variable_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_custom_variables_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_provider_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -401,6 +419,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def update_rails_disk_service_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def update_value_ruler_area_tenant_custom_variable_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def upload_admin_area_media_path(*args); end
