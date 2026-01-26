@@ -69,15 +69,15 @@
   </div>
 </div>
 
-<% if @basic_auth.enabled? %>
-  <div class="uk-card uk-card-default uk-card-body uk-margin">
-    <div class="uk-flex uk-flex-between uk-flex-middle">
-      <h4 class="uk-card-title uk-margin-remove">認証情報</h4>
-      <button type="button" class="uk-button uk-button-primary uk-button-small" disabled>
-        <span uk-icon="icon: plus; ratio: 0.8"></span> 追加
-      </button>
-    </div>
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <div class="uk-flex uk-flex-between uk-flex-middle">
+    <h4 class="uk-card-title uk-margin-remove">認証情報</h4>
+    <%= link_to new_ruler_area_tenant_basic_auth_credential_path(@tenant), class: 'uk-button uk-button-primary uk-button-small' do %>
+      <span uk-icon="icon: plus; ratio: 0.8"></span> 追加
+    <% end %>
+  </div>
 
+  <% if @basic_auth.credentials.any? %>
     <table class="uk-table uk-table-divider uk-table-middle uk-margin-top">
       <thead>
         <tr>
@@ -88,47 +88,21 @@
         </tr>
       </thead>
       <tbody>
-        <%# ===== ダミーデータ（モックアップ用） ===== %>
-        <tr>
-          <td><code>dev-team</code></td>
-          <td class="uk-text-muted">開発チーム用</td>
-          <td class="uk-text-small uk-text-muted">2025/01/20</td>
-          <td class="uk-text-right">
-            <button type="button" class="uk-button uk-button-small uk-button-default" disabled>
-              <span uk-icon="icon: pencil; ratio: 0.7"></span>
-            </button>
-            <button type="button" class="uk-button uk-button-small uk-button-danger" disabled>
-              <span uk-icon="icon: trash; ratio: 0.7"></span>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td><code>reviewer</code></td>
-          <td class="uk-text-muted">レビュー担当者</td>
-          <td class="uk-text-small uk-text-muted">2025/01/25</td>
-          <td class="uk-text-right">
-            <button type="button" class="uk-button uk-button-small uk-button-default" disabled>
-              <span uk-icon="icon: pencil; ratio: 0.7"></span>
-            </button>
-            <button type="button" class="uk-button uk-button-small uk-button-danger" disabled>
-              <span uk-icon="icon: trash; ratio: 0.7"></span>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td><code>client-a</code></td>
-          <td class="uk-text-muted">クライアントA社</td>
-          <td class="uk-text-small uk-text-muted">2025/01/27</td>
-          <td class="uk-text-right">
-            <button type="button" class="uk-button uk-button-small uk-button-default" disabled>
-              <span uk-icon="icon: pencil; ratio: 0.7"></span>
-            </button>
-            <button type="button" class="uk-button uk-button-small uk-button-danger" disabled>
-              <span uk-icon="icon: trash; ratio: 0.7"></span>
-            </button>
-          </td>
-        </tr>
-        <%# ===== /ダミーデータ ===== %>
+        <% @basic_auth.credentials.order(created_at: :asc).each do |credential| %>
+          <tr>
+            <td><code><%= credential.username %></code></td>
+            <td class="uk-text-muted"><%= credential.description.presence || '-' %></td>
+            <td class="uk-text-small uk-text-muted"><%= credential.created_at.strftime('%Y/%m/%d') %></td>
+            <td class="uk-text-right">
+              <%= link_to edit_ruler_area_tenant_basic_auth_credential_path(@tenant, credential), class: 'uk-button uk-button-small uk-button-default' do %>
+                <span uk-icon="icon: pencil; ratio: 0.7"></span>
+              <% end %>
+              <%= link_to ruler_area_tenant_basic_auth_credential_path(@tenant, credential), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'この認証情報を削除しますか？' }, class: 'uk-button uk-button-small uk-button-danger' do %>
+                <span uk-icon="icon: trash; ratio: 0.7"></span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
 
@@ -136,5 +110,9 @@
       <span uk-icon="icon: info; ratio: 0.8"></span>
       パスワードはセキュリティのため表示できません。変更する場合は編集から再設定してください。
     </p>
-  </div>
-<% end %>
+  <% else %>
+    <p class="uk-text-muted uk-margin-top">
+      認証情報がまだ登録されていません。「追加」ボタンから登録してください。
+    </p>
+  <% end %>
+</div>

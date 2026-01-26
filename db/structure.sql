@@ -1,4 +1,4 @@
-\restrict AAi533SBgDByTleaqOMAghrgUkCMtNmm8h7rf39lU8bb8EfjejEefLuWhBKNBeH
+\restrict 0PTWPa5vTTE3gg9kbcbRv4Q7aotmfg1yJ4QmEPn62aEPz310zaglasasOPfBo1g
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -726,6 +726,21 @@ COMMENT ON COLUMN public.site_custom_variables.variable_type IS '1: boolean, 2: 
 
 
 --
+-- Name: tenant_basic_auth_credentials; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tenant_basic_auth_credentials (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_basic_auth_id uuid NOT NULL,
+    username character varying NOT NULL,
+    password_digest character varying NOT NULL,
+    description character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: tenant_basic_auths; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -733,11 +748,8 @@ CREATE TABLE public.tenant_basic_auths (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id character varying NOT NULL,
     enabled boolean DEFAULT false NOT NULL,
-    username character varying DEFAULT ''::character varying NOT NULL,
-    password_digest character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT chk_tenant_basic_auths_credentials_required_when_enabled CHECK (((enabled = false) OR (((username)::text <> ''::text) AND ((password_digest)::text <> ''::text))))
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1166,6 +1178,14 @@ ALTER TABLE ONLY public.site_custom_variables
 
 
 --
+-- Name: tenant_basic_auth_credentials tenant_basic_auth_credentials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_basic_auth_credentials
+    ADD CONSTRAINT tenant_basic_auth_credentials_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tenant_basic_auths tenant_basic_auths_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1274,6 +1294,13 @@ CREATE INDEX idx_on_field_select_id_position_9d0ef88527 ON public.content_type_f
 --
 
 CREATE UNIQUE INDEX idx_on_field_select_id_unique_name_47572cb0f7 ON public.content_type_field_select_options USING btree (field_select_id, unique_name);
+
+
+--
+-- Name: idx_on_tenant_basic_auth_id_username_dcd4020202; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_tenant_basic_auth_id_username_dcd4020202 ON public.tenant_basic_auth_credentials USING btree (tenant_basic_auth_id, username);
 
 
 --
@@ -1533,6 +1560,13 @@ CREATE INDEX index_ruler_auth0_accounts_on_auth0_account_id ON public.ruler_auth
 --
 
 CREATE INDEX index_session_tokens_on_user_id ON public.session_tokens USING btree (user_id);
+
+
+--
+-- Name: index_tenant_basic_auth_credentials_on_tenant_basic_auth_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tenant_basic_auth_credentials_on_tenant_basic_auth_id ON public.tenant_basic_auth_credentials USING btree (tenant_basic_auth_id);
 
 
 --
@@ -1815,6 +1849,14 @@ ALTER TABLE ONLY public.session_tokens
 
 
 --
+-- Name: tenant_basic_auth_credentials fk_rails_72def37092; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_basic_auth_credentials
+    ADD CONSTRAINT fk_rails_72def37092 FOREIGN KEY (tenant_basic_auth_id) REFERENCES public.tenant_basic_auths(id);
+
+
+--
 -- Name: content_type_fields fk_rails_782051ab84; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1938,7 +1980,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict AAi533SBgDByTleaqOMAghrgUkCMtNmm8h7rf39lU8bb8EfjejEefLuWhBKNBeH
+\unrestrict 0PTWPa5vTTE3gg9kbcbRv4Q7aotmfg1yJ4QmEPn62aEPz310zaglasasOPfBo1g
 
 SET search_path TO "$user", public;
 

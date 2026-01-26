@@ -4,24 +4,16 @@
 class TenantBasicAuth < ApplicationRecord
   extend T::Sig
 
-  has_secure_password validations: false
-
   belongs_to :tenant, primary_key: :id
-
-  validates :username, presence: true, if: :enabled?
-  validates :password, presence: true, if: :password_required?
+  has_many :credentials, class_name: 'TenantBasicAuthCredential', dependent: :destroy
 
   sig { params(input_username: String, input_password: String).returns(T::Boolean) }
   def authenticate_credentials(input_username, input_password)
     return false unless enabled?
 
-    username == input_username && authenticate(input_password).present?
-  end
+    credential = credentials.find_by(username: input_username)
+    return false unless credential
 
-  private
-
-  sig { returns(T::Boolean) }
-  def password_required?
-    enabled? && password_digest_changed?
+    credential.valid_password?(input_password)
   end
 end
