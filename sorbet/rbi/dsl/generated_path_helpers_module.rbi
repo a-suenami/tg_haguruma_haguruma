@@ -163,6 +163,9 @@ module GeneratedPathHelpersModule
   def edit_ruler_area_tenant_authorization_tag_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_basic_auth_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_custom_variable_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -350,6 +353,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_authorization_tags_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_basic_auth_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_content_type_path(*args); end

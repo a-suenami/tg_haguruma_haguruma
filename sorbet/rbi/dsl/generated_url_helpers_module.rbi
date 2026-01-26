@@ -163,6 +163,9 @@ module GeneratedUrlHelpersModule
   def edit_ruler_area_tenant_authorization_tag_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_basic_auth_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_custom_variable_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -350,6 +353,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_authorization_tags_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_basic_auth_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_content_type_url(*args); end

@@ -1,0 +1,47 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><%= link_to 'Basic認証', ruler_area_tenant_basic_auth_path(@tenant) %></li>
+  <li><span>編集</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>Basic認証 編集</h3>
+</div>
+
+<%= form_with model: @basic_auth, url: ruler_area_tenant_basic_auth_path(@tenant), method: :patch, local: true, scope: :basic_auth do |form| %>
+  <%= render 'ruler_area/shared/form_error', target: @basic_auth %>
+
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <h4 class="uk-card-title">設定</h4>
+
+    <div class="uk-margin">
+      <label class="uk-form-label">
+        <%= form.check_box :enabled, class: 'uk-checkbox' %>
+        Basic認証を有効にする
+      </label>
+    </div>
+
+    <div class="uk-margin">
+      <%= form.label :username, 'ユーザー名', class: 'uk-form-label' %>
+      <div class="uk-form-controls">
+        <%= form.text_field :username, class: 'uk-input', style: 'width: 300px;' %>
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <%= form.label :password, 'パスワード', class: 'uk-form-label' %>
+      <div class="uk-form-controls">
+        <%= form.password_field :password, class: 'uk-input', style: 'width: 300px;', placeholder: @basic_auth.password_digest.present? ? '変更する場合のみ入力' : '' %>
+      </div>
+      <% if @basic_auth.password_digest.present? %>
+        <p class="uk-text-meta">パスワードを変更しない場合は空欄のままにしてください</p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.submit '保存', class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_tenant_basic_auth_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>

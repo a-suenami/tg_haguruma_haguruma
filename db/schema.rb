@@ -282,6 +282,17 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.check_constraint "variable_type = ANY (ARRAY[1, 2, 3])", name: "chk_site_custom_variables_variable_type"
   end
 
+  create_table "tenant_basic_auths", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.string "username", default: "", null: false
+    t.string "password_digest", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_basic_auths_on_tenant_id", unique: true
+    t.check_constraint "enabled = false OR username::text <> ''::text AND password_digest::text <> ''::text", name: "chk_tenant_basic_auths_credentials_required_when_enabled"
+  end
+
   create_table "tenant_site_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "tenant_id", null: false
     t.jsonb "features", default: {}, null: false
@@ -411,6 +422,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "session_tokens", "tenants"
   add_foreign_key "session_tokens", "users"
   add_foreign_key "site_custom_variables", "tenants"
+  add_foreign_key "tenant_basic_auths", "tenants"
   add_foreign_key "tenant_site_settings", "tenants"
   add_foreign_key "tenant_themes", "media_assets", column: "logo_media_asset_id"
   add_foreign_key "tenant_themes", "tenants"

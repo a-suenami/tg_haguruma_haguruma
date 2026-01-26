@@ -8,6 +8,7 @@ module UserArea
     layout 'user_area/application'
 
     before_action :set_tenant
+    before_action :authenticate_with_basic_auth
 
     helper UserArea::SiteSettingsHelper
     helper UserArea::CustomVariablesHelper
@@ -57,6 +58,16 @@ module UserArea
 
       Tenant.current_id = tenant.id
       tenant
+    end
+
+    sig { void }
+    def authenticate_with_basic_auth
+      basic_auth = current_tenant&.basic_auth
+      return unless basic_auth&.enabled?
+
+      authenticate_or_request_with_http_basic do |username, password|
+        basic_auth.authenticate_credentials(username, password)
+      end
     end
   end
 end

@@ -1,0 +1,38 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><span>Basic認証</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>Basic認証</h3>
+  <div>
+    <%= link_to '編集', edit_ruler_area_tenant_basic_auth_path(@tenant), class: 'uk-button uk-button-primary' %>
+  </div>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">設定</h4>
+  <table class="uk-table uk-table-divider">
+    <tbody>
+      <tr>
+        <th style="width: 200px;">有効</th>
+        <td>
+          <% if @basic_auth.enabled? %>
+            <span class="uk-label uk-label-success">有効</span>
+          <% else %>
+            <span class="uk-label">無効</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>ユーザー名</th>
+        <td><%= @basic_auth.username.presence || '-' %></td>
+      </tr>
+      <tr>
+        <th>パスワード</th>
+        <td><%= @basic_auth.password_digest.present? ? '********' : '-' %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

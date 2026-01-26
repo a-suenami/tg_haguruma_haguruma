@@ -1,0 +1,17 @@
+create_table :tenant_basic_auths, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
+  t.string :tenant_id, null: false
+
+  t.boolean :enabled, null: false, default: false
+  t.string :username, null: false, default: ''
+  t.string :password_digest, null: false, default: ''
+
+  t.timestamps null: false
+end
+
+add_index :tenant_basic_auths, [:tenant_id], unique: true
+add_foreign_key :tenant_basic_auths, :tenants, column: :tenant_id, primary_key: :id
+
+# enabled が true の場合、username と password_digest は空文字列不可
+add_check_constraint :tenant_basic_auths,
+                     "enabled = false OR (username != '' AND password_digest != '')",
+                     name: 'chk_tenant_basic_auths_credentials_required_when_enabled'
