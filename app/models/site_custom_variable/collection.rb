@@ -24,5 +24,43 @@ class SiteCustomVariable
     def each(&block)
       @variables.each(&block)
     end
+
+    # Boolean helpers
+    sig { params(key: String).returns(T::Boolean) }
+    def enabled?(key)
+      var = @hash[key]
+      return false unless var&.variable_type_boolean?
+
+      var.boolean_value == true
+    end
+
+    # Datetime helpers
+    sig { params(key: String).returns(T::Boolean) }
+    def past?(key)
+      var = @hash[key]
+      return false unless var&.variable_type_datetime?
+
+      T.must(var.datetime_value) <= Time.current
+    end
+
+    sig { params(key: String).returns(T::Boolean) }
+    def future?(key)
+      var = @hash[key]
+      return false unless var&.variable_type_datetime?
+
+      T.must(var.datetime_value) > Time.current
+    end
+
+    alias passed? past?
+    alias not_passed? future?
+
+    # Text helper
+    sig { params(key: String).returns(String) }
+    def text(key)
+      var = @hash[key]
+      return '' unless var&.variable_type_text?
+
+      var.text_value || ''
+    end
   end
 end
