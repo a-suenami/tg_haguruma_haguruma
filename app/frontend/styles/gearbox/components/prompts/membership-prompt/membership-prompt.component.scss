@@ -10,12 +10,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
     justify-content: center;
     padding: 30px 30px 40px;
     border: 1px solid var(--theme-button-secondary-background-color);
     border-radius: 20px;
     background-color: #fff;
+    min-width: 332px;
+
+    @include breakpoints.media-down(sm) {
+      padding-inline: 20px;
+    }
   }
 
   .prompt-icon {
@@ -25,6 +29,7 @@
     width: 60px;
     aspect-ratio: 1;
     color: var(--theme-button-secondary-background-color);
+    margin-bottom: 16px;
 
     svg {
       width: 100%;
@@ -37,30 +42,99 @@
     font-weight: var(--gearbox-font-weight-bold);
     line-height: 1.4;
     text-align: center;
+    margin-bottom: 16px;
   }
 
   .prompt-action {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 280px;
-    padding: 12px 24px;
-    border-radius: 100px;
-    background: var(--theme-button-secondary-background-color);
+    width: 332px;
+    height: 56px;
+    padding-block: 12px;
+    margin-bottom: 10px;
+    position: relative;
     color: var(--theme-button-secondary-text-color);
-    font-size: 18px;
-    font-weight: var(--gearbox-font-weight-bold);
-    text-decoration: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+    transition: transform .2s ease-out;
+    isolation: isolate;
 
-    &:hover {
-      opacity: 0.85;
-      transform: scale(1.02);
+    &::after {
+      content: '';
+      z-index: -1;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 100px;
+      width: 100%;
+      height: 100%;
+      background: var(--theme-button-secondary-background-color);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+      transition: transform .2s ease-out;
     }
 
     .action-text {
+      flex: 1;
       text-align: center;
+      font-size: 22px;
+      font-weight: var(--gearbox-font-weight-bold);
+      transition: transform .2s ease-out;
+    }
+
+    .action-icon {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: transform .2s ease-out, opacity .2s ease-out;
+      display: flex;
+      align-items: center;
+      width: 28px;
+      aspect-ratio: 1/1;
+      opacity: 0;
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        --header-transform-x: 20px;
+        opacity: 1;
+        box-shadow: none;
+
+        &::after {
+          box-shadow: none;
+          transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        & > .action-text {
+          opacity: 1;
+        }
+        & > .action-icon {
+          transform: translateY(-50%) translateX(8px);
+          transition: transform .2s ease-out, opacity .2s ease-out;
+          opacity: 1;
+        }
+      }
+    }
+    @media (any-hover: none) {
+      --header-transform-x: 20px;
+      opacity: 1;
+      & > .action-text {
+        opacity: 1;
+      }
+      & > .action-icon {
+        transform: translateY(-50%) translateX(8px);
+        transition: transform .2s ease-out, opacity .05s ease-out;
+        opacity: 1;
+      }
+    }
+
+    @include breakpoints.media-down(sm) {
+      width: 100%;
+
+      .action-text {
+        font-size: 18px;
+      }
+
+      .action-icon {
+        width: 24px;
+      }
     }
   }
 
@@ -68,30 +142,9 @@
     font-size: 17px;
     line-height: 1.6;
     text-align: center;
-  }
 
-  @include breakpoints.media-down(sm) {
-    padding: 32px 16px;
-
-    .prompt-icon {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 12px;
-    }
-
-    .prompt-message {
-      margin-bottom: 20px;
+    @include breakpoints.media-down(sm) {
       font-size: 14px;
-    }
-
-    .prompt-action {
-      width: 240px;
-      padding: 10px 20px;
-      font-size: 16px;
-    }
-
-    .pre-open-notice {
-      font-size: 15px;
     }
   }
 }

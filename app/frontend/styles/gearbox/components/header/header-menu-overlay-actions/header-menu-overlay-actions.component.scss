@@ -105,6 +105,10 @@
     font-size: 17px;
     line-height: 1.6;
     text-align: center;
+
+    @include breakpoints.media-down(sm) {
+      font-size: 14px;
+    }
   }
 
   .secondary-action {
