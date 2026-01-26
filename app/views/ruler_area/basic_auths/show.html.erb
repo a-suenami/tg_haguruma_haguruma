@@ -16,7 +16,7 @@
   <table class="uk-table uk-table-divider">
     <tbody>
       <tr>
-        <th style="width: 200px;">有効</th>
+        <th style="width: 200px;">Basic認証</th>
         <td>
           <% if @basic_auth.enabled? %>
             <span class="uk-label uk-label-success">有効</span>
@@ -25,14 +25,16 @@
           <% end %>
         </td>
       </tr>
-      <tr>
-        <th>ユーザー名</th>
-        <td><%= @basic_auth.username.presence || '-' %></td>
-      </tr>
-      <tr>
-        <th>パスワード</th>
-        <td><%= @basic_auth.password_digest.present? ? '********' : '-' %></td>
-      </tr>
+      <% if @basic_auth.enabled? %>
+        <tr>
+          <th>ユーザー名</th>
+          <td><%= @basic_auth.username.presence || '-' %></td>
+        </tr>
+        <tr>
+          <th>パスワード</th>
+          <td><%= @basic_auth.password_digest.present? ? '********' : '-' %></td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 </div>

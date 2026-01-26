@@ -106,11 +106,11 @@
                 <span class="uk-badge uk-margin-small-left">準備中</span>
               <% end %>
             </li>
-            <li class="<%= 'uk-active' if controller_name == 'custom_variables' %>">
-              <%= link_to 'カスタム変数設定', ruler_area_tenant_custom_variables_path(@tenant) %>
-            </li>
             <li class="<%= 'uk-active' if controller_name == 'basic_auths' %>">
               <%= link_to 'Basic認証', ruler_area_tenant_basic_auth_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'custom_variables' %>">
+              <%= link_to 'カスタム変数設定', ruler_area_tenant_custom_variables_path(@tenant) %>
             </li>
           </ul>
 
