@@ -17,7 +17,7 @@ class AdminArea::MediaController < AdminArea::ApplicationController
 
     # Search by filename
     if params[:q].present?
-      @media_assets = @media_assets.where("metadata->>'filename' ILIKE ?", "%#{params[:q]}%")
+      @media_assets = @media_assets.where("metadata->>'original_filename' ILIKE ?", "%#{params[:q]}%")
     end
 
     respond_to do |format|
