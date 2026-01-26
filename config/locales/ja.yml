@@ -107,6 +107,12 @@ ja:
       errors:
         unique_name_taken: "この識別子は既に使用されています："
         field_api_identifier_taken: "この識別子は既に使用されています："
+    basic_auths:
+      updated: Basic認証設定を更新しました
+    basic_auth_credentials:
+      created: 認証情報を作成しました
+      updated: 認証情報を更新しました
+      destroyed: 認証情報を削除しました
     custom_variables:
       created: カスタム変数を作成しました
       updated: カスタム変数を更新しました

@@ -17,6 +17,7 @@ class Tenant < ApplicationRecord
   has_one :oauth_provider
   has_one :theme, class_name: 'TenantTheme', dependent: :destroy
   has_one :site_settings, class_name: 'TenantSiteSettings', dependent: :destroy
+  has_one :basic_auth, class_name: 'TenantBasicAuth', dependent: :destroy
 
   validates :id, :name, presence: true
   validates :id, uniqueness: { case_sensitive: false }
