@@ -16,7 +16,7 @@
           <% category_option = selected_option(category_field) %>
           <span cog-date-label><%= format_content_date(version&.published_at) %></span>
           <% if category_option.present? %>
-            <span cog-category-label><%= category_option.display_name %></span>
+            <span cog-category-label color-secondary><%= category_option.display_name %></span>
           <% end %>
         </div>
         <div cog-detail-fragment-toolbar>

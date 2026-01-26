@@ -48,10 +48,10 @@
                     <% category_option = selected_option(category_field) %>
                     <div class="category">
                       <% unless entry_authorized?(entry) %>
-                        <span cog-category-label>会員限定</span>
+                        <span cog-category-label color-primary>会員限定</span>
                       <% end %>
                       <% if category_option.present? %>
-                        <span cog-category-label><%= category_option.display_name %></span>
+                        <span cog-category-label color-secondary><%= category_option.display_name %></span>
                       <% end %>
                     </div>
                   </div>
