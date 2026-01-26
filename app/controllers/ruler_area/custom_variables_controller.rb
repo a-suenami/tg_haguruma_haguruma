@@ -16,20 +16,21 @@ module RulerArea
       @custom_variable = SiteCustomVariable.new
     end
 
+    def edit; end
+
     def create
       @custom_variable = SiteCustomVariable.new(custom_variable_create_params)
       if @custom_variable.save
-        redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: 'カスタム変数を作成しました。'
+        redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: t('ruler_area.custom_variables.created')
       else
         render :new, status: :unprocessable_entity
       end
     end
 
-    def edit; end
 
     def update
       if @custom_variable.update(custom_variable_update_params)
-        redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: 'カスタム変数を更新しました。'
+        redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: t('ruler_area.custom_variables.updated')
       else
         render :edit, status: :unprocessable_entity
       end
@@ -37,7 +38,7 @@ module RulerArea
 
     def destroy
       @custom_variable.archive!
-      redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: 'カスタム変数をアーカイブしました。'
+      redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: t('ruler_area.custom_variables.archived')
     end
 
     def edit_value; end
@@ -45,7 +46,7 @@ module RulerArea
     def update_value
       @custom_variable.value = params.dig(:site_custom_variable, :value)
       if @custom_variable.save
-        redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: '値を更新しました。'
+        redirect_to ruler_area_tenant_custom_variables_path(@tenant), notice: t('ruler_area.custom_variables.value_updated')
       else
         render :edit_value, status: :unprocessable_entity
       end

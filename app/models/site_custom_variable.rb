@@ -36,7 +36,7 @@ class SiteCustomVariable < ApplicationRecord
   default_scope { where(tenant_id: Tenant.current_id) }
 
   validates :unique_name, presence: true,
-                          format: { with: /\A[a-z_][a-z0-9_]*\z/, message: 'は小文字英字・数字・アンダースコアのみ使用可能です' }
+                          format: { with: /\A[a-z_][a-z0-9_]*\z/ }
   validates :unique_name, uniqueness: { scope: :tenant_id, conditions: -> { where(archived_at: nil) } }
   validates :variable_type, presence: true
 
