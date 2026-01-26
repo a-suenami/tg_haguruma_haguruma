@@ -14,10 +14,15 @@
         <div cog-detail-fragment-toolbar>
           <% category_field = field_by_identifier(version, 'category') %>
           <% category_option = selected_option(category_field) %>
-          <% if category_option.present? %>
-            <span cog-category-label color-secondary><%= category_option.display_name %></span>
-          <% end %>
           <span cog-date-label><%= format_content_date(version&.published_at) %></span>
+          <div class="categories">
+            <% unless content_authorized? %>
+              <span cog-category-label color-primary>会員限定</span>
+            <% end %>
+            <% if category_option.present? %>
+              <span cog-category-label color-secondary><%= category_option.display_name %></span>
+            <% end %>
+          </div>
         </div>
         <div cog-detail-fragment-toolbar>
           <h1 cog-detail-fragment-title><%= title_text %></h1>
