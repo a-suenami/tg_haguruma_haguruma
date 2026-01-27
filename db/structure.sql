@@ -1,4 +1,4 @@
-\restrict rby1dEJXIz9KhTWykgAHS95MbfzNpzYMcRqAxw2M0iEROrb3vLmfMgvEZOTM0Qa
+\restrict 0PTWPa5vTTE3gg9kbcbRv4Q7aotmfg1yJ4QmEPn62aEPz310zaglasasOPfBo1g
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -696,6 +696,64 @@ CREATE TABLE public.session_tokens (
 
 
 --
+-- Name: site_custom_variables; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.site_custom_variables (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id character varying NOT NULL,
+    unique_name character varying NOT NULL,
+    variable_type smallint NOT NULL,
+    description text DEFAULT ''::text NOT NULL,
+    boolean_value boolean,
+    datetime_value timestamp(6) without time zone,
+    text_value text,
+    archived_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT chk_site_custom_variables_boolean_consistency CHECK (((variable_type <> 1) OR ((boolean_value IS NOT NULL) AND (datetime_value IS NULL) AND (text_value IS NULL)))),
+    CONSTRAINT chk_site_custom_variables_datetime_consistency CHECK (((variable_type <> 2) OR ((datetime_value IS NOT NULL) AND (boolean_value IS NULL) AND (text_value IS NULL)))),
+    CONSTRAINT chk_site_custom_variables_text_consistency CHECK (((variable_type <> 3) OR ((text_value IS NOT NULL) AND (boolean_value IS NULL) AND (datetime_value IS NULL)))),
+    CONSTRAINT chk_site_custom_variables_variable_type CHECK ((variable_type = ANY (ARRAY[1, 2, 3])))
+);
+
+
+--
+-- Name: COLUMN site_custom_variables.variable_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.site_custom_variables.variable_type IS '1: boolean, 2: datetime, 3: text';
+
+
+--
+-- Name: tenant_basic_auth_credentials; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tenant_basic_auth_credentials (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_basic_auth_id uuid NOT NULL,
+    username character varying NOT NULL,
+    password_digest character varying NOT NULL,
+    description character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: tenant_basic_auths; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tenant_basic_auths (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id character varying NOT NULL,
+    enabled boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: tenant_site_settings; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1112,6 +1170,30 @@ ALTER TABLE ONLY public.session_tokens
 
 
 --
+-- Name: site_custom_variables site_custom_variables_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.site_custom_variables
+    ADD CONSTRAINT site_custom_variables_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenant_basic_auth_credentials tenant_basic_auth_credentials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_basic_auth_credentials
+    ADD CONSTRAINT tenant_basic_auth_credentials_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenant_basic_auths tenant_basic_auths_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_basic_auths
+    ADD CONSTRAINT tenant_basic_auths_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tenant_site_settings tenant_site_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1215,6 +1297,13 @@ CREATE UNIQUE INDEX idx_on_field_select_id_unique_name_47572cb0f7 ON public.cont
 
 
 --
+-- Name: idx_on_tenant_basic_auth_id_username_dcd4020202; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_tenant_basic_auth_id_username_dcd4020202 ON public.tenant_basic_auth_credentials USING btree (tenant_basic_auth_id, username);
+
+
+--
 -- Name: idx_on_tenant_id_content_type_id_id_01457429a3; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1261,6 +1350,20 @@ CREATE INDEX idx_session_tokens_updated_at ON public.session_tokens USING btree 
 --
 
 CREATE INDEX idx_session_tokens_user_id ON public.session_tokens USING btree (user_id);
+
+
+--
+-- Name: idx_site_custom_variables_tenant_archived; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_site_custom_variables_tenant_archived ON public.site_custom_variables USING btree (tenant_id, archived_at);
+
+
+--
+-- Name: idx_site_custom_variables_unique_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_site_custom_variables_unique_name ON public.site_custom_variables USING btree (tenant_id, unique_name) WHERE (archived_at IS NULL);
 
 
 --
@@ -1460,6 +1563,20 @@ CREATE INDEX index_session_tokens_on_user_id ON public.session_tokens USING btre
 
 
 --
+-- Name: index_tenant_basic_auth_credentials_on_tenant_basic_auth_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tenant_basic_auth_credentials_on_tenant_basic_auth_id ON public.tenant_basic_auth_credentials USING btree (tenant_basic_auth_id);
+
+
+--
+-- Name: index_tenant_basic_auths_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tenant_basic_auths_on_tenant_id ON public.tenant_basic_auths USING btree (tenant_id);
+
+
+--
 -- Name: index_tenant_site_settings_on_tenant_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1644,6 +1761,14 @@ ALTER TABLE ONLY public.content_type_field_select_options
 
 
 --
+-- Name: site_custom_variables fk_rails_28fd5e0209; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.site_custom_variables
+    ADD CONSTRAINT fk_rails_28fd5e0209 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: user_tags fk_rails_2f428c3efb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1657,6 +1782,14 @@ ALTER TABLE ONLY public.user_tags
 
 ALTER TABLE ONLY public.content_type_fields
     ADD CONSTRAINT fk_rails_32a2d977e0 FOREIGN KEY (select_id) REFERENCES public.content_type_field_selects(id);
+
+
+--
+-- Name: tenant_basic_auths fk_rails_3857992ef6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_basic_auths
+    ADD CONSTRAINT fk_rails_3857992ef6 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
 
 
 --
@@ -1713,6 +1846,14 @@ ALTER TABLE ONLY public.session_tokens
 
 ALTER TABLE ONLY public.session_tokens
     ADD CONSTRAINT fk_rails_6ef0c8cde9 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: tenant_basic_auth_credentials fk_rails_72def37092; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_basic_auth_credentials
+    ADD CONSTRAINT fk_rails_72def37092 FOREIGN KEY (tenant_basic_auth_id) REFERENCES public.tenant_basic_auths(id);
 
 
 --
@@ -1839,7 +1980,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict rby1dEJXIz9KhTWykgAHS95MbfzNpzYMcRqAxw2M0iEROrb3vLmfMgvEZOTM0Qa
+\unrestrict 0PTWPa5vTTE3gg9kbcbRv4Q7aotmfg1yJ4QmEPn62aEPz310zaglasasOPfBo1g
 
 SET search_path TO "$user", public;
 

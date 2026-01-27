@@ -115,6 +115,7 @@ GEM
     aws-sigv4 (1.12.1)
       aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.3.0)
+    bcrypt (3.1.21)
     bcrypt_pbkdf (1.1.1)
     bcrypt_pbkdf (1.1.1-arm64-darwin)
     benchmark (0.5.0)
@@ -729,6 +730,7 @@ DEPENDENCIES
   aws-sdk-eventbridge (~> 1.57.0)
   aws-sdk-s3 (~> 1.136.0)
   aws-sdk-sqs (~> 1.70)
+  bcrypt (~> 3.1.7)
   bootsnap
   brakeman
   bullet (~> 8.0.0)

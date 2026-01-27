@@ -23,6 +23,12 @@ module UserArea
       end
       helper_method :current_blog_category
 
+      sig { params(entry: ContentEntry).returns(T::Boolean) }
+      def entry_authorized?(entry)
+        UserQueries::ContentEntriesQuery.authorized?(entry, user: current_user)
+      end
+      helper_method :entry_authorized?
+
       private
 
       sig { params(api_identifier: String).returns(T.nilable(String)) }

@@ -36,6 +36,10 @@ ja:
           attributes:
             base:
               reserved_id_error: このIDは予約されているため使用できません
+        site_custom_variable:
+          attributes:
+            unique_name:
+              invalid: は小文字英字・数字・アンダースコアのみ使用可能です
         tenant_theme:
           attributes:
             page_background_color:
@@ -103,6 +107,17 @@ ja:
       errors:
         unique_name_taken: "この識別子は既に使用されています："
         field_api_identifier_taken: "この識別子は既に使用されています："
+    basic_auths:
+      updated: Basic認証設定を更新しました
+    basic_auth_credentials:
+      created: 認証情報を作成しました
+      updated: 認証情報を更新しました
+      destroyed: 認証情報を削除しました
+    custom_variables:
+      created: カスタム変数を作成しました
+      updated: カスタム変数を更新しました
+      archived: カスタム変数をアーカイブしました
+      value_updated: 値を更新しました
     admins:
       title: 管理者管理
       list: 管理者一覧

@@ -263,6 +263,44 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["user_id"], name: "index_session_tokens_on_user_id"
   end
 
+  create_table "site_custom_variables", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.string "unique_name", null: false
+    t.integer "variable_type", limit: 2, null: false, comment: "1: boolean, 2: datetime, 3: text"
+    t.text "description", default: "", null: false
+    t.boolean "boolean_value"
+    t.datetime "datetime_value"
+    t.text "text_value"
+    t.datetime "archived_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "archived_at"], name: "idx_site_custom_variables_tenant_archived"
+    t.index ["tenant_id", "unique_name"], name: "idx_site_custom_variables_unique_name", unique: true, where: "(archived_at IS NULL)"
+    t.check_constraint "variable_type <> 1 OR boolean_value IS NOT NULL AND datetime_value IS NULL AND text_value IS NULL", name: "chk_site_custom_variables_boolean_consistency"
+    t.check_constraint "variable_type <> 2 OR datetime_value IS NOT NULL AND boolean_value IS NULL AND text_value IS NULL", name: "chk_site_custom_variables_datetime_consistency"
+    t.check_constraint "variable_type <> 3 OR text_value IS NOT NULL AND boolean_value IS NULL AND datetime_value IS NULL", name: "chk_site_custom_variables_text_consistency"
+    t.check_constraint "variable_type = ANY (ARRAY[1, 2, 3])", name: "chk_site_custom_variables_variable_type"
+  end
+
+  create_table "tenant_basic_auth_credentials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tenant_basic_auth_id", null: false
+    t.string "username", null: false
+    t.string "password_digest", null: false
+    t.string "description", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_basic_auth_id", "username"], name: "idx_on_tenant_basic_auth_id_username_dcd4020202", unique: true
+    t.index ["tenant_basic_auth_id"], name: "index_tenant_basic_auth_credentials_on_tenant_basic_auth_id"
+  end
+
+  create_table "tenant_basic_auths", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_basic_auths_on_tenant_id", unique: true
+  end
+
   create_table "tenant_site_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "tenant_id", null: false
     t.jsonb "features", default: {}, null: false
@@ -391,6 +429,9 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "ruler_auth0_accounts", "rulers", name: "fk_ruler_auth0_accounts_rulers"
   add_foreign_key "session_tokens", "tenants"
   add_foreign_key "session_tokens", "users"
+  add_foreign_key "site_custom_variables", "tenants"
+  add_foreign_key "tenant_basic_auth_credentials", "tenant_basic_auths"
+  add_foreign_key "tenant_basic_auths", "tenants"
   add_foreign_key "tenant_site_settings", "tenants"
   add_foreign_key "tenant_themes", "media_assets", column: "logo_media_asset_id"
   add_foreign_key "tenant_themes", "tenants"

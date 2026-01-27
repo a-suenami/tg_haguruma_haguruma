@@ -14,8 +14,15 @@
         <div cog-detail-fragment-toolbar>
           <% category_field = field_by_identifier(version, 'category') %>
           <% category_option = selected_option(category_field) %>
-          <span cog-category-label><%= category_option&.display_name || '-' %></span>
           <span cog-date-label><%= format_content_date(version&.published_at) %></span>
+          <div class="categories">
+            <% unless content_authorized? %>
+              <span cog-category-label color-primary>会員限定</span>
+            <% end %>
+            <% if category_option.present? %>
+              <span cog-category-label color-secondary><%= category_option.display_name %></span>
+            <% end %>
+          </div>
         </div>
         <div cog-detail-fragment-toolbar>
           <h1 cog-detail-fragment-title><%= title_text %></h1>
@@ -34,14 +41,7 @@
             <%= raw render_richtext_field(field_by_identifier(version, 'body')) %>
           </div>
         <% else %>
-          <div class="content-masked">
-            <div class="masked-overlay">
-              <p>このコンテンツを閲覧するには権限が必要です</p>
-            </div>
-            <div cog-rich-content-viewer class="blurred">
-              <%= raw render_richtext_field(field_by_identifier(version, 'body')) %>
-            </div>
-          </div>
+          <%= render 'user_area/alpha/shared/content/membership_prompt' %>
         <% end %>
       </div>
 

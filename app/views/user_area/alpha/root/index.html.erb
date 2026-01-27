@@ -29,8 +29,7 @@
           <span class="action-text">入会のご案内</span>
           <span class="action-icon"><%= icon_svg('right-arrow') %></span>
         </a>
-        <% # FIXME(#20) %>
-        <% if false %>
+        <% if custom_variables.enabled?('signup_flow') %>
           <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
             既にご入会済みの方はこちら
           </a>
@@ -64,10 +63,15 @@
                   <div class="date">
                     <span cog-date-label><%= format_content_date(version.published_at) %></span>
                   </div>
+                  <% category_field = field_by_identifier(version, 'category') %>
+                  <% category_option = selected_option(category_field) %>
                   <div class="category">
-                    <% category_field = field_by_identifier(version, 'category') %>
-                    <% category_option = selected_option(category_field) %>
-                    <span cog-category-label><%= category_option&.display_name || '-' %></span>
+                    <% unless entry_authorized?(entry) %>
+                      <span cog-category-label color-primary>会員限定</span>
+                    <% end %>
+                    <% if category_option.present? %>
+                      <span cog-category-label color-secondary><%= category_option.display_name %></span>
+                    <% end %>
                   </div>
                 </div>
                   <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
@@ -111,13 +115,18 @@
                     <% next if version.nil? %>
                     <a href="<%= user_area_blog_path(entry) %>" cog-blog-item data-turbo-frame="_top">
                       <div class="thumbnail">
+                        <% unless entry_authorized?(entry) %>
+                          <span class="member-only">会員限定</span>
+                        <% end %>
                         <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
                         <img draggable="false" src="<%= thumbnail_url || '/images/yokikotokiku/noimage.svg' %>" alt="Blog Thumbnail">
-                        <div class="label">
-                          <% category_field = field_by_identifier(version, 'category') %>
+                        <% category_field = field_by_identifier(version, 'category') %>
                           <% category_option = selected_option(category_field) %>
-                          <span cog-category-label><%= category_option&.display_name || '-' %></span>
-                        </div>
+                          <% if category_option.present? %>
+                            <div class="label">
+                              <span cog-category-label color-secondary><%= category_option.display_name %></span>
+                            </div>
+                          <% end %>
                       </div>
                       <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
                       <div class="date">

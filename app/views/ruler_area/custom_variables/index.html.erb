@@ -1,0 +1,86 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><span>カスタム変数</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>カスタム変数一覧</h3>
+  <div>
+    <%= link_to '新規作成', new_ruler_area_tenant_custom_variable_path(@tenant), class: 'uk-button uk-button-primary' %>
+  </div>
+</div>
+
+<table class="uk-table">
+  <thead>
+    <tr>
+      <th>変数キー</th>
+      <th>タイプ</th>
+      <th>現在の値</th>
+      <th>説明</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @custom_variables.empty? %>
+      <tr>
+        <td colspan="5" class="uk-text-center uk-text-muted">
+          カスタム変数が登録されていません
+        </td>
+      </tr>
+    <% else %>
+      <% @custom_variables.each do |var| %>
+        <tr>
+          <td><code><%= var.unique_name %></code></td>
+          <td>
+            <% case var.variable_type %>
+            <% when 'boolean' %>
+              <span class="uk-label uk-label-primary">フラグ</span>
+            <% when 'datetime' %>
+              <span class="uk-label uk-label-warning">日時</span>
+            <% when 'text' %>
+              <span class="uk-label uk-label-success">テキスト</span>
+            <% end %>
+          </td>
+          <td>
+            <% case var.variable_type %>
+            <% when 'boolean' %>
+              <% if var.boolean_value %>
+                <span uk-icon="icon: check" style="color: green;"></span> 有効
+              <% else %>
+                <span uk-icon="icon: close" style="color: red;"></span> 無効
+              <% end %>
+            <% when 'datetime' %>
+              <%= var.datetime_value.present? ? var.datetime_value.strftime('%Y/%m/%d %H:%M') : '-' %>
+            <% when 'text' %>
+              <%= var.text_value.present? ? truncate(var.text_value, length: 30) : '-' %>
+            <% end %>
+          </td>
+          <td class="uk-text-muted"><%= var.description %></td>
+          <td>
+            <div class="uk-flex uk-flex-right uk-flex-middle">
+              <%= link_to '値を設定', edit_value_ruler_area_tenant_custom_variable_path(@tenant, var), class: 'uk-button uk-button-small uk-button-primary uk-margin-small-right' %>
+              <div class="uk-inline">
+                <a href="#" uk-icon="icon: more-vertical"></a>
+                <div uk-dropdown="mode: click; pos: bottom-right">
+                  <ul class="uk-nav uk-dropdown-nav">
+                    <li>
+                      <%= link_to edit_ruler_area_tenant_custom_variable_path(@tenant, var) do %>
+                        <span uk-icon="icon: pencil; ratio: 0.8"></span> 編集
+                      <% end %>
+                    </li>
+                    <li>
+                      <%= link_to ruler_area_tenant_custom_variable_path(@tenant, var), data: { turbo_method: :delete, turbo_confirm: 'サイトで使われていないことを確認してください。アーカイブしますか？' }, style: 'color: #f0506e;' do %>
+                        <span uk-icon="icon: trash; ratio: 0.8"></span> アーカイブ
+                      <% end %>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

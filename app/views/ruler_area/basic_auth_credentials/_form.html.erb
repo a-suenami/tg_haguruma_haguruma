@@ -1,0 +1,35 @@
+<%= form_with model: @credential, url: form_url, local: true, scope: :credential do |form| %>
+  <%= render 'ruler_area/shared/form_error', target: @credential %>
+
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <div class="uk-margin">
+      <%= form.label :username, 'ユーザー名', class: 'uk-form-label' %>
+      <div class="uk-form-controls">
+        <%= form.text_field :username, class: 'uk-input', style: 'width: 300px;', autocomplete: 'off' %>
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <%= form.label :password, 'パスワード', class: 'uk-form-label' %>
+      <div class="uk-form-controls">
+        <%= form.password_field :password, class: 'uk-input', style: 'width: 300px;', placeholder: @credential.persisted? ? '変更する場合のみ入力' : '', autocomplete: 'new-password' %>
+      </div>
+      <% if @credential.persisted? %>
+        <p class="uk-text-meta">パスワードを変更しない場合は空欄のままにしてください</p>
+      <% end %>
+    </div>
+
+    <div class="uk-margin">
+      <%= form.label :description, '説明', class: 'uk-form-label' %>
+      <div class="uk-form-controls">
+        <%= form.text_field :description, class: 'uk-input', style: 'width: 400px;', placeholder: '例: 開発チーム用' %>
+      </div>
+      <p class="uk-text-meta">この認証情報の用途をメモできます（任意）</p>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.submit @credential.persisted? ? '更新' : '作成', class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_tenant_basic_auth_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>

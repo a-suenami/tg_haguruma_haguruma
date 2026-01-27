@@ -27,6 +27,7 @@ class UserArea::Alpha::BiographiesController
     include ::RulerArea::ApplicationHelper
     include ::SvgHelper
     include ::UserArea::ContentFieldHelper
+    include ::UserArea::CustomVariablesHelper
     include ::UserArea::ExternalUrlsHelper
     include ::UserArea::SiteSettingsHelper
     include ::ApplicationController::HelperMethods
@@ -43,6 +44,9 @@ class UserArea::Alpha::BiographiesController
 
     sig { returns(T.nilable(::String)) }
     def current_category; end
+
+    sig { params(entry: ::ContentEntry).returns(T::Boolean) }
+    def entry_authorized?(entry); end
   end
 
   class HelperProxy < ::ActionView::Base

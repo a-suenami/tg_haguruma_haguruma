@@ -1,0 +1,45 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><%= link_to 'カスタム変数', ruler_area_tenant_custom_variables_path(@tenant) %></li>
+  <li><span>編集</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>カスタム変数の編集</h3>
+</div>
+
+<%= form_with model: @custom_variable, url: ruler_area_tenant_custom_variable_path(@tenant, @custom_variable), method: :patch, local: true do |form| %>
+  <%= render 'ruler_area/shared/form_error', target: @custom_variable %>
+
+  <dl class="uk-description-list uk-margin">
+    <dt>変数キー</dt>
+    <dd><code><%= @custom_variable.unique_name %></code></dd>
+
+    <dt>タイプ</dt>
+    <dd>
+      <% case @custom_variable.variable_type %>
+      <% when 'boolean' %>
+        <span class="uk-label uk-label-primary">フラグ</span>
+      <% when 'datetime' %>
+        <span class="uk-label uk-label-warning">日時</span>
+      <% when 'text' %>
+        <span class="uk-label uk-label-success">テキスト</span>
+      <% end %>
+    </dd>
+  </dl>
+
+  <div class="uk-margin">
+    <label class="uk-form-label">説明</label>
+    <div class="uk-form-controls">
+      <%= form.text_field :description,
+          class: 'uk-input',
+          placeholder: 'この変数の用途を記入' %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.submit '更新', class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_tenant_custom_variables_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>
