@@ -66,11 +66,14 @@ export default class ContentTypeFieldController extends Controller {
     'selectOptionsContainer',
     'hiddenDisplayName',
     'hiddenDescription',
+    'hiddenPreviewUrl',
     'pageTitle',
     'sidebarDisplayName',
     'sidebarDescription',
+    'sidebarPreviewUrl',
     'modalDisplayName',
     'modalDescription',
+    'modalPreviewUrl',
   ];
 
   declare hiddenFieldsContainerTarget: HTMLDivElement;
@@ -94,11 +97,14 @@ export default class ContentTypeFieldController extends Controller {
   declare selectOptionsContainerTarget: HTMLDivElement;
   declare hiddenDisplayNameTarget: HTMLInputElement;
   declare hiddenDescriptionTarget: HTMLInputElement;
+  declare hiddenPreviewUrlTarget: HTMLInputElement;
   declare pageTitleTarget: HTMLHeadingElement;
   declare sidebarDisplayNameTarget: HTMLDivElement;
   declare sidebarDescriptionTarget: HTMLDivElement;
+  declare sidebarPreviewUrlTarget: HTMLDivElement;
   declare modalDisplayNameTarget: HTMLInputElement;
   declare modalDescriptionTarget: HTMLTextAreaElement;
+  declare modalPreviewUrlTarget: HTMLInputElement;
 
   declare hasFieldsTableBodyTarget: boolean;
   declare hasEmptyFieldsMessageTarget: boolean;
@@ -700,13 +706,16 @@ export default class ContentTypeFieldController extends Controller {
 
     const displayName = this.modalDisplayNameTarget.value;
     const description = this.modalDescriptionTarget.value;
+    const previewUrl = this.modalPreviewUrlTarget.value;
 
     this.hiddenDisplayNameTarget.value = displayName;
     this.hiddenDescriptionTarget.value = description;
+    this.hiddenPreviewUrlTarget.value = previewUrl;
 
     this.pageTitleTarget.textContent = displayName;
     this.sidebarDisplayNameTarget.textContent = displayName;
     this.sidebarDescriptionTarget.textContent = description || '-';
+    this.sidebarPreviewUrlTarget.textContent = previewUrl || '-';
 
     this.hideModal('contentTypeMetadataModal');
   }

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 namespace :user_area, path: '' do
+  # Preview route (for admin preview with token)
+  get '/preview/:content_type/:id', to: 'preview#show', as: :preview_content
+
   # Session management routes
   get 'login', to: 'sessions#new', as: :login
   post 'login', to: 'sessions#create'

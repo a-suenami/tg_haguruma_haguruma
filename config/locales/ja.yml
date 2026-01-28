@@ -36,6 +36,10 @@ ja:
           attributes:
             base:
               reserved_id_error: このIDは予約されているため使用できません
+        content_type:
+          attributes:
+            preview_url:
+              must_start_with_slash: は/から始まる必要があります
         site_custom_variable:
           attributes:
             unique_name:

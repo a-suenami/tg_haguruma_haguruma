@@ -65,6 +65,10 @@ en:
           attributes:
             base:
               reserved_id_error: This ID is reserved and cannot be used
+        content_type:
+          attributes:
+            preview_url:
+              must_start_with_slash: must start with /
   ruler_area:
     auth0:
       already_logged_in: Already logged in

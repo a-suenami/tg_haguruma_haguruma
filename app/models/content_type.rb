@@ -34,6 +34,8 @@ class ContentType < ApplicationRecord
   validates :unique_name, presence: true, length: { maximum: 32 }, uniqueness: { scope: :tenant_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :display_name, presence: true, length: { maximum: 255 }
   validates :is_collection, inclusion: { in: [true, false] }
+  validates :preview_url, format: { with: %r{\A/}, message: :must_start_with_slash }, allow_blank: true
+  validate :validate_preview_url_placeholders
 
   scope :collections, -> { where(is_collection: true) }
   scope :singles, -> { where(is_collection: false) }
@@ -47,5 +49,21 @@ class ContentType < ApplicationRecord
                .where(tenant_id:, unique_name:)
                .where.not(id:)
                .first
+  end
+
+  private
+
+  # Validate preview_url placeholder syntax
+  def validate_preview_url_placeholders
+    return if preview_url.blank?
+
+    # Extract all placeholders (words starting with :)
+    placeholders = preview_url.scan(/:(\w+)/).flatten
+    valid_placeholders = %w[content_entry_id content_type_id]
+    invalid = placeholders - valid_placeholders
+
+    return if invalid.empty?
+
+    errors.add(:preview_url, "contains invalid placeholders: #{invalid.join(', ')}. Valid: #{valid_placeholders.join(', ')}")
   end
 end
