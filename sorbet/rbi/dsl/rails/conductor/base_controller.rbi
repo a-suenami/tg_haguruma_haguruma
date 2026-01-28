@@ -25,6 +25,7 @@ class Rails::Conductor::BaseController
     include ::ActionText::TagHelper
     include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
+    include ::AdminArea::PreviewHelper
     include ::ApplicationHelper
     include ::LexicalHelper
     include ::RulerArea::ApplicationHelper
