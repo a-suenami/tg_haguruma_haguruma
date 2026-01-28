@@ -25,7 +25,7 @@
     <% end %>
 
     <div class="form-container">
-      <%= form_with model: [:admin_area, @media_asset], local: true, multipart: true, class: 'content-form' do |form| %>
+      <%= form_with url: admin_area_media_path, scope: :media_asset, local: true, multipart: true, class: 'content-form' do |form| %>
         <div class="upload-area" id="upload-area">
           <div class="upload-icon">
             <i class="fas fa-cloud-upload-alt fa-4x"></i>
@@ -53,7 +53,7 @@
         </div>
 
         <div class="form-actions">
-          <%= form.submit 'アップロード', class: 'btn btn-primary', id: 'submit-btn', disabled: true %>
+          <button type="submit" class="btn btn-primary" id="submit-btn" disabled><i class="fas fa-upload icon-prefix"></i>アップロード</button>
           <%= link_to 'キャンセル', admin_area_media_path, class: 'btn btn-secondary' %>
         </div>
       <% end %>

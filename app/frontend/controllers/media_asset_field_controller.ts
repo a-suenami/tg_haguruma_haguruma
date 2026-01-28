@@ -260,33 +260,33 @@ export default class extends Controller {
       <div class="media-library-modal">
         <div class="media-library-modal-header">
           <h3>メディアライブラリ</h3>
-          <button type="button" class="modal-close-btn" data-action="click->media-asset-field#closeModal">
+          <button type="button" class="modal-close-btn" data-modal-close>
             <i class="fas fa-times"></i>
           </button>
         </div>
         <div class="media-library-modal-filters">
-          <select class="filter-select" data-media-asset-field-target="typeFilter">
+          <select class="filter-select" data-modal-type-filter>
             <option value="">すべて</option>
             <option value="image">画像</option>
             <option value="video">動画</option>
             <option value="audio">音声</option>
             <option value="document">ドキュメント</option>
           </select>
-          <input type="search" placeholder="ファイル名で検索..." class="search-input" data-media-asset-field-target="searchInput" />
-          <button type="button" class="btn btn-secondary btn-sm" data-action="click->media-asset-field#filterLibrary">
+          <input type="search" placeholder="ファイル名で検索..." class="search-input" data-modal-search-input />
+          <button type="button" class="btn btn-secondary btn-sm" data-modal-filter>
             <i class="fas fa-search"></i>
           </button>
         </div>
         <div class="media-library-modal-content">
-          <div class="media-library-grid" data-media-asset-field-target="libraryGrid">
+          <div class="media-library-grid" data-modal-grid>
             <div class="loading-indicator">読み込み中...</div>
           </div>
         </div>
         <div class="media-library-modal-footer">
-          <button type="button" class="btn btn-secondary" data-action="click->media-asset-field#closeModal">
+          <button type="button" class="btn btn-secondary" data-modal-close>
             キャンセル
           </button>
-          <button type="button" class="btn btn-primary" data-action="click->media-asset-field#confirmSelection" disabled data-media-asset-field-target="confirmBtn">
+          <button type="button" class="btn btn-primary" data-modal-confirm disabled>
             選択
           </button>
         </div>
@@ -294,16 +294,77 @@ export default class extends Controller {
     `;
 
     document.body.appendChild(this.modal);
-
-    // Close on overlay click
-    this.modal.addEventListener('click', (e) => {
-      if (e.target === this.modal) {
-        this.closeModal();
-      }
-    });
+    this.setupModalEventListeners();
 
     // Close on Escape key
     document.addEventListener('keydown', this.handleEscapeKey);
+  }
+
+  private setupModalEventListeners() {
+    if (!this.modal) return;
+
+    // Event delegation for all modal interactions
+    this.modal.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+
+      // Close on overlay click
+      if (target === this.modal) {
+        this.closeModal();
+        return;
+      }
+
+      // Close button
+      if (target.closest('[data-modal-close]')) {
+        this.closeModal();
+        return;
+      }
+
+      // Filter button
+      if (target.closest('[data-modal-filter]')) {
+        this.filterLibrary();
+        return;
+      }
+
+      // Confirm button
+      if (target.closest('[data-modal-confirm]')) {
+        this.confirmSelection();
+        return;
+      }
+
+      // Media item selection
+      const mediaItem = target.closest('[data-media-id]') as HTMLElement;
+      if (mediaItem) {
+        this.handleMediaItemClick(mediaItem);
+        return;
+      }
+    });
+
+    // Search on Enter key
+    const searchInput = this.modal.querySelector('[data-modal-search-input]') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.filterLibrary();
+        }
+      });
+    }
+  }
+
+  private handleMediaItemClick(item: HTMLElement) {
+    // Remove selection from all items
+    const allItems = this.modal?.querySelectorAll('.media-library-item');
+    allItems?.forEach((el) => el.classList.remove('selected'));
+
+    // Select clicked item
+    item.classList.add('selected');
+    this.selectedMediaId = item.dataset.mediaId || null;
+
+    // Enable confirm button
+    const confirmBtn = this.modal?.querySelector('[data-modal-confirm]') as HTMLButtonElement;
+    if (confirmBtn) {
+      confirmBtn.disabled = false;
+    }
   }
 
   private handleEscapeKey = (e: KeyboardEvent) => {
@@ -324,7 +385,7 @@ export default class extends Controller {
   private async loadMediaLibrary(type = '', query = '') {
     if (!this.modal) return;
 
-    const grid = this.modal.querySelector('[data-media-asset-field-target="libraryGrid"]');
+    const grid = this.modal.querySelector('[data-modal-grid]');
     if (!grid) return;
 
     grid.innerHTML = '<div class="loading-indicator">読み込み中...</div>';
@@ -358,8 +419,7 @@ export default class extends Controller {
              data-media-id="${media.id}"
              data-media-url="${media.url}"
              data-media-type="${media.media_type}"
-             data-media-filename="${media.filename}"
-             data-action="click->media-asset-field#selectLibraryItem">
+             data-media-filename="${media.filename}">
           <div class="media-library-item-preview">
             ${
               media.media_type === 'image'
@@ -389,38 +449,13 @@ export default class extends Controller {
   filterLibrary() {
     if (!this.modal) return;
 
-    const typeFilter = this.modal.querySelector(
-      '[data-media-asset-field-target="typeFilter"]',
-    ) as HTMLSelectElement;
-    const searchInput = this.modal.querySelector(
-      '[data-media-asset-field-target="searchInput"]',
-    ) as HTMLInputElement;
+    const typeFilter = this.modal.querySelector('[data-modal-type-filter]') as HTMLSelectElement;
+    const searchInput = this.modal.querySelector('[data-modal-search-input]') as HTMLInputElement;
 
     const type = typeFilter?.value || '';
     const query = searchInput?.value || '';
 
     this.loadMediaLibrary(type, query);
-  }
-
-  selectLibraryItem(event: Event) {
-    const target = (event.target as HTMLElement).closest('.media-library-item') as HTMLElement;
-    if (!target) return;
-
-    // Remove selection from all items
-    const allItems = this.modal?.querySelectorAll('.media-library-item');
-    allItems?.forEach((item) => item.classList.remove('selected'));
-
-    // Select clicked item
-    target.classList.add('selected');
-    this.selectedMediaId = target.dataset.mediaId || null;
-
-    // Enable confirm button
-    const confirmBtn = this.modal?.querySelector(
-      '[data-media-asset-field-target="confirmBtn"]',
-    ) as HTMLButtonElement;
-    if (confirmBtn) {
-      confirmBtn.disabled = false;
-    }
   }
 
   confirmSelection() {
