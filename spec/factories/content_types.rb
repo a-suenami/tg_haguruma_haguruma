@@ -9,6 +9,7 @@
 #  description   :text
 #  display_name  :text
 #  is_collection :boolean          default(TRUE), not null
+#  preview_url   :text
 #  unique_name   :text
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null

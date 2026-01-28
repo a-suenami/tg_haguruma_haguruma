@@ -1,6 +1,24 @@
 # typed: strict
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: tenant_basic_auths
+#
+#  id         :uuid             not null, primary key
+#  enabled    :boolean          default(FALSE), not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  tenant_id  :string           not null
+#
+# Indexes
+#
+#  index_tenant_basic_auths_on_tenant_id  (tenant_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (tenant_id => tenants.id)
+#
 class TenantBasicAuth < ApplicationRecord
   extend T::Sig
 
