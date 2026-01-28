@@ -72,4 +72,21 @@ class ContentEntry::Version < ApplicationRecord
   scope :previews, -> { where(status: STATUSES[:preview]) }
   scope :published, -> { where(status: STATUSES[:published]).where.not(published_at: nil) }
   scope :unpublished, -> { where(status: STATUSES[:unpublished]) }
+  scope :scheduled, -> { drafts.where.not(scheduled_publish_at: nil) }
+  scope :due_for_publish, -> { scheduled.where('scheduled_publish_at <= ?', Time.current) }
+
+  # Check if this draft version has a scheduled publish time
+  def scheduled?
+    draft? && scheduled_publish_at.present?
+  end
+
+  # Schedule this version for publishing at a specific time
+  def schedule_publish!(scheduled_time:, job_id: nil)
+    update!(scheduled_publish_at: scheduled_time, scheduled_job_id: job_id)
+  end
+
+  # Cancel scheduled publishing
+  def cancel_schedule!
+    update!(scheduled_publish_at: nil, scheduled_job_id: nil)
+  end
 end

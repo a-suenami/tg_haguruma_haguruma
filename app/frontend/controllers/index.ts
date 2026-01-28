@@ -13,6 +13,7 @@ import FooterLinksController from './footer_links_controller';
 import MenuSettingsController from './menu_settings_controller';
 import PcFeaturesController from './pc_features_controller';
 import CategoryTabsController from './category_tabs_controller';
+import ScheduledPublicationController from './scheduled_publication_controller';
 
 const application = Application.start();
 
@@ -31,5 +32,6 @@ application.register('footer-links', FooterLinksController);
 application.register('menu-settings', MenuSettingsController);
 application.register('pc-features', PcFeaturesController);
 application.register('category-tabs', CategoryTabsController);
+application.register('scheduled-publication', ScheduledPublicationController);
 
 export { application };
