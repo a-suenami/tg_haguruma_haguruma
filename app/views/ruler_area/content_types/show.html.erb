@@ -20,6 +20,7 @@
   <%= f.hidden_field :tenant_id, value: @tenant.id %>
   <%= f.hidden_field :display_name, data: { content_type_field_target: 'hiddenDisplayName' } %>
   <%= f.hidden_field :description, data: { content_type_field_target: 'hiddenDescription' } %>
+  <%= f.hidden_field :preview_url, data: { content_type_field_target: 'hiddenPreviewUrl' } %>
 
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h3 style="margin: 0;" data-content-type-field-target="pageTitle"><%= @content_type.display_name %></h3>
@@ -191,6 +192,11 @@
         </div>
 
         <div class="uk-margin-small">
+          <div class="uk-text-bold uk-text-small">プレビューURL</div>
+          <div data-content-type-field-target="sidebarPreviewUrl"><%= @content_type.preview_url.presence || '-' %></div>
+        </div>
+
+        <div class="uk-margin-small">
           <div class="uk-text-bold uk-text-small">多言語</div>
           <div>無効</div>
         </div>
@@ -253,6 +259,20 @@
                       class="uk-textarea"
                       rows="3"
                       placeholder="このコンテンツタイプの説明を入力してください"><%= @content_type.description %></textarea>
+          </div>
+        </div>
+
+        <div class="uk-margin">
+          <label class="uk-form-label">プレビューURL</label>
+          <div class="uk-form-controls">
+            <input type="text"
+                   data-content-type-field-target="modalPreviewUrl"
+                   class="uk-input"
+                   placeholder="/news/:content_entry_id"
+                   value="<%= @content_type.preview_url %>">
+            <small class="uk-text-muted">
+              ユーザー向け画面に表示するドメイン以降のURLを入力してください。IDは「<code>:content_entry_id</code>」を指定してください。
+            </small>
           </div>
         </div>
 

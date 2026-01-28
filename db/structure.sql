@@ -1,4 +1,4 @@
-\restrict 0PTWPa5vTTE3gg9kbcbRv4Q7aotmfg1yJ4QmEPn62aEPz310zaglasasOPfBo1g
+\restrict 9LhjUh7lsyd8YCcwamAPYNJVQVibrR2xpqUdUk8bvhCU1KihftyJuhsfFief1lB
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -361,7 +361,9 @@ CREATE TABLE public.content_entry_versions (
     visibility integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     published_at timestamp(6) without time zone,
-    unpublished_at timestamp(6) without time zone
+    unpublished_at timestamp(6) without time zone,
+    preview_token character varying,
+    preview_token_expires_at timestamp(6) without time zone
 );
 
 
@@ -594,6 +596,7 @@ CREATE TABLE public.content_types (
     display_name text,
     unique_name text,
     description text,
+    preview_url text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1458,6 +1461,13 @@ CREATE UNIQUE INDEX index_content_entry_versions_on_entry_version ON public.cont
 
 
 --
+-- Name: index_content_entry_versions_on_preview_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_versions_on_preview_token ON public.content_entry_versions USING btree (preview_token) WHERE (preview_token IS NOT NULL);
+
+
+--
 -- Name: index_content_entry_versions_on_tenant_is_public; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1476,6 +1486,13 @@ CREATE UNIQUE INDEX index_content_entry_versions_on_tenant_type_entry_version ON
 --
 
 CREATE INDEX index_content_entry_versions_on_tenant_visibility ON public.content_entry_versions USING btree (tenant_id, visibility);
+
+
+--
+-- Name: index_content_entry_versions_on_token_expires_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_entry_versions_on_token_expires_at ON public.content_entry_versions USING btree (preview_token_expires_at) WHERE (preview_token IS NOT NULL);
 
 
 --
@@ -1980,7 +1997,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 0PTWPa5vTTE3gg9kbcbRv4Q7aotmfg1yJ4QmEPn62aEPz310zaglasasOPfBo1g
+\unrestrict 9LhjUh7lsyd8YCcwamAPYNJVQVibrR2xpqUdUk8bvhCU1KihftyJuhsfFief1lB
 
 SET search_path TO "$user", public;
 

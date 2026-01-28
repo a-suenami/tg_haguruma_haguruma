@@ -3,14 +3,15 @@ import type {
   DOMConversionOutput,
   DOMExportOutput,
   EditorConfig,
-  ElementFormatType,
   LexicalNode,
   NodeKey,
   Spread,
 } from 'lexical';
 
-import { DecoratorNode } from 'lexical';
-import { Suspense } from 'react';
+import { DecoratorNode, $getNodeByKey } from 'lexical';
+import { Suspense, useCallback, useRef, useState, useEffect } from 'react';
+import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 export interface ImagePayload {
   altText: string;
@@ -86,7 +87,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
 
   static importDOM(): DOMConversionMap | null {
     return {
-      img: (node: Node) => ({
+      img: () => ({
         conversion: convertImageElement,
         priority: 0,
       }),
@@ -202,18 +203,142 @@ function ImageComponent({
   height,
   maxWidth,
 }: ImageComponentProps): JSX.Element {
+  const [editor] = useLexicalComposerContext();
+  const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const [isResizing, setIsResizing] = useState(false);
+
+  // Track current dimensions during resize
+  const [currentWidth, setCurrentWidth] = useState<number | 'inherit'>(width);
+  const [currentHeight, setCurrentHeight] = useState<number | 'inherit'>(height);
+
+  // Sync with props when not resizing
+  useEffect(() => {
+    if (!isResizing) {
+      setCurrentWidth(width);
+      setCurrentHeight(height);
+    }
+  }, [width, height, isResizing]);
+
+  // Handle click to select
+  const onClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      clearSelection();
+      setSelected(true);
+    },
+    [clearSelection, setSelected],
+  );
+
+  // Handle resize
+  const onResizeStart = useCallback(
+    (e: React.MouseEvent, direction: string) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!imageRef.current) return;
+
+      setIsResizing(true);
+      const startX = e.clientX;
+      const startWidth = imageRef.current.offsetWidth;
+      const startHeight = imageRef.current.offsetHeight;
+      const aspectRatio = startWidth / startHeight;
+
+      // Determine resize direction multiplier
+      const isLeft = direction.includes('w');
+      const dirMultiplier = isLeft ? -1 : 1;
+
+      // Track final dimensions in closure
+      let finalWidth = startWidth;
+      let finalHeight = startHeight;
+
+      const onMouseMove = (moveEvent: MouseEvent) => {
+        const deltaX = (moveEvent.clientX - startX) * dirMultiplier;
+        let newWidth = startWidth + deltaX;
+
+        // Constraints
+        newWidth = Math.max(50, newWidth);
+        newWidth = Math.min(newWidth, maxWidth);
+
+        const newHeight = newWidth / aspectRatio;
+
+        finalWidth = Math.round(newWidth);
+        finalHeight = Math.round(newHeight);
+
+        setCurrentWidth(finalWidth);
+        setCurrentHeight(finalHeight);
+      };
+
+      const onMouseUp = () => {
+        setIsResizing(false);
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+
+        // Update node with final dimensions
+        editor.update(() => {
+          const node = $getNodeByKey(nodeKey);
+          if ($isImageNode(node)) {
+            node.setWidthAndHeight(finalWidth, finalHeight);
+          }
+        });
+      };
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    },
+    [editor, nodeKey, maxWidth],
+  );
+
+  // Click outside to deselect
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (isSelected && !target.closest('.image-wrapper')) {
+        clearSelection();
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isSelected, clearSelection]);
+
   return (
-    <div className="image-wrapper">
+    <div
+      className={`image-wrapper ${isSelected ? 'selected' : ''} ${isResizing ? 'resizing' : ''}`}
+      onClick={onClick}
+    >
       <img
+        ref={imageRef}
         className="image-node"
         src={src}
         alt={altText}
         style={{
-          height,
+          width: currentWidth === 'inherit' ? undefined : currentWidth,
+          height: currentHeight === 'inherit' ? undefined : currentHeight,
           maxWidth,
-          width,
         }}
+        draggable={false}
       />
+      {isSelected && (
+        <div className="image-resizer">
+          <div
+            className="resize-handle nw"
+            onMouseDown={(e) => onResizeStart(e, 'nw')}
+          />
+          <div
+            className="resize-handle ne"
+            onMouseDown={(e) => onResizeStart(e, 'ne')}
+          />
+          <div
+            className="resize-handle sw"
+            onMouseDown={(e) => onResizeStart(e, 'sw')}
+          />
+          <div
+            className="resize-handle se"
+            onMouseDown={(e) => onResizeStart(e, 'se')}
+          />
+        </div>
+      )}
     </div>
   );
 }

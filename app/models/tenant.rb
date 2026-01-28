@@ -69,13 +69,24 @@ class Tenant < ApplicationRecord
 
   # path: `/` から始まる必要あり（`/my-page` など）
   # params: `[[key, value], [key, value]]` の形式
-  sig { params(path: String, params: T::Array[[String, String]]).returns(String) }
-  def user_page_path(path = '/', params: [])
-    uri = URI::HTTPS.build(
-      host: T.must(self.user_page_domain),
-      path:,
-      query: params.to_h.to_query.presence,
-    )
+  sig { params(path: String, params: T::Array[[String, String]], port: T.nilable(Integer)).returns(String) }
+  def user_page_path(path = '/', params: [], port: nil)
+    uri = if Rails.env.local?
+      # Development: use HTTP with custom port
+      URI::HTTP.build(
+        host: T.must(self.user_page_domain),
+        port: port || 3001,
+        path:,
+        query: params.to_h.to_query.presence,
+      )
+    else
+      # Production: use HTTPS, standard port
+      URI::HTTPS.build(
+        host: T.must(self.user_page_domain),
+        path:,
+        query: params.to_h.to_query.presence,
+      )
+    end
 
     uri.to_s
   end
