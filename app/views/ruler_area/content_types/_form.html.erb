@@ -37,6 +37,16 @@
   </div>
 
   <div class="uk-margin">
+    <%= f.label :preview_url, 'プレビューURL', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= f.text_field :preview_url, class: 'uk-input', placeholder: '例: /news/:content_entry_id' %>
+      <small class="uk-text-muted">
+        コンテンツのプレビューURLを入力してください。<code>:content_entry_id</code> は実際のIDに置換されます。
+      </small>
+    </div>
+  </div>
+
+  <div class="uk-margin">
     <%= f.label :multilingual_enabled, '多言語有効化', class: 'uk-form-label' %>
     <div class="uk-form-controls">
       <label>
