@@ -1175,6 +1175,15 @@
     justify-content: center;
     padding: 10px 15px;
     font-size: 14px;
+
+    &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+        color: #94a3b8;
+        border-color: #cbd5e1;
+        background-color: #f1f5f9;
+    }
 }
 
 /* メタ情報 */

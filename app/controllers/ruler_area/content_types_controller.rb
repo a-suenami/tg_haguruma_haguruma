@@ -56,6 +56,7 @@ class RulerArea::ContentTypesController < RulerArea::ApplicationController
       :display_name,
       :unique_name,
       :description,
+      :preview_url,
       :is_collection,
       :tenant_id,
       fields_attributes: [

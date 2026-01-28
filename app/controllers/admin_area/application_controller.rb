@@ -9,6 +9,7 @@ class AdminArea::ApplicationController < ApplicationController
   before_action :authenticate!
   before_action :set_tenant
 
+  helper AdminArea::PreviewHelper
   helper_method :current_admin, :signed_in?
 
   sig { void }

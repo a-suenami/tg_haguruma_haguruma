@@ -26,6 +26,7 @@ class RulerArea::ApplicationController
     include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
     include ::RulerArea::ApplicationHelper
+    include ::AdminArea::PreviewHelper
     include ::ApplicationHelper
     include ::LexicalHelper
     include ::SvgHelper

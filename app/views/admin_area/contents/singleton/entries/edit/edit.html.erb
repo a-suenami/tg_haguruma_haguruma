@@ -96,16 +96,12 @@
             </div>
           </div>
 
-          <div class="action-section">
-            <h4 class="action-section-title">PREVIEW</h4>
-            <div class="action-buttons">
-              <%= link_to '#', class: 'btn btn-secondary action-btn', target: '_blank' do %>
-                <i class="fas fa-eye icon-prefix"></i>
-                プレビュー
-                <i class="fas fa-external-link-alt icon-suffix"></i>
-              <% end %>
-            </div>
-          </div>
+          <%= render 'admin_area/contents/preview_buttons',
+                     content_type: @content_type,
+                     content_entry: @content_entry,
+                     draft_version: @draft_version,
+                     published_version: @published_version,
+                     mode: :edit %>
 
           <%= render 'admin_area/contents/authorization_tags',
                      authorization_tags: @authorization_tags,

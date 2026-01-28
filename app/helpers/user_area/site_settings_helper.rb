@@ -2,14 +2,14 @@
 
 module UserArea
   module SiteSettingsHelper
-    # Returns the current tenant's site settings (required - 404 if missing)
+    # Returns the current tenant's site settings (with fallback to defaults if missing)
     def current_site_settings
-      @current_site_settings ||= current_tenant&.site_settings
+      @current_site_settings ||= current_tenant&.site_settings_or_default
     end
 
-    # Returns the current tenant's theme (required - 404 if missing)
+    # Returns the current tenant's theme (with fallback to defaults if missing)
     def current_theme
-      @current_theme ||= current_tenant&.theme
+      @current_theme ||= current_tenant&.theme_or_default
     end
 
     # Check if a feature is enabled

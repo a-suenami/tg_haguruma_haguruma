@@ -23,6 +23,7 @@ class UserArea::Alpha::TicketsController
     include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
     include ::ApplicationHelper
+    include ::AdminArea::PreviewHelper
     include ::LexicalHelper
     include ::RulerArea::ApplicationHelper
     include ::SvgHelper
