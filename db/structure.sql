@@ -1,7 +1,7 @@
-\restrict ND96iUvWPpWGpCIlxA56PnnAYwKXUnV8UKUli1mbSgepaQdp7jfhnCgFvbqfyRt
+\restrict QyTcg9b78hUvRd8lO1ppSdDByC1Te54ZjGNbDL52DvA6xTrYekydtKDqqyyavvX
 
 -- Dumped from database version 16.11
--- Dumped by pg_dump version 16.11
+-- Dumped by pg_dump version 16.10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -132,6 +132,7 @@ CREATE TABLE public.content_entries (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id public.citext NOT NULL,
     content_type_id uuid NOT NULL,
+    publication_date timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2006,7 +2007,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ND96iUvWPpWGpCIlxA56PnnAYwKXUnV8UKUli1mbSgepaQdp7jfhnCgFvbqfyRt
+\unrestrict QyTcg9b78hUvRd8lO1ppSdDByC1Te54ZjGNbDL52DvA6xTrYekydtKDqqyyavvX
 
 SET search_path TO "$user", public;
 

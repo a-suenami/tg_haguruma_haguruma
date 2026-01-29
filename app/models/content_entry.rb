@@ -4,11 +4,12 @@
 #
 # Table name: content_entries
 #
-#  id              :uuid             not null, primary key
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  content_type_id :uuid             not null
-#  tenant_id       :citext           not null
+#  id               :uuid             not null, primary key
+#  publication_date :datetime         not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  content_type_id  :uuid             not null
+#  tenant_id        :citext           not null
 #
 # Indexes
 #
