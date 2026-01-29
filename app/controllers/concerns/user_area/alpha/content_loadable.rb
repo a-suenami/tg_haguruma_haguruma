@@ -60,7 +60,6 @@ module UserArea
       def query_entries(select_options: {}, page: 1, limit: 20)
         query = UserQueries::ContentEntriesQuery.new
                   .by_content_type(T.unsafe(self.class).source_content_type_key.to_s)
-                  .published
                   .ordered_by_published_at
 
         select_options.each do |field, value|
@@ -74,7 +73,7 @@ module UserArea
 
       sig { params(id: String).returns(ContentEntry) }
       def find_entry(id)
-        entry = ContentEntry.find(id)
+        entry = UserQueries::ContentEntriesQuery.new.resolve_find(id)
         @content_authorized = UserQueries::ContentEntriesQuery.authorized?(entry, user: current_user)
         entry
       end
@@ -104,7 +103,6 @@ module UserArea
         @authorized_entry_ids ||= begin
           ids = UserQueries::ContentEntriesQuery.new
                   .by_content_type(T.unsafe(self.class).source_content_type_key.to_s)
-                  .published
                   .authorized_for(current_user)
                   .resolve
                   .map(&:id)

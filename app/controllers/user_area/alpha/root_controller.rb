@@ -53,7 +53,6 @@ module UserArea
       def query_for(content_type_key, limit: nil, category: nil)
         query = UserQueries::ContentEntriesQuery.new
                   .by_content_type(content_type_key.to_s)
-                  .published
                   .ordered_by_published_at
         query = query.by_select_option('category', category) if category.present?
         query = query.limit(limit) if limit
