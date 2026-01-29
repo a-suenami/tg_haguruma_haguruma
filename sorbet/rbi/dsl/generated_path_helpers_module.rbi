@@ -58,6 +58,9 @@ module GeneratedPathHelpersModule
   def admin_area_contents_collection_entry_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_publication_date_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_publication_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -86,6 +89,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_singleton_entry_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_publication_date_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_singleton_entry_publication_path(*args); end

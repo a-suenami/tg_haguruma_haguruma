@@ -42,7 +42,7 @@
                   <a href="<%= user_area_news_path(entry) %>" cog-news-item data-turbo-frame="_top">
                   <div class="header">
                     <div class="date">
-                      <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                      <span cog-date-label><%= format_content_date(entry.display_publication_date) %></span>
                     </div>
                     <% category_field = field_by_identifier(version, 'category') %>
                     <% category_option = selected_option(category_field) %>

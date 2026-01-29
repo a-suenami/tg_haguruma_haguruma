@@ -1,0 +1,38 @@
+<%# Publication Date field for content entries %>
+<%# Required locals: content_entry %>
+<% save_url = local_assigns[:save_url] %>
+<% standalone_mode = save_url.present? %>
+
+<div class="action-section"
+     data-controller="publication-date"
+     data-publication-date-save-url-value="<%= save_url %>"
+     data-publication-date-standalone-value="<%= standalone_mode %>">
+  <h4 class="action-section-title">DISPLAY DATE</h4>
+  <div class="publication-date-field">
+    <label class="meta-key">表示用公開日時</label>
+    <input type="datetime-local"
+           name="publication_date"
+           class="publication-date-input"
+           data-controller="datetime-local"
+           data-datetime-local-utc-value="<%= content_entry.publication_date&.utc&.iso8601 %>"
+           data-datetime-local-format-value="input"
+           data-publication-date-target="input"
+           data-action="change->publication-date#onChange">
+    <p class="publication-date-hint">
+      この値は、記事に表示される公開日時および一覧画面の並び替えに使用されます。<br>
+      実際の公開タイミングを設定するものではありません。
+    </p>
+
+    <% if standalone_mode %>
+      <div class="authorization-save-button-wrapper">
+        <button type="button"
+                class="btn btn-sm btn-secondary authorization-save-btn"
+                disabled
+                data-publication-date-target="saveButton"
+                data-action="click->publication-date#save">
+          保存
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>
