@@ -13,7 +13,6 @@ module Api
       def index
         content_entries = UserQueries::ContentEntriesQuery.new
                             .by_content_type(params[:content_type])
-                            .published
                             .authorized_for(current_user)
                             .resolve
 
@@ -22,7 +21,7 @@ module Api
 
       sig { void }
       def show
-        content_entry = UserQueries::ContentEntriesQuery.new.published.resolve_find(params[:id])
+        content_entry = UserQueries::ContentEntriesQuery.new.resolve_find(params[:id])
 
         unless UserQueries::ContentEntriesQuery.authorized?(content_entry, user: current_user)
           raise UserQueries::ContentEntriesQuery::ContentAuthorizationError
