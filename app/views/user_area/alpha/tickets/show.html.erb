@@ -16,7 +16,7 @@
           <% category_option = selected_option(category_field) %>
           <span cog-date-label><%= format_content_date(version&.published_at) %></span>
           <div class="categories">
-            <% if version.visibility == 'authenticated' %>
+            <% if version.visibility != 'public' %>
               <span cog-category-label color-primary>会員限定</span>
             <% end %>
             <% if category_option.present? %>
