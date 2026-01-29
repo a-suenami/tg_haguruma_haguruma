@@ -47,7 +47,7 @@
                     <% category_field = field_by_identifier(version, 'category') %>
                     <% category_option = selected_option(category_field) %>
                     <div class="category">
-                      <% if version.visibility == 'authenticated' %>
+                      <% if version.visibility != 'public' %>
                         <span cog-category-label color-primary>会員限定</span>
                       <% end %>
                       <% if category_option.present? %>
