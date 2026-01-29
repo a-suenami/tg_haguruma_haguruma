@@ -7,6 +7,8 @@ module UserArea
 
     layout 'user_area/application'
 
+    rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+
     before_action :set_tenant
     before_action :authenticate_with_basic_auth
 
@@ -68,6 +70,11 @@ module UserArea
       authenticate_or_request_with_http_basic do |username, password|
         basic_auth.authenticate_credentials(username, password)
       end
+    end
+
+    sig { void }
+    def render_not_found
+      render 'user_area/errors/404', layout: false, status: :not_found
     end
   end
 end
