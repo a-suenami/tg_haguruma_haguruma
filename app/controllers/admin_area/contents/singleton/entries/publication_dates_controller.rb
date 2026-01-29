@@ -14,11 +14,12 @@ module AdminArea
           sig { void }
           def update
             publication_date = params[:publication_date]
+            entry = T.must(@content_entry)
 
-            if @content_entry.update(publication_date:)
+            if entry.update(publication_date:)
               head :ok
             else
-              render json: { errors: @content_entry.errors.full_messages }, status: :unprocessable_entity
+              render json: { errors: entry.errors.full_messages }, status: :unprocessable_entity
             end
           end
 

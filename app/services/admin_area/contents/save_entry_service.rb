@@ -61,7 +61,9 @@ module AdminArea
       def create_or_find_entry
         if @content_entry&.persisted?
           # Update publication_date if provided
-          @content_entry.update!(publication_date: @publication_date) if @publication_date
+          if @publication_date && !@content_entry.update(publication_date: @publication_date)
+            @errors.concat(@content_entry.errors.full_messages)
+          end
           @content_entry
         else
           entry = @content_type.content_entries.build(

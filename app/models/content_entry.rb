@@ -29,6 +29,6 @@ class ContentEntry < ApplicationRecord
   # Display date for user page
   # Falls back to published version's published_at if publication_date is nil
   def display_publication_date
-    publication_date || versions.published.order(published_at: :desc).first&.published_at
+    publication_date || versions.find(&:published?)&.published_at
   end
 end
