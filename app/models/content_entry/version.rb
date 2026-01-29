@@ -9,6 +9,7 @@
 #  preview_token            :string
 #  preview_token_expires_at :datetime
 #  published_at             :datetime
+#  scheduled_publish_at     :datetime
 #  status                   :integer          not null
 #  unpublished_at           :datetime
 #  version                  :integer          default(1), not null
@@ -16,12 +17,14 @@
 #  created_at               :datetime         not null
 #  content_entry_id         :uuid             not null
 #  content_type_id          :uuid             not null
+#  scheduled_job_id         :string
 #  tenant_id                :citext           not null
 #
 # Indexes
 #
 #  index_content_entry_versions_on_entry_version              (content_entry_id,version) UNIQUE
 #  index_content_entry_versions_on_preview_token              (preview_token) UNIQUE WHERE (preview_token IS NOT NULL)
+#  index_content_entry_versions_on_scheduled_publish          (scheduled_publish_at) WHERE ((scheduled_publish_at IS NOT NULL) AND (status = 1))
 #  index_content_entry_versions_on_tenant_is_public           (tenant_id,is_public)
 #  index_content_entry_versions_on_tenant_type_entry_version  (tenant_id,content_type_id,content_entry_id,version) UNIQUE
 #  index_content_entry_versions_on_tenant_visibility          (tenant_id,visibility)
