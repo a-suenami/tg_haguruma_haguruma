@@ -1,7 +1,7 @@
 create_table :content_entries, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
   t.citext :tenant_id, null: false
   t.uuid :content_type_id, null: false
-  t.datetime :publication_date # Display date for user page (admin can set any past date)
+  t.datetime :publication_date, null: false # Display date for user page (admin can set any past date)
 
   t.timestamps null: false
 end

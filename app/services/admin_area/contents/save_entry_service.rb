@@ -68,7 +68,7 @@ module AdminArea
         else
           entry = @content_type.content_entries.build(
             tenant_id: Tenant.current_id,
-            publication_date: @publication_date,
+            publication_date: @publication_date || Time.current,
           )
           unless entry.save
             @errors.concat(entry.errors.full_messages)
