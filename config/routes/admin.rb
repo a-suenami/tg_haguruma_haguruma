@@ -36,6 +36,10 @@ namespace :admin_area, path: :admin do
 
         post 'entries/:content_entry_id/publication', to: 'publications#create', as: :entry_publication
         delete 'entries/:content_entry_id/publication', to: 'publications#destroy'
+
+        # Scheduled publishing
+        post 'entries/:content_entry_id/scheduled_publication', to: 'scheduled_publications#create', as: :entry_scheduled_publication
+        delete 'entries/:content_entry_id/scheduled_publication', to: 'scheduled_publications#destroy'
       end
 
       scope module: :singleton, as: :singleton do
@@ -45,6 +49,11 @@ namespace :admin_area, path: :admin do
         resource :entry, only: :show, controller: 'entries/show'
 
         post 'entry/publication', to: 'publications#create', as: :entry_publication
+        delete 'entry/publication', to: 'publications#destroy'
+
+        # Scheduled publishing
+        post 'entry/scheduled_publication', to: 'scheduled_publications#create', as: :entry_scheduled_publication
+        delete 'entry/scheduled_publication', to: 'scheduled_publications#destroy'
       end
     end
   end

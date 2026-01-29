@@ -78,7 +78,9 @@
                                         <% end %>
                                     </div>
                                 </div>
-                                <span class="card-updated"><%= latest_version.created_at.strftime('%Y-%m-%d %H:%M') %></span>
+                                <span class="card-updated"
+                                      data-controller="datetime-local"
+                                      data-datetime-local-utc-value="<%= latest_version.created_at.utc.iso8601 %>"><%= latest_version.created_at.strftime('%Y/%m/%d %H:%M') %></span>
                             </div>
                         </div>
                     <% end %>

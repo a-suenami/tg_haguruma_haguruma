@@ -124,17 +124,28 @@
               <% if @published_version&.published_at %>
                 <div class="meta-item">
                   <span class="meta-key">公開日:</span>
-                  <span class="action-panel-meta-value">
-                    <%= @published_version.published_at.strftime('%Y-%m-%d %H:%M') %>
+                  <span class="action-panel-meta-value"
+                        data-controller="datetime-local"
+                        data-datetime-local-utc-value="<%= @published_version.published_at.utc.iso8601 %>">
+                    <%= @published_version.published_at.strftime('%Y/%m/%d %H:%M') %>
                   </span>
                 </div>
               <% end %>
-              <div class="meta-item">
-                <span class="meta-key">作成日:</span>
-                <span class="action-panel-meta-value">
-                  <%= @content_entry.created_at&.strftime('%Y-%m-%d %H:%M') || '-' %>
-                </span>
-              </div>
+              <% if @content_entry.created_at %>
+                <div class="meta-item">
+                  <span class="meta-key">作成日:</span>
+                  <span class="action-panel-meta-value"
+                        data-controller="datetime-local"
+                        data-datetime-local-utc-value="<%= @content_entry.created_at.utc.iso8601 %>">
+                    <%= @content_entry.created_at.strftime('%Y/%m/%d %H:%M') %>
+                  </span>
+                </div>
+              <% else %>
+                <div class="meta-item">
+                  <span class="meta-key">作成日:</span>
+                  <span class="action-panel-meta-value">-</span>
+                </div>
+              <% end %>
               <div class="meta-item">
                 <span class="meta-key">コンテンツタイプ:</span>
                 <span class="action-panel-meta-value"><%= @content_type.display_name %></span>

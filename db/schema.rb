@@ -140,11 +140,14 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.datetime "unpublished_at"
     t.string "preview_token"
     t.datetime "preview_token_expires_at"
+    t.datetime "scheduled_publish_at"
+    t.string "scheduled_job_id"
     t.index ["content_entry_id", "version"], name: "index_content_entry_versions_on_entry_version", unique: true
     t.index ["content_entry_id"], name: "index_content_entry_versions_unique_draft_per_entry", unique: true, where: "(status = 1)"
     t.index ["content_entry_id"], name: "index_content_entry_versions_unique_published_per_entry", unique: true, where: "(status = 3)"
     t.index ["preview_token"], name: "index_content_entry_versions_on_preview_token", unique: true, where: "(preview_token IS NOT NULL)"
     t.index ["preview_token_expires_at"], name: "index_content_entry_versions_on_token_expires_at", where: "(preview_token IS NOT NULL)"
+    t.index ["scheduled_publish_at"], name: "index_content_entry_versions_on_scheduled_publish", where: "((scheduled_publish_at IS NOT NULL) AND (status = 1))"
     t.index ["tenant_id", "content_type_id", "content_entry_id", "version"], name: "index_content_entry_versions_on_tenant_type_entry_version", unique: true
     t.index ["tenant_id", "is_public"], name: "index_content_entry_versions_on_tenant_is_public"
     t.index ["tenant_id", "visibility"], name: "index_content_entry_versions_on_tenant_visibility"
