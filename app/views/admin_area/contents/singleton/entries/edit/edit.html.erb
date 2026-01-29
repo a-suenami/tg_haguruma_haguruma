@@ -122,21 +122,35 @@
               </div>
               <div class="meta-item">
                 <span class="meta-key">最終更新:</span>
-                <span class="action-panel-meta-value">
-                  <%= @content_entry.updated_at&.strftime('%Y-%m-%d %H:%M') || '-' %>
-                </span>
+                <% if @content_entry.updated_at %>
+                  <span class="action-panel-meta-value"
+                        data-controller="datetime-local"
+                        data-datetime-local-utc-value="<%= @content_entry.updated_at.utc.iso8601 %>">
+                    <%= @content_entry.updated_at.strftime('%Y/%m/%d %H:%M') %>
+                  </span>
+                <% else %>
+                  <span class="action-panel-meta-value">-</span>
+                <% end %>
               </div>
               <div class="meta-item">
                 <span class="meta-key">作成日:</span>
-                <span class="action-panel-meta-value">
-                  <%= @content_entry.created_at&.strftime('%Y-%m-%d %H:%M') || '-' %>
-                </span>
+                <% if @content_entry.created_at %>
+                  <span class="action-panel-meta-value"
+                        data-controller="datetime-local"
+                        data-datetime-local-utc-value="<%= @content_entry.created_at.utc.iso8601 %>">
+                    <%= @content_entry.created_at.strftime('%Y/%m/%d %H:%M') %>
+                  </span>
+                <% else %>
+                  <span class="action-panel-meta-value">-</span>
+                <% end %>
               </div>
               <% if @published_version&.published_at %>
                 <div class="meta-item">
                   <span class="meta-key">公開日:</span>
-                  <span class="action-panel-meta-value">
-                    <%= @published_version.published_at.strftime('%Y-%m-%d %H:%M') %>
+                  <span class="action-panel-meta-value"
+                        data-controller="datetime-local"
+                        data-datetime-local-utc-value="<%= @published_version.published_at.utc.iso8601 %>">
+                    <%= @published_version.published_at.strftime('%Y/%m/%d %H:%M') %>
                   </span>
                 </div>
               <% end %>

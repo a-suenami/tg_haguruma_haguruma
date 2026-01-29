@@ -1,30 +1,71 @@
 import { Controller } from "@hotwired/stimulus"
 
+/**
+ * Scheduled publication controller with timezone handling
+ *
+ * - Display: Converts UTC value to user's local timezone
+ * - Submit: Converts local input to UTC ISO8601 string
+ */
 export default class extends Controller {
-  static targets = ["datetimeInput", "scheduleForm", "scheduledInfo", "message"]
+  static targets = [
+    "datetimeInput",
+    "scheduleForm",
+    "scheduledInfo",
+    "scheduledDatetime",
+    "message",
+  ]
   static values = {
     url: String,
+    utc: String, // UTC datetime string for scheduled time
   }
 
   declare datetimeInputTarget: HTMLInputElement
   declare scheduleFormTarget: HTMLElement
   declare scheduledInfoTarget: HTMLElement
+  declare scheduledDatetimeTarget: HTMLElement
   declare messageTarget: HTMLElement
   declare urlValue: string
+  declare utcValue: string
   declare hasDatetimeInputTarget: boolean
   declare hasScheduleFormTarget: boolean
   declare hasScheduledInfoTarget: boolean
+  declare hasScheduledDatetimeTarget: boolean
+  declare hasUtcValue: boolean
+
+  connect() {
+    // If showing scheduled state, convert UTC to local for display
+    if (this.hasScheduledDatetimeTarget && this.hasUtcValue && this.utcValue) {
+      const utcDate = new Date(this.utcValue)
+      if (!isNaN(utcDate.getTime())) {
+        this.scheduledDatetimeTarget.textContent = this.formatLocalDatetime(utcDate)
+      }
+    }
+
+    // Set min attribute to current local time
+    if (this.hasDatetimeInputTarget) {
+      this.datetimeInputTarget.min = this.toDatetimeLocalString(new Date())
+    }
+  }
 
   async schedule(event: Event) {
     event.preventDefault()
 
     if (!this.hasDatetimeInputTarget) return
 
-    const scheduledAt = this.datetimeInputTarget.value
-    if (!scheduledAt) {
+    const localValue = this.datetimeInputTarget.value
+    if (!localValue) {
       this.showMessage("日時を入力してください", "error")
       return
     }
+
+    // Convert local datetime to UTC ISO8601
+    const localDate = new Date(localValue)
+    if (isNaN(localDate.getTime())) {
+      this.showMessage("無効な日時です", "error")
+      return
+    }
+
+    const utcIso = localDate.toISOString()
 
     const url = (event.currentTarget as HTMLElement).dataset
       .scheduledPublicationUrlValue
@@ -41,7 +82,7 @@ export default class extends Controller {
           "Content-Type": "application/json",
           "X-CSRF-Token": csrfToken || "",
         },
-        body: JSON.stringify({ scheduled_at: scheduledAt }),
+        body: JSON.stringify({ scheduled_at: utcIso }),
       })
 
       const data = await response.json()
@@ -104,5 +145,17 @@ export default class extends Controller {
         this.messageTarget.style.display = "none"
       }, 3000)
     }
+  }
+
+  // Format Date to datetime-local input value (YYYY-MM-DDTHH:MM) in local timezone
+  private toDatetimeLocalString(date: Date): string {
+    const pad = (n: number) => String(n).padStart(2, "0")
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`
+  }
+
+  // Format Date for display (YYYY/MM/DD HH:MM) in local timezone
+  private formatLocalDatetime(date: Date): string {
+    const pad = (n: number) => String(n).padStart(2, "0")
+    return `${date.getFullYear()}/${pad(date.getMonth() + 1)}/${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`
   }
 }

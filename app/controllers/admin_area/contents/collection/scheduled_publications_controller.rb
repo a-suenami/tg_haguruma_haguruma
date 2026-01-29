@@ -90,8 +90,12 @@ module AdminArea
         def parse_scheduled_time
           return nil if params[:scheduled_at].blank?
 
+          # Parse ISO8601 UTC string from frontend (e.g., "2025-01-29T10:00:00.000Z")
+          Time.iso8601(params[:scheduled_at]).in_time_zone
+        rescue ArgumentError, TypeError
+          # Fallback for legacy format
           Time.zone.parse(params[:scheduled_at])
-        rescue ArgumentError
+        rescue StandardError
           nil
         end
 
