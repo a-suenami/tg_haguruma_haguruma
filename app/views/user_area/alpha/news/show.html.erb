@@ -14,7 +14,7 @@
         <div cog-detail-fragment-toolbar>
           <% category_field = field_by_identifier(version, 'category') %>
           <% category_option = selected_option(category_field) %>
-          <span cog-date-label><%= format_content_date(version&.published_at) %></span>
+          <span cog-date-label><%= format_content_date(@entry.display_publication_date) %></span>
           <div class="categories">
             <% unless content_authorized? %>
               <span cog-category-label color-primary>会員限定</span>

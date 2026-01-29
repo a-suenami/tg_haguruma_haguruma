@@ -62,6 +62,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   create_table "content_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
     t.uuid "content_type_id", null: false
+    t.datetime "publication_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenant_id", "content_type_id", "id"], name: "index_content_entries_on_tenant_id_and_content_type_id_and_id", unique: true

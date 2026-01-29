@@ -1,0 +1,18 @@
+<%# Publication Date field for content entries %>
+<%# Required locals: content_entry %>
+
+<div class="action-section">
+  <h4 class="action-section-title">公開日時</h4>
+  <div class="publication-date-field">
+    <input type="datetime-local"
+           name="publication_date"
+           class="publication-date-input"
+           data-controller="datetime-local"
+           data-datetime-local-utc-value="<%= content_entry.publication_date&.utc&.iso8601 %>"
+           data-datetime-local-format-value="input">
+    <p class="publication-date-hint">
+      ユーザーページに表示される公開日時です。<br>
+      過去の日付も設定できます。
+    </p>
+  </div>
+</div>

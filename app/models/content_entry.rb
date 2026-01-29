@@ -25,4 +25,10 @@ class ContentEntry < ApplicationRecord
   belongs_to :content_type
   has_many :versions, class_name: 'ContentEntry::Version', dependent: :destroy
   has_many :content_tags, dependent: :destroy, foreign_key: :content_id, inverse_of: :content_entry
+
+  # Display date for user page
+  # Falls back to published version's published_at if publication_date is nil
+  def display_publication_date
+    publication_date || versions.published.order(published_at: :desc).first&.published_at
+  end
 end
