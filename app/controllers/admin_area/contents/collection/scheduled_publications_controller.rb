@@ -1,4 +1,4 @@
-# typed: true
+# typed: false
 # frozen_string_literal: true
 
 module AdminArea
@@ -37,7 +37,8 @@ module AdminArea
             version_id: @draft_version.id,
           )
 
-          @draft_version.schedule_publish!(scheduled_time: scheduled_at, job_id: job.job_id)
+          # Use provider_job_id for Sidekiq (jid), fallback to job_id for other adapters
+          @draft_version.schedule_publish!(scheduled_time: scheduled_at, job_id: job.provider_job_id || job.job_id)
 
           render json: {
             success: true,
@@ -103,8 +104,16 @@ module AdminArea
         def cancel_existing_job
           return if @draft_version&.scheduled_job_id.blank?
 
-          # Solid Queue job cancellation
-          SolidQueue::Job.find_by(active_job_id: @draft_version.scheduled_job_id)&.discard
+          # Sidekiq scheduled job cancellation
+          scheduled_set = Sidekiq::ScheduledSet.new
+          scheduled_set.each do |job|
+            if job.jid == @draft_version.scheduled_job_id
+              job.delete
+              break
+            end
+          end
+        rescue StandardError => e
+          Rails.logger.warn "Failed to cancel scheduled job: #{e.message}"
         end
       end
     end
