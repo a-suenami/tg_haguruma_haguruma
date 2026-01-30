@@ -27,10 +27,6 @@ class ContentEntry < ApplicationRecord
   has_many :versions, class_name: 'ContentEntry::Version', dependent: :destroy
   has_many :content_tags, dependent: :destroy, foreign_key: :content_id, inverse_of: :content_entry
 
-  validates :publication_date, presence: true
-
-  # Display date for user page
-  def display_publication_date
-    publication_date
-  end
+  # DEPRECATED: use ContentEntry::Version#custom_published_at
+  # validates :publication_date, presence: true
 end
