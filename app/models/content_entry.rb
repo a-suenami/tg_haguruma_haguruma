@@ -30,9 +30,15 @@ class ContentEntry < ApplicationRecord
   # DEPRECATED: use ContentEntry::Version#custom_published_at
   # validates :publication_date, presence: true
 
+  # Returns the latest published version (highest version number)
+  # NOTE: Caller should eager load :versions to avoid N+1 queries
+  def latest_published_version
+    versions.select(&:published?).max_by(&:version)
+  end
+
   # Returns the display date for user-facing pages
   def display_publication_date
-    published_version = versions.find(&:published?)
+    published_version = latest_published_version
     published_version&.custom_published_at || published_version&.published_at
   end
 end

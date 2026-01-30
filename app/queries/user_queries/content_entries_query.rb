@@ -23,7 +23,7 @@ module UserQueries
       # - restricted: Only users with matching authorization tags can access
       sig { params(entry: ContentEntry, user: T.nilable(User)).returns(T::Boolean) }
       def authorized?(entry, user:)
-        published_version = entry.versions.find(&:published?)
+        published_version = entry.latest_published_version
         return false unless published_version
 
         case published_version.visibility
