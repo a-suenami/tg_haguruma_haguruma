@@ -110,11 +110,14 @@ module UserQueries
       )
     end
 
-    # Order by publication_date descending (falls back to version's published_at if nil)
+    # Order by custom_published_at descending, then by actual published_at for tiebreaking
     sig { returns(T.self_type) }
     def ordered_by_published_at
       chain(
-        @scope.order(Arel.sql('COALESCE(content_entries.publication_date, content_entry_versions.published_at) DESC')),
+        @scope.order(
+          'content_entry_versions.custom_published_at': :desc,
+          'content_entry_versions.published_at': :desc,
+        ),
       )
     end
 
