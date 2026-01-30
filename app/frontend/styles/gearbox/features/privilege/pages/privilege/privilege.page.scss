@@ -464,7 +464,8 @@
     overflow: hidden;
 
     > div {
-      overflow: hidden;
+      // overflow: hidden;
+      min-height: 0;
     }
 
   }
