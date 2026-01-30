@@ -55,19 +55,26 @@ namespace :ridgepole do
       uri = URI.parse(ENV.fetch('DATABASE_URL', nil))
 
       if [uri.scheme, uri.user, uri.password, uri.host, uri.path].any?(&:nil?)
-        raise "Invalid uri: #{uri}"
+        raise 'Invalid DATABASE_URL: missing required components (scheme, user, password, host, or path)'
       end
 
       # for fuckin' heroku uri scheme
       uri.scheme = 'postgresql' if uri.scheme == 'postgres'
 
-      "'{
-        adapter:  #{uri.scheme},
-        username: #{uri.user},
-        password: #{uri.password},
-        host:     #{uri.host},
-        database: #{uri.path.sub(%r{\A/}, '')},
-      }'"
+      # Write config to temp file to avoid exposing credentials in command line
+      @temp_config_file ||= begin
+        require 'tempfile'
+        file = Tempfile.new(['ridgepole_config', '.yml'])
+        file.write({
+          'adapter' => uri.scheme,
+          'username' => uri.user,
+          'password' => uri.password,
+          'host' => uri.host,
+          'database' => uri.path.sub(%r{\A/}, ''),
+        }.to_yaml)
+        file.close
+        file.path
+      end
 
     else
       Rails.root.join('config/database.yml')
@@ -86,8 +93,22 @@ namespace :ridgepole do
   end
 
   def ridgepole(*options)
-    command = ['bundle exec ridgepole', "--config #{config_file}"]
-    system([command + options].join(' '), exception: true)
+    config = config_file
+    command = ['bundle exec ridgepole', "--config #{config}"]
+    full_command = [command + options].join(' ')
+
+    success = system(full_command)
+    return if success
+
+    # Raise error without exposing the config file path (which might reveal it's a temp file with credentials)
+    sanitized_options = options.reject { |opt| opt.include?('--config') }
+    raise "Ridgepole command failed: bundle exec ridgepole #{sanitized_options.join(' ')} (exit status: #{$CHILD_STATUS&.exitstatus})"
+  ensure
+    # Clean up temp file if it was created
+    if @temp_config_file && File.exist?(@temp_config_file)
+      File.unlink(@temp_config_file)
+      @temp_config_file = nil
+    end
   end
 
   def suppress_output
