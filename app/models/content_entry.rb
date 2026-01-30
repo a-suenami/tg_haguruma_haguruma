@@ -29,4 +29,8 @@ class ContentEntry < ApplicationRecord
 
   # DEPRECATED: use ContentEntry::Version#custom_published_at
   # validates :publication_date, presence: true
+
+  def display_publication_date
+    versions.published.first&.custom_published_at
+  end
 end
