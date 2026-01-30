@@ -8,6 +8,7 @@ create_table :content_entry_versions, force: :cascade do |t|
   t.integer :visibility, null: false, default: 0
   t.datetime :created_at, null: false
   t.datetime :published_at
+  t.datetime :custom_published_at
   t.datetime :unpublished_at
   t.string :preview_token # Token for preview access (draft content)
   t.datetime :preview_token_expires_at
