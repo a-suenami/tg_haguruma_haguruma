@@ -1,10 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
+import DatetimeLocalController from "./datetime_local_controller"
 
 /**
  * Scheduled publication controller with timezone handling
  *
- * - Display: Converts UTC value to user's local timezone
- * - Submit: Converts local input to UTC ISO8601 string
+ * Uses datetime-local controller outlet for timezone conversion:
+ * - Display: datetime-local controller converts UTC to local on connect
+ * - Submit: Uses datetimeLocalOutlet.toUtcIso() for local → UTC conversion
  */
 export default class extends Controller {
   static targets = [
@@ -14,9 +16,10 @@ export default class extends Controller {
     "scheduledDatetime",
     "message",
   ]
+  static outlets = ["datetime-local"]
   static values = {
     url: String,
-    utc: String, // UTC datetime string for scheduled time
+    utc: String, // UTC datetime string for scheduled time (for display controller)
   }
 
   declare datetimeInputTarget: HTMLInputElement
@@ -31,16 +34,10 @@ export default class extends Controller {
   declare hasScheduledInfoTarget: boolean
   declare hasScheduledDatetimeTarget: boolean
   declare hasUtcValue: boolean
+  declare datetimeLocalOutlet: DatetimeLocalController
+  declare hasDatetimeLocalOutlet: boolean
 
   connect() {
-    // If showing scheduled state, convert UTC to local for display
-    if (this.hasScheduledDatetimeTarget && this.hasUtcValue && this.utcValue) {
-      const utcDate = new Date(this.utcValue)
-      if (!isNaN(utcDate.getTime())) {
-        this.scheduledDatetimeTarget.textContent = this.formatLocalDatetime(utcDate)
-      }
-    }
-
     // Set min attribute to current local time
     if (this.hasDatetimeInputTarget) {
       this.datetimeInputTarget.min = this.toDatetimeLocalString(new Date())
@@ -58,14 +55,15 @@ export default class extends Controller {
       return
     }
 
-    // Convert local datetime to UTC ISO8601
-    const localDate = new Date(localValue)
-    if (isNaN(localDate.getTime())) {
+    // Use datetime-local outlet to convert local → UTC
+    const utcIso = this.hasDatetimeLocalOutlet
+      ? this.datetimeLocalOutlet.toUtcIso()
+      : new Date(localValue).toISOString() // fallback
+
+    if (!utcIso) {
       this.showMessage("無効な日時です", "error")
       return
     }
-
-    const utcIso = localDate.toISOString()
 
     const url = (event.currentTarget as HTMLElement).dataset
       .scheduledPublicationUrlValue
@@ -148,14 +146,9 @@ export default class extends Controller {
   }
 
   // Format Date to datetime-local input value (YYYY-MM-DDTHH:MM) in local timezone
+  // Used for setting min attribute on input
   private toDatetimeLocalString(date: Date): string {
     const pad = (n: number) => String(n).padStart(2, "0")
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`
-  }
-
-  // Format Date for display (YYYY/MM/DD HH:MM) in local timezone
-  private formatLocalDatetime(date: Date): string {
-    const pad = (n: number) => String(n).padStart(2, "0")
-    return `${date.getFullYear()}/${pad(date.getMonth() + 1)}/${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`
   }
 }

@@ -177,10 +177,10 @@ module AdminArea
         end
 
         sig { returns(T.nilable(Time)) }
-        def publication_date_param
-          return nil if params[:publication_date].blank?
+        def custom_published_at_param
+          return nil if params[:custom_published_at].blank?
 
-          Time.zone.parse(params[:publication_date])
+          Time.zone.parse(params[:custom_published_at])
         rescue ArgumentError
           nil
         end

@@ -65,6 +65,7 @@ module AdminArea
           version: max_version + 1,
           status: :draft,
           visibility: @published_version.visibility,
+          custom_published_at: @published_version.custom_published_at,
         )
 
         unless version.save

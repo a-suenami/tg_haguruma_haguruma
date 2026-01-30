@@ -30,7 +30,9 @@ class ContentEntry < ApplicationRecord
   # DEPRECATED: use ContentEntry::Version#custom_published_at
   # validates :publication_date, presence: true
 
+  # Returns the display date for user-facing pages
   def display_publication_date
-    versions.published.first&.custom_published_at
+    published_version = versions.find(&:published?)
+    published_version&.custom_published_at || published_version&.published_at
   end
 end

@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import DatetimeLocalController from "./datetime_local_controller"
 
 /**
  * Publication Date controller for standalone save functionality
@@ -6,13 +7,16 @@ import { Controller } from "@hotwired/stimulus"
  * Usage:
  *   <div data-controller="publication-date"
  *        data-publication-date-save-url-value="/path/to/save"
- *        data-publication-date-standalone-value="true">
- *     <input data-publication-date-target="input">
+ *        data-publication-date-standalone-value="true"
+ *        data-publication-date-datetime-local-outlet="[data-controller='datetime-local']">
+ *     <input data-controller="datetime-local"
+ *            data-publication-date-target="input">
  *     <button data-publication-date-target="saveButton">保存</button>
  *   </div>
  */
 export default class extends Controller {
   static targets = ["input", "saveButton"]
+  static outlets = ["datetime-local"]
   static values = {
     saveUrl: String,
     standalone: Boolean,
@@ -23,6 +27,8 @@ export default class extends Controller {
   declare hasSaveButtonTarget: boolean
   declare saveUrlValue: string
   declare standaloneValue: boolean
+  declare datetimeLocalOutlet: DatetimeLocalController
+  declare hasDatetimeLocalOutlet: boolean
 
   private originalValue: string = ""
 
@@ -43,6 +49,13 @@ export default class extends Controller {
     const value = this.inputTarget.value
     if (!value) return
 
+    // Use datetime-local outlet to convert local → UTC
+    const utcIso = this.hasDatetimeLocalOutlet
+      ? this.datetimeLocalOutlet.toUtcIso()
+      : new Date(value).toISOString() // fallback
+
+    if (!utcIso) return
+
     try {
       this.saveButtonTarget.disabled = true
       this.saveButtonTarget.textContent = "保存中..."
@@ -53,7 +66,7 @@ export default class extends Controller {
           "Content-Type": "application/json",
           "X-CSRF-Token": this.csrfToken,
         },
-        body: JSON.stringify({ publication_date: value }),
+        body: JSON.stringify({ custom_published_at: utcIso }),
       })
 
       if (response.ok) {

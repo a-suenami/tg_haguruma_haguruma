@@ -20,16 +20,16 @@ module AdminArea
           fields_params: T::Hash[String, T.untyped],
           authorization_tag_ids: T::Array[String],
           visibility: String,
-          publication_date: T.nilable(Time),
+          custom_published_at: T.nilable(Time),
         ).void
       end
-      def initialize(content_type:, content_entry: nil, fields_params: {}, authorization_tag_ids: [], visibility: 'public', publication_date: nil)
+      def initialize(content_type:, content_entry: nil, fields_params: {}, authorization_tag_ids: [], visibility: 'public', custom_published_at: nil)
         @content_type = content_type
         @content_entry = content_entry
         @fields_params = fields_params
         @authorization_tag_ids = authorization_tag_ids
         @visibility = visibility
-        @publication_date = publication_date
+        @custom_published_at = custom_published_at
         @errors = T.let([], T::Array[String])
       end
 
@@ -60,15 +60,10 @@ module AdminArea
       sig { returns(ContentEntry) }
       def create_or_find_entry
         if @content_entry&.persisted?
-          # Update publication_date if provided
-          if @publication_date && !@content_entry.update(publication_date: @publication_date)
-            @errors.concat(@content_entry.errors.full_messages)
-          end
           @content_entry
         else
           entry = @content_type.content_entries.build(
             tenant_id: Tenant.current_id,
-            publication_date: @publication_date || Time.current,
           )
           unless entry.save
             @errors.concat(entry.errors.full_messages)
@@ -89,7 +84,9 @@ module AdminArea
         )
 
         if existing_draft
-          existing_draft.update!(visibility: @visibility)
+          update_attrs = { visibility: @visibility }
+          update_attrs[:custom_published_at] = @custom_published_at if @custom_published_at
+          existing_draft.update!(update_attrs)
           @saved_version = T.let(existing_draft, T.nilable(ContentEntry::Version))
           existing_draft
         else
@@ -107,6 +104,7 @@ module AdminArea
             version: max_version + 1,
             status: :draft,
             visibility: @visibility,
+            custom_published_at: @custom_published_at,
           )
 
           unless version.save

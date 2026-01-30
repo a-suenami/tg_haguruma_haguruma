@@ -84,8 +84,11 @@ class ContentEntry::Version < ApplicationRecord
   end
 
   # Schedule this version for publishing at a specific time
+  # Also sets custom_published_at if not already set (user can still change it before publish)
   def schedule_publish!(scheduled_time:, job_id: nil)
-    update!(scheduled_publish_at: scheduled_time, scheduled_job_id: job_id)
+    attrs = { scheduled_publish_at: scheduled_time, scheduled_job_id: job_id }
+    attrs[:custom_published_at] = scheduled_time if custom_published_at.nil?
+    update!(attrs)
   end
 
   # Cancel scheduled publishing
