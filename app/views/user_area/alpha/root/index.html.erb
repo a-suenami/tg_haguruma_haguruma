@@ -141,6 +141,17 @@
                   </div>
                 <% end %>
               </div>
+            <% else %>
+              <div cog-blog-list>
+                <div class="empty-state">
+                  <% if current_blog_category.present? %>
+                    <% category_display_name = @blog_categories.find { |c| c.unique_name == current_blog_category }&.display_name %>
+                    <p><%= category_display_name %>の<%= feature_label(:blog) %>はありません</p>
+                  <% else %>
+                    <p><%= feature_label(:blog) %>はありません</p>
+                  <% end %>
+                </div>
+              </div>
             <% end %>
           </div>
         <% end %>

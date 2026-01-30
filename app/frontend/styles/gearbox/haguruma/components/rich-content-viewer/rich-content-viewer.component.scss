@@ -1,7 +1,6 @@
 [cog-rich-content-viewer] {
   width: 100%;
   max-width: 100%;
-  overflow-x: auto;
   color: var(--gearbox-secondary);
 
   * {
@@ -99,7 +98,7 @@
       opacity: 0.8;
     }
 
-    &:focus {
+    &:focus-visible {
       outline: 2px solid var(--gearbox-primary);
       outline-offset: 2px;
     }
