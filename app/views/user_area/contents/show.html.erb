@@ -2,7 +2,7 @@
   Content - <%= current_tenant&.name %>
 <% end %>
 
-<% published_version = @content_entry.versions.find(&:published?) %>
+<% published_version = @content_entry.latest_published_version %>
 
 <div style="margin-bottom: 1rem;">
   <%= link_to "← Back to #{@content_type.display_name}", user_area_contents_path(content_type_id: @content_type.id), style: 'color: var(--primary-color);' %>

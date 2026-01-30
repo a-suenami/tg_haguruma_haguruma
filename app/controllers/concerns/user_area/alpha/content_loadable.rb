@@ -60,6 +60,7 @@ module UserArea
       def query_entries(select_options: {}, page: 1, limit: 20)
         query = UserQueries::ContentEntriesQuery.new
                   .by_content_type(T.unsafe(self.class).source_content_type_key.to_s)
+                  .authorized_for(current_user)
                   .ordered_by_published_at
 
         select_options.each do |field, value|
@@ -86,7 +87,7 @@ module UserArea
       # Find the single entry for a singleton ContentType (is_collection: false)
       sig { returns(ContentEntry) }
       def find_singleton_entry
-        entry = content_type&.content_entries&.first
+        entry = content_type&.content_entries&.includes(:versions)&.first
         raise ActiveRecord::RecordNotFound unless entry
         raise ActiveRecord::RecordNotFound unless UserQueries::ContentEntriesQuery.authorized?(entry, user: current_user)
 

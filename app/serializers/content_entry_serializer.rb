@@ -30,7 +30,7 @@ class ContentEntrySerializer < ApplicationSerializer
   sig { override.params(_options: T::Hash[T.untyped, T.untyped]).returns(T::Hash[Symbol, T.untyped]) }
   def as_json(_options = {})
     content_entry = T.cast(@resource, ContentEntry)
-    published_version = T.must(content_entry.versions.find(&:published?))
+    published_version = T.must(content_entry.latest_published_version)
 
     {
       data: {

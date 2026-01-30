@@ -13,6 +13,7 @@ module UserArea
         @content_entries = UserQueries::ContentEntriesQuery.new
                              .by_content_type(@content_type.unique_name)
                              .authorized_for(current_user)
+                             .ordered_by_published_at
                              .resolve
       else
         @content_types = ContentType.all

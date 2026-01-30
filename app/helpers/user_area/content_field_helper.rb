@@ -77,12 +77,12 @@ module UserArea
       datetime.strftime('%Y年%-m月%-d日').upcase
     end
 
-    # Get published version from an entry
+    # Get published version from an entry (latest published version by version number)
     sig { params(entry: T.nilable(ContentEntry)).returns(T.nilable(ContentEntry::Version)) }
     def published_version(entry)
       return nil if entry.nil?
 
-      entry.versions.find(&:published?)
+      entry.latest_published_version
     end
   end
 end
