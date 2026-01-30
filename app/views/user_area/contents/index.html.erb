@@ -19,7 +19,7 @@
           <div class="card" style="cursor: pointer;">
             <h3><%= first_text_field&.text&.value || 'Untitled' %></h3>
             <p style="color: var(--text-muted); font-size: 0.875rem;">
-              <%= entry.content_type.display_name %> / <%= published_version&.published_at&.strftime('%Y/%m/%d') %>
+              <%= entry.content_type.display_name %> / <%= entry.display_publication_date&.strftime('%Y/%m/%d') %>
             </p>
           </div>
         <% end %>
