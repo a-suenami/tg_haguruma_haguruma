@@ -51,9 +51,10 @@ module SentryScrubber
     private
 
     def scrub_exceptions(event)
-      return unless event.exception&.values
+      exceptions = event.exception&.values
+      return unless exceptions
 
-      event.exception.values.each do |exception|
+      exceptions.each do |exception|
         next unless exception.value
 
         exception.value = scrub_credential_patterns(exception.value)
