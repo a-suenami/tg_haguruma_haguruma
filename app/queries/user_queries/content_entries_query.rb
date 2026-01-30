@@ -63,12 +63,6 @@ module UserQueries
       chain(@scope.where(content_type_id: content_type.id))
     end
 
-    # Filter to only published entries (each entry has at most one published version)
-    sig { returns(T.self_type) }
-    def published
-      chain(@scope.joins(:versions).merge(ContentEntry::Version.published))
-    end
-
     # Filter by authorization for a user using SQL JOIN
     # - Anonymous users: only public content (visibility = 0)
     # - Logged-in users: content where user has matching authorization tags
@@ -79,9 +73,7 @@ module UserQueries
       if user.nil?
         # Anonymous: only public content
         chain(
-          @scope.joins(:versions)
-            .merge(ContentEntry::Version.published)
-            .where(content_entry_versions: { visibility: 0 }),
+          @scope.where(content_entry_versions: { visibility: 0 }),
         )
       else
         # Ensure user has system tags (for users created before system tag feature)
@@ -96,7 +88,6 @@ module UserQueries
         # Current IN subquery relies on PostgreSQL query planner optimization.
         authorized_entry_ids = ContentEntry
           .joins(versions: { content_entry_authorizations: { content_authorization_tag: :user_tags } })
-          .merge(ContentEntry::Version.published)
           .where(user_tags: { user_id: user.id })
           .select(:id)
 
@@ -115,19 +106,15 @@ module UserQueries
         @scope
           .joins(versions: { fields: [:content_type_field, { select: { selections: :option } }] })
           .where(content_type_fields: { api_identifier: field_identifier })
-          .where(content_type_field_select_options: { unique_name: option_unique_name })
-          .merge(ContentEntry::Version.published),
+          .where(content_type_field_select_options: { unique_name: option_unique_name }),
       )
     end
 
-    # Order by published_at descending
+    # Order by publication_date descending (falls back to version's published_at if nil)
     sig { returns(T.self_type) }
     def ordered_by_published_at
       chain(
-        @scope
-          .joins(:versions)
-          .merge(ContentEntry::Version.published)
-          .order('content_entry_versions.published_at DESC'),
+        @scope.order(Arel.sql('COALESCE(content_entries.publication_date, content_entry_versions.published_at) DESC')),
       )
     end
 
@@ -162,7 +149,8 @@ module UserQueries
 
     sig { override.returns(ActiveRecord::Relation) }
     def base_scope
-      ContentEntry.includes(:content_type, versions: { fields: [:content_type_field, :text, :richtext, :media_asset] })
+      ContentEntry.joins(:versions).merge(ContentEntry::Version.published)
+        .includes(:content_type, versions: { fields: [:content_type_field, :text, :richtext, :media_asset] })
     end
   end
 end

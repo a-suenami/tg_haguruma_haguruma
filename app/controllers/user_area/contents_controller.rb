@@ -12,7 +12,6 @@ module UserArea
         @content_type = ContentType.find(params[:content_type_id])
         @content_entries = UserQueries::ContentEntriesQuery.new
                              .by_content_type(@content_type.unique_name)
-                             .published
                              .authorized_for(current_user)
                              .resolve
       else
@@ -23,7 +22,7 @@ module UserArea
     # GET /contents/:id
     sig { void }
     def show
-      @content_entry = ContentEntry.find(params[:id])
+      @content_entry = UserQueries::ContentEntriesQuery.new.resolve_find(params[:id])
       @content_type = @content_entry.content_type
     end
   end

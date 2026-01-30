@@ -20,14 +20,16 @@ module AdminArea
           fields_params: T::Hash[String, T.untyped],
           authorization_tag_ids: T::Array[String],
           visibility: String,
+          publication_date: T.nilable(Time),
         ).void
       end
-      def initialize(content_type:, content_entry: nil, fields_params: {}, authorization_tag_ids: [], visibility: 'public')
+      def initialize(content_type:, content_entry: nil, fields_params: {}, authorization_tag_ids: [], visibility: 'public', publication_date: nil)
         @content_type = content_type
         @content_entry = content_entry
         @fields_params = fields_params
         @authorization_tag_ids = authorization_tag_ids
         @visibility = visibility
+        @publication_date = publication_date
         @errors = T.let([], T::Array[String])
       end
 
@@ -58,10 +60,15 @@ module AdminArea
       sig { returns(ContentEntry) }
       def create_or_find_entry
         if @content_entry&.persisted?
+          # Update publication_date if provided
+          if @publication_date && !@content_entry.update(publication_date: @publication_date)
+            @errors.concat(@content_entry.errors.full_messages)
+          end
           @content_entry
         else
           entry = @content_type.content_entries.build(
             tenant_id: Tenant.current_id,
+            publication_date: @publication_date || Time.current,
           )
           unless entry.save
             @errors.concat(entry.errors.full_messages)

@@ -12,6 +12,8 @@ create_table :content_entry_versions, force: :cascade do |t|
   t.datetime :unpublished_at
   t.string :preview_token # Token for preview access (draft content)
   t.datetime :preview_token_expires_at
+  t.datetime :scheduled_publish_at # When content should be auto-published
+  t.string :scheduled_job_id # Solid Queue job ID for cancellation
 end
 
 add_index :content_entry_versions, [:tenant_id, :content_type_id, :content_entry_id, :version], unique: true, name: 'index_content_entry_versions_on_tenant_type_entry_version'
@@ -29,6 +31,9 @@ add_index :content_entry_versions, [:preview_token], unique: true, where: 'previ
 
 # Index for expired token cleanup queries
 add_index :content_entry_versions, [:preview_token_expires_at], where: 'preview_token IS NOT NULL', name: 'index_content_entry_versions_on_token_expires_at'
+
+# Index for scheduled publish queries (only drafts with scheduled time)
+add_index :content_entry_versions, [:scheduled_publish_at], where: 'scheduled_publish_at IS NOT NULL AND status = 1', name: 'index_content_entry_versions_on_scheduled_publish'
 
 add_foreign_key :content_entry_versions, :content_entries, column: [:tenant_id, :content_type_id, :content_entry_id], primary_key: [:tenant_id, :content_type_id, :id],
 name: 'fk_content_entry_versions_content_entries'

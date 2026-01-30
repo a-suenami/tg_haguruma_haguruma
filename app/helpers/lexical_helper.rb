@@ -48,7 +48,7 @@ module LexicalHelper
     when 'image'
       src = node['src'] || ''
       alt = node['altText'] || ''
-      "<img src=\"#{ERB::Util.html_escape(src)}\" alt=\"#{ERB::Util.html_escape(alt)}\" style=\"max-width: 100%;\">"
+      "<img src=\"#{ERB::Util.html_escape(src)}\" alt=\"#{ERB::Util.html_escape(alt)}\" draggable=\"false\" style=\"max-width: 100%;\">"
     when 'video'
       src = node['src'] || ''
       width = node['width'] || 640

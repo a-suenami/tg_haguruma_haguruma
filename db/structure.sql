@@ -1,7 +1,7 @@
-\restrict 9LhjUh7lsyd8YCcwamAPYNJVQVibrR2xpqUdUk8bvhCU1KihftyJuhsfFief1lB
+\restrict QyTcg9b78hUvRd8lO1ppSdDByC1Te54ZjGNbDL52DvA6xTrYekydtKDqqyyavvX
 
 -- Dumped from database version 16.11
--- Dumped by pg_dump version 16.11
+-- Dumped by pg_dump version 16.10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -132,6 +132,7 @@ CREATE TABLE public.content_entries (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id public.citext NOT NULL,
     content_type_id uuid NOT NULL,
+    publication_date timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -363,7 +364,9 @@ CREATE TABLE public.content_entry_versions (
     published_at timestamp(6) without time zone,
     unpublished_at timestamp(6) without time zone,
     preview_token character varying,
-    preview_token_expires_at timestamp(6) without time zone
+    preview_token_expires_at timestamp(6) without time zone,
+    scheduled_publish_at timestamp(6) without time zone,
+    scheduled_job_id character varying
 );
 
 
@@ -1468,6 +1471,13 @@ CREATE UNIQUE INDEX index_content_entry_versions_on_preview_token ON public.cont
 
 
 --
+-- Name: index_content_entry_versions_on_scheduled_publish; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_entry_versions_on_scheduled_publish ON public.content_entry_versions USING btree (scheduled_publish_at) WHERE ((scheduled_publish_at IS NOT NULL) AND (status = 1));
+
+
+--
 -- Name: index_content_entry_versions_on_tenant_is_public; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1997,7 +2007,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 9LhjUh7lsyd8YCcwamAPYNJVQVibrR2xpqUdUk8bvhCU1KihftyJuhsfFief1lB
+\unrestrict QyTcg9b78hUvRd8lO1ppSdDByC1Te54ZjGNbDL52DvA6xTrYekydtKDqqyyavvX
 
 SET search_path TO "$user", public;
 

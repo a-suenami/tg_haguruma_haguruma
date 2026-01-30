@@ -4,11 +4,12 @@
 #
 # Table name: content_entries
 #
-#  id              :uuid             not null, primary key
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  content_type_id :uuid             not null
-#  tenant_id       :citext           not null
+#  id               :uuid             not null, primary key
+#  publication_date :datetime         not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  content_type_id  :uuid             not null
+#  tenant_id        :citext           not null
 #
 # Indexes
 #
@@ -25,4 +26,11 @@ class ContentEntry < ApplicationRecord
   belongs_to :content_type
   has_many :versions, class_name: 'ContentEntry::Version', dependent: :destroy
   has_many :content_tags, dependent: :destroy, foreign_key: :content_id, inverse_of: :content_entry
+
+  validates :publication_date, presence: true
+
+  # Display date for user page
+  def display_publication_date
+    publication_date
+  end
 end

@@ -5,11 +5,12 @@
 #
 # Table name: content_entries
 #
-#  id              :uuid             not null, primary key
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  content_type_id :uuid             not null
-#  tenant_id       :citext           not null
+#  id               :uuid             not null, primary key
+#  publication_date :datetime         not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  content_type_id  :uuid             not null
+#  tenant_id        :citext           not null
 #
 # Indexes
 #
@@ -24,6 +25,7 @@ FactoryBot.define do
   factory :content_entry do
     tenant
     content_type { association :content_type, tenant: }
+    publication_date { Time.current }
 
     trait :published do
       after(:create) do |content_entry|

@@ -12,9 +12,7 @@
         <%= link_to generate_draft_preview_url(content_type, content_entry, draft_version),
                     class: 'btn btn-secondary action-btn',
                     target: '_blank' do %>
-          <i class="fas fa-eye icon-prefix"></i>
-          下書きプレビュー
-          <i class="fas fa-external-link-alt icon-suffix"></i>
+          <i class="fas fa-eye icon-prefix"></i>下書きプレビュー
         <% end %>
       <% end %>
       <% if defined?(published_version) && published_version %>
@@ -22,16 +20,13 @@
         <%= link_to generate_published_preview_url(content_type, content_entry),
                     class: "btn #{btn_class} action-btn",
                     target: '_blank' do %>
-          <i class="fas fa-globe icon-prefix"></i>
-          公開ページ
-          <i class="fas fa-external-link-alt icon-suffix"></i>
+          <i class="fas fa-globe icon-prefix"></i>公開ページ
         <% end %>
       <% end %>
     <% else %>
       <span class="btn btn-secondary action-btn disabled" title="プレビューURLが設定されていません">
         <i class="fas fa-eye icon-prefix"></i>
         プレビュー
-        <i class="fas fa-external-link-alt icon-suffix"></i>
       </span>
     <% end %>
   </div>
