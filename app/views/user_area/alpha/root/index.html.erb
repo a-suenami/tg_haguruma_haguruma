@@ -61,7 +61,7 @@
                 <a href="<%= user_area_news_path(entry) %>" cog-news-item>
                 <div class="header">
                   <div class="date">
-                    <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                    <span cog-date-label><%= format_content_date(entry.display_publication_date) %></span>
                   </div>
                   <% category_field = field_by_identifier(version, 'category') %>
                   <% category_option = selected_option(category_field) %>
@@ -130,7 +130,7 @@
                       </div>
                       <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
                       <div class="date">
-                        <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                        <span cog-date-label><%= format_content_date(entry.display_publication_date) %></span>
                       </div>
                     </a>
                   <% end %>

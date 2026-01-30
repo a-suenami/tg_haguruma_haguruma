@@ -10,7 +10,7 @@
 
 <div class="card">
   <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
-    <%= @content_type.display_name %> / Published: <%= published_version&.published_at&.strftime('%Y/%m/%d %H:%M') %>
+    <%= @content_type.display_name %> / Published: <%= @content_entry.display_publication_date&.strftime('%Y/%m/%d %H:%M') %>
   </p>
 
   <% if published_version %>
