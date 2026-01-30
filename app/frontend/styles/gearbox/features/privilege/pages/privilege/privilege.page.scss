@@ -360,6 +360,7 @@
     gap: 16px;
     list-style: none;
     transition: color .2s ease-out;
+    user-select: none;
 
     &::-webkit-details-marker {
       display: none;
