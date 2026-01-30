@@ -16,111 +16,84 @@ Sentry.init do |config|
   # We recommend adjusting this value in production.
   config.profiles_sample_rate = 0.1
 
+  # Disable sending PII by default
+  config.send_default_pii = false
+
   # Scrub sensitive data from error messages before sending to Sentry
-  config.before_send = lambda do |event, _hint|
-    SentryScrubber.scrub_event(event)
-  end
+  # Uses Rails' ParameterFilter for consistent filtering with logs
+  config.before_send = ->(event, _hint) { SentryScrubber.scrub(event) }
 end
 
-# Scrubber to remove sensitive data from Sentry events
+# Scrubber module using Rails' ParameterFilter for consistent filtering
 module SentryScrubber
-  SENSITIVE_PATTERNS = [
-    # Database credentials in various formats
-    /password:\s*\S+/i,
-    /password=\S+/i,
-    # Database URLs with credentials
-    %r{(postgresql|postgres|mysql|mysql2)://[^:]+:[^@]+@}i,
-    # AWS credentials
-    /aws_access_key_id[=:]\s*\S+/i,
-    /aws_secret_access_key[=:]\s*\S+/i,
-    # API keys and tokens
-    /api[_-]?key[=:]\s*\S+/i,
-    /secret[_-]?key[=:]\s*\S+/i,
-    /auth[_-]?token[=:]\s*\S+/i,
-    /bearer\s+\S+/i,
-    # Generic secrets
-    /secret[=:]\s*\S+/i,
-    /token[=:]\s*\S+/i,
-    # Host with credentials
-    %r{://[^:]+:[^@]+@[^/]+}i,
+  # Additional patterns for credentials that might appear in error messages
+  # These patterns catch credentials in command output, URIs, etc.
+  CREDENTIAL_PATTERNS = [
+    # Database URLs with credentials: postgresql://user:pass@host
+    %r{(postgresql|postgres|mysql|mysql2)://[^:]+:[^@]+@[^\s]+}i,
+    # Generic URI with credentials: scheme://user:pass@host
+    %r{://[^/:]+:[^@]+@[^\s]+}i,
   ].freeze
 
-  REPLACEMENT = '[FILTERED]'
-
   class << self
-    def scrub_event(event)
+    def scrub(event)
       return event unless event
 
-      # Scrub exception messages
-      if event.exception&.values
-        event.exception.values.each do |exception|
-          exception.value = scrub_string(exception.value) if exception.value
-        end
-      end
+      # Scrub exception messages (most important for this issue)
+      scrub_exceptions(event)
 
-      # Scrub message
-      event.message = scrub_string(event.message) if event.message
-
-      # Scrub breadcrumbs
-      event.breadcrumbs&.each do |breadcrumb|
-        breadcrumb.message = scrub_string(breadcrumb.message) if breadcrumb.message
-        scrub_hash(breadcrumb.data) if breadcrumb.data
-      end
-
-      # Scrub extra context
-      scrub_hash(event.extra) if event.extra
-
-      # Scrub tags
-      scrub_hash(event.tags) if event.tags
+      # Scrub other event data using Rails' ParameterFilter
+      scrub_with_parameter_filter(event)
 
       event
     end
 
     private
 
-    def scrub_string(str)
+    def scrub_exceptions(event)
+      return unless event.exception&.values
+
+      event.exception.values.each do |exception|
+        next unless exception.value
+
+        exception.value = scrub_credential_patterns(exception.value)
+      end
+    end
+
+    def scrub_credential_patterns(str)
       return str unless str.is_a?(String)
 
       result = str.dup
-      SENSITIVE_PATTERNS.each do |pattern|
-        result.gsub!(pattern) do |match|
-          # Keep the key part, replace only the value
-          if match.include?('=')
-            key = match.split('=').first
-            "#{key}=#{REPLACEMENT}"
-          elsif match.include?(':')
-            key = match.split(':').first
-            "#{key}: #{REPLACEMENT}"
-          elsif match.match?(%r{://})
-            # For URLs, replace the credentials part
-            match.gsub(%r{://[^:]+:[^@]+@}, "://#{REPLACEMENT}:#{REPLACEMENT}@")
-          else
-            REPLACEMENT
-          end
-        end
+      CREDENTIAL_PATTERNS.each do |pattern|
+        result.gsub!(pattern) { |match| mask_uri_credentials(match) }
       end
       result
     end
 
-    def scrub_hash(hash)
-      return unless hash.is_a?(Hash)
+    def mask_uri_credentials(uri_str)
+      uri_str.gsub(%r{://([^/:]+):([^@]+)@}, '://[FILTERED]:[FILTERED]@')
+    end
 
-      hash.each do |key, value|
-        case value
-        when String
-          hash[key] = scrub_string(value)
-        when Hash
-          scrub_hash(value)
-        when Array
-          value.each_with_index do |item, index|
-            case item
-            when String
-              value[index] = scrub_string(item)
-            when Hash
-              scrub_hash(item)
-            end
-          end
-        end
+    def scrub_with_parameter_filter(event)
+      filter = ActiveSupport::ParameterFilter.new(Rails.application.config.filter_parameters)
+
+      # Scrub extra context
+      event.extra = filter.filter(event.extra) if event.extra.is_a?(Hash)
+
+      # Scrub tags
+      event.tags = filter.filter(event.tags) if event.tags.is_a?(Hash)
+
+      # Scrub user context
+      event.user = filter.filter(event.user) if event.user.is_a?(Hash)
+
+      # Scrub request data
+      if event.request.is_a?(Hash)
+        event.request = filter.filter(event.request)
+      end
+
+      # Scrub breadcrumb data
+      event.breadcrumbs&.each do |breadcrumb|
+        breadcrumb.data = filter.filter(breadcrumb.data) if breadcrumb.data.is_a?(Hash)
       end
     end
   end
