@@ -1,20 +1,23 @@
 <%# Publication Date field for content entries %>
-<%# Required locals: content_entry %>
+<%# Required locals: version (draft_version for edit mode) %>
+<%# Optional locals: save_url (if provided, enables standalone save button) %>
 <% save_url = local_assigns[:save_url] %>
 <% standalone_mode = save_url.present? %>
+<% custom_published_at = version&.custom_published_at %>
 
 <div class="action-section"
      data-controller="publication-date"
      data-publication-date-save-url-value="<%= save_url %>"
-     data-publication-date-standalone-value="<%= standalone_mode %>">
+     data-publication-date-standalone-value="<%= standalone_mode %>"
+     data-publication-date-datetime-local-outlet=".publication-date-input">
   <h4 class="action-section-title">DISPLAY DATE</h4>
   <div class="publication-date-field">
     <label class="meta-key">表示用公開日時</label>
     <input type="datetime-local"
-           name="publication_date"
+           name="custom_published_at"
            class="publication-date-input"
            data-controller="datetime-local"
-           data-datetime-local-utc-value="<%= content_entry.publication_date&.utc&.iso8601 %>"
+           data-datetime-local-utc-value="<%= custom_published_at&.utc&.iso8601 %>"
            data-datetime-local-format-value="input"
            data-publication-date-target="input"
            data-action="change->publication-date#onChange">

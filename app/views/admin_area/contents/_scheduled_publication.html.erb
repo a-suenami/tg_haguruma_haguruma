@@ -5,7 +5,7 @@
 <% if defined?(draft_version) && draft_version %>
   <div class="scheduled-publication-inline"
        data-controller="scheduled-publication"
-       <% if draft_version.scheduled? %>data-scheduled-publication-utc-value="<%= draft_version.scheduled_publish_at.utc.iso8601 %>"<% end %>>
+       data-scheduled-publication-datetime-local-outlet=".schedule-datetime-input">
     <% if draft_version.scheduled? %>
       <!-- Currently scheduled -->
       <div class="scheduled-info-inline" data-scheduled-publication-target="scheduledInfo">
@@ -13,8 +13,11 @@
           <i class="fas fa-clock"></i>
           <span>公開予約中</span>
         </div>
-        <div class="scheduled-datetime-inline" data-scheduled-publication-target="scheduledDatetime">
-          <%# JS will convert UTC to local timezone %>
+        <div class="scheduled-datetime-inline"
+             data-scheduled-publication-target="scheduledDatetime"
+             data-controller="datetime-local"
+             data-datetime-local-utc-value="<%= draft_version.scheduled_publish_at.utc.iso8601 %>"
+             data-datetime-local-format-value="datetime">
           <%= draft_version.scheduled_publish_at.strftime('%Y/%m/%d %H:%M') %>
         </div>
         <button type="button"
@@ -31,6 +34,8 @@
         <label class="schedule-label">公開予約</label>
         <input type="datetime-local"
                class="schedule-datetime-input"
+               data-controller="datetime-local"
+               data-datetime-local-format-value="input"
                data-scheduled-publication-target="datetimeInput">
         <button type="button"
                 class="btn btn-outline-secondary schedule-btn"

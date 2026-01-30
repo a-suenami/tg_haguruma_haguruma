@@ -7,28 +7,24 @@ module AdminArea
       module Entries
         class PublicationDatesController < AdminArea::ApplicationController
           extend T::Sig
+          include AdminArea::Contents::Entries::FieldExtractable
 
           before_action :set_content_type
           before_action :set_content_entry
+          before_action :set_draft_version
 
           sig { void }
           def update
-            publication_date = params[:publication_date]
-            entry = T.must(@content_entry)
+            version = T.must(@draft_version)
 
-            if entry.update(publication_date:)
+            if version.update(custom_published_at: custom_published_at_param)
               head :ok
             else
-              render json: { errors: entry.errors.full_messages }, status: :unprocessable_entity
+              render json: { errors: version.errors.full_messages }, status: :unprocessable_entity
             end
           end
 
           private
-
-          sig { void }
-          def set_content_type
-            @content_type = T.let(ContentType.find(params[:content_type_id]), T.nilable(ContentType))
-          end
 
           sig { void }
           def set_content_entry
@@ -36,6 +32,18 @@ module AdminArea
               T.must(@content_type).content_entries.find(params[:entry_id]),
               T.nilable(ContentEntry),
             )
+          end
+
+          sig { void }
+          def set_draft_version
+            @draft_version = T.let(
+              T.must(@content_entry).versions.find_by(status: ContentEntry::Version::STATUSES[:draft]),
+              T.nilable(ContentEntry::Version),
+            )
+
+            return if @draft_version
+
+            render json: { errors: ['No draft version found'] }, status: :not_found
           end
         end
       end

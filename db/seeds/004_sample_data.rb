@@ -72,7 +72,7 @@ Rails.logger.debug '📄 Creating Content Entries...'
 
 # Helper to create a content entry with a published version
 def create_article(content_type:, title:, body:, authorization_tags: [])
-  entry = ContentEntry.create!(content_type:, publication_date: Time.current)
+  entry = ContentEntry.create!(content_type:)
 
   ContentEntry::Version.create!(
     content_entry_id: entry.id,
@@ -80,6 +80,7 @@ def create_article(content_type:, title:, body:, authorization_tags: [])
     version: 1,
     status: :published,
     published_at: Time.current,
+    custom_published_at: Time.current,
     is_public: authorization_tags.empty?,
   )
 

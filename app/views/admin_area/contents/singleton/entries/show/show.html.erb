@@ -93,6 +93,9 @@
                      published_version: @published_version,
                      mode: :show %>
 
+          <%= render 'admin_area/contents/publication_date_display',
+                     version: @published_version %>
+
           <%= render 'admin_area/contents/authorization_tags_display',
                      selected_tags: @selected_authorization_tags,
                      visibility: @visibility %>
