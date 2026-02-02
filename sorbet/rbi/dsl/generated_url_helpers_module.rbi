@@ -55,6 +55,9 @@ module GeneratedUrlHelpersModule
   def admin_area_contents_collection_entry_media_asset_field_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_publication_date_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_publication_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -83,6 +86,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_singleton_entry_authorization_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_publication_date_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_singleton_entry_publication_url(*args); end

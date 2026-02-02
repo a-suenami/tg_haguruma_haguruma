@@ -1,0 +1,22 @@
+<%# Publication Date display (view-only) for published content %>
+<%# Required locals: version (published_version) %>
+<% custom_published_at = version&.custom_published_at %>
+
+<div class="action-section">
+  <h4 class="action-section-title">DISPLAY DATE</h4>
+  <div class="publication-date-field">
+    <label class="meta-key">表示用公開日時</label>
+    <% if custom_published_at %>
+      <span class="publication-date-display"
+            data-controller="datetime-local"
+            data-datetime-local-utc-value="<%= custom_published_at.utc.iso8601 %>">
+        <%= custom_published_at.strftime('%Y/%m/%d %H:%M') %>
+      </span>
+    <% else %>
+      <span class="publication-date-display">-</span>
+    <% end %>
+    <p class="publication-date-hint">
+      この値は、記事に表示される公開日時および一覧画面の並び替えに使用されます。
+    </p>
+  </div>
+</div>

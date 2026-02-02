@@ -23,7 +23,7 @@ module UserQueries
       # - restricted: Only users with matching authorization tags can access
       sig { params(entry: ContentEntry, user: T.nilable(User)).returns(T::Boolean) }
       def authorized?(entry, user:)
-        published_version = entry.versions.find(&:published?)
+        published_version = entry.latest_published_version
         return false unless published_version
 
         case published_version.visibility
@@ -110,11 +110,11 @@ module UserQueries
       )
     end
 
-    # Order by published_at descending
+    # Order by custom_published_at descending, falls back to published_at if custom is null
     sig { returns(T.self_type) }
     def ordered_by_published_at
       chain(
-        @scope.order('content_entry_versions.published_at DESC'),
+        @scope.order(Arel.sql('COALESCE(content_entry_versions.custom_published_at, content_entry_versions.published_at) DESC')),
       )
     end
 

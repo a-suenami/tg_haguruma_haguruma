@@ -137,6 +137,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.integer "visibility", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "published_at"
+    t.datetime "custom_published_at"
     t.datetime "unpublished_at"
     t.string "preview_token"
     t.datetime "preview_token_expires_at"

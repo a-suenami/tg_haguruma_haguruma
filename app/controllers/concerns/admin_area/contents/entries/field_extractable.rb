@@ -175,6 +175,15 @@ module AdminArea
         def visibility_param
           params[:visibility] || 'public'
         end
+
+        sig { returns(T.nilable(Time)) }
+        def custom_published_at_param
+          return nil if params[:custom_published_at].blank?
+
+          Time.zone.parse(params[:custom_published_at])
+        rescue ArgumentError
+          nil
+        end
       end
     end
   end

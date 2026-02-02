@@ -41,7 +41,7 @@
                   <% next if version.nil? %>
                   <a href="<%= user_area_ticket_path(entry) %>" cog-blog-item data-turbo-frame="_top">
                     <div class="thumbnail">
-                      <% unless entry_authorized?(entry) %>
+                      <% if version.visibility != 'public' %>
                         <span class="member-only">会員限定</span>
                       <% end %>
                       <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
@@ -55,7 +55,7 @@
                     <div class="texts">
                       <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
                       <div class="date">
-                        <span cog-date-label><%= format_content_date(version.published_at) %></span>
+                        <span cog-date-label><%= format_content_date(entry.display_publication_date) %></span>
                       </div>
                     </div>
                   </a>

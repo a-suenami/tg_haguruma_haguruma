@@ -31,6 +31,7 @@ namespace :admin_area, path: :admin do
           resources :media_asset_fields, only: [:update], controller: 'entries/media_asset_fields', param: :api_identifier
           resources :select_fields, only: [:update], controller: 'entries/select_fields', param: :api_identifier
           resource :authorization, only: [:update], controller: 'entries/authorizations'
+          resource :publication_date, only: [:update], controller: 'entries/publication_dates'
         end
         resources :entries, only: :show, controller: 'entries/show'
 
@@ -45,6 +46,7 @@ namespace :admin_area, path: :admin do
       scope module: :singleton, as: :singleton do
         resource :entry, only: [:edit, :update], controller: 'entries/edit' do
           resource :authorization, only: [:update], controller: 'entries/authorizations'
+          resource :publication_date, only: [:update], controller: 'entries/publication_dates'
         end
         resource :entry, only: :show, controller: 'entries/show'
 
