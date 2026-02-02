@@ -58,9 +58,10 @@ module UserArea
 
       sig { params(select_options: T::Hash[Symbol, T.nilable(String)], page: Integer, limit: Integer).returns(T::Array[ContentEntry]) }
       def query_entries(select_options: {}, page: 1, limit: 20)
+        # Show ALL published content on list pages (no authorization filter)
+        # Authorization is checked on detail page access (show action)
         query = UserQueries::ContentEntriesQuery.new
                   .by_content_type(T.unsafe(self.class).source_content_type_key.to_s)
-                  .authorized_for(current_user)
                   .ordered_by_published_at
 
         select_options.each do |field, value|
