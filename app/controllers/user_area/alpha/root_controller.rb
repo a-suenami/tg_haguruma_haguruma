@@ -49,11 +49,12 @@ module UserArea
         image_field&.media_asset&.media_asset&.url
       end
 
+      # Show ALL published content on root page (no authorization filter)
+      # Authorization is checked via entry_authorized? helper in view
       sig { params(content_type_key: Symbol, limit: T.nilable(Integer), category: T.nilable(String)).returns(T::Array[ContentEntry]) }
       def query_for(content_type_key, limit: nil, category: nil)
         query = UserQueries::ContentEntriesQuery.new
                   .by_content_type(content_type_key.to_s)
-                  .authorized_for(current_user)
                   .ordered_by_published_at
         query = query.by_select_option('category', category) if category.present?
         query = query.limit(limit) if limit
