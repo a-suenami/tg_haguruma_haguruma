@@ -73,7 +73,7 @@ module UserArea
         total_count = all_entries.size
 
         # Use Pagy for pagination
-        @pagy = Pagy.new(count: total_count, page: page, items: 20)
+        @pagy = Pagy.new(count: total_count, page:, items: 20)
 
         # Return paginated entries
         all_entries.drop(@pagy.offset).take(@pagy.items)
