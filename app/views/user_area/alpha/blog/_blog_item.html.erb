@@ -1,0 +1,24 @@
+<%# Single blog item for list %>
+<% version = published_version(entry) %>
+<% if version.present? %>
+  <a href="<%= user_area_blog_path(entry) %>" cog-blog-item data-turbo-frame="_top">
+    <div class="thumbnail">
+      <% if version.visibility != 'public' %>
+        <span class="member-only">会員限定</span>
+      <% end %>
+      <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
+      <img draggable="false" src="<%= thumbnail_url || '/images/yokikotokiku/noimage.svg' %>" alt="Blog Thumbnail">
+      <% category_field = field_by_identifier(version, 'category') %>
+      <% category_option = selected_option(category_field) %>
+      <% if category_option.present? %>
+        <span class="label"><%= category_option.display_name %></span>
+      <% end %>
+    </div>
+    <div class="texts">
+      <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
+      <div class="date">
+        <span cog-date-label><%= format_content_date(entry.display_publication_date) %></span>
+      </div>
+    </div>
+  </a>
+<% end %>

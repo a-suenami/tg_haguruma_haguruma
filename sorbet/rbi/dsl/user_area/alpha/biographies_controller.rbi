@@ -22,6 +22,8 @@ class UserArea::Alpha::BiographiesController
     include ::ActionText::TagHelper
     include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
+    include ::Pagy::UrlHelpers
+    include ::Pagy::Frontend
     include ::ApplicationHelper
     include ::AdminArea::PreviewHelper
     include ::LexicalHelper
@@ -45,6 +47,9 @@ class UserArea::Alpha::BiographiesController
 
     sig { returns(T.nilable(::String)) }
     def current_category; end
+
+    sig { returns(T.nilable(::Pagy)) }
+    def pagy_metadata; end
   end
 
   class HelperProxy < ::ActionView::Base

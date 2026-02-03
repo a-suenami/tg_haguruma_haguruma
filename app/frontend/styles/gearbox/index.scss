@@ -61,6 +61,8 @@
 @use './components/labels/category-label/category-label.component';
 @use './components/labels/date-label/date-label.component';
 
+@use './components/pagination/pagination';
+
 // Haguruma Shared Components
 @use './haguruma/layouts/page-header/page-header.component';
 @use './haguruma/layouts/page-footer/page-footer.component';

@@ -29,7 +29,7 @@ module UserArea
 
       included do
         T.bind(self, T.class_of(ActionController::Base))
-        helper_method :content_type, :categories, :current_category, :content_authorized?
+        helper_method :content_type, :categories, :current_category, :content_authorized?, :pagy_metadata
       end
 
       # Abstract methods provided by ActionController::Base
@@ -68,9 +68,20 @@ module UserArea
           query = query.by_select_option(field.to_s, value) if value.present?
         end
 
-        offset = (page - 1) * limit
-        query = query.offset(offset).limit(limit)
-        query.resolve
+        # Get total count for pagination
+        all_entries = query.resolve
+        total_count = all_entries.size
+
+        # Use Pagy for pagination
+        @pagy = Pagy.new(count: total_count, page:, items: limit)
+
+        # Return paginated entries
+        all_entries.drop(@pagy.offset).take(@pagy.items)
+      end
+
+      sig { returns(T.nilable(Pagy)) }
+      def pagy_metadata
+        @pagy
       end
 
       sig { params(id: String).returns(ContentEntry) }
