@@ -3,6 +3,7 @@
 
 class AdminArea::ApplicationController < ApplicationController
   extend T::Sig
+  include FeatureFlaggable
 
   layout 'admin_area/application'
 

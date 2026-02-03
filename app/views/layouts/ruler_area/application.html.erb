@@ -34,6 +34,9 @@
             <li class="<%= 'uk-active' if controller_name == 'rulers' %>">
               <%= link_to 'Ruler管理', ruler_area_rulers_path %>
             </li>
+            <li class="<%= 'uk-active' if controller_name == 'global_feature_flags' %>">
+              <%= link_to '機能フラグ', ruler_area_global_feature_flags_path %>
+            </li>
             <li><a href="#">SIDEKIQ</a></li>
             <li><a href="#">マスタ</a></li>
           </ul>
@@ -122,6 +125,9 @@
             </li>
             <li class="<%= 'uk-active' if controller_name == 'authorization_tags' %>">
               <%= link_to '認可タグ', ruler_area_tenant_authorization_tags_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'feature_flags' %>">
+              <%= link_to '機能フラグ', ruler_area_tenant_feature_flags_path(@tenant) %>
             </li>
           </ul>
 

@@ -285,6 +285,9 @@ ja:
   date:
     formats:
       default: "%Y/%m/%d"
+  feature_flags:
+    errors:
+      not_available: この機能は現在利用できません
   errors:
     messages:
       not_found: リソースが見つかりません

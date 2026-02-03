@@ -29,8 +29,9 @@ html lang="ja"
               = link_to 'コンテンツ', admin_area_contents_all_path
             li class=('active' if controller_name == 'media')
               = link_to 'メディア', admin_area_media_path
-            li class=('active' if controller_name == 'categories')
-              = link_to 'カテゴリー', admin_area_categories_path
+            - if feature_enabled?(:admin_category)
+              li class=('active' if controller_name == 'categories')
+                = link_to 'カテゴリー', admin_area_categories_path
             li class=('active' if controller_name == 'authorization_tags')
               = link_to '認可タグ', admin_area_authorization_tags_path
             / li class=('active' if controller_name == 'content_types')
