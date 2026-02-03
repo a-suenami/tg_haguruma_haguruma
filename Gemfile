@@ -71,6 +71,9 @@ gem 'aws-sdk-sqs', '~> 1.70'
 gem 'sorbet-runtime', '~> 0.5.11048'
 gem 'mangrove', '~> 0.29.0'
 
+# Pagination
+gem 'pagy', '~> 6.4'
+
 # Utilities
 gem 'pry', '~> 0.14.2'
 gem 'config', '~> 5.0.0'

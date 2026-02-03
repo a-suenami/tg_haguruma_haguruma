@@ -37,32 +37,11 @@
             <% else %>
               <div class="list">
                 <% @entries.each_with_index do |entry, i| %>
-                  <% version = published_version(entry) %>
-                  <% next if version.nil? %>
-                  <a href="<%= user_area_news_path(entry) %>" cog-news-item data-turbo-frame="_top">
-                  <div class="header">
-                    <div class="date">
-                      <span cog-date-label><%= format_content_date(entry.display_publication_date) %></span>
-                    </div>
-                    <% category_field = field_by_identifier(version, 'category') %>
-                    <% category_option = selected_option(category_field) %>
-                    <div class="category">
-                      <% if version.visibility != 'public' %>
-                        <span cog-category-label color-primary>会員限定</span>
-                      <% end %>
-                      <% if category_option.present? %>
-                        <span cog-category-label color-secondary><%= category_option.display_name %></span>
-                      <% end %>
-                    </div>
-                  </div>
-                    <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
-                  </a>
-                  <% unless i == @entries.length - 1 %>
-                    <div class="divider"></div>
-                  <% end %>
+                  <%= render 'news_item', entry: entry, last: i == @entries.length - 1 %>
                 <% end %>
               </div>
 
+              <%= render 'user_area/alpha/shared/pagination' %>
             <% end %>
           </div>
         </div>

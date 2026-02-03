@@ -22,6 +22,8 @@ class AdminArea::ApplicationController
     include ::ActionText::TagHelper
     include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
+    include ::Pagy::UrlHelpers
+    include ::Pagy::Frontend
     include ::ApplicationHelper
     include ::AdminArea::PreviewHelper
     include ::LexicalHelper

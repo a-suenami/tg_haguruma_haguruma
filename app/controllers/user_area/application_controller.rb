@@ -4,6 +4,7 @@
 module UserArea
   class ApplicationController < ::ApplicationController
     extend T::Sig
+    include Pagy::Backend
 
     layout 'user_area/application'
 

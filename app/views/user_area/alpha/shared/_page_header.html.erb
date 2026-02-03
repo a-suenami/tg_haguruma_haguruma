@@ -11,7 +11,8 @@
     <nav cog-header-menu>
       <a href="<%= user_area_root_path %>" cog-header-menu-item class="<%= 'active' if current_page?(user_area_root_path) %>">トップ</a>
       <% enabled_features.each do |feature| %>
-        <a href="<%= feature_path(feature['key']) %>" cog-header-menu-item class="<%= 'active' if current_page?(feature_path(feature['key'])) %>"><%= feature['label'] %></a>
+        <% feature_base = feature_path(feature['key']) %>
+        <a href="<%= feature_base %>" cog-header-menu-item class="<%= 'active' if request.path == feature_base || request.path.start_with?("#{feature_base}/") %>"><%= feature['label'] %></a>
       <% end %>
       <div class="action-buttons">
         <% if user_signed_in? %>
