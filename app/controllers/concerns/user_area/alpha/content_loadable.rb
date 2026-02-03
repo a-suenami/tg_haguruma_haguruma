@@ -56,8 +56,8 @@ module UserArea
         params[:category]
       end
 
-      sig { params(select_options: T::Hash[Symbol, T.nilable(String)], page: Integer).returns(T::Array[ContentEntry]) }
-      def query_entries(select_options: {}, page: 1)
+      sig { params(select_options: T::Hash[Symbol, T.nilable(String)], page: Integer, limit: Integer).returns(T::Array[ContentEntry]) }
+      def query_entries(select_options: {}, page: 1, limit: 20)
         # Show ALL published content on list pages (no authorization filter)
         # Authorization is checked on detail page access (show action)
         query = UserQueries::ContentEntriesQuery.new
@@ -73,7 +73,7 @@ module UserArea
         total_count = all_entries.size
 
         # Use Pagy for pagination
-        @pagy = Pagy.new(count: total_count, page:, items: 20)
+        @pagy = Pagy.new(count: total_count, page:, items: limit)
 
         # Return paginated entries
         all_entries.drop(@pagy.offset).take(@pagy.items)
