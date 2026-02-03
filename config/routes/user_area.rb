@@ -35,4 +35,7 @@ namespace :user_area, path: '' do
     resource :biography, only: [:show]
     resource :privilege, only: [:show]
   end
+
+  # Catch-all route for 404 (must be at the end)
+  match '*path', to: 'errors#not_found', via: :all
 end
