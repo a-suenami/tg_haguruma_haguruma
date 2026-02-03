@@ -36,6 +36,9 @@ class AdminArea::ApplicationController
     sig { returns(T.nilable(::Admin)) }
     def current_admin; end
 
+    sig { params(flag_name: T.any(::String, ::Symbol)).returns(T::Boolean) }
+    def feature_enabled?(flag_name); end
+
     sig { returns(T::Boolean) }
     def signed_in?; end
   end

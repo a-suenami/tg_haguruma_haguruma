@@ -10,13 +10,13 @@ module RulerArea
       @features = FeatureFlagRegistry.all.map do |key, meta|
         enabled_tenants = TenantFeatureFlags.enabled_tenants(key)
         {
-          key: key,
+          key:,
           name: meta[:name],
           description: meta[:description],
           scope: meta[:scope],
           globally_enabled: TenantFeatureFlags.globally_enabled?(key),
           enabled_tenant_count: enabled_tenants.size,
-          enabled_tenants: enabled_tenants.first(5) # Show first 5 for preview
+          enabled_tenants: enabled_tenants.first(5), # Show first 5 for preview
         }
       end
     end

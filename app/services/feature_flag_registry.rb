@@ -8,9 +8,9 @@ class FeatureFlagRegistry
     admin_category: {
       name: '管理画面のカテゴリ機能',
       description: 'Admin area category management feature',
-      scope: :tenant
-    }
-  }.freeze, T::Hash[Symbol, T::Hash[Symbol, T.untyped]])
+      scope: :tenant,
+    },
+  }.freeze, T::Hash[Symbol, T::Hash[Symbol, T.untyped]],)
 
   class << self
     extend T::Sig

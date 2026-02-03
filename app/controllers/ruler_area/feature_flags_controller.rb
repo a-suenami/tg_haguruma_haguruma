@@ -11,11 +11,11 @@ module RulerArea
     def index
       @features = FeatureFlagRegistry.tenant_scoped.map do |key, meta|
         {
-          key: key,
+          key:,
           name: meta[:name],
           description: meta[:description],
           enabled: TenantFeatureFlags.enabled?(key, tenant: @tenant),
-          globally_enabled: TenantFeatureFlags.globally_enabled?(key)
+          globally_enabled: TenantFeatureFlags.globally_enabled?(key),
         }
       end
     end
@@ -23,16 +23,17 @@ module RulerArea
     sig { void }
     def toggle
       flag_name = params[:id].to_sym
+      tenant = T.must(@tenant)
 
-      if TenantFeatureFlags.enabled?(flag_name, tenant: @tenant)
-        TenantFeatureFlags.disable(flag_name, @tenant)
+      if TenantFeatureFlags.enabled?(flag_name, tenant:)
+        TenantFeatureFlags.disable(flag_name, tenant)
         flash[:notice] = "#{FeatureFlagRegistry.get(flag_name)&.dig(:name)} を無効にしました"
       else
-        TenantFeatureFlags.enable(flag_name, @tenant)
+        TenantFeatureFlags.enable(flag_name, tenant)
         flash[:notice] = "#{FeatureFlagRegistry.get(flag_name)&.dig(:name)} を有効にしました"
       end
 
-      redirect_to ruler_area_tenant_feature_flags_path(@tenant)
+      redirect_to ruler_area_tenant_feature_flags_path(tenant)
     end
 
     private

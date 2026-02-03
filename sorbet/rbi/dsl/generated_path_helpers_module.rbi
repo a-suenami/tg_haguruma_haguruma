@@ -340,6 +340,9 @@ module GeneratedPathHelpersModule
   def ruler_area_auth_failure_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_global_feature_flags_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_login_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -391,6 +394,9 @@ module GeneratedPathHelpersModule
   def ruler_area_tenant_custom_variables_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_feature_flags_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_provider_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -434,6 +440,12 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def test_auth_bypass_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def toggle_ruler_area_global_feature_flag_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def toggle_ruler_area_tenant_feature_flag_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def turbo_recede_historical_location_path(*args); end

@@ -340,6 +340,9 @@ module GeneratedUrlHelpersModule
   def ruler_area_auth_failure_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_global_feature_flags_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_login_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -391,6 +394,9 @@ module GeneratedUrlHelpersModule
   def ruler_area_tenant_custom_variables_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_feature_flags_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_provider_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -434,6 +440,12 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def test_auth_bypass_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def toggle_ruler_area_global_feature_flag_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def toggle_ruler_area_tenant_feature_flag_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def turbo_recede_historical_location_url(*args); end

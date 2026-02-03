@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 # Seed all registered feature flags
-puts 'Seeding feature flags...'
+Rails.logger.info 'Seeding feature flags...'
 FeatureFlagRegistry.seed!
-puts "Feature flags seeded: #{FeatureFlagRegistry.all.keys.join(', ')}"
+Rails.logger.info "Feature flags seeded: #{FeatureFlagRegistry.all.keys.join(', ')}"
