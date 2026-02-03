@@ -10,6 +10,11 @@ class FeatureFlagRegistry
       description: 'Admin area category management feature',
       scope: :tenant,
     },
+    admin_new_ui: {
+      name: '管理画面の新UI',
+      description: 'New UI for admin area',
+      scope: :tenant,
+    },
   }.freeze, T::Hash[Symbol, T::Hash[Symbol, T.untyped]],)
 
   class << self
