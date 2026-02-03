@@ -181,3 +181,8 @@ end
 # OpenAPI / Swagger
 gem 'rswag-api'
 gem 'rswag-ui'
+
+# Feature Flags
+gem 'flipper', '~> 1.3'
+gem 'flipper-redis', '~> 1.3'
+gem 'flipper-ui', '~> 1.3'

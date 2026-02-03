@@ -103,6 +103,12 @@ class Tenant < ApplicationRecord
     site_settings || TenantSiteSettings.new
   end
 
+  # Flipper actor support for feature flags
+  sig { returns(String) }
+  def flipper_id
+    "Tenant:#{id}"
+  end
+
   # TODO: Add these methods when config model is ported
   # sig { returns(T::Boolean) }
   # def push_user_mail_event_enabled?

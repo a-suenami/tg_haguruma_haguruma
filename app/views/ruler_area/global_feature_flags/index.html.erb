@@ -1,0 +1,82 @@
+<ul class="uk-breadcrumb">
+  <li>
+    <span>機能フラグ（グローバル）</span>
+  </li>
+</ul>
+
+<div class="am-page-header">
+  <h3>機能フラグ（グローバル設定）</h3>
+  <div>
+    <%= link_to 'Flipper UI (詳細)', '/ruler/flipper', class: 'uk-button uk-button-default uk-button-small', target: '_blank' %>
+  </div>
+</div>
+
+<div class="uk-alert uk-alert-primary">
+  <p>グローバルで有効にすると、<strong>全テナント</strong>でこの機能が利用可能になります。</p>
+  <p>個別テナントの設定は、各テナントの「機能フラグ」ページで行えます。</p>
+</div>
+
+<table class="uk-table uk-table-striped">
+  <thead>
+    <tr>
+      <th>機能名</th>
+      <th>説明</th>
+      <th>スコープ</th>
+      <th>ステータス</th>
+      <th>有効テナント</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @features.empty? %>
+      <tr>
+        <td colspan="6" class="uk-text-center uk-text-muted">
+          機能フラグが登録されていません
+        </td>
+      </tr>
+    <% else %>
+      <% @features.each do |feature| %>
+        <tr>
+          <td><%= feature[:name] %></td>
+          <td class="uk-text-muted uk-text-small"><%= feature[:description] %></td>
+          <td>
+            <% if feature[:scope] == :global %>
+              <span class="uk-label">グローバル</span>
+            <% else %>
+              <span class="uk-label uk-label-warning">テナント別</span>
+            <% end %>
+          </td>
+          <td>
+            <% if feature[:globally_enabled] %>
+              <span class="uk-label uk-label-success">グローバル有効</span>
+            <% else %>
+              <span class="uk-label">グローバル無効</span>
+            <% end %>
+          </td>
+          <td>
+            <% if feature[:globally_enabled] %>
+              <span class="uk-text-muted">全テナント</span>
+            <% elsif feature[:enabled_tenant_count] > 0 %>
+              <span class="uk-text-primary"><%= feature[:enabled_tenant_count] %>件</span>
+              <% if feature[:enabled_tenants].any? %>
+                <br>
+                <span class="uk-text-small uk-text-muted">
+                  <%= feature[:enabled_tenants].join(', ') %><%= '...' if feature[:enabled_tenant_count] > 5 %>
+                </span>
+              <% end %>
+            <% else %>
+              <span class="uk-text-muted">なし</span>
+            <% end %>
+          </td>
+          <td class="uk-text-right">
+            <%= button_to feature[:globally_enabled] ? 'グローバル無効化' : 'グローバル有効化',
+                toggle_ruler_area_global_feature_flag_path(feature[:key]),
+                method: :post,
+                class: "uk-button uk-button-small #{feature[:globally_enabled] ? 'uk-button-danger' : 'uk-button-primary'}",
+                data: { turbo_confirm: feature[:globally_enabled] ? 'グローバル無効化すると、個別設定されていないテナントでは機能が使えなくなります。よろしいですか？' : '全テナントでこの機能を有効にします。よろしいですか？' } %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
