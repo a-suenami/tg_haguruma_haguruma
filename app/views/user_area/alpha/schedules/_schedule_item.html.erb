@@ -6,7 +6,7 @@
       <% if version.visibility != 'public' %>
         <span class="member-only">会員限定</span>
       <% end %>
-      <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
+      <% thumbnail_url = media_asset_url(field: field_by_identifier(version, 'thumbnail'), public: version.visibility == 'public') %>
       <img draggable="false" src="<%= thumbnail_url || '/images/yokikotokiku/noimage.svg' %>" alt="Schedule Thumbnail">
       <% category_field = field_by_identifier(version, 'category') %>
       <% category_option = selected_option(category_field) %>
