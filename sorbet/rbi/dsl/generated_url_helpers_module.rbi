@@ -527,4 +527,7 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def user_area_tickets_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_url(*args); end
 end
