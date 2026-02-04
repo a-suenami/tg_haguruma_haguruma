@@ -8,7 +8,7 @@ module UserArea
     # GET /*path (catch-all route for 404)
     sig { void }
     def not_found
-      render 'user_area/errors/404', layout: false, status: :not_found
+      render 'user_area/errors/404', layout: false, status: :not_found, formats: [:html]
     end
   end
 end
