@@ -123,8 +123,7 @@
                         <% category_field = field_by_identifier(version, 'category') %>
                           <% category_option = selected_option(category_field) %>
                           <% if category_option.present? %>
-                            <div class="label">
-                              <span cog-category-label color-secondary><%= category_option.display_name %></span>
+                            <div class="label"><%= category_option.display_name %></div>
                             </div>
                           <% end %>
                       </div>
