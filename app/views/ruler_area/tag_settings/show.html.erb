@@ -24,9 +24,8 @@
         <th style="width: 250px;">&lt;head&gt;内のコード</th>
         <td>
           <% if @tag_setting.head_code? %>
-            <span class="uk-label uk-label-success">設定済み</span>
-            <details class="uk-margin-small-top">
-              <summary class="uk-text-small uk-text-muted" style="cursor: pointer;">コードを表示</summary>
+            <details>
+              <summary class="uk-text-small" style="cursor: pointer;">コードを表示</summary>
               <pre class="uk-margin-small-top" style="max-height: 200px; overflow: auto; background: #f8f8f8; padding: 10px; font-size: 12px;"><%= @tag_setting.head_code %></pre>
             </details>
           <% else %>
@@ -38,9 +37,8 @@
         <th>&lt;body&gt;内のコード</th>
         <td>
           <% if @tag_setting.body_code? %>
-            <span class="uk-label uk-label-success">設定済み</span>
-            <details class="uk-margin-small-top">
-              <summary class="uk-text-small uk-text-muted" style="cursor: pointer;">コードを表示</summary>
+            <details>
+              <summary class="uk-text-small" style="cursor: pointer;">コードを表示</summary>
               <pre class="uk-margin-small-top" style="max-height: 200px; overflow: auto; background: #f8f8f8; padding: 10px; font-size: 12px;"><%= @tag_setting.body_code %></pre>
             </details>
           <% else %>
