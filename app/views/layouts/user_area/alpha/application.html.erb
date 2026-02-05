@@ -34,8 +34,10 @@
     <%= theme_css_style_tag %>
   </style>
   <%= yield(:head) %>
+  <%= current_tag_settings.head_code_html %>
 </head>
 <body cog-layout data-controller="image-protection">
+  <%= current_tag_settings.body_code_html %>
   <%= yield %>
 </body>
 </html>

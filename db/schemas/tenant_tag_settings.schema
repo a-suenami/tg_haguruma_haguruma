@@ -1,0 +1,14 @@
+create_table :tenant_tag_settings, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
+  t.string :tenant_id, null: false
+
+  # Script code to inject in <head> section
+  t.text :head_code
+
+  # Script code to inject after <body> tag
+  t.text :body_code
+
+  t.timestamps null: false
+end
+
+add_index :tenant_tag_settings, [:tenant_id], unique: true
+add_foreign_key :tenant_tag_settings, :tenants, column: :tenant_id, primary_key: :id
