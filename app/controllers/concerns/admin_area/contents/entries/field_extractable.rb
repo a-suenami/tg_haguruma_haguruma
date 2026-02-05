@@ -107,7 +107,7 @@ module AdminArea
         # Transforms S3 paths to signed URLs for editor display
         sig { params(field: ContentEntry::Field).returns(T.untyped) }
         def extract_richtext_value(field)
-          RichtextUrlTransformer.transform(field.richtext&.value)
+          RichtextUrlTransformer.transform(value: field.richtext&.value)
         end
 
         # Override this method if @content_entry can be nil

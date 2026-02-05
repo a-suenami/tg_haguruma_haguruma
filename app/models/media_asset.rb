@@ -50,11 +50,11 @@ class MediaAsset < ApplicationRecord
     mime_type
   end
 
-  def url
+  def url(purpose: :admin)
     return nil if s3_object_path.blank?
 
     uploader = MediaAsset::Uploader.new
-    uploader.url_for(s3_object_path)
+    uploader.url_for(s3_object_path, purpose:, media_type: media_type&.to_sym)
   end
 
   def public_url
