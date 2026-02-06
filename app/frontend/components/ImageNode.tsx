@@ -20,6 +20,7 @@ export interface ImagePayload {
   maxWidth?: number;
   src: string;
   width?: number;
+  mediaAssetId?: string;
 }
 
 function convertImageElement(domNode: Node): null | DOMConversionOutput {
@@ -38,6 +39,7 @@ export type SerializedImageNode = Spread<
     maxWidth?: number;
     src: string;
     width?: number;
+    mediaAssetId?: string;
   },
   SerializedLexicalNode
 >;
@@ -48,6 +50,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
   __width: 'inherit' | number;
   __height: 'inherit' | number;
   __maxWidth: number;
+  __mediaAssetId: string;
 
   static getType(): string {
     return 'image';
@@ -60,18 +63,20 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
       node.__maxWidth,
       node.__width,
       node.__height,
+      node.__mediaAssetId,
       node.__key,
     );
   }
 
   static importJSON(serializedNode: SerializedImageNode): ImageNode {
-    const { altText, height, width, maxWidth, src } = serializedNode;
+    const { altText, height, width, maxWidth, src, mediaAssetId } = serializedNode;
     const node = $createImageNode({
       altText,
       height,
       maxWidth,
       src,
       width,
+      mediaAssetId,
     });
     return node;
   }
@@ -82,6 +87,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     element.setAttribute('alt', this.__altText);
     element.setAttribute('width', this.__width.toString());
     element.setAttribute('height', this.__height.toString());
+    element.setAttribute('data-media-asset-id', this.__mediaAssetId);
     return { element };
   }
 
@@ -100,6 +106,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     maxWidth: number,
     width?: 'inherit' | number,
     height?: 'inherit' | number,
+    mediaAssetId?: string,
     key?: NodeKey,
   ) {
     super(key);
@@ -108,6 +115,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     this.__maxWidth = maxWidth;
     this.__width = width || 'inherit';
     this.__height = height || 'inherit';
+    this.__mediaAssetId = mediaAssetId || '';
   }
 
   exportJSON(): SerializedImageNode {
@@ -119,6 +127,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
       type: 'image',
       version: 1,
       width: this.__width === 'inherit' ? 0 : this.__width,
+      mediaAssetId: this.__mediaAssetId,
     };
   }
 
@@ -153,6 +162,10 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     return this.__altText;
   }
 
+  getMediaAssetId(): string | undefined {
+    return this.__mediaAssetId;
+  }
+
   decorate(): JSX.Element {
     return (
       <Suspense fallback={null}>
@@ -162,6 +175,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
           width={this.__width}
           height={this.__height}
           maxWidth={this.__maxWidth}
+          mediaAssetId={this.__mediaAssetId}
           nodeKey={this.getKey()}
         />
       </Suspense>
@@ -175,9 +189,10 @@ export function $createImageNode({
   maxWidth = 500,
   src,
   width,
+  mediaAssetId,
   key,
 }: ImagePayload): ImageNode {
-  return new ImageNode(src, altText, maxWidth, width, height, key);
+  return new ImageNode(src, altText, maxWidth, width, height, mediaAssetId, key);
 }
 
 export function $isImageNode(
@@ -193,6 +208,7 @@ interface ImageComponentProps {
   nodeKey: NodeKey;
   src: string;
   width: 'inherit' | number;
+  mediaAssetId: string;
 }
 
 function ImageComponent({
@@ -202,6 +218,7 @@ function ImageComponent({
   width,
   height,
   maxWidth,
+  mediaAssetId,
 }: ImageComponentProps): JSX.Element {
   const [editor] = useLexicalComposerContext();
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
@@ -312,6 +329,7 @@ function ImageComponent({
         className="image-node"
         src={src}
         alt={altText}
+        data-media-asset-id={mediaAssetId}
         style={{
           width: currentWidth === 'inherit' ? undefined : currentWidth,
           height: currentHeight === 'inherit' ? undefined : currentHeight,

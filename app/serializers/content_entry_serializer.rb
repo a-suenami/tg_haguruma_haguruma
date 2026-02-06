@@ -59,12 +59,12 @@ class ContentEntrySerializer < ApplicationSerializer
     version.fields.each_with_object({}) do |field, hash|
       content_type_field = T.must(field.content_type_field)
       api_identifier = content_type_field.api_identifier
-      hash[api_identifier] = attribute_value(field, content_type_field)
+      hash[api_identifier] = attribute_value(field, content_type_field, version)
     end
   end
 
-  sig { params(field: ContentEntry::Field, content_type_field: ContentType::Field).returns(T::Hash[Symbol, T.untyped]) }
-  def attribute_value(field, content_type_field)
+  sig { params(field: ContentEntry::Field, content_type_field: ContentType::Field, version: ContentEntry::Version).returns(T::Hash[Symbol, T.untyped]) }
+  def attribute_value(field, content_type_field, version)
     base = {
       type: field.field_type,
       field: {
@@ -77,7 +77,7 @@ class ContentEntrySerializer < ApplicationSerializer
     when 'text'
       base.merge(text: { value: field.text&.value })
     when 'richtext'
-      base.merge(richtext: { json_value: RichtextUrlTransformer.transform(field.richtext&.value) })
+      base.merge(richtext: { json_value: RichtextUrlTransformer.transform(value: field.richtext&.value, public: version.visibility == 'public') })
     when 'media_asset'
       base.merge(media_asset: media_asset_hash(field.media_asset))
     when 'select_field'

@@ -15,11 +15,11 @@ module UserArea
     end
 
     # Render richtext field as HTML
-    sig { params(field: T.nilable(ContentEntry::Field)).returns(String) }
-    def render_richtext_field(field)
+    sig { params(field: T.nilable(ContentEntry::Field), public: T::Boolean).returns(String) }
+    def render_richtext_field(field:, public: false)
       return '' if field.nil?
 
-      json = RichtextUrlTransformer.transform(field.richtext&.value)
+      json = RichtextUrlTransformer.transform(value: field.richtext&.value, public:)
       return '' if json.nil?
 
       lexical_to_html(json)
