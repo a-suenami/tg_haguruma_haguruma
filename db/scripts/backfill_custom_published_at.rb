@@ -2,16 +2,65 @@
 #
 # エントリの v1 の published_at を基準に、過去に公開されたことがある全バージョンに
 # custom_published_at を設定する。
+#
 # 対象外: v1 が一度も公開されていないエントリ（v1.published_at が nil）
-# 結果: status=draft かつ version=1 のもの以外すべてに非NULLの値が設定される
+#
+# DB check constraints に準拠するため、status によって処理を分ける:
+# - draft: published_at, custom_published_at, unpublished_at を NULL にする
+# - published: custom_published_at を設定（published_at は既存）
+# - unpublished: custom_published_at を設定（published_at, unpublished_at は既存）
 #
 # Usage: rails runner db/scripts/backfill_custom_published_at.rb
 
+puts "Backfilling custom_published_at for content_entry_versions..."
+puts ""
+
+# Count violations before
+draft_violations = ContentEntry::Version.where(status: 1)
+  .where('published_at IS NOT NULL OR custom_published_at IS NOT NULL OR unpublished_at IS NOT NULL').count
+published_violations = ContentEntry::Version.where(status: 3)
+  .where('published_at IS NULL OR custom_published_at IS NULL').count
+unpublished_violations = ContentEntry::Version.where(status: 4)
+  .where('published_at IS NULL OR custom_published_at IS NULL OR unpublished_at IS NULL').count
+
+puts "Before:"
+puts "  Draft violations: #{draft_violations}"
+puts "  Published violations: #{published_violations}"
+puts "  Unpublished violations: #{unpublished_violations}"
+puts ""
+
+# Fix drafts - clear all date fields
+ContentEntry::Version.where(status: 1)
+  .where('published_at IS NOT NULL OR custom_published_at IS NOT NULL OR unpublished_at IS NOT NULL')
+  .update_all(published_at: nil, custom_published_at: nil, unpublished_at: nil)
+
+# Fix published - set custom_published_at from v1 or published_at
 ContentEntry.find_each do |entry|
   v1 = entry.versions.find_by(version: 1)
-  next unless v1&.published_at
+  base_date = v1&.published_at
 
-  entry.versions.find_each do |version|
-    version.update_column(:custom_published_at, v1.published_at)
+  entry.versions.where(status: 3).where(custom_published_at: nil).find_each do |version|
+    date = base_date || version.published_at
+    version.update_column(:custom_published_at, date) if date
+  end
+
+  entry.versions.where(status: 4).where(custom_published_at: nil).find_each do |version|
+    date = base_date || version.published_at
+    version.update_column(:custom_published_at, date) if date
   end
 end
+
+# Count violations after
+draft_violations = ContentEntry::Version.where(status: 1)
+  .where('published_at IS NOT NULL OR custom_published_at IS NOT NULL OR unpublished_at IS NOT NULL').count
+published_violations = ContentEntry::Version.where(status: 3)
+  .where('published_at IS NULL OR custom_published_at IS NULL').count
+unpublished_violations = ContentEntry::Version.where(status: 4)
+  .where('published_at IS NULL OR custom_published_at IS NULL OR unpublished_at IS NULL').count
+
+puts "After:"
+puts "  Draft violations: #{draft_violations}"
+puts "  Published violations: #{published_violations}"
+puts "  Unpublished violations: #{unpublished_violations}"
+puts ""
+puts "Done!"
