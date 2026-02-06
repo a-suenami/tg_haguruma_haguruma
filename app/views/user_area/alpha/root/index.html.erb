@@ -124,7 +124,6 @@
                           <% category_option = selected_option(category_field) %>
                           <% if category_option.present? %>
                             <div class="label"><%= category_option.display_name %></div>
-                            </div>
                           <% end %>
                       </div>
                       <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
@@ -136,7 +135,7 @@
                 </div>
                 <% if @blog_entries.length >= 6 %>
                   <div class="overview-page-indicator">
-                    <a href="<%= user_area_blog_index_path(category: current_blog_category) %>" cog-button primary outlined data-turbo-frame="_top">VIEW ALL</a>
+                    <a href="<%= user_area_blog_index_path(category: current_blog_category) %>" cog-button primary outlined data-turbo-frame="_top">全ての記事を見る</a>
                   </div>
                 <% end %>
               </div>
