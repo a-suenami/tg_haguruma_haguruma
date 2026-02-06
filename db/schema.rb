@@ -222,6 +222,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.bigint "file_size_bytes", null: false
     t.string "s3_object_path", null: false
     t.jsonb "metadata", null: false
+    t.string "public_s3_object_path"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id", "media_type"], name: "index_media_assets_on_id_and_media_type", unique: true
