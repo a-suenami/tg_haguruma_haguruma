@@ -35,5 +35,20 @@ add_index :content_entry_versions, [:preview_token_expires_at], where: 'preview_
 # Index for scheduled publish queries (only drafts with scheduled time)
 add_index :content_entry_versions, [:scheduled_publish_at], where: 'scheduled_publish_at IS NOT NULL AND status = 1', name: 'index_content_entry_versions_on_scheduled_publish'
 
+# draft: published_at and custom_published_at must be NULL
+add_check_constraint :content_entry_versions,
+  'status != 1 OR (published_at IS NULL AND custom_published_at IS NULL AND unpublished_at IS NULL)',
+  name: 'chk_content_entry_versions_draft_nulls'
+
+# published: published_at and custom_published_at must be present
+add_check_constraint :content_entry_versions,
+  'status != 3 OR (published_at IS NOT NULL AND custom_published_at IS NOT NULL AND unpublished_at IS NULL)',
+  name: 'chk_content_entry_versions_published_required'
+
+# unpublished: published_at, custom_published_at, and unpublished_at must be present
+add_check_constraint :content_entry_versions,
+  'status != 4 OR (published_at IS NOT NULL AND custom_published_at IS NOT NULL AND unpublished_at IS NOT NULL)',
+  name: 'chk_content_entry_versions_unpublished_required'
+
 add_foreign_key :content_entry_versions, :content_entries, column: [:tenant_id, :content_type_id, :content_entry_id], primary_key: [:tenant_id, :content_type_id, :id],
 name: 'fk_content_entry_versions_content_entries'
