@@ -1,19 +1,21 @@
 # typed: strict
 
 module Eventbridge::Processors
-  class IdpTagProcessor < BaseProcessor
+  class IdpProcessor < BaseProcessor
     extend T::Sig
+
+    sig { params(tenant_id: String).void }
+    def initialize(tenant_id:)
+      @tenant_id = tenant_id
+    end
 
     sig { override.params(message: Eventbridge::MessageParam).void }
     def process(message)
-      tenant_id = extract_tenant_id(message.source)
-      return if tenant_id.blank?
-
       detail = message.detail
       return unless detail.is_a?(Hash)
 
       previous_tenant_id = Tenant.current_id
-      Tenant.current_id = tenant_id
+      Tenant.current_id = @tenant_id
 
       dispatch(message.detail_type, detail)
     ensure
@@ -21,12 +23,6 @@ module Eventbridge::Processors
     end
 
     private
-
-    sig { params(source: String).returns(T.nilable(String)) }
-    def extract_tenant_id(source)
-      match = source.match(%r{\Acom\.twogate\.idp/([^/]+)/})
-      match&.[](1)
-    end
 
     sig { params(detail_type: String, detail: T::Hash[T.untyped, T.untyped]).void }
     def dispatch(detail_type, detail)

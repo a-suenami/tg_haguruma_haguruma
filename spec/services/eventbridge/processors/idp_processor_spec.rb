@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe Eventbridge::Processors::IdpTagProcessor do
+describe Eventbridge::Processors::IdpProcessor do
   let(:tenant) { create(:tenant) }
-  let(:processor) { described_class.new }
+  let(:processor) { described_class.new(tenant_id: tenant.id) }
 
   before do
     Tenant.current_id = tenant.id
@@ -13,7 +13,7 @@ describe Eventbridge::Processors::IdpTagProcessor do
   describe '#process' do
     let(:source) { "com.twogate.idp/#{tenant.id}/user_tags" }
 
-    it 'sets tenant context from source and dispatches to handler' do
+    it 'sets tenant context and dispatches to handler' do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
@@ -56,24 +56,6 @@ describe Eventbridge::Processors::IdpTagProcessor do
       processor.process(message)
 
       expect(Tenant.current_id).to eq(original_tenant.id)
-    end
-
-    it 'does nothing when source has no tenant_id' do
-      message = Eventbridge::MessageParam.new(
-        version: '0',
-        id: SecureRandom.uuid,
-        detail_type: 'user_tag.created.v1',
-        source: 'com.twogate.idp/',
-        account: '123456789',
-        time: Time.current.iso8601,
-        region: 'ap-northeast-1',
-        resources: [],
-        detail: {
-          'resource' => { 'id' => 'tag-789', 'name' => 'Test' },
-        },
-      )
-
-      expect { processor.process(message) }.not_to change { ContentAuthorizationTag.count }
     end
 
     it 'does nothing when detail is nil' do
