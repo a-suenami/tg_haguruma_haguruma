@@ -19,8 +19,6 @@ module Eventbridge
     sig { params(source: String).returns(T.nilable(Eventbridge::Processors::BaseProcessor)) }
     def get_processor_for(source)
       case source
-      when 'id-platform.twogate'
-        Eventbridge::Processors::IdPlatformProcessor.new
       when %r{\Acom\.twogate\.idp/}
         Eventbridge::Processors::IdpTagProcessor.new
       end
