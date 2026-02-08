@@ -1,10 +1,9 @@
-# UserArea alpha ネームスペースの導入
+# ADR: UserArea alpha ネームスペースの導入
 
-## Status
+- **日付**: 2025-12-25
+- **ステータス**: 確定
 
-Accepted
-
-## Context
+## コンテキスト
 
 UserArea において、フルスタック CMS としての画面実装が求められている。
 
@@ -28,7 +27,7 @@ UserArea において、フルスタック CMS としての画面実装が求め
 2. **コードの分離**: 短期実装（ハードコード）と本実装を明確に分離したい
 3. **共通ロジックの再利用**: 認証・テナント設定などは既存の `UserArea::ApplicationController` を継承して再利用したい
 
-## Decision
+## 決定
 
 **`alpha` ネームスペースを導入し、短期実装を隔離する**。
 
@@ -45,7 +44,7 @@ UserArea において、フルスタック CMS としての画面実装が求め
 - `v2` は「新しいバージョン」を意味し、正規のパスに置くべき
 - `alpha` は「初期・試験的」を意味し、後で削除される前提が明確
 
-## Implementation
+## 実装
 
 ### ディレクトリ構成
 
@@ -96,7 +95,7 @@ get '*path', to: 'pages#show', constraints: UserArea::PageConstraint
 
 URL は変わらず、コントローラーのみ差し替わる。`alpha/` ディレクトリは削除可能。
 
-## Consequences
+## 影響
 
 ### Positive
 
