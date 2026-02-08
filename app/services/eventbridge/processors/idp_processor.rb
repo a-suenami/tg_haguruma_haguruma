@@ -15,11 +15,16 @@ module Eventbridge::Processors
       return unless detail.is_a?(Hash)
 
       previous_tenant_id = Tenant.current_id
-      Tenant.current_id = @tenant_id
-
-      dispatch(message.detail_type, detail)
-    ensure
-      Tenant.current_id = previous_tenant_id if previous_tenant_id
+      begin
+        Tenant.current_id = @tenant_id
+        dispatch(message.detail_type, detail)
+      ensure
+        if previous_tenant_id
+          Tenant.current_id = previous_tenant_id
+        else
+          RequestStore.store.delete(:current_tenant)
+        end
+      end
     end
 
     private
@@ -35,7 +40,11 @@ module Eventbridge::Processors
                   Eventbridge::Handlers::TagRemovedHandler.new
       end
 
-      handler&.handle(detail)
+      if handler
+        handler.handle(detail)
+      else
+        Rails.logger.warn("IdpProcessor: unknown detail_type=#{detail_type}")
+      end
     end
   end
 end

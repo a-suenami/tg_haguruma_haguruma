@@ -13,7 +13,7 @@ module Eventbridge::Handlers
       name = resource['name']&.to_s
 
       if unique_id.blank? || name.blank?
-        Rails.logger.warn("UserTagCreatedHandler: missing resource id or name in detail: #{detail}")
+        Rails.logger.warn("UserTagCreatedHandler: missing resource id or name: id=#{resource['id']}, name=#{resource['name']}")
         return
       end
 

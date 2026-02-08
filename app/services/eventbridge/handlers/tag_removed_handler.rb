@@ -14,7 +14,7 @@ module Eventbridge::Handlers
       tag_id = event_data['tag_id']&.to_s
 
       if user_uid.blank? || tag_id.blank?
-        Rails.logger.warn("TagRemovedHandler: missing uid or tag_id in detail: #{detail}")
+        Rails.logger.warn("TagRemovedHandler: missing uid or tag_id: uid=#{resource['uid']}, tag_id=#{event_data['tag_id']}")
         return
       end
 

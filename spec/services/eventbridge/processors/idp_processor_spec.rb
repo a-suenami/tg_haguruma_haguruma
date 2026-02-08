@@ -58,6 +58,28 @@ describe Eventbridge::Processors::IdpProcessor do
       expect(Tenant.current_id).to eq(original_tenant.id)
     end
 
+    it 'clears tenant context when it was unset before processing' do
+      RequestStore.store.delete(:current_tenant)
+
+      message = Eventbridge::MessageParam.new(
+        version: '0',
+        id: SecureRandom.uuid,
+        detail_type: 'user_tag.created.v1',
+        source:,
+        account: '123456789',
+        time: Time.current.iso8601,
+        region: 'ap-northeast-1',
+        resources: [],
+        detail: {
+          'resource' => { 'id' => 'tag-789', 'name' => 'Test' },
+        },
+      )
+
+      processor.process(message)
+
+      expect(Tenant.current_id).to be_blank
+    end
+
     it 'does nothing when detail is nil' do
       message = Eventbridge::MessageParam.new(
         version: '0',
@@ -119,7 +141,9 @@ describe Eventbridge::Processors::IdpProcessor do
       expect { processor.process(message) }.to change { UserTag.count }.by(-1)
     end
 
-    it 'ignores unknown detail_type' do
+    it 'logs warning for unknown detail_type' do
+      allow(Rails.logger).to receive(:warn)
+
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
@@ -133,6 +157,7 @@ describe Eventbridge::Processors::IdpProcessor do
       )
 
       expect { processor.process(message) }.not_to change { ContentAuthorizationTag.count }
+      expect(Rails.logger).to have_received(:warn).with(/unknown detail_type=unknown\.event\.v1/)
     end
   end
 end
