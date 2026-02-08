@@ -1,15 +1,10 @@
-# seed-fu によるシードデータ管理の採用
+# ADR: seed-fu によるシードデータ管理の採用
 
-## Status
+- **日付**: 2025-11-19
+- **ステータス**: 確定
+- **決定者**: Akira Suenami, Thi Tram
 
-Accepted
-
-## Decision Makers
-
-- Akira Suenami
-- Thi Tram
-
-## Context
+## コンテキスト
 
 ### 背景
 
@@ -25,7 +20,7 @@ Accepted
 2. 環境ごと（development/staging/production）に異なるデータを投入可能
 3. データの追加・更新が容易
 
-## Decision
+## 決定
 
 **seed-fu gem を採用し、シードデータ管理を `db/fixtures/` ディレクトリに統一する。**
 
@@ -55,7 +50,7 @@ db/fixtures/
 - `db/seeds/` は長期的に廃止
 - 既存の `db/seeds/*.rb` は順次 `db/fixtures/` に移行
 
-## Implementation
+## 実装
 
 ### サービスクラスの使用原則
 
@@ -103,7 +98,7 @@ rails db:seed_fu
 rails db:seed_fu FIXTURE_PATH=db/fixtures/_shared
 ```
 
-## Consequences
+## 影響
 
 ### Positive
 
@@ -116,7 +111,7 @@ rails db:seed_fu FIXTURE_PATH=db/fixtures/_shared
 - Rails 標準の `db/seeds.rb` との混在期間が発生
 - 既存データの移行作業が必要
 
-## References
+## 関連
 
 ### seed-fu の開発経緯
 

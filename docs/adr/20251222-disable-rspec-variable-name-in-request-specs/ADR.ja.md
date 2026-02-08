@@ -1,10 +1,9 @@
-# spec/requests 以下で RSpec/VariableName を無効化する
+# ADR: spec/requests 以下で RSpec/VariableName を無効化する
 
-## Status
+- **日付**: 2025-12-22
+- **ステータス**: 確定
 
-Accepted
-
-## Context
+## コンテキスト
 
 rswag を使用した OpenAPI スペックのテストでは、HTTP ヘッダーを設定するために `let(:Authorization)` のようにヘッダー名をそのまま変数名として使用する必要がある。
 
@@ -16,7 +15,7 @@ let(:Authorization) { "Bearer #{session_token.id}" }
 
 rswag の仕様上、ヘッダー名と let の変数名は一致している必要があり、snake_case に変更するとテストが動作しなくなる。
 
-## Decision
+## 決定
 
 `.rubocop.yml` で `spec/requests/**/*` に対して `RSpec/VariableName` ルールを無効化する。
 
@@ -26,7 +25,7 @@ RSpec/VariableName:
     - 'spec/requests/**/*'
 ```
 
-## Consequences
+## 影響
 
 ### Positive
 
