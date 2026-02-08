@@ -21,6 +21,8 @@ module Eventbridge
       case source
       when 'id-platform.twogate'
         Eventbridge::Processors::IdPlatformProcessor.new
+      when %r{\Acom\.twogate\.idp/}
+        Eventbridge::Processors::IdpTagProcessor.new
       end
     end
   end
