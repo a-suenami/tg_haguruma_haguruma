@@ -21,6 +21,9 @@ module UserArea
         return
       end
 
+      # Store return URL for post-login redirect
+      session[:return_to] = request.referer if request.referer.present? && request.referer.start_with?(request.base_url)
+
       # Generate and store state for CSRF protection
       state = SecureRandom.urlsafe_base64(32)
       session[:oauth_state] = state
@@ -87,7 +90,8 @@ module UserArea
         session[:tenant_id] = current_tenant&.id
         session.delete(:oauth_state)
 
-        redirect_to user_area_root_path, notice: t('user_area.sessions.logged_in_successfully')
+        return_to = session.delete(:return_to) || user_area_root_path
+        redirect_to return_to, notice: t('user_area.sessions.logged_in_successfully')
       rescue Auth::IdPlatform::ExchangeCodeService::Error => e
         Rails.logger.error("OAuth code exchange failed: #{e.message}")
         redirect_to user_area_login_path, alert: t('user_area.sessions.exchange_code_failed')
