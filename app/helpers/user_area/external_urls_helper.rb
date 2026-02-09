@@ -34,7 +34,7 @@ module UserArea
       oauth_provider = current_tenant&.oauth_provider
       return nil unless oauth_provider
 
-      "#{oauth_provider.endpoint_base}/my"
+      "#{oauth_provider.endpoint_base}/m"
     end
   end
 end
