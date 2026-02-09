@@ -10,15 +10,17 @@ services:
       dockerfile: docker/local.Dockerfile
       args:
         RAILS_ENV: development
-    command: bundle exec rails server -b 0.0.0.0 -p '3000'
+    command: bundle exec rails server -b 0.0.0.0 -p '3001'
     ports:
-      - '${APP_PORT:-3000}:3000'
+      - '3001:3001'
     links:
       - postgres
       - redis
     env_file:
       - .env.local
       - secrets.env
+    extra_hosts:
+      - "dev-tenant.localhost:host-gateway"
     environment:
       LANG: 'C.UTF-8'
       POSTGRES_HOST: postgres
@@ -48,7 +50,7 @@ services:
     environment:
       VITE_RUBY_HOST: '0.0.0.0'
     ports:
-      - '${VITE_PORT:-3036}:3036'
+      - '3037:3036'
 
   # ----------------------------------------------------------------------------
   worker:
@@ -67,7 +69,7 @@ services:
     # ----------------------------------------------------------------------------
     image: postgres:16-alpine
     ports:
-      - '${POSTGRES_PORT:-5432}:5432'
+      - '5434:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -80,51 +82,40 @@ services:
     # ----------------------------------------------------------------------------
     image: redis:7-alpine
     ports:
-      - '${REDIS_PORT:-6379}:6379'
+      - '6380:6379'
     command: [redis-server, --loglevel, notice]
     volumes:
       - redis-data:/data
 
   # ----------------------------------------------------------------------------
-  minio:
-    # ----------------------------------------------------------------------------
-    image: minio/minio:latest
-    ports:
-      - '${MINIO_API_PORT:-9000}:9000'
-      - '${MINIO_CONSOLE_PORT:-9001}:9001'
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    command: server /data --console-address ":9001"
-    volumes:
-      - minio-data:/data
-
-  # MinIO初期設定（バケット作成とCORS設定）
-  minio-init:
-    image: minio/mc:latest
-    depends_on:
-      - minio
-    entrypoint: >
-      /bin/sh -c "
-      sleep 5;
-      mc alias set local http://minio:9000 minioadmin minioadmin;
-      mc mb local/haguruma-media --ignore-existing;
-      mc anonymous set download local/haguruma-media;
-      cat > /tmp/cors.json << 'EOF'
-      {
-        \"CORSRules\": [
-          {
-            \"AllowedOrigins\": [\"*\"],
-            \"AllowedMethods\": [\"GET\", \"PUT\", \"POST\", \"DELETE\", \"HEAD\"],
-            \"AllowedHeaders\": [\"*\"],
-            \"ExposeHeaders\": [\"ETag\"]
-          }
-        ]
-      }
-      EOF
-      mc cors set local/haguruma-media /tmp/cors.json || true;
-      exit 0;
-      "
+  # minio: DISABLED - Using shared Auth Platform Minio (localhost:9000)
+  # ----------------------------------------------------------------------------
+  # To use shared Minio, ensure Auth Platform is running first:
+  #   cd ../auth-platform && source env.sh && up
+  # ----------------------------------------------------------------------------
+  # minio:
+  #   image: minio/minio:latest
+  #   ports:
+  #     - '9002:9000'
+  #     - '9003:9001'
+  #   environment:
+  #     MINIO_ROOT_USER: minioadmin
+  #     MINIO_ROOT_PASSWORD: minioadmin
+  #   command: server /data --console-address ":9001"
+  #   volumes:
+  #     - minio-data:/data
+  #
+  # minio-init:
+  #   image: minio/mc:latest
+  #   depends_on:
+  #     - minio
+  #   entrypoint: >
+  #     /bin/sh -c "
+  #     mc alias set local http://minio:9000 minioadmin minioadmin;
+  #     mc mb local/haguruma-media --ignore-existing;
+  #     mc anonymous set download local/haguruma-media;
+  #     "
+  # ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 volumes:
@@ -132,4 +123,4 @@ volumes:
   bundle-data: {}
   postgres-data: {}
   redis-data: {}
-  minio-data: {}
+  # minio-data: {}  # DISABLED - Using shared Auth Platform Minio

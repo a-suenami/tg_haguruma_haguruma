@@ -17,6 +17,7 @@ class Tenant < ApplicationRecord
   has_one :oauth_provider
   has_one :theme, class_name: 'TenantTheme', dependent: :destroy
   has_one :site_settings, class_name: 'TenantSiteSettings', dependent: :destroy
+  has_one :tag_settings, class_name: 'TenantTagSettings', dependent: :destroy
   has_one :basic_auth, class_name: 'TenantBasicAuth', dependent: :destroy
 
   validates :id, :name, presence: true
@@ -101,6 +102,12 @@ class Tenant < ApplicationRecord
   sig { returns(TenantSiteSettings) }
   def site_settings_or_default
     site_settings || TenantSiteSettings.new
+  end
+
+  # Returns tag settings or a null object with defaults
+  sig { returns(TenantTagSettings) }
+  def tag_settings_or_default
+    tag_settings || TenantTagSettings.new
   end
 
   # Flipper actor support for feature flags

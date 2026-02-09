@@ -1,29 +1,26 @@
-FROM ruby:3.3.0-alpine
+FROM ruby:3.3.0
 
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
-RUN apk add --no-cache \
-    build-base \
-    postgresql-dev \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
     postgresql-client \
-    tzdata \
-    git \
-    bash \
+    nodejs \
+    npm \
     curl \
     less \
     vim \
-    autoconf \
-    automake \
-    libtool \
+    git \
     jq \
-    jq-dev \
-    yaml-dev \
+    libyaml-dev \
     libsodium-dev \
-    gcompat \
-    libstdc++ && \
-    curl -fsSL https://unofficial-builds.nodejs.org/download/release/v22.12.0/node-v22.12.0-linux-x64-musl.tar.gz | tar -xz -C /usr/local --strip-components=1 && \
-    npm install -g yarn
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && corepack enable \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /rails_app
 

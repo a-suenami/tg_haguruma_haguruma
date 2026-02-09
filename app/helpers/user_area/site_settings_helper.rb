@@ -12,6 +12,11 @@ module UserArea
       @current_theme ||= current_tenant&.theme_or_default
     end
 
+    # Returns the current tenant's tag settings (with fallback to empty if missing)
+    def current_tag_settings
+      @current_tag_settings ||= current_tenant&.tag_settings_or_default
+    end
+
     # Check if a feature is enabled
     delegate :feature_enabled?, to: :current_site_settings
 

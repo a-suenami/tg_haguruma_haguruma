@@ -187,6 +187,9 @@ module GeneratedUrlHelpersModule
   def edit_ruler_area_tenant_site_setting_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_tag_setting_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_theme_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -407,6 +410,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_site_setting_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_tag_setting_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_theme_url(*args); end

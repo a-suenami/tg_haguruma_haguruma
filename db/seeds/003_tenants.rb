@@ -22,9 +22,16 @@ else
 end
 
 # -----------------------------------------------------------------------------
-# Add more tenants here as needed
+# Dev Tenant (for local development)
 # -----------------------------------------------------------------------------
-# example_tenant = Tenant.find_or_create_by!(
-#   id: 'example',
-#   name: 'Example Tenant'
-# )
+dev_tenant = Tenant.find_or_initialize_by(id: 'dev-tenant')
+dev_tenant.assign_attributes(
+  name: 'Dev Tenant',
+  user_page_domain: 'dev-tenant.localhost',
+)
+
+if dev_tenant.save
+  Rails.logger.debug { "  ✅ Tenant: #{dev_tenant.name} (#{dev_tenant.id})" }
+else
+  Rails.logger.debug { "  ❌ Failed: #{dev_tenant.errors.full_messages.join(', ')}" }
+end
