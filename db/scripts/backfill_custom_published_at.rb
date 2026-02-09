@@ -12,8 +12,7 @@
 #
 # Usage: rails runner db/scripts/backfill_custom_published_at.rb
 
-puts "Backfilling custom_published_at for content_entry_versions..."
-puts ""
+Rails.logger.info 'Backfilling custom_published_at for content_entry_versions...'
 
 # Count violations before
 draft_violations = ContentEntry::Version.where(status: 1)
@@ -23,11 +22,10 @@ published_violations = ContentEntry::Version.where(status: 3)
 unpublished_violations = ContentEntry::Version.where(status: 4)
   .where('published_at IS NULL OR custom_published_at IS NULL OR unpublished_at IS NULL').count
 
-puts "Before:"
-puts "  Draft violations: #{draft_violations}"
-puts "  Published violations: #{published_violations}"
-puts "  Unpublished violations: #{unpublished_violations}"
-puts ""
+Rails.logger.info 'Before:'
+Rails.logger.info "  Draft violations: #{draft_violations}"
+Rails.logger.info "  Published violations: #{published_violations}"
+Rails.logger.info "  Unpublished violations: #{unpublished_violations}"
 
 # Fix drafts - clear all date fields
 ContentEntry::Version.where(status: 1)
@@ -58,9 +56,8 @@ published_violations = ContentEntry::Version.where(status: 3)
 unpublished_violations = ContentEntry::Version.where(status: 4)
   .where('published_at IS NULL OR custom_published_at IS NULL OR unpublished_at IS NULL').count
 
-puts "After:"
-puts "  Draft violations: #{draft_violations}"
-puts "  Published violations: #{published_violations}"
-puts "  Unpublished violations: #{unpublished_violations}"
-puts ""
-puts "Done!"
+Rails.logger.info 'After:'
+Rails.logger.info "  Draft violations: #{draft_violations}"
+Rails.logger.info "  Published violations: #{published_violations}"
+Rails.logger.info "  Unpublished violations: #{unpublished_violations}"
+Rails.logger.info 'Done!'
