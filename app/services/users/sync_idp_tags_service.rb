@@ -17,8 +17,12 @@ module Users
         tag_id = tag_data['id']&.to_s
         next if tag_id.blank?
 
-        tag = ContentAuthorizationTag.find_by(provider: 'idp', unique_id: tag_id)
-        next unless tag
+        tag_name = tag_data['name']&.to_s
+        next if tag_name.blank?
+
+        tag = ContentAuthorizationTag.find_or_initialize_by(provider: 'idp', unique_id: tag_id)
+        tag.name = tag_name
+        tag.save!
 
         UserTag.find_or_create_by!(user: @user, content_authorization_tag: tag)
       rescue ActiveRecord::RecordNotUnique
