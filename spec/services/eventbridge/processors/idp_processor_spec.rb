@@ -17,7 +17,7 @@ describe Eventbridge::Processors::IdpProcessor do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
-        detail_type: 'user_tag.created.v1',
+        detail_type: 'created.v1',
         source:,
         account: '123456789',
         time: Time.current.iso8601,
@@ -42,7 +42,7 @@ describe Eventbridge::Processors::IdpProcessor do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
-        detail_type: 'user_tag.created.v1',
+        detail_type: 'created.v1',
         source:,
         account: '123456789',
         time: Time.current.iso8601,
@@ -64,7 +64,7 @@ describe Eventbridge::Processors::IdpProcessor do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
-        detail_type: 'user_tag.created.v1',
+        detail_type: 'created.v1',
         source:,
         account: '123456789',
         time: Time.current.iso8601,
@@ -84,7 +84,7 @@ describe Eventbridge::Processors::IdpProcessor do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
-        detail_type: 'user_tag.created.v1',
+        detail_type: 'created.v1',
         source:,
         account: '123456789',
         time: Time.current.iso8601,

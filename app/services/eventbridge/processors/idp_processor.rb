@@ -32,7 +32,7 @@ module Eventbridge::Processors
     sig { params(detail_type: String, detail: T::Hash[T.untyped, T.untyped]).void }
     def dispatch(detail_type, detail)
       handler = case detail_type
-                when 'user_tag.created.v1'
+                when 'created.v1'
                   Eventbridge::Handlers::UserTagCreatedHandler.new
                 when 'tag.added.v1'
                   Eventbridge::Handlers::TagAddedHandler.new
