@@ -19,7 +19,7 @@ module Eventbridge
     sig { params(source: String).returns(T.nilable(Eventbridge::Processors::BaseProcessor)) }
     def get_processor_for(source)
       case source
-      when %r{\Acom\.twogate\.idp/([^/]+)/(?:users|user_tags)\z}
+      when %r{\Acom\.twogate\.idp/([^/]+)\z}
         Eventbridge::Processors::IdpProcessor.new(tenant_id: T.must(Regexp.last_match(1)))
       end
     end
