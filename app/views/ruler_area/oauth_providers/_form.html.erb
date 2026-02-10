@@ -30,9 +30,15 @@
   <div class="uk-margin">
     <%= form.label :client_secret, 'Client Secret', class: 'uk-form-label' %>
     <div class="uk-form-controls">
-      <%= form.password_field :client_secret, class: 'uk-input', placeholder: '••••••••', autocomplete: 'off' %>
+      <%= form.password_field :client_secret, class: 'uk-input', placeholder: @oauth_provider.persisted? ? '変更する場合のみ入力' : '', autocomplete: 'off' %>
     </div>
-    <p class="uk-text-meta uk-margin-small-top">OAuth2.0のクライアントシークレット（オプション）</p>
+    <p class="uk-text-meta uk-margin-small-top">
+      <% if @oauth_provider.persisted? %>
+        変更する場合のみ入力してください。空欄の場合は現在の値が保持されます。
+      <% else %>
+        OAuth2.0のクライアントシークレット（オプション）
+      <% end %>
+    </p>
   </div>
 
   <div class="uk-margin">
