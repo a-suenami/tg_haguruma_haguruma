@@ -84,6 +84,7 @@ module UserArea
 
         # Sync IDP tags from ID token
         idp_tags = payload.dig('user', 'tags') || []
+        Rails.logger.info("SessionsController#callback: idp_tags=#{idp_tags.inspect} user=#{user.id}")
         Users::SyncIdpTagsService.new(user:, tags: idp_tags).execute if idp_tags.present?
 
         # Create session
