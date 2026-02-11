@@ -11,6 +11,7 @@ namespace :user_area, path: '' do
   delete 'logout', to: 'sessions#destroy', as: :logout
   get '/auth/callback', to: 'sessions#callback', as: :callback
   get '/auth/failure', to: 'sessions#failure', as: :auth_failure
+  get '/auth/error', to: 'errors#oauth_cancelled', as: :auth_error
 
   # Development only: bypass authentication
   get '/dev/skip_auth', to: 'sessions#dev_skip_auth', as: :dev_skip_auth if Rails.env.development?
