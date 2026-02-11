@@ -222,6 +222,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.bigint "file_size_bytes", null: false
     t.string "s3_object_path", null: false
     t.jsonb "metadata", null: false
+    t.string "public_s3_object_path"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id", "media_type"], name: "index_media_assets_on_id_and_media_type", unique: true
@@ -322,6 +323,15 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenant_id"], name: "index_tenant_site_settings_on_tenant_id", unique: true
+  end
+
+  create_table "tenant_tag_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.text "head_code"
+    t.text "body_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_tag_settings_on_tenant_id", unique: true
   end
 
   create_table "tenant_themes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -442,6 +452,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "tenant_basic_auth_credentials", "tenant_basic_auths"
   add_foreign_key "tenant_basic_auths", "tenants"
   add_foreign_key "tenant_site_settings", "tenants"
+  add_foreign_key "tenant_tag_settings", "tenants"
   add_foreign_key "tenant_themes", "media_assets", column: "logo_media_asset_id"
   add_foreign_key "tenant_themes", "tenants"
   add_foreign_key "user_tags", "content_authorization_tags"

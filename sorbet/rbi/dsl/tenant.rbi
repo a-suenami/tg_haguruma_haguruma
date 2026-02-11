@@ -364,6 +364,9 @@ class Tenant
     sig { params(args: T.untyped, blk: T.untyped).returns(::TenantSiteSettings) }
     def build_site_settings(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTagSettings) }
+    def build_tag_settings(*args, &blk); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTheme) }
     def build_theme(*args, &blk); end
 
@@ -384,6 +387,12 @@ class Tenant
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::TenantSiteSettings) }
     def create_site_settings!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTagSettings) }
+    def create_tag_settings(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTagSettings) }
+    def create_tag_settings!(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTheme) }
     def create_theme(*args, &blk); end
@@ -406,6 +415,9 @@ class Tenant
     sig { returns(T.nilable(::TenantSiteSettings)) }
     def reload_site_settings; end
 
+    sig { returns(T.nilable(::TenantTagSettings)) }
+    def reload_tag_settings; end
+
     sig { returns(T.nilable(::TenantTheme)) }
     def reload_theme; end
 
@@ -419,6 +431,9 @@ class Tenant
     def reset_site_settings; end
 
     sig { void }
+    def reset_tag_settings; end
+
+    sig { void }
     def reset_theme; end
 
     sig { returns(T.nilable(::TenantSiteSettings)) }
@@ -426,6 +441,12 @@ class Tenant
 
     sig { params(value: T.nilable(::TenantSiteSettings)).void }
     def site_settings=(value); end
+
+    sig { returns(T.nilable(::TenantTagSettings)) }
+    def tag_settings; end
+
+    sig { params(value: T.nilable(::TenantTagSettings)).void }
+    def tag_settings=(value); end
 
     sig { returns(T.nilable(::TenantTheme)) }
     def theme; end

@@ -15,11 +15,24 @@ namespace :ruler_area, path: :ruler do
 
   root to: 'tenants#index', as: :root
 
+  # Flipper UI (advanced feature flag management)
+  flipper_constraint = ->(request) { request.session[:ruler_id].present? }
+  constraints flipper_constraint do
+    mount Flipper::UI.app(Flipper) => '/flipper'
+  end
+
   # Profile management
   resource :profiles, only: [:edit, :update]
 
   # Ruler management
   resources :rulers, except: [:show]
+
+  # Global Feature Flags (all tenants)
+  resources :global_feature_flags, only: [:index], path: 'feature-flags' do
+    member do
+      post :toggle
+    end
+  end
 
   resources :tenants do
     member do
@@ -37,6 +50,7 @@ namespace :ruler_area, path: :ruler do
 
     # Site settings
     resource :site_setting, only: [:show, :edit, :update]
+    resource :tag_setting, only: [:show, :edit, :update]
     resource :theme, only: [:show, :edit, :update]
     resource :basic_auth, only: [:show, :update] do
       resources :credentials, controller: 'basic_auth_credentials', only: [:new, :create, :edit, :update, :destroy]
@@ -46,6 +60,13 @@ namespace :ruler_area, path: :ruler do
       member do
         get :edit_value
         patch :update_value
+      end
+    end
+
+    # Feature Flags (per tenant)
+    resources :feature_flags, only: [:index] do
+      member do
+        post :toggle
       end
     end
   end

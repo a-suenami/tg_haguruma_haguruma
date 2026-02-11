@@ -144,8 +144,10 @@
       margin-bottom: 1rem;
     }
   </style>
+  <%= current_tag_settings.head_code_html %>
 </head>
 <body>
+  <%= current_tag_settings.body_code_html %>
   <div class="user-layout">
     <header class="user-header">
       <%= link_to current_tenant&.name || 'Home', user_area_root_path, class: 'user-header-logo' %>

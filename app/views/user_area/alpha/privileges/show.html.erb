@@ -137,7 +137,7 @@
             <% version = published_version(entry) %>
             <% next if version.nil? %>
             <% question = render_text_field(field_by_identifier(version, 'title')) %>
-            <% answer = render_richtext_field(field_by_identifier(version, 'answer')) %>
+            <% answer = render_richtext_field(field: field_by_identifier(version, 'answer'), public: version.visibility == 'public') %>
             <details class="faq-item" data-accordion-target="item">
               <summary>
                 <span class="question">

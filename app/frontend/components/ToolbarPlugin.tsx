@@ -131,6 +131,7 @@ const ToolbarPlugin: FC = () => {
             src: result.url,
             altText: file.name,
             maxWidth: 500,
+            mediaAssetId: result.id,
           });
         } else if (isVideoFile(file)) {
           nodeToInsert = $createVideoNode({

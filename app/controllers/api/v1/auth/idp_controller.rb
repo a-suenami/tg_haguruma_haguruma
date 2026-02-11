@@ -29,6 +29,10 @@ module Api
             uid: id_token['sub'],
           ).execute
 
+          # Sync IDP tags from ID token
+          idp_tags = id_token.dig('user', 'tags') || []
+          ::Users::SyncIdpTagsService.new(user:, tags: idp_tags).execute if idp_tags.present?
+
           token = ::Auth::Tokens::IssueService.new.execute(
             user:,
             expires_in: T.must(@user_oauth_provider).session_expires_in,

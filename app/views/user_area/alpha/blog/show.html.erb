@@ -27,7 +27,7 @@
         <div cog-detail-fragment-toolbar>
           <h1 cog-detail-fragment-title><%= title_text %></h1>
         </div>
-        <% thumbnail_url = media_asset_url(field_by_identifier(version, 'thumbnail')) %>
+        <% thumbnail_url = media_asset_url(field: field_by_identifier(version, 'thumbnail'), public: version.visibility == 'public') %>
         <% if thumbnail_url.present? %>
         <div cog-detail-fragment-toolbar>
           <img class="thumbnail" src="<%= thumbnail_url %>" alt="<%= title_text %>">
@@ -38,7 +38,7 @@
       <div cog-detail-fragment-content>
         <% if content_authorized? %>
           <div cog-rich-content-viewer>
-            <%= raw render_richtext_field(field_by_identifier(version, 'body')) %>
+            <%= raw render_richtext_field(field: field_by_identifier(version, 'body'), public: version.visibility == 'public') %>
           </div>
         <% else %>
           <%= render 'user_area/alpha/shared/content/membership_prompt' %>

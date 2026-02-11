@@ -46,14 +46,20 @@ module UserArea
         return nil unless content_type_field
 
         image_field = version.fields.find_by(content_type_field_id: content_type_field.id)
-        image_field&.media_asset&.media_asset&.url
+
+        if version.visibility == 'public'
+          image_field&.media_asset&.media_asset&.public_url
+        else
+          image_field&.media_asset&.media_asset&.url
+        end
       end
 
+      # Show ALL published content on root page (no authorization filter)
+      # Authorization is checked via entry_authorized? helper in view
       sig { params(content_type_key: Symbol, limit: T.nilable(Integer), category: T.nilable(String)).returns(T::Array[ContentEntry]) }
       def query_for(content_type_key, limit: nil, category: nil)
         query = UserQueries::ContentEntriesQuery.new
                   .by_content_type(content_type_key.to_s)
-                  .authorized_for(current_user)
                   .ordered_by_published_at
         query = query.by_select_option('category', category) if category.present?
         query = query.limit(limit) if limit

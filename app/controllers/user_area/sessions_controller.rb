@@ -82,6 +82,11 @@ module UserArea
 
         user.update!(last_authenticated_at: Time.current)
 
+        # Sync IDP tags from ID token
+        idp_tags = payload.dig('user', 'tags') || []
+        Rails.logger.info("SessionsController#callback: idp_tags=#{idp_tags.inspect} user=#{user.id}")
+        Users::SyncIdpTagsService.new(user:, tags: idp_tags).execute if idp_tags.present?
+
         # Create session
         session[:user_id] = user.id
         session[:tenant_id] = current_tenant&.id

@@ -190,6 +190,9 @@ module GeneratedPathHelpersModule
   def edit_ruler_area_tenant_site_setting_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_tag_setting_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_theme_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -340,6 +343,9 @@ module GeneratedPathHelpersModule
   def ruler_area_auth_failure_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_global_feature_flags_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_login_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -391,6 +397,9 @@ module GeneratedPathHelpersModule
   def ruler_area_tenant_custom_variables_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_feature_flags_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_provider_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -404,6 +413,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_site_setting_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_tag_setting_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_theme_path(*args); end
@@ -434,6 +446,12 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def test_auth_bypass_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def toggle_ruler_area_global_feature_flag_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def toggle_ruler_area_tenant_feature_flag_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def turbo_recede_historical_location_path(*args); end
@@ -491,6 +509,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def user_area_news_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def user_area_preview_content_path(*args); end

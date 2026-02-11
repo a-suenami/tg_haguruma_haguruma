@@ -5,6 +5,7 @@ create_table :media_assets, force: :cascade, id: :uuid do |t|
   t.bigint :file_size_bytes, null: false
   t.string :s3_object_path, null: false
   t.jsonb :metadata, null: false
+  t.string :public_s3_object_path, null: true # Path to public copy (for private assets that need public access)
 
   t.timestamps null: false
 end

@@ -1,10 +1,9 @@
-# User Area認証アーキテクチャ
+# ADR: User Area 認証アーキテクチャ
 
-## Status
+- **日付**: 2025-12-25
+- **ステータス**: 確定
 
-Accepted
-
-## Context
+## コンテキスト
 
 User AreaはOAuthベースの認証を必要とする。マルチテナントシステムであり、各テナントは独自のIdP（Identity Provider）を持つ。
 
@@ -36,7 +35,7 @@ OmniAuthはRack middlewareであり、OAuthプロバイダとの通信を抽象�
 **欠点:**
 - トークン交換ロジックを自前で実装する必要がある
 
-## Decision
+## 決定
 
 **手動トークン交換を使用する方法**を採用する。
 
@@ -45,7 +44,7 @@ OmniAuthはRack middlewareであり、OAuthプロバイダとの通信を抽象�
 2. **マルチテナント対応**: 各テナントのIdP情報をデータベースから取得し、動的にトークン交換を行う設計が自然
 3. **既存インフラの再利用**: `Auth::IdPlatform::VerifyIdTokenService` および `AuthApi::IdPlatform` を再利用できる
 
-## Implementation
+## 実装
 
 新しいサービス `Auth::IdPlatform::ExchangeCodeService` を作成し、以下のフローを実装する:
 
@@ -56,7 +55,7 @@ OmniAuthはRack middlewareであり、OAuthプロバイダとの通信を抽象�
 5. `VerifyIdTokenService`: IDトークンを検証
 6. ユーザーを取得/作成し、セッションを確立
 
-## Consequences
+## 影響
 
 ### Positive
 

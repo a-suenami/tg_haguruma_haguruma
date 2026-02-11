@@ -34,12 +34,6 @@ module AdminArea
             @published_version || @draft_version
           end
 
-          # Override: Show extracts HTML from richtext
-          sig { override.params(field: ContentEntry::Field).returns(T.untyped) }
-          def extract_richtext_value(field)
-            field.richtext&.value&.dig('html') || field.richtext&.value
-          end
-
           private
 
           sig { void }

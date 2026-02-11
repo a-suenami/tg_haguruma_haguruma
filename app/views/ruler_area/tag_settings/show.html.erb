@@ -1,0 +1,51 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><span>計測タグ設定</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>計測タグ設定</h3>
+  <div>
+    <%= link_to '編集', edit_ruler_area_tenant_tag_setting_path(@tenant), class: 'uk-button uk-button-primary' %>
+  </div>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">Google Tag Manager / カスタムタグ</h4>
+  <p class="uk-text-small uk-text-muted uk-margin-bottom">
+    Google Tag Managerや他のトラッキングタグのコードを設定できます。<br>
+    設定したコードはユーザーエリアの全ページに挿入されます。
+  </p>
+
+  <table class="uk-table uk-table-divider">
+    <tbody>
+      <tr>
+        <th style="width: 250px;">&lt;head&gt;内のコード</th>
+        <td>
+          <% if @tag_setting.head_code? %>
+            <details>
+              <summary class="uk-text-small" style="cursor: pointer;">コードを表示</summary>
+              <pre class="uk-margin-small-top" style="max-height: 200px; overflow: auto; background: #f8f8f8; padding: 10px; font-size: 12px;"><%= @tag_setting.head_code %></pre>
+            </details>
+          <% else %>
+            <span class="uk-text-muted">未設定</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>&lt;body&gt;内のコード</th>
+        <td>
+          <% if @tag_setting.body_code? %>
+            <details>
+              <summary class="uk-text-small" style="cursor: pointer;">コードを表示</summary>
+              <pre class="uk-margin-small-top" style="max-height: 200px; overflow: auto; background: #f8f8f8; padding: 10px; font-size: 12px;"><%= @tag_setting.body_code %></pre>
+            </details>
+          <% else %>
+            <span class="uk-text-muted">未設定</span>
+          <% end %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

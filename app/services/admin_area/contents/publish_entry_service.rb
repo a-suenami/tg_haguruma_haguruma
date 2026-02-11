@@ -85,7 +85,13 @@ module AdminArea
           published_at: Time.current,
         )
         assign_system_authorization_tag(version)
+        sync_media_asset_visibility(version)
         @published_version = T.let(version, T.nilable(ContentEntry::Version))
+      end
+
+      sig { params(version: ContentEntry::Version).void }
+      def sync_media_asset_visibility(version)
+        ::MediaAssets::VisibilitySyncService.new(version:).call
       end
 
       sig { params(version: ContentEntry::Version).void }

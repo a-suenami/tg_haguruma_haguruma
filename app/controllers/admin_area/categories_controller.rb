@@ -4,6 +4,8 @@
 class AdminArea::CategoriesController < AdminArea::ApplicationController
   extend T::Sig
 
+  require_feature :admin_category
+
   sig { void }
   def index
     # TODO: カテゴリーモデル作成後に実装

@@ -78,7 +78,7 @@ class TenantTheme < ApplicationRecord
 
   sig { returns(String) }
   def logo_url
-    logo_media_asset&.url.to_s || ''
+    logo_media_asset&.public_url.to_s || ''
   end
 
   # Returns all CSS custom properties as a hash
