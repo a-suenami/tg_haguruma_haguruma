@@ -15,19 +15,19 @@ module UserArea
     end
 
     # Render richtext field as HTML
-    sig { params(field: T.nilable(ContentEntry::Field), public: T::Boolean).returns(String) }
-    def render_richtext_field(field:, public: false)
+    sig { params(field: T.nilable(ContentEntry::Field)).returns(String) }
+    def render_richtext_field(field:)
       return '' if field.nil?
 
-      json = RichtextUrlTransformer.transform(value: field.richtext&.value, public:)
+      json = RichtextUrlTransformer.transform(value: field.richtext&.value)
       return '' if json.nil?
 
       lexical_to_html(json)
     end
 
-    # Get signed URL for media asset field
-    sig { params(field: T.nilable(ContentEntry::Field), public: T::Boolean).returns(T.nilable(String)) }
-    def media_asset_url(field:, public: false)
+    # Get URL for media asset field
+    sig { params(field: T.nilable(ContentEntry::Field)).returns(T.nilable(String)) }
+    def media_asset_url(field:)
       return nil if field.nil?
 
       field_media_asset = field.media_asset
@@ -36,11 +36,7 @@ module UserArea
       media_asset = field_media_asset.media_asset
       return nil if media_asset.nil?
 
-      if public
-        media_asset.public_url
-      else
-        media_asset.url
-      end
+      media_asset.resolved_url
     end
 
     # Get selected options from a select field

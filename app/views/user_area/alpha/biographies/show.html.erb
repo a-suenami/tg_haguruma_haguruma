@@ -17,7 +17,7 @@
         <% version = published_version(entry) %>
         <% next if version.nil? %>
         <div cog-rich-content-viewer>
-          <%= raw render_richtext_field(field: field_by_identifier(version, 'body'), public: version.visibility == 'public') %>
+          <%= raw render_richtext_field(field: field_by_identifier(version, 'body')) %>
         </div>
       <% end %>
     </div>

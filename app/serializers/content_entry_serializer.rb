@@ -59,12 +59,12 @@ class ContentEntrySerializer < ApplicationSerializer
     version.fields.each_with_object({}) do |field, hash|
       content_type_field = T.must(field.content_type_field)
       api_identifier = content_type_field.api_identifier
-      hash[api_identifier] = attribute_value(field, content_type_field, version)
+      hash[api_identifier] = attribute_value(field, content_type_field)
     end
   end
 
-  sig { params(field: ContentEntry::Field, content_type_field: ContentType::Field, version: ContentEntry::Version).returns(T::Hash[Symbol, T.untyped]) }
-  def attribute_value(field, content_type_field, version)
+  sig { params(field: ContentEntry::Field, content_type_field: ContentType::Field).returns(T::Hash[Symbol, T.untyped]) }
+  def attribute_value(field, content_type_field)
     base = {
       type: field.field_type,
       field: {
@@ -77,7 +77,7 @@ class ContentEntrySerializer < ApplicationSerializer
     when 'text'
       base.merge(text: { value: field.text&.value })
     when 'richtext'
-      base.merge(richtext: { json_value: RichtextUrlTransformer.transform(value: field.richtext&.value, public: version.visibility == 'public') })
+      base.merge(richtext: { json_value: RichtextUrlTransformer.transform(value: field.richtext&.value) })
     when 'media_asset'
       base.merge(media_asset: media_asset_hash(field.media_asset))
     when 'select_field'
@@ -114,16 +114,12 @@ class ContentEntrySerializer < ApplicationSerializer
   def media_asset_hash(field_media_asset)
     return nil if field_media_asset.nil?
 
-    uploader = MediaAsset::Uploader.new
-    url = uploader.url_for(
-      field_media_asset.s3_object_path,
-      purpose: :public,
-      media_type: field_media_asset.media_type.to_sym,
-    )
+    media_asset = field_media_asset.media_asset
+    return nil if media_asset.nil?
 
     {
       media_type: field_media_asset.media_type,
-      url:,
+      url: media_asset.resolved_url,
     }
   end
 end

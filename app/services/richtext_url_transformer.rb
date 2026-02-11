@@ -5,51 +5,51 @@
 class RichtextUrlTransformer
   extend T::Sig
 
-  sig { params(value: T.nilable(T::Hash[String, T.untyped]), public: T::Boolean).returns(T.nilable(T::Hash[String, T.untyped])) }
-  def self.transform(value:, public: false)
+  sig { params(value: T.nilable(T::Hash[String, T.untyped])).returns(T.nilable(T::Hash[String, T.untyped])) }
+  def self.transform(value:)
     return nil if value.nil?
 
-    new.transform(value: value.deep_dup, public:)
+    new.transform(value: value.deep_dup)
   end
 
-  sig { params(value: T::Hash[String, T.untyped], public: T::Boolean).returns(T::Hash[String, T.untyped]) }
-  def transform(value:, public:)
-    deep_transform_media_nodes(node: value, public:)
+  sig { params(value: T::Hash[String, T.untyped]).returns(T::Hash[String, T.untyped]) }
+  def transform(value:)
+    deep_transform_media_nodes(node: value)
   end
 
   private
 
-  sig { params(node: T.untyped, public: T::Boolean).returns(T.untyped) }
-  def deep_transform_media_nodes(node:, public:)
+  sig { params(node: T.untyped).returns(T.untyped) }
+  def deep_transform_media_nodes(node:)
     return node unless node.is_a?(Hash)
 
     # Transform image and video nodes
     if %w[image video].include?(node['type'])
       media_asset_id = node['mediaAssetId']
-      media_asset_url = get_media_asset_url_by_id(media_asset_id, public)
+      media_asset_url = get_media_asset_url_by_id(media_asset_id)
       node['src'] = media_asset_url if media_asset_url.present?
     end
 
     # Recursively transform children
     if node['children'].is_a?(Array)
-      node['children'] = node['children'].map { |child| deep_transform_media_nodes(node: child, public:) }
+      node['children'] = node['children'].map { |child| deep_transform_media_nodes(node: child) }
     end
 
     # Transform root node
     if node['root'].is_a?(Hash)
-      node['root'] = deep_transform_media_nodes(node: node['root'], public:)
+      node['root'] = deep_transform_media_nodes(node: node['root'])
     end
 
     node
   end
 
-  sig { params(media_asset_id: T.nilable(String), public: T::Boolean).returns(T.nilable(String)) }
-  def get_media_asset_url_by_id(media_asset_id, public)
+  sig { params(media_asset_id: T.nilable(String)).returns(T.nilable(String)) }
+  def get_media_asset_url_by_id(media_asset_id)
     return nil if media_asset_id.blank?
 
     media_asset = MediaAsset.find_by(id: media_asset_id)
     return nil unless media_asset
 
-    public ? media_asset.public_url : media_asset.url(purpose: :public)
+    media_asset.resolved_url
   end
 end

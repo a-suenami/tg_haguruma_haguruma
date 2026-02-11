@@ -50,11 +50,11 @@ class MediaAsset < ApplicationRecord
     mime_type
   end
 
-  def url(purpose: :admin)
+  def url
     return nil if s3_object_path.blank?
 
     uploader = MediaAsset::Uploader.new
-    uploader.url_for(s3_object_path, purpose:, media_type: media_type&.to_sym)
+    uploader.url_for(s3_object_path, media_type: media_type&.to_sym)
   end
 
   def public_url
@@ -65,8 +65,16 @@ class MediaAsset < ApplicationRecord
   end
 
   # Check if this asset has a public copy
-  def public_copy?
+  def public?
     public_s3_object_path.present?
+  end
+
+  def resolved_url
+    if public?
+      public_url
+    else
+      url
+    end
   end
 
   def self.detect_media_type(mime_type)

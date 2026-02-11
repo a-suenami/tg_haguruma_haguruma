@@ -32,7 +32,7 @@
       <div cog-detail-fragment-content>
         <% if content_authorized? %>
           <div cog-rich-content-viewer>
-            <%= raw render_richtext_field(field: field_by_identifier(version, 'body'), public: version.visibility == 'public') %>
+            <%= raw render_richtext_field(field: field_by_identifier(version, 'body')) %>
           </div>
         <% else %>
           <%= render 'user_area/alpha/shared/content/membership_prompt' %>
