@@ -27,11 +27,11 @@ class MediaAsset::CloudFrontSigner
 
   # Generate unsigned public URL for assets in the public folder
   # @param s3_object_path [String] the S3 object path (should start with 'public/')
-  # @return [String] unsigned CloudFront URL
+  # @return [String] unsigned CloudFront URL (or S3 presigned URL if CloudFront not configured)
   sig { params(s3_object_path: String).returns(String) }
   def public_url(s3_object_path)
-    # For public assets, return unsigned URL directly
-    # CloudFront should be configured to allow unsigned access to public/ prefix
+    return s3_presigned_url(s3_object_path, purpose: :public) unless cloudfront_configured?
+
     url(s3_object_path)
   end
 

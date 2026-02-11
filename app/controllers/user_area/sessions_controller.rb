@@ -33,6 +33,14 @@ module UserArea
     # GET /auth/callback - OAuth callback
     sig { void }
     def callback
+      # Check for OAuth error response (user cancelled, access denied, etc.)
+      if params[:error].present?
+        Rails.logger.info("OAuth callback error: #{params[:error]} - #{params[:error_description]}")
+        session.delete(:oauth_state)
+        redirect_to user_area_auth_error_path
+        return
+      end
+
       # Verify state parameter for CSRF protection
       unless valid_oauth_state?
         redirect_to user_area_login_path, alert: t('user_area.sessions.invalid_state_parameter')
@@ -41,7 +49,8 @@ module UserArea
 
       code = params[:code]
       if code.blank?
-        redirect_to user_area_login_path, alert: t('user_area.sessions.authorization_code_not_provided')
+        session.delete(:oauth_state)
+        redirect_to user_area_auth_error_path
         return
       end
 

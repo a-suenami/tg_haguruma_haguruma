@@ -472,6 +472,9 @@ module GeneratedPathHelpersModule
   def upload_admin_area_media_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_auth_error_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_auth_failure_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
