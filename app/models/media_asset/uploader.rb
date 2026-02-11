@@ -44,15 +44,9 @@ class MediaAsset::Uploader
     }
   end
 
-  sig do
-    params(
-      s3_object_path: String,
-      purpose: MediaAsset::CloudFrontSigner::Purpose,
-      media_type: T.nilable(Symbol),
-    ).returns(String)
-  end
-  def url_for(s3_object_path, purpose: :admin, media_type: nil)
-    @cloudfront_signer.signed_url(s3_object_path, purpose:, media_type:)
+  sig { params(s3_object_path: String, media_type: T.nilable(Symbol)).returns(String) }
+  def url_for(s3_object_path, media_type: nil)
+    @cloudfront_signer.signed_url(s3_object_path, media_type:)
   end
 
   # Generate public URL for a given S3 path
