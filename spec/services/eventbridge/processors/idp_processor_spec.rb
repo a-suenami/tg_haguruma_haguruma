@@ -11,13 +11,13 @@ describe Eventbridge::Processors::IdpProcessor do
   end
 
   describe '#process' do
-    let(:source) { "com.twogate.idp/#{tenant.id}/user_tags" }
+    let(:source) { "com.twogate.idp/#{tenant.id}" }
 
     it 'sets tenant context and dispatches to handler' do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
-        detail_type: 'user_tag.created.v1',
+        detail_type: 'user_tags/created.v1',
         source:,
         account: '123456789',
         time: Time.current.iso8601,
@@ -42,7 +42,7 @@ describe Eventbridge::Processors::IdpProcessor do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
-        detail_type: 'user_tag.created.v1',
+        detail_type: 'user_tags/created.v1',
         source:,
         account: '123456789',
         time: Time.current.iso8601,
@@ -64,7 +64,7 @@ describe Eventbridge::Processors::IdpProcessor do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
-        detail_type: 'user_tag.created.v1',
+        detail_type: 'user_tags/created.v1',
         source:,
         account: '123456789',
         time: Time.current.iso8601,
@@ -84,7 +84,7 @@ describe Eventbridge::Processors::IdpProcessor do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
-        detail_type: 'user_tag.created.v1',
+        detail_type: 'user_tags/created.v1',
         source:,
         account: '123456789',
         time: Time.current.iso8601,
@@ -103,8 +103,8 @@ describe Eventbridge::Processors::IdpProcessor do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
-        detail_type: 'tag.added.v1',
-        source: "com.twogate.idp/#{tenant.id}/users",
+        detail_type: 'users/tag.added.v1',
+        source: "com.twogate.idp/#{tenant.id}",
         account: '123456789',
         time: Time.current.iso8601,
         region: 'ap-northeast-1',
@@ -126,8 +126,8 @@ describe Eventbridge::Processors::IdpProcessor do
       message = Eventbridge::MessageParam.new(
         version: '0',
         id: SecureRandom.uuid,
-        detail_type: 'tag.removed.v1',
-        source: "com.twogate.idp/#{tenant.id}/users",
+        detail_type: 'users/tag.removed.v1',
+        source: "com.twogate.idp/#{tenant.id}",
         account: '123456789',
         time: Time.current.iso8601,
         region: 'ap-northeast-1',

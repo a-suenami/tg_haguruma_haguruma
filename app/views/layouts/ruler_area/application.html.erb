@@ -115,6 +115,9 @@
             <li class="<%= 'uk-active' if controller_name == 'custom_variables' %>">
               <%= link_to 'カスタム変数設定', ruler_area_tenant_custom_variables_path(@tenant) %>
             </li>
+            <li class="<%= 'uk-active' if controller_name == 'tag_settings' %>">
+              <%= link_to '計測タグ設定', ruler_area_tenant_tag_setting_path(@tenant) %>
+            </li>
           </ul>
 
           <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
