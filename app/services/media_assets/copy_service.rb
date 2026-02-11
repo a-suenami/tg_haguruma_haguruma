@@ -48,29 +48,6 @@ class MediaAssets::CopyService
     public_path
   end
 
-  # Delete the public copy of an asset
-  # @param media_asset [MediaAsset] the media asset whose public copy to delete
-  # @return [Boolean] true if deleted, false if no copy existed
-  # @raise [CopyError] if delete operation fails
-  sig { params(media_asset: MediaAsset).returns(T::Boolean) }
-  def delete_public_copy(media_asset:)
-    public_path = media_asset.public_s3_object_path
-    return false if public_path.blank?
-
-    # Delete from S3 first
-    begin
-      @s3_client.delete(key: public_path)
-    rescue Aws::S3::Errors::ServiceError => e
-      Rails.logger.error("[MediaAssets::CopyService] S3 delete failed for media_asset #{media_asset.id}: #{e.message}")
-      raise CopyError.new("Failed to delete public copy from S3: #{e.message}")
-    end
-
-    # Clear the public path only after S3 delete succeeds
-    media_asset.update!(public_s3_object_path: nil)
-
-    true
-  end
-
   private
 
   # Generate the public S3 path from the original path

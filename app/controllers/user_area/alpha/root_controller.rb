@@ -47,11 +47,7 @@ module UserArea
 
         image_field = version.fields.find_by(content_type_field_id: content_type_field.id)
 
-        if version.visibility == 'public'
-          image_field&.media_asset&.media_asset&.public_url
-        else
-          image_field&.media_asset&.media_asset&.url
-        end
+        image_field&.media_asset&.media_asset&.resolved_url
       end
 
       # Show ALL published content on root page (no authorization filter)

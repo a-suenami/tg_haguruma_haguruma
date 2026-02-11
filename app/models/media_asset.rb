@@ -69,6 +69,14 @@ class MediaAsset < ApplicationRecord
     public_s3_object_path.present?
   end
 
+  def resolved_url
+    if public_copy?
+      public_url
+    else
+      url(purpose: :public)
+    end
+  end
+
   def self.detect_media_type(mime_type)
     case mime_type
     when %r{^image/}
