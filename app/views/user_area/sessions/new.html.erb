@@ -1,20 +1,32 @@
 <% content_for :title do %>
-  Login - <%= current_tenant&.name %>
+  <%= login_label %> - <%= current_tenant&.name %>
 <% end %>
 
-<div class="card" style="max-width: 400px; margin: 2rem auto;">
-  <h1 style="text-align: center; margin-bottom: 1.5rem;">Login</h1>
-  <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">
-    Sign in to access your content
-  </p>
+<div cog-landing>
+  <%= render 'user_area/alpha/shared/page_header' %>
 
-  <%= form_with url: user_area_login_path, method: :post, data: { turbo: false } do |f| %>
-    <div style="text-align: center;">
-      <%= f.submit 'Login with OAuth', class: 'btn btn-primary', style: 'width: 100%;' %>
-    </div>
-  <% end %>
+  <main class="main" style="justify-content: center;">
+    <section cog-landing-introduction style="background: transparent; box-shadow: none;">
+      <div class="introduction-content">
+        <% if flash[:alert] %>
+          <p class="login-alert"><%= flash[:alert] %></p>
+        <% end %>
 
-  <p style="text-align: center; margin-top: 1.5rem; color: var(--text-muted); font-size: 0.875rem;">
-    Secure authentication via OAuth provider
-  </p>
+        <%= form_with url: user_area_login_path, method: :post, data: { turbo: false } do |f| %>
+          <button type="submit" class="primary-action">
+            <span class="action-text"><%= login_label %></span>
+            <span class="action-icon"><%= icon_svg('right-arrow') %></span>
+          </button>
+        <% end %>
+
+        <% if custom_variables.enabled?('signup_flow') %>
+          <a href="<%= user_area_auth_start_path(signup: true) %>" cog-link variant-underline>
+            新規登録はこちら
+          </a>
+        <% end %>
+      </div>
+    </section>
+  </main>
+
+  <%= render 'user_area/alpha/shared/page_footer' %>
 </div>

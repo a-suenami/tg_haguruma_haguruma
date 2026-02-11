@@ -88,6 +88,22 @@ button[cog-footer-menu-item] {
   }
 }
 
+// Login page alert styling
+.login-alert {
+  color: #991b1b;
+  background-color: #fee2e2;
+  padding: var(--gearbox-spacing-8) var(--gearbox-spacing-16);
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: var(--gearbox-spacing-16);
+  text-align: center;
+}
+
+// Login form - make inline so button renders without form wrapper spacing
+[cog-landing-introduction] form {
+  display: contents;
+}
+
 // 画像ダウンロード防止スタイル
 [data-controller="image-protection"] {
   img {
