@@ -62,6 +62,9 @@
                 <span class="media-type-badge media-type-<%= media.media_type %>">
                   <%= media.media_type %>
                 </span>
+                <% if media.public? %>
+                  <span class="media-type-badge media-type-public">public</span>
+                <% end %>
                 <span class="media-size">
                   <%= number_to_human_size(media.file_size_bytes) rescue '-' %>
                 </span>
@@ -173,6 +176,7 @@
 .media-type-video { background: #fce7f3; color: #be185d; }
 .media-type-audio { background: #fef3c7; color: #b45309; }
 .media-type-document { background: #e0e7ff; color: #4338ca; }
+.media-type-public { background: #d1fae5; color: #065f46; }
 
 .media-actions {
   padding: 0.5rem 0.75rem;
