@@ -17,6 +17,10 @@ local memory_reservation = 256;
       "entryPoint": [],
       "environment": poller_environment + [
         {
+          "name": "AWS_SQS_EVENT_QUEUE_NAME",
+          "value": "haguruma-eventbridge-queue-stg"
+        },
+        {
           "name": "RAILS_MAX_THREADS",
           "value": "1"
         },
