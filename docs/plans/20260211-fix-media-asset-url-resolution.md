@@ -121,3 +121,16 @@ Task 2 は Task 1 完了後に実行（`private/` パスがないと S3 copy の
 3. 公開コンテンツの MediaAsset に `public_s3_object_path` がセットされていること
 4. ユーザー画面で画像が表示されること（公開コンテンツ = 署名なし URL、制限コンテンツ = 署名付き URL）
 5. API レスポンスの画像 URL が正しいこと
+
+---
+
+## 今後の改善: S3 公開コピーの非同期化
+
+コンテンツ公開時の `VisibilitySyncService`（private → public への S3 コピー）は現在同期的に実行されている。コンテンツに含まれる MediaAsset の数が多い場合、公開操作のレスポンスタイムに影響する。
+
+`resolved_url` のフォールバック（署名付き URL）により、コピー完了前でも画像は表示されるため、Active Job 経由の非同期実行に安全に移行できる。
+
+### 対象ファイル
+
+- `app/services/admin_area/contents/publish_entry_service.rb`（呼び出し元）
+- `app/services/media_assets/visibility_sync_service.rb`（実処理）
