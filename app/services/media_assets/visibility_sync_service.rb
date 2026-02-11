@@ -110,7 +110,7 @@ module MediaAssets
     sig { params(media_asset: ::MediaAsset).void }
     def copy_to_public(media_asset)
       # Skip if asset already has a public copy
-      return if media_asset.public_copy?
+      return if media_asset.public?
 
       @copy_service.copy_to_public(media_asset:)
     end

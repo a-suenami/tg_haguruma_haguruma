@@ -53,7 +53,7 @@ module RulerArea
       def use_existing(media_asset:)
         cloudfront_signer = MediaAsset::CloudFrontSigner.new
 
-        public_path = if media_asset.public_copy?
+        public_path = if media_asset.public?
           T.must(media_asset.public_s3_object_path)
         else
           @copy_service.copy_to_public(media_asset:)

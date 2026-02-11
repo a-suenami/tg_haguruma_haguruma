@@ -64,13 +64,12 @@ class MediaAsset < ApplicationRecord
     uploader.public_url_for(public_s3_object_path)
   end
 
-  # Check if this asset has a public copy
-  def public_copy?
+  def public?
     public_s3_object_path.present?
   end
 
   def resolved_url
-    if public_copy?
+    if public?
       public_url
     else
       url(purpose: :public)
