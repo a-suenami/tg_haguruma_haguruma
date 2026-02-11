@@ -404,6 +404,17 @@ build:app:production:
     - job: 🔧 deploy:migration:staging
       artifacts: false
 
+🚀 deploy:eventbridge-poller:staging:
+  <<: *deploy-staging-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/eventbridge_poller/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:staging
+      artifacts: false
+    - job: 🔧 deploy:migration:staging
+      artifacts: false
+
 # ------------------------------------------------------------------------------
 # Deploy Production jobs
 # ------------------------------------------------------------------------------
@@ -457,6 +468,17 @@ build:app:production:
   stage: deploy
   script:
     - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/services/worker/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:production
+      artifacts: false
+    - job: 🔧 deploy:migration:production
+      artifacts: false
+
+🚀 deploy:eventbridge-poller:production:
+  <<: *deploy-production-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/services/eventbridge_poller/config.yaml
   needs:
     - job: 👍 pre-deploy:approval:production
       artifacts: false

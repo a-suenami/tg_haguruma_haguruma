@@ -1,0 +1,55 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><%= link_to '計測タグ設定', ruler_area_tenant_tag_setting_path(@tenant) %></li>
+  <li><span>編集</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>計測タグ設定</h3>
+</div>
+
+<%= form_with model: @tag_setting, url: ruler_area_tenant_tag_setting_path(@tenant), method: :patch, local: true, scope: :tag_setting do |form| %>
+  <%= render 'ruler_area/shared/form_error', target: @tag_setting %>
+
+  <div class="uk-card uk-card-default uk-card-body uk-margin">
+    <h4 class="uk-card-title">Google Tag Manager / カスタムタグ</h4>
+    <p class="uk-text-small uk-text-muted uk-margin-bottom">
+      Google Tag Managerや他のトラッキングタグのコードを設定できます。<br>
+      設定したコードはユーザーエリアの全ページに挿入されます。
+    </p>
+
+    <div class="uk-margin">
+      <%= form.label :head_code, 'Googleタグマネージャー（<head>内のコード）', class: 'uk-form-label' %>
+      <div class="uk-form-controls">
+        <%= form.text_area :head_code,
+                           class: 'uk-textarea',
+                           rows: 8,
+                           placeholder: '<!-- Google Tag Manager -->\n<script>...</script>\n<!-- End Google Tag Manager -->',
+                           style: 'font-family: monospace; font-size: 13px;' %>
+      </div>
+      <p class="uk-text-small uk-text-muted uk-margin-small-top">
+        &lt;head&gt;タグ内に挿入されるコードを入力してください。
+      </p>
+    </div>
+
+    <div class="uk-margin">
+      <%= form.label :body_code, 'Googleタグマネージャー（<body>内のコード）', class: 'uk-form-label' %>
+      <div class="uk-form-controls">
+        <%= form.text_area :body_code,
+                           class: 'uk-textarea',
+                           rows: 6,
+                           placeholder: '<!-- Google Tag Manager (noscript) -->\n<noscript>...</noscript>\n<!-- End Google Tag Manager (noscript) -->',
+                           style: 'font-family: monospace; font-size: 13px;' %>
+      </div>
+      <p class="uk-text-small uk-text-muted uk-margin-small-top">
+        &lt;body&gt;タグ直後に挿入されるコードを入力してください。
+      </p>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.submit '保存', class: 'uk-button uk-button-primary' %>
+    <%= link_to 'キャンセル', ruler_area_tenant_tag_setting_path(@tenant), class: 'uk-button uk-button-default' %>
+  </div>
+<% end %>
