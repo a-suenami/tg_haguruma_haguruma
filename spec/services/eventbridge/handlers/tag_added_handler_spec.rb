@@ -42,13 +42,30 @@ describe Eventbridge::Handlers::TagAddedHandler do
       expect { handler.handle(bad_detail) }.not_to change { UserTag.count }
     end
 
-    it 'does nothing when tag is not found' do
-      bad_detail = {
-        'resource' => { 'uid' => user.uid },
-        'event_data' => { 'tag_id' => 'nonexistent-tag' },
-      }
+    context 'when tag does not exist' do
+      it 'creates the tag and UserTag when display_name is provided' do
+        detail_with_name = {
+          'resource' => { 'uid' => user.uid },
+          'event_data' => { 'tag_id' => 'new-tag-id', 'display_name' => 'New Tag' },
+        }
 
-      expect { handler.handle(bad_detail) }.not_to change { UserTag.count }
+        expect { handler.handle(detail_with_name) }
+          .to change { ContentAuthorizationTag.count }.by(1)
+          .and change { UserTag.count }.by(1)
+
+        created_tag = ContentAuthorizationTag.find_by(provider: 'idp', unique_id: 'new-tag-id')
+        expect(created_tag).to be_present
+        expect(created_tag.name).to eq('New Tag')
+      end
+
+      it 'does nothing when display_name is not provided' do
+        bad_detail = {
+          'resource' => { 'uid' => user.uid },
+          'event_data' => { 'tag_id' => 'nonexistent-tag' },
+        }
+
+        expect { handler.handle(bad_detail) }.not_to change { UserTag.count }
+      end
     end
 
     it 'does nothing when resource is missing' do
