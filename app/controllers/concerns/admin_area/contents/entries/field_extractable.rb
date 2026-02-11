@@ -124,7 +124,7 @@ module AdminArea
         sig { void }
         def load_authorization_tags
           @authorization_tags = T.let(
-            ContentAuthorizationTag.all.to_a,
+            ContentAuthorizationTag.searchable.to_a,
             T.nilable(T::Array[ContentAuthorizationTag]),
           )
         end

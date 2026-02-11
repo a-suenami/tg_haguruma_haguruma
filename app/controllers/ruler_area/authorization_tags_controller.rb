@@ -9,7 +9,7 @@ module RulerArea
     before_action :set_authorization_tag, only: [:edit, :update, :destroy]
 
     def index
-      @authorization_tags = ContentAuthorizationTag.searchable.order(:name)
+      @authorization_tags = ContentAuthorizationTag.order(:name)
     end
 
     def new
