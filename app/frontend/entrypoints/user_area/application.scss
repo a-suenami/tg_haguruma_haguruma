@@ -9,6 +9,12 @@
 // Layout utilities
 @use './list-layout';
 
+body {
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-break: strict;
+}
+
 .lexical-readonly {
   // Override styles for read-only mode in user area
   .editor-container {
