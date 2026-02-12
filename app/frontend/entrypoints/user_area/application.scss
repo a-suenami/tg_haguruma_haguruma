@@ -104,6 +104,17 @@ button[cog-footer-menu-item] {
   display: contents;
 }
 
+// Reset button defaults for primary-action used as <button>
+button.primary-action {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
 // 画像ダウンロード防止スタイル
 [data-controller="image-protection"] {
   img {
