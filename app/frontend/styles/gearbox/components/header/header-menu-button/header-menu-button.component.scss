@@ -49,5 +49,7 @@
     font-size: 14px;
     line-height: 1;
     color: var(--theme-button-primary-background-color);
+    // FIXME: bodyの指定を打ち消す。応急処置なので、もう少しちゃんとしたい
+    overflow-wrap: normal;
   }
 }
