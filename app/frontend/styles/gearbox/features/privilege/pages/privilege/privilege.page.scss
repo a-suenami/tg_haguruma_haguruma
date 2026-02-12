@@ -396,6 +396,7 @@
     color: var(--theme-general-text-color);
 
     & > .label {
+      flex-shrink: 0;
       color: var(--theme-button-primary-background-color);
     }
 
