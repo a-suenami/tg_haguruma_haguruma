@@ -17,6 +17,7 @@ import ScheduledPublicationController from './scheduled_publication_controller';
 import DatetimeLocalController from './datetime_local_controller';
 import PublicationDateController from './publication_date_controller';
 import ImageProtectionController from './image_protection_controller';
+import MediaUploadController from './media_upload_controller';
 
 const application = Application.start();
 
@@ -39,5 +40,6 @@ application.register('scheduled-publication', ScheduledPublicationController);
 application.register('datetime-local', DatetimeLocalController);
 application.register('publication-date', PublicationDateController);
 application.register('image-protection', ImageProtectionController);
+application.register('media-upload', MediaUploadController);
 
 export { application };
