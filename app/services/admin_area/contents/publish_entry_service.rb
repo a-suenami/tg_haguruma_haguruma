@@ -80,9 +80,11 @@ module AdminArea
 
       sig { params(version: ContentEntry::Version).void }
       def publish_version(version)
+        publish_time = Time.current
         version.update!(
           status: :published,
-          published_at: Time.current,
+          published_at: publish_time,
+          custom_published_at: version.custom_published_at || publish_time,
         )
         assign_system_authorization_tag(version)
         sync_media_asset_visibility(version)

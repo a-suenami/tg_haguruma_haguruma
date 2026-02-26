@@ -152,6 +152,9 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["tenant_id", "content_type_id", "content_entry_id", "version"], name: "index_content_entry_versions_on_tenant_type_entry_version", unique: true
     t.index ["tenant_id", "is_public"], name: "index_content_entry_versions_on_tenant_is_public"
     t.index ["tenant_id", "visibility"], name: "index_content_entry_versions_on_tenant_visibility"
+    t.check_constraint "status <> 1 OR published_at IS NULL AND unpublished_at IS NULL", name: "chk_content_entry_versions_draft_nulls"
+    t.check_constraint "status <> 3 OR published_at IS NOT NULL AND custom_published_at IS NOT NULL AND unpublished_at IS NULL", name: "chk_content_entry_versions_published_required"
+    t.check_constraint "status <> 4 OR published_at IS NOT NULL AND custom_published_at IS NOT NULL AND unpublished_at IS NOT NULL", name: "chk_content_entry_versions_unpublished_required"
   end
 
   create_table "content_type_field_media_assets", force: :cascade do |t|
