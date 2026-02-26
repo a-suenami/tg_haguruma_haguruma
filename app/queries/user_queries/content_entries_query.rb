@@ -98,16 +98,23 @@ module UserQueries
     # Filter by select field option
     # field_identifier: the api_identifier of the ContentType::Field
     # option_unique_name: the unique_name of the ContentType::FieldSelectOption
+    #
+    # Uses a subquery to avoid duplicate rows when an entry has both a published
+    # version and a draft version. Adding a second JOIN to content_entry_versions
+    # without filtering by published status causes one row per matching version,
+    # resulting in duplicate entries in the result set.
     sig { params(field_identifier: String, option_unique_name: T.nilable(String)).returns(T.self_type) }
     def by_select_option(field_identifier, option_unique_name)
       return self if option_unique_name.blank?
 
-      chain(
-        @scope
-          .joins(versions: { fields: [:content_type_field, { select: { selections: :option } }] })
-          .where(content_type_fields: { api_identifier: field_identifier })
-          .where(content_type_field_select_options: { unique_name: option_unique_name }),
-      )
+      matching_entry_ids = ContentEntry
+        .joins(versions: { fields: [:content_type_field, { select: { selections: :option } }] })
+        .merge(ContentEntry::Version.published)
+        .where(content_type_fields: { api_identifier: field_identifier })
+        .where(content_type_field_select_options: { unique_name: option_unique_name })
+        .select(:id)
+
+      chain(@scope.where(id: matching_entry_ids))
     end
 
     # Order by custom_published_at descending, falls back to published_at if custom is null
