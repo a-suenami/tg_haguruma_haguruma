@@ -81,14 +81,32 @@ module AdminArea
       sig { params(version: ContentEntry::Version).void }
       def publish_version(version)
         publish_time = Time.current
+
+        # Fallback chain: draft value → previous published value → current time
+        # Prevents accidental display date changes when admin clears the field
+        custom_published_at_value = version.custom_published_at ||
+                                     find_previous_published_custom_date ||
+                                     publish_time
+
         version.update!(
           status: :published,
           published_at: publish_time,
-          custom_published_at: version.custom_published_at || publish_time,
+          custom_published_at: custom_published_at_value,
         )
         assign_system_authorization_tag(version)
         sync_media_asset_visibility(version)
         @published_version = T.let(version, T.nilable(ContentEntry::Version))
+      end
+
+      sig { returns(T.nilable(Time)) }
+      def find_previous_published_custom_date
+        previous_version = ContentEntry::Version.find_by(
+          tenant_id: Tenant.current_id,
+          content_type_id: @content_type.id,
+          content_entry_id: @content_entry.id,
+          status: ContentEntry::Version::STATUSES[:published],
+        )
+        previous_version&.custom_published_at
       end
 
       sig { params(version: ContentEntry::Version).void }
