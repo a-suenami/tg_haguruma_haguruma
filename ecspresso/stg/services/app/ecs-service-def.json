@@ -24,7 +24,7 @@
     "type": "ECS"
   },
   "enableECSManagedTags": true,
-  "enableExecuteCommand": true,
+  "enableExecuteCommand": false,
   "healthCheckGracePeriodSeconds": 0,
   "launchType": "",
   "loadBalancers": [
