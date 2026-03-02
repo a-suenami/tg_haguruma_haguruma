@@ -17,6 +17,7 @@ module AdminArea
         @content_type = content_type
         @content_entry = content_entry
         @errors = T.let([], T::Array[String])
+        @previous_custom_published_at = T.let(nil, T.nilable(ActiveSupport::TimeWithZone))
       end
 
       sig { returns(Result) }
@@ -54,8 +55,6 @@ module AdminArea
       sig { returns(T.nilable(ContentEntry::Version)) }
       def find_draft_version
         ContentEntry::Version.find_by(
-          tenant_id: Tenant.current_id,
-          content_type_id: @content_type.id,
           content_entry_id: @content_entry.id,
           status: ContentEntry::Version::STATUSES[:draft],
         )
@@ -64,13 +63,13 @@ module AdminArea
       sig { void }
       def unpublish_current_version
         current_published = ContentEntry::Version.find_by(
-          tenant_id: Tenant.current_id,
-          content_type_id: @content_type.id,
           content_entry_id: @content_entry.id,
           status: ContentEntry::Version::STATUSES[:published],
         )
 
         return unless current_published
+
+        @previous_custom_published_at = current_published.custom_published_at
 
         current_published.update!(
           status: :unpublished,
@@ -80,9 +79,18 @@ module AdminArea
 
       sig { params(version: ContentEntry::Version).void }
       def publish_version(version)
+        publish_time = Time.current
+
+        # Fallback chain: draft value → previous published value → current time
+        # Prevents accidental display date changes when admin clears the field
+        custom_published_at_value = version.custom_published_at ||
+                                    @previous_custom_published_at ||
+                                    publish_time
+
         version.update!(
           status: :published,
-          published_at: Time.current,
+          published_at: publish_time,
+          custom_published_at: custom_published_at_value,
         )
         assign_system_authorization_tag(version)
         sync_media_asset_visibility(version)

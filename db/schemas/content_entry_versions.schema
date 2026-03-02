@@ -35,9 +35,10 @@ add_index :content_entry_versions, [:preview_token_expires_at], where: 'preview_
 # Index for scheduled publish queries (only drafts with scheduled time)
 add_index :content_entry_versions, [:scheduled_publish_at], where: 'scheduled_publish_at IS NOT NULL AND status = 1', name: 'index_content_entry_versions_on_scheduled_publish'
 
-# draft: published_at and custom_published_at must be NULL
+# draft: published_at and unpublished_at must be NULL
+# custom_published_at is allowed (admin can set display date before publish)
 add_check_constraint :content_entry_versions,
-  'status != 1 OR (published_at IS NULL AND custom_published_at IS NULL AND unpublished_at IS NULL)',
+  'status != 1 OR (published_at IS NULL AND unpublished_at IS NULL)',
   name: 'chk_content_entry_versions_draft_nulls'
 
 # published: published_at and custom_published_at must be present

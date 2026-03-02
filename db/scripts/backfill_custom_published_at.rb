@@ -6,7 +6,7 @@
 # 対象外: v1 が一度も公開されていないエントリ（v1.published_at が nil）
 #
 # DB check constraints に準拠するため、status によって処理を分ける:
-# - draft: published_at, custom_published_at, unpublished_at を NULL にする
+# - draft: published_at, unpublished_at を NULL にする (custom_published_at は保持)
 # - published: custom_published_at を設定（published_at は既存）
 # - unpublished: custom_published_at を設定（published_at, unpublished_at は既存）
 #
@@ -16,7 +16,7 @@ Rails.logger.info 'Backfilling custom_published_at for content_entry_versions...
 
 # Count violations before
 draft_violations = ContentEntry::Version.where(status: 1)
-  .where('published_at IS NOT NULL OR custom_published_at IS NOT NULL OR unpublished_at IS NOT NULL').count
+  .where('published_at IS NOT NULL OR unpublished_at IS NOT NULL').count
 published_violations = ContentEntry::Version.where(status: 3)
   .where('published_at IS NULL OR custom_published_at IS NULL').count
 unpublished_violations = ContentEntry::Version.where(status: 4)
@@ -27,10 +27,11 @@ Rails.logger.info "  Draft violations: #{draft_violations}"
 Rails.logger.info "  Published violations: #{published_violations}"
 Rails.logger.info "  Unpublished violations: #{unpublished_violations}"
 
-# Fix drafts - clear all date fields
+# Fix drafts - clear published_at and unpublished_at only
+# Keep custom_published_at (admin may have set display date)
 ContentEntry::Version.where(status: 1)
-  .where('published_at IS NOT NULL OR custom_published_at IS NOT NULL OR unpublished_at IS NOT NULL')
-  .update_all(published_at: nil, custom_published_at: nil, unpublished_at: nil)
+  .where('published_at IS NOT NULL OR unpublished_at IS NOT NULL')
+  .update_all(published_at: nil, unpublished_at: nil)
 
 # Fix published - set custom_published_at from v1 or published_at
 ContentEntry.find_each do |entry|
@@ -50,7 +51,7 @@ end
 
 # Count violations after
 draft_violations = ContentEntry::Version.where(status: 1)
-  .where('published_at IS NOT NULL OR custom_published_at IS NOT NULL OR unpublished_at IS NOT NULL').count
+  .where('published_at IS NOT NULL OR unpublished_at IS NOT NULL').count
 published_violations = ContentEntry::Version.where(status: 3)
   .where('published_at IS NULL OR custom_published_at IS NULL').count
 unpublished_violations = ContentEntry::Version.where(status: 4)
