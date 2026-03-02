@@ -6,7 +6,7 @@
 # 対象外: v1 が一度も公開されていないエントリ（v1.published_at が nil）
 #
 # DB check constraints に準拠するため、status によって処理を分ける:
-# - draft: published_at, custom_published_at, unpublished_at を NULL にする
+# - draft: published_at, unpublished_at を NULL にする (custom_published_at は保持)
 # - published: custom_published_at を設定（published_at は既存）
 # - unpublished: custom_published_at を設定（published_at, unpublished_at は既存）
 #
