@@ -55,8 +55,6 @@ module AdminArea
       sig { returns(T.nilable(ContentEntry::Version)) }
       def find_draft_version
         ContentEntry::Version.find_by(
-          tenant_id: Tenant.current_id,
-          content_type_id: @content_type.id,
           content_entry_id: @content_entry.id,
           status: ContentEntry::Version::STATUSES[:draft],
         )
