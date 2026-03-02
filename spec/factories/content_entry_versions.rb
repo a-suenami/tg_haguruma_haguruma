@@ -50,5 +50,12 @@ FactoryBot.define do
     content_entry_id { content_entry.id }
     version { 1 }
     status { :draft }
+
+    # DB check constraint requires custom_published_at for published/unpublished versions
+    after(:build) do |version|
+      if version.published? && version.custom_published_at.nil?
+        version.custom_published_at = version.published_at || Time.current
+      end
+    end
   end
 end

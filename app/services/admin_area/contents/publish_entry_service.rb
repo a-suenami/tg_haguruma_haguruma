@@ -17,7 +17,7 @@ module AdminArea
         @content_type = content_type
         @content_entry = content_entry
         @errors = T.let([], T::Array[String])
-        @previous_custom_published_at = T.let(nil, T.nilable(Time))
+        @previous_custom_published_at = T.let(nil, T.nilable(ActiveSupport::TimeWithZone))
       end
 
       sig { returns(Result) }
@@ -84,8 +84,8 @@ module AdminArea
         # Fallback chain: draft value → previous published value → current time
         # Prevents accidental display date changes when admin clears the field
         custom_published_at_value = version.custom_published_at ||
-                                     @previous_custom_published_at ||
-                                     publish_time
+                                    @previous_custom_published_at ||
+                                    publish_time
 
         version.update!(
           status: :published,
