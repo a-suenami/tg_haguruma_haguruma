@@ -1,7 +1,16 @@
+# Node.js を公式イメージからコピー（arm64/amd64 両対応）
+FROM node:22-alpine AS node
+
 FROM ruby:3.3.0-alpine
 
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
+
+# Node.js をコピー
+COPY --from=node /usr/local/bin/node /usr/local/bin/
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
+    ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 
 RUN apk add --no-cache \
     build-base \
@@ -22,7 +31,6 @@ RUN apk add --no-cache \
     libsodium-dev \
     gcompat \
     libstdc++ && \
-    curl -fsSL https://unofficial-builds.nodejs.org/download/release/v22.12.0/node-v22.12.0-linux-x64-musl.tar.gz | tar -xz -C /usr/local --strip-components=1 && \
     npm install -g yarn
 
 WORKDIR /rails_app
