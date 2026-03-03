@@ -51,6 +51,52 @@ create-deploy-merge-request:
         "target_branch": "deploy-production"
       }' || true
 
+deploy-checklist:
+  stage: prepare
+  image: node:24-alpine3.21
+  cache: {}
+  allow_failure: true
+  id_tokens:
+    AWS_ID_TOKEN:
+      aud: https://git.l.twogate.net
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "deploy-production"'
+  variables:
+    CLAUDE_CODE_USE_BEDROCK: "1"
+    GITLAB_API_ENDPOINT: https://git.l.twogate.net/api/v4
+    GITLAB_API_PRIVATE_TOKEN: $CI_JOB_TOKEN
+  before_script:
+    # System dependencies
+    - apk add --no-cache bash curl jq git python3 py3-pip
+    - pip install --break-system-packages --no-cache-dir awscli
+    # Claude Code CLI
+    - npm install -g @anthropic-ai/claude-code
+    # Fetch deploy-production branch for diff
+    - git fetch origin deploy-production
+    # AWS OIDC authentication
+    - printf "%s" "$AWS_ID_TOKEN" > /tmp/oidc_token
+    - >
+      aws sts assume-role-with-web-identity
+      --role-arn "$AWS_ROLE_TO_ASSUME"
+      --role-session-name "gitlab-claude-$(date +%s)"
+      --web-identity-token "file:///tmp/oidc_token"
+      --duration-seconds 3600 > /tmp/aws_creds.json
+    - export AWS_ACCESS_KEY_ID="$(jq -r .Credentials.AccessKeyId /tmp/aws_creds.json)"
+    - export AWS_SECRET_ACCESS_KEY="$(jq -r .Credentials.SecretAccessKey /tmp/aws_creds.json)"
+    - export AWS_SESSION_TOKEN="$(jq -r .Credentials.SessionToken /tmp/aws_creds.json)"
+  script:
+    # Generate checklist with Claude Code
+    - |
+      claude -p "$(cat ci/prompts/deploy-checklist.md)" \
+        --output-format text \
+        --permission-mode acceptEdits \
+        --allowedTools "Bash(git*)" \
+        --verbose \
+        > /tmp/checklist.md
+    # Update MR description
+    - chmod +x ci/scripts/update-mr-description.sh
+    - ci/scripts/update-mr-description.sh /tmp/checklist.md
+
 bundle-package:
   image: ${RUBY_IMAGE}
   stage: prepare
