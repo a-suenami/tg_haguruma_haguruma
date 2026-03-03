@@ -60,7 +60,7 @@ deploy-checklist:
     AWS_ID_TOKEN:
       aud: https://git.l.twogate.net
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "deploy-production"'
   variables:
     CLAUDE_CODE_USE_BEDROCK: "1"
     GITLAB_API_ENDPOINT: https://git.l.twogate.net/api/v4
