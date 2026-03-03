@@ -51,7 +51,7 @@ create-deploy-merge-request:
         "target_branch": "deploy-production"
       }' || true
 
-deploy-checklist:
+generate-deploy-checklist:
   stage: prepare
   image: node:24-alpine3.21
   cache: {}
