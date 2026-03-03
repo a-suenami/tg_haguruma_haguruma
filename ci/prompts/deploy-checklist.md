@@ -25,13 +25,13 @@ Important: If a failure only prevents deployment from completing (e.g., DB const
 Output as GitLab Markdown with checkboxes. Start with a summary assessment block, then list items in descending risk order.
 
 ```
-## 総合リスク評価: {低/中/中〜高/高}（{一言サマリー}）
+## 🚀 総合リスク評価: {低/中/中〜高/高}（{一言サマリー}）
 
 {2〜3文で、このデプロイの全体的なリスク感と特に注意すべきポイントを説明}
 
 ---
 
-### High（ユーザーに直接見える壊れ方をする）
+### 🔴 High（ユーザーに直接見える壊れ方をする）
 
 #### {変更グループ名}
 {影響の説明}
@@ -39,12 +39,12 @@ Output as GitLab Markdown with checkboxes. Start with a summary assessment block
 - [ ] {検証項目}（{確認画面パス}）
   - [ ] {子項目がある場合はネスト}
 
-### Medium（特定画面・特定フローに影響）
+### 🟡 Medium（特定画面・特定フローに影響）
 
 #### {変更グループ名}
 ...
 
-### Low（スキップ可）
+### 🟢 Low（スキップ可）
 
 - [ ] {項目名のみ簡潔に}
 ```
