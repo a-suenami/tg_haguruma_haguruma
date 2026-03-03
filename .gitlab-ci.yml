@@ -58,7 +58,7 @@ deploy-checklist:
   allow_failure: true
   id_tokens:
     AWS_ID_TOKEN:
-      aud: https://sts.amazonaws.com
+      aud: https://git.l.twogate.net
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   variables:
