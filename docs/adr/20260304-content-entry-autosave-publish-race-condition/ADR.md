@@ -38,13 +38,9 @@ def find_or_create_draft_version
 end
 ```
 
-Additionally, there was no mutual exclusion between autosave and publish operations, leaving the system vulnerable to parallel execution.
-
 ## Decision
 
-Implement a three-layer defense.
-
-### Fix 1: `BaseSaveFieldService` — Autosave only updates existing drafts
+### Fix 1 (this release): `BaseSaveFieldService` — Autosave only updates existing drafts
 
 Change `find_or_create_draft_version` so that it never creates a new draft. If no draft is found, return an error and roll back the transaction (silent failure).
 
@@ -62,75 +58,25 @@ end
 
 Creating a new draft remains the sole responsibility of `SaveEntryService`, invoked only when the admin manually clicks "Save".
 
-### Fix 2: Add Pessimistic Locking
+### Future direction: Deprecate the "Save" button
 
-Add `content_entry.lock!` (`SELECT FOR UPDATE` in PostgreSQL) at the start of the transaction in both `BaseSaveFieldService` and `PublishEntryService`.
-
-```ruby
-# BaseSaveFieldService#call
-ActiveRecord::Base.transaction do
-  @content_entry.lock!
-  version = find_draft_version_or_fail
-  # ...
-end
-
-# PublishEntryService#call
-ActiveRecord::Base.transaction do
-  @content_entry.lock!
-  draft_version = find_draft_version
-  # ...
-end
-```
-
-**Effect:**
-- If publish is running → autosave waits for the lock → after publish completes, autosave acquires the lock → no draft found → silently fails (Fix 1)
-- If autosave is running → publish waits for the lock → after autosave completes, publish proceeds normally
-
-This fix relies on PostgreSQL row-level locking (confirmed: both production and staging use PostgreSQL).
-
-### Fix 3: Frontend — Cancel autosave on Save/Publish button click
-
-Dispatch an `autosave:cancel` custom event when the "Save" or "Publish" button is clicked. Autosave controllers listen for this event and clear the debounce timer and abort any in-flight fetch request.
-
-The current `autosave_field_controller.ts` uses `fetch()` without an `AbortController`, making it impossible to cancel requests already in-flight. An `AbortController` must be added.
-
-```typescript
-// autosave_field_controller.ts
-private currentAbortController: AbortController | null = null;
-
-cancelAutosave() {  // Handler for autosave:cancel event
-  this.clearDebounce();
-  this.currentAbortController?.abort();
-  this.currentAbortController = null;
-}
-
-private async save() {
-  this.currentAbortController = new AbortController();
-  const response = await fetch(this.urlValue, {
-    signal: this.currentAbortController.signal,
-    // ...
-  });
-}
-```
+Since autosave already persists all changes automatically, the "Save" button is redundant and is the trigger that creates the race condition scenario described above (step T2). The button will be removed from the UI in a future release. Once removed, the race condition scenario itself can no longer occur.
 
 ## Rationale
 
-### Why Fix 1 is the top priority
+### Why only Fix 1 was adopted
 
-- It directly addresses the root cause of data loss (missing fields)
-- Consistent with the UX principle that autosave is a supplementary feature; silent failure immediately after a manual operation is acceptable
-- Clearly separates responsibilities: `SaveEntryService` (manual save) creates drafts, `BaseSaveFieldService` (autosave) only updates them
+- Fix 1 fully prevents data loss (creation of empty drafts)
+- Given the planned deprecation of the "Save" button, investing in additional defenses (pessimistic locking, frontend cancel) is unnecessary
+- Clarifying `BaseSaveFieldService` as autosave-only (update, not create) aligns with the post-deprecation design
 
-### Why Fix 2 was adopted
+### Why pessimistic locking was not adopted
 
-- Combined with Fix 1, it guarantees that autosave will find no draft after publish completes
-- Enforces operation ordering so that Fix 1's silent failure triggers at the right moment
-- PostgreSQL `SELECT FOR UPDATE` is available in the production environment with low adoption cost
+Fix 1 already prevents data loss. Locking would be excessive at this stage, and the race condition will be eliminated entirely once the "Save" button is removed.
 
-### Why Fix 3 was adopted
+### Why frontend autosave cancellation was not adopted
 
-- Reduces the probability of the race condition occurring by addressing it at the source (frontend)
-- Fixes 1 and 2 prevent damage when the race occurs; Fix 3 prevents the race from occurring at all — complementary layers of defense
+For the same reason. The scenario will be resolved structurally by removing the "Save" button, making the frontend change not worth the implementation cost.
 
 ### Why "copy published fields to a new draft" was not adopted
 
@@ -145,11 +91,9 @@ An alternative approach was considered: when autosave finds no draft after publi
 - A "save failed" status may appear in the autosave indicator immediately after a publish operation. This is expected behavior.
 - `BaseSaveFieldService`'s responsibility is clarified to "autosave only (update existing draft)".
 - `SaveEntryService` continues to handle both creation and updating of drafts (no change).
+- When the "Save" button is eventually removed, the draft creation logic in `SaveEntryService` will also need to be revisited.
 
 ## Related
 
-- `app/services/admin_area/contents/base_save_field_service.rb` — primary fix target
-- `app/services/admin_area/contents/publish_entry_service.rb` — lock addition target
-- `app/services/admin_area/contents/save_entry_service.rb` — no change (retains draft creation responsibility)
-- `app/frontend/controllers/autosave_field_controller.ts` — AbortController addition target
-- `app/frontend/controllers/autosave_form_controller.ts` — cancel handling addition target
+- `app/services/admin_area/contents/base_save_field_service.rb` — fix target
+- `app/services/admin_area/contents/save_entry_service.rb` — no change (to be revisited when "Save" button is removed)

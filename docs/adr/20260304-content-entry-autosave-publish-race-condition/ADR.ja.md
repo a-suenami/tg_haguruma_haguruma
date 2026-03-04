@@ -38,13 +38,9 @@ def find_or_create_draft_version
 end
 ```
 
-また、自動保存と公開処理の間に排他制御がなく、並列実行に対して無防備であった。
-
 ## 決定
 
-以下の3層の防御策を実装する。
-
-### 修正1: `BaseSaveFieldService` — 自動保存は既存ドラフトの更新のみに限定
+### 修正1（今回の対応）: `BaseSaveFieldService` — 自動保存は既存ドラフトの更新のみに限定
 
 `find_or_create_draft_version` をドラフトが存在しない場合に新規作成しないよう変更する。ドラフトが見つからない場合はエラーを返してトランザクションをロールバックする（サイレント失敗）。
 
@@ -62,75 +58,25 @@ end
 
 新規ドラフトの作成は、管理者が手動で「保存」ボタンを押した場合（`SaveEntryService`）のみ許可する。
 
-### 修正2: 悲観的ロック（Pessimistic Lock）の追加
+### 今後の方針: 「保存」ボタンの廃止
 
-`BaseSaveFieldService` と `PublishEntryService` のトランザクション開始直後に `content_entry.lock!`（PostgreSQL の `SELECT FOR UPDATE`）を追加する。
-
-```ruby
-# BaseSaveFieldService#call
-ActiveRecord::Base.transaction do
-  @content_entry.lock!
-  version = find_draft_version_or_fail
-  # ...
-end
-
-# PublishEntryService#call
-ActiveRecord::Base.transaction do
-  @content_entry.lock!
-  draft_version = find_draft_version
-  # ...
-end
-```
-
-**効果:**
-- 公開処理中 → autosave はロック取得まで待機 → 公開完了後にロック取得 → ドラフトなし → 修正1によりサイレント失敗
-- autosave 中 → 公開処理はロック取得まで待機 → autosave 完了後に公開実行 → 正常に公開
-
-本修正は PostgreSQL の行レベルロックを前提とする（本番・ステージング環境ともに PostgreSQL を使用していることを確認済み）。
-
-### 修正3: フロントエンド — 「保存」「公開」ボタン押下時に autosave をキャンセル
-
-「保存」「公開」ボタン押下時に `autosave:cancel` カスタムイベントを dispatch し、各 autosave コントローラーがデバウンスタイマーのクリアと進行中の fetch リクエストのキャンセルを行う。
-
-現状の `autosave_field_controller.ts` は `fetch()` に `AbortController` を使用していないため、リクエスト送信後はキャンセル不可能である。`AbortController` を追加して in-flight リクエストもキャンセルできるようにする。
-
-```typescript
-// autosave_field_controller.ts
-private currentAbortController: AbortController | null = null;
-
-cancelAutosave() {  // autosave:cancel イベントのハンドラ
-  this.clearDebounce();
-  this.currentAbortController?.abort();
-  this.currentAbortController = null;
-}
-
-private async save() {
-  this.currentAbortController = new AbortController();
-  const response = await fetch(this.urlValue, {
-    signal: this.currentAbortController.signal,
-    // ...
-  });
-}
-```
+autosave がすべての変更を自動的に保存しているため、「保存」ボタンは冗長であり、本バグのレース・コンディションを引き起こすトリガーにもなっている。長期的には「保存」ボタンを UI から削除する予定である。削除後は本バグのシナリオ（T2 の手動保存操作）自体が発生しなくなる。
 
 ## 理由
 
-### 修正1を最優先とした理由
+### 修正1のみを採用した理由
 
-- データ消失（フィールドの欠落）を直接引き起こす根本原因への対処
-- 「autosave はあくまで補助機能であり、手動操作の直後にサイレント失敗しても許容できる」という UX 方針と一致する
-- `SaveEntryService`（手動保存）と `BaseSaveFieldService`（autosave）の責務が明確に分離される
+- 修正1によりデータ消失（空ドラフトの作成）は完全に防止できる
+- 「保存」ボタンを将来的に廃止する方針のため、追加の防御策（悲観的ロック、フロントエンドキャンセル）に投資する必要がない
+- autosave 専用サービスとして責務を明確化することは、ボタン廃止後の設計にも合致する
 
-### 修正2を採用した理由
+### 悲観的ロックを採用しなかった理由
 
-- 修正1と組み合わせることで「autosave が公開後にドラフトを見つけられない」という状態を確実に作り出せる
-- 処理順序が保証されるため、修正1のサイレント失敗が正しいタイミングで発生する
-- PostgreSQL の `SELECT FOR UPDATE` は本番環境で利用可能であり、導入コストが低い
+修正1によりデータ消失は防止できるため、現時点では過剰な対応となる。また「保存」ボタン廃止後はレース・コンディション自体が発生しなくなる。
 
-### 修正3を採用した理由
+### フロントエンドでの autosave キャンセルを採用しなかった理由
 
-- レース・コンディションの発生確率を発生源（フロントエンド）で低減する多層防御
-- バックエンドの修正（1・2）は「発生した際の被害を防ぐ」、フロントエンドの修正（3）は「そもそも発生させない」という補完的な関係
+同上。「保存」ボタン廃止により根本的に解消される予定のため、実装コストに見合わない。
 
 ### 「公開済みから新規ドラフトをコピーする」アプローチを採用しなかった理由
 
@@ -145,11 +91,9 @@ autosave が公開後に published version をコピーして新規ドラフト�
 - autosave 中に「保存失敗」のステータスが表示される場合がある（公開操作直後）。これは正常な動作である。
 - `BaseSaveFieldService` の責務が「autosave 専用（更新のみ）」に明確化される。
 - `SaveEntryService` は引き続き新規ドラフト作成・更新の両方を担う（変更なし）。
+- 今後「保存」ボタンを廃止する際は、`SaveEntryService` の新規ドラフト作成ロジックの見直しも伴う。
 
 ## 関連
 
-- `app/services/admin_area/contents/base_save_field_service.rb` — 修正対象（メイン）
-- `app/services/admin_area/contents/publish_entry_service.rb` — ロック追加対象
-- `app/services/admin_area/contents/save_entry_service.rb` — 変更なし（ドラフト作成の責務を維持）
-- `app/frontend/controllers/autosave_field_controller.ts` — AbortController 追加対象
-- `app/frontend/controllers/autosave_form_controller.ts` — キャンセル対応追加対象
+- `app/services/admin_area/contents/base_save_field_service.rb` — 修正対象
+- `app/services/admin_area/contents/save_entry_service.rb` — 変更なし（「保存」ボタン廃止時に見直し予定）
