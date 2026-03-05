@@ -11,24 +11,7 @@ export default class extends Controller {
   declare readonly submitBtnTarget: HTMLButtonElement;
 
   connect() {
-    // Ensure controller initializes properly on both full page load and Turbo navigation
-    console.log('MediaUploadController connected');
-    // Reset to initial state in case Turbo is restoring from cache
-    this.resetToInitialState();
-  }
-
-  disconnect() {
-    console.log('MediaUploadController disconnected');
-  }
-
-  private resetToInitialState() {
-    // Clear any previous file selection
-    this.fileInputTarget.value = '';
-    // Ensure upload area is visible and preview is hidden
-    this.uploadAreaTarget.style.display = '';
-    this.filePreviewTarget.style.display = 'none';
-    // Disable submit button until file is selected
-    this.submitBtnTarget.disabled = true;
+    this.clearFile();
   }
 
   dragover(event: DragEvent) {
@@ -60,6 +43,7 @@ export default class extends Controller {
 
   clearFile() {
     this.fileInputTarget.value = '';
+    this.uploadAreaTarget.classList.remove('dragover');
     this.uploadAreaTarget.style.display = '';
     this.filePreviewTarget.style.display = 'none';
     this.submitBtnTarget.disabled = true;
