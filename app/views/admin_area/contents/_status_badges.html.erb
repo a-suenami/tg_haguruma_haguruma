@@ -1,0 +1,18 @@
+<%# locals: (entry:) %>
+<%
+  has_published = entry.versions.any?(&:published?)
+  has_draft = entry.versions.any?(&:draft?)
+  has_unpublished = entry.versions.any?(&:unpublished?)
+%>
+<div class="status-tags">
+  <% if has_published %>
+    <span class="status-tag status-tag-published">公開中</span>
+  <% elsif has_unpublished %>
+    <span class="status-tag status-tag-hidden">非公開</span>
+  <% else %>
+    <span class="status-tag status-tag-unpublished">未公開</span>
+  <% end %>
+  <% if has_draft %>
+    <span class="status-tag status-tag-draft">下書きあり</span>
+  <% end %>
+</div>
