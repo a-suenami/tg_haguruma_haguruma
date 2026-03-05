@@ -10,6 +10,10 @@ export default class extends Controller {
   declare readonly metaTarget: HTMLElement;
   declare readonly submitBtnTarget: HTMLButtonElement;
 
+  connect() {
+    this.clearFile();
+  }
+
   dragover(event: DragEvent) {
     event.preventDefault();
     this.uploadAreaTarget.classList.add('dragover');
@@ -39,6 +43,7 @@ export default class extends Controller {
 
   clearFile() {
     this.fileInputTarget.value = '';
+    this.uploadAreaTarget.classList.remove('dragover');
     this.uploadAreaTarget.style.display = '';
     this.filePreviewTarget.style.display = 'none';
     this.submitBtnTarget.disabled = true;
