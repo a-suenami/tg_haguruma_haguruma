@@ -170,10 +170,13 @@ module AdminArea
       def save_richtext_field(field, value)
         # Richtext value should be Lexical JSON from editor
         richtext_value = if value.is_a?(String)
-          JSON.parse(value)
+          parsed = JSON.parse(value)
+          parsed.is_a?(Hash) ? parsed : nil
         else
           value
         end
+
+        return if richtext_value.blank?
 
         if field.richtext
           T.must(field.richtext).update!(value: richtext_value)

@@ -66,14 +66,14 @@
 
   <% when 'richtext' %>
     <div data-controller="react-lexical"
-         data-react-lexical-initial-content-value="<%= html_escape(value.to_json) %>"
+         data-react-lexical-initial-content-value="<%= value.present? ? html_escape(value.to_json) : '' %>"
          data-react-lexical-placeholder-value="内容を入力してください..."
          data-react-lexical-hidden-field-id-value="fields_<%= field.api_identifier %>">
     </div>
     <input type="hidden"
            name="fields[<%= field.api_identifier %>]"
            id="fields_<%= field.api_identifier %>"
-           value="<%= value.to_json %>"
+           value="<%= value.present? ? value.to_json : '' %>"
            data-autosave-field-target="input">
 
   <% when 'media_asset' %>
