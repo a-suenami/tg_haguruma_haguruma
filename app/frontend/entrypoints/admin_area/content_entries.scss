@@ -30,7 +30,7 @@
     padding: 8px;
     font-size: 18px;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-md);
 }
 
 /* モバイル用オーバーレイ */
@@ -210,12 +210,12 @@
     background: white;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
     border: 1px solid #f1f5f9;
 }
 
 .content-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-md);
 }
 
 /* カードヘッダー */
@@ -321,7 +321,7 @@
     background: white;
     border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
 }
 
 .single-content-header {
@@ -409,7 +409,7 @@
     border-radius: 5px;
     line-height: 1;
     font-weight: 600;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-sm);
     position: relative;
     overflow: hidden;
     white-space: nowrap;
@@ -511,6 +511,16 @@
     color: #0369a1;
 }
 
+.status-tag-unpublished {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.status-tag-hidden {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
 /* 無効状態 */
 .action-disabled {
     color: #94a3b8;
@@ -529,7 +539,7 @@
     background: white;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
     border: 1px solid #f1f5f9;
     text-decoration: none;
     color: inherit;
@@ -537,7 +547,7 @@
 }
 
 .content-type-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-md);
     border-color: #6366f1;
 }
 
@@ -1768,7 +1778,7 @@
     max-height: 80vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--shadow-lg);
 }
 
 .media-library-modal-header {
@@ -1844,13 +1854,13 @@
     border-radius: 8px;
     overflow: hidden;
     background: var(--card-background, #fff);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .media-library-item:hover {
     border-color: var(--border-color, #e2e8f0);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
 }
 
 .media-library-item.selected {
@@ -2212,7 +2222,7 @@
     background: white;
     border: 1px solid var(--border-color, #e2e8f0);
     border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
     z-index: 100;
     max-height: 200px;
     overflow-y: auto;

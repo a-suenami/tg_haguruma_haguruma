@@ -34,15 +34,11 @@
       </div>
     </header>
 
-    <!-- バージョンタブ -->
-    <div class="version-tabs">
-      <%= link_to admin_area_contents_singleton_entry_path(content_type_id: @content_type.id), class: "version-tab #{'disabled' unless @published_version}" do %>
-        公開中
-      <% end %>
-      <%= link_to edit_admin_area_contents_singleton_entry_path(content_type_id: @content_type.id), class: 'version-tab active' do %>
-        編集中
-      <% end %>
-    </div>
+    <%= render 'admin_area/contents/version_tabs',
+      show_path: admin_area_contents_singleton_entry_path(content_type_id: @content_type.id),
+      edit_path: edit_admin_area_contents_singleton_entry_path(content_type_id: @content_type.id),
+      active_tab: :edit,
+      published_version: @published_version %>
 
     <% if flash[:notice].present? %>
       <div class="alert alert-success">

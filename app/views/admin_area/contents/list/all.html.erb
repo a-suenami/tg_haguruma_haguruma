@@ -41,15 +41,7 @@
                             <div class="card-header">
                                 <div class="card-header-top">
                                     <span class="card-content-type"><%= entry.content_type.display_name %></span>
-                                    <div class="status-tags">
-                                        <% if latest_version.published? %>
-                                            <span class="status-tag status-tag-published">公開中</span>
-                                        <% elsif latest_version.draft? %>
-                                            <span class="status-tag status-tag-draft">編集中</span>
-                                        <% elsif latest_version.preview? %>
-                                            <span class="status-tag status-tag-preview">プレビュー</span>
-                                        <% end %>
-                                    </div>
+                                    <%= render 'admin_area/contents/status_badges', entry: entry %>
                                 </div>
                                 <h3 class="card-title">
                                     <% title_field = ContentEntry::Field.joins(:content_type_field).find_by(
