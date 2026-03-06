@@ -84,21 +84,35 @@ class LexicalJsonValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return if value.blank?
 
+    # Ensure value is a Hash (jsonb column may pass a JSON string)
+    parsed_value = if value.is_a?(String)
+      begin
+        JSON.parse(value)
+      rescue JSON::ParserError
+        record.errors.add(attribute, :invalid_json, message: options[:message] || 'is not valid JSON')
+        return
+      end
+    else
+      value
+    end
+
+    return unless parsed_value.is_a?(Hash)
+
     # Check for ProseMirror format
-    if prosemirror_format?(value)
+    if prosemirror_format?(parsed_value)
       record.errors.add(attribute, :prosemirror_format, message: options[:prosemirror_message] || 'ProseMirror format is not accepted. Please use Lexical format.')
       return
     end
 
     # Validate against JSON Schema
-    schema_errors = JSON::Validator.fully_validate(SCHEMA.deep_stringify_keys, value)
+    schema_errors = JSON::Validator.fully_validate(SCHEMA.deep_stringify_keys, parsed_value)
     if schema_errors.any?
       record.errors.add(attribute, :invalid_lexical_structure, message: options[:message] || "is not a valid Lexical JSON structure: #{schema_errors.first}")
       return
     end
 
     # Validate node types
-    unknown_types = collect_unknown_node_types(value)
+    unknown_types = collect_unknown_node_types(parsed_value)
     if unknown_types.any?
       record.errors.add(attribute, :unknown_node_types, message: options[:node_type_message] || "contains unknown node types: #{unknown_types.join(', ')}")
     end
