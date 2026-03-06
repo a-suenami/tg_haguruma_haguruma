@@ -96,7 +96,10 @@ class LexicalJsonValidator < ActiveModel::EachValidator
       value
     end
 
-    return unless parsed_value.is_a?(Hash)
+    unless parsed_value.is_a?(Hash)
+      record.errors.add(attribute, :invalid_type, message: options[:message] || 'must be a JSON object')
+      return
+    end
 
     # Check for ProseMirror format
     if prosemirror_format?(parsed_value)

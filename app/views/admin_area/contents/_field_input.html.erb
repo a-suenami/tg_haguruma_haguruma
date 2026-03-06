@@ -67,14 +67,14 @@
   <% when 'richtext' %>
     <% richtext_json = value.present? ? (value.is_a?(String) ? value : value.to_json) : '' %>
     <div data-controller="react-lexical"
-         data-react-lexical-initial-content-value="<%= richtext_json.present? ? html_escape(richtext_json) : '' %>"
+         data-react-lexical-initial-content-value="<%= html_escape(richtext_json) %>"
          data-react-lexical-placeholder-value="内容を入力してください..."
          data-react-lexical-hidden-field-id-value="fields_<%= field.api_identifier %>">
     </div>
     <input type="hidden"
            name="fields[<%= field.api_identifier %>]"
            id="fields_<%= field.api_identifier %>"
-           value="<%= richtext_json %>"
+           value="<%= html_escape(richtext_json) %>"
            data-autosave-field-target="input">
 
   <% when 'media_asset' %>
