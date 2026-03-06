@@ -85,15 +85,15 @@ class LexicalJsonValidator < ActiveModel::EachValidator
     return if value.blank?
 
     # Ensure value is a Hash (jsonb column may pass a JSON string)
-    parsed_value = if value.is_a?(String)
+    if value.is_a?(String)
       begin
-        JSON.parse(value)
+        parsed_value = JSON.parse(value)
       rescue JSON::ParserError
         record.errors.add(attribute, :invalid_json, message: options[:message] || 'is not valid JSON')
         return
       end
     else
-      value
+      parsed_value = value
     end
 
     unless parsed_value.is_a?(Hash)
