@@ -168,12 +168,9 @@ module AdminArea
 
       sig { params(field: ContentEntry::Field, value: T.untyped).void }
       def save_richtext_field(field, value)
-        # Richtext value should be Lexical JSON from editor
-        richtext_value = if value.is_a?(String)
-          JSON.parse(value)
-        else
-          value
-        end
+        richtext_value = parse_richtext_value(value)
+
+        return if richtext_value.blank?
 
         if field.richtext
           T.must(field.richtext).update!(value: richtext_value)
@@ -226,6 +223,20 @@ module AdminArea
           field.select = field_select
         end
         field.save!
+      end
+
+      sig { params(value: T.untyped).returns(T.nilable(T::Hash[String, T.untyped])) }
+      def parse_richtext_value(value)
+        if value.is_a?(String)
+          begin
+            parsed = JSON.parse(value)
+            parsed.is_a?(Hash) ? parsed : nil
+          rescue JSON::ParserError
+            nil
+          end
+        else
+          value.is_a?(Hash) ? value : nil
+        end
       end
 
       sig { params(entry: ContentEntry, version: ContentEntry::Version).void }
