@@ -112,12 +112,12 @@ S3を信頼のソースとして、Cloudflareへは非同期で転送する設�
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │  ┌─────────────────────┐    ┌──────────────────────────────┐    │
-│  │ MediaStorage::      │    │ MediaAsset                   │    │
+│  │ MediaAsset::         │    │ MediaAsset                   │    │
 │  │ Uploader            │───▶│ metadata:                    │    │
-│  │ (S3アップロード)     │    │   - s3_object_path           │    │
-│  └─────────────────────┘    │   - cloudflare_sync_status   │    │
-│           │                 │   - cloudflare_uid           │    │
-│           │ 動画の場合       └──────────────────────────────┘    │
+│  │ (S3アップロード)     │    │   - cloudflare_sync_status   │    │
+│  └─────────────────────┘    │   - cloudflare_uid           │    │
+│           │                 └──────────────────────────────┘    │
+│           │ 動画の場合                                          │
 │           ▼                                                      │
 │  ┌─────────────────────┐                                        │
 │  │ CloudflareStream::  │                                        │
@@ -137,11 +137,11 @@ S3を信頼のソースとして、Cloudflareへは非同期で転送する設�
 
 ### 1. 動画アップロードフロー（既存フローを拡張）
 
-既存の `MediaStorage::Uploader#upload` を使用するだけで、自動的に Cloudflare 同期がエンキューされます。
+既存の `MediaAsset::Uploader#upload` を使用するだけで、自動的に Cloudflare 同期がエンキューされます。
 
 ```ruby
 # 既存のアップロード処理（変更不要）
-uploader = MediaStorage::Uploader.new
+uploader = MediaAsset::Uploader.new
 result = uploader.upload(file: uploaded_file, tenant_id: current_tenant.id)
 
 # 返却される MediaAsset には以下の metadata が含まれる:
@@ -264,8 +264,8 @@ CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=your_subdomain  # 例: a1b2c3d4
 ### 画像は引き続きCloudFront
 
 ```ruby
-# MediaStorage::Uploader を拡張
-class MediaStorage::Uploader
+# MediaAsset::Uploader を拡張
+class MediaAsset::Uploader
   def upload(file:, tenant_id:)
     media_type = MediaAsset.detect_media_type(file.content_type)
 

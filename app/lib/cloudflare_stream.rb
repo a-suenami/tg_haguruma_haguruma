@@ -447,8 +447,8 @@ module CloudflareStream
     sig { void }
     def initialize
       @client = T.let(Client.new, Client)
-      @s3_client = T.let(MediaStorage::S3Client.new, MediaStorage::S3Client)
-      @cloudfront_signer = T.let(MediaStorage::CloudFrontSigner.new, MediaStorage::CloudFrontSigner)
+      @s3_client = T.let(MediaAsset::S3Client.new, MediaAsset::S3Client)
+      @cloudfront_signer = T.let(MediaAsset::CloudFrontSigner.new, MediaAsset::CloudFrontSigner)
     end
 
     # S3にアップロード済みの動画をCloudflare Streamに転送
@@ -457,15 +457,15 @@ module CloudflareStream
     # @return [Hash] { success:, cloudflare_uid:, errors: }
     sig { params(media_asset: MediaAsset).returns(T::Hash[Symbol, T.untyped]) }
     def sync_to_cloudflare(media_asset)
-      s3_object_path = media_asset.metadata['s3_object_path']
-      return { success: false, errors: ['s3_object_path not found'] } unless s3_object_path
+      s3_object_path = media_asset.s3_object_path
+      return { success: false, errors: ['s3_object_path not found'] } if s3_object_path.blank?
 
       # S3の署名付きURLを生成（Cloudflareがフェッチできるように長めの有効期限）
       s3_signed_url = generate_s3_presigned_url(s3_object_path)
 
       meta = {
         media_asset_id: media_asset.id,
-        filename: media_asset.metadata['filename'],
+        filename: media_asset.original_filename,
         tenant_id: media_asset.tenant_id,
         original_s3_path: s3_object_path,
       }
@@ -562,7 +562,7 @@ module CloudflareStream
       else
         # Cloudflare未同期の場合はCloudFrontから配信
         s3_object_path = media_asset.metadata['s3_object_path']
-        @cloudfront_signer.signed_url(s3_object_path, purpose: :public, media_type: :video)
+        @cloudfront_signer.signed_url(s3_object_path, media_type: :video)
       end
     end
 
@@ -570,13 +570,7 @@ module CloudflareStream
 
     sig { params(s3_object_path: String).returns(String) }
     def generate_s3_presigned_url(s3_object_path)
-      signer = Aws::S3::Presigner.new(client: @s3_client.client)
-      signer.presigned_url(
-        :get_object,
-        bucket: @s3_client.bucket_name,
-        key: s3_object_path,
-        expires_in: 1.hour.to_i, # Cloudflareがフェッチする時間を考慮
-      )
+      @s3_client.presigned_url(s3_object_path, expires_in: 1.hour.to_i)
     end
   end
 
