@@ -51,6 +51,16 @@ class MediaAsset::S3Client
     )
   end
 
+  sig { params(source_key: String, destination_key: String).returns(String) }
+  def copy(source_key:, destination_key:)
+    client.copy_object(
+      bucket: bucket_name,
+      copy_source: "#{bucket_name}/#{source_key}",
+      key: destination_key,
+    )
+    destination_key
+  end
+
   sig { params(key: String, expires_in: Integer).returns(String) }
   def presigned_url(key, expires_in: 3600)
     # presigned URLは外部公開用エンドポイントで署名する必要がある

@@ -1,0 +1,10 @@
+create_table :tenant_basic_auths, force: :cascade, id: :uuid, default: -> { 'gen_random_uuid()' } do |t|
+  t.string :tenant_id, null: false
+
+  t.boolean :enabled, null: false, default: false
+
+  t.timestamps null: false
+end
+
+add_index :tenant_basic_auths, [:tenant_id], unique: true
+add_foreign_key :tenant_basic_auths, :tenants, column: :tenant_id, primary_key: :id

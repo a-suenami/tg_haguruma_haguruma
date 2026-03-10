@@ -1,6 +1,15 @@
 [cog-detail-fragment-toolbar] {
   display: flex;
-  justify-content: flex-start;
-  gap: var(--gearbox-spacing-10);
+  justify-content: space-between;
+  gap: var(--gearbox-spacing-8);
   align-items: center;
+  & + [cog-detail-fragment-toolbar] {
+    margin-top: 8px;
+  }
+  .thumbnail {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 12px;
+  }
 }

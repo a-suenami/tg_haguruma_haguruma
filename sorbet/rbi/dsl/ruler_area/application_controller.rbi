@@ -26,9 +26,15 @@ class RulerArea::ApplicationController
     include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
     include ::RulerArea::ApplicationHelper
+    include ::AdminArea::PreviewHelper
+    include ::Pagy::UrlHelpers
+    include ::Pagy::Frontend
     include ::ApplicationHelper
     include ::LexicalHelper
     include ::SvgHelper
+    include ::UserArea::ContentFieldHelper
+    include ::UserArea::CustomVariablesHelper
+    include ::UserArea::ExternalUrlsHelper
     include ::UserArea::SiteSettingsHelper
 
     sig { returns(T.untyped) }

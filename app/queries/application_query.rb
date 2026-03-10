@@ -19,7 +19,7 @@ class ApplicationQuery
     extend T::Sig
 
     # Enable class method chaining by delegating to a new instance
-    # rubocop:disable Style/ArgumentsForwarding, Naming/BlockForwarding
+    # rubocop:disable Style/ArgumentsForwarding
     sig { params(method_name: Symbol, args: T.untyped, block: T.nilable(T.proc.void)).returns(T.untyped) }
     def method_missing(method_name, *args, &block)
       instance = new
@@ -29,7 +29,7 @@ class ApplicationQuery
         super
       end
     end
-    # rubocop:enable Style/ArgumentsForwarding, Naming/BlockForwarding
+    # rubocop:enable Style/ArgumentsForwarding
 
     sig { params(method_name: Symbol, include_private: T::Boolean).returns(T::Boolean) }
     def respond_to_missing?(method_name, include_private = false)

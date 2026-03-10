@@ -38,6 +38,7 @@ module AdminArea
               fields_params:,
               authorization_tag_ids: authorization_tag_ids_params,
               visibility: visibility_param,
+              custom_published_at: custom_published_at_param,
             ).call
 
             if result.success
@@ -61,6 +62,7 @@ module AdminArea
               fields_params:,
               authorization_tag_ids: authorization_tag_ids_params,
               visibility: visibility_param,
+              custom_published_at: custom_published_at_param,
             ).call
 
             if result.success

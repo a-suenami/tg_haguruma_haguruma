@@ -1,33 +1,61 @@
+<%# Footer uses configurable footer_main_links and footer_sub_links %>
 <footer cog-footer>
-  <nav cog-footer-menu>
-    <a cog-footer-menu-item href="<%= user_area_root_path %>">TOP</a>
-    <% if feature_enabled?(:news) %>
-      <a cog-footer-menu-item href="<%= user_area_news_index_path %>"><%= feature_label(:news, :menu_label) %></a>
-    <% end %>
-    <% if feature_enabled?(:blog) %>
-      <a cog-footer-menu-item href="<%= user_area_blog_index_path %>"><%= feature_label(:blog, :menu_label) %></a>
-    <% end %>
-    <% if feature_enabled?(:schedule) %>
-      <a cog-footer-menu-item href="<%= user_area_schedules_path %>"><%= feature_label(:schedule, :menu_label) %></a>
-    <% end %>
-    <a cog-footer-menu-item href="#">MYPAGE</a>
-  </nav>
+  <%# PC Footer - visible on large screens %>
+  <div class="browser">
+    <nav cog-footer-menu>
+      <% current_site_settings.ordered_footer_main_links(device: :pc).each do |link| %>
+        <% next if link['is_logout'] && !user_signed_in? %>
+        <% if link['is_logout'] %>
+          <%= form_with url: user_area_logout_path, method: :delete, data: { turbo: false }, class: 'logout-form-inline' do %>
+            <button type="submit" cog-footer-menu-item><%= link['label'] %></button>
+          <% end %>
+        <% else %>
+          <a cog-footer-menu-item href="<%= link['url'] %>"><%= link['label'] %></a>
+        <% end %>
+      <% end %>
+    </nav>
 
-  <div cog-legal-links>
-    <a cog-legal-link href="#">利用規約・チケット規約</a>
-    <a cog-legal-link href="#">個人情報の取り扱いについて</a>
-    <a cog-legal-link href="#">サイトポリシー</a>
-    <a cog-legal-link href="#">特定商取引法に基づく表記</a>
-    <a cog-legal-link href="#">FAQ / お問い合わせ</a>
+    <% sub_links = current_site_settings.ordered_footer_sub_links(device: :pc) %>
+    <% if sub_links.any? %>
+      <div cog-legal-links>
+        <% sub_links.each do |link| %>
+          <a cog-legal-link href="<%= link['url'] %>"><%= link['label'] %></a>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# SP Footer - visible on small screens %>
+  <div class="mobile">
+    <nav cog-footer-menu>
+      <% current_site_settings.ordered_footer_main_links(device: :sp).each do |link| %>
+        <% next if link['is_logout'] && !user_signed_in? %>
+        <% if link['is_logout'] %>
+          <%= form_with url: user_area_logout_path, method: :delete, data: { turbo: false }, class: 'logout-form-inline' do %>
+            <button type="submit" cog-footer-menu-item><%= link['label'] %></button>
+          <% end %>
+        <% else %>
+          <a cog-footer-menu-item href="<%= link['url'] %>"><%= link['label'] %></a>
+        <% end %>
+      <% end %>
+    </nav>
+
+    <% sub_links_sp = current_site_settings.ordered_footer_sub_links(device: :sp) %>
+    <% if sub_links_sp.any? %>
+      <div cog-legal-links>
+        <% sub_links_sp.each do |link| %>
+          <a cog-legal-link href="<%= link['url'] %>"><%= link['label'] %></a>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <div cog-sns-items>
-    <a cog-sns-item type="x" href="#" target="_blank" rel="noopener"></a>
-    <a cog-sns-item type="instagram" href="#" target="_blank" rel="noopener"></a>
-    <a cog-sns-item type="youtube" href="#" target="_blank" rel="noopener"></a>
+    <a cog-sns-item href="<%= sns_x_url %>" target="_blank" rel="noopener"><%= icon_svg('sns-x') %></a>
+    <a cog-sns-item href="<%= sns_instagram_url %>" target="_blank" rel="noopener"><%= icon_svg('sns-instagram') %></a>
   </div>
 
   <div cog-copyright>
-    &copy; <%= Time.current.year %> <%= current_tenant&.name || 'Fan Club' %>
+    &copy; Office TERAJIMA Inc.
   </div>
 </footer>

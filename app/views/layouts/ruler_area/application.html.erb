@@ -34,6 +34,9 @@
             <li class="<%= 'uk-active' if controller_name == 'rulers' %>">
               <%= link_to 'Ruler管理', ruler_area_rulers_path %>
             </li>
+            <li class="<%= 'uk-active' if controller_name == 'global_feature_flags' %>">
+              <%= link_to '機能フラグ', ruler_area_global_feature_flags_path %>
+            </li>
             <li><a href="#">SIDEKIQ</a></li>
             <li><a href="#">マスタ</a></li>
           </ul>
@@ -106,6 +109,15 @@
                 <span class="uk-badge uk-margin-small-left">準備中</span>
               <% end %>
             </li>
+            <li class="<%= 'uk-active' if controller_name == 'basic_auths' %>">
+              <%= link_to 'Basic認証', ruler_area_tenant_basic_auth_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'custom_variables' %>">
+              <%= link_to 'カスタム変数設定', ruler_area_tenant_custom_variables_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'tag_settings' %>">
+              <%= link_to '計測タグ設定', ruler_area_tenant_tag_setting_path(@tenant) %>
+            </li>
           </ul>
 
           <ul class="uk-nav uk-nav-default rl-nav uk-margin-small">
@@ -116,6 +128,9 @@
             </li>
             <li class="<%= 'uk-active' if controller_name == 'authorization_tags' %>">
               <%= link_to '認可タグ', ruler_area_tenant_authorization_tags_path(@tenant) %>
+            </li>
+            <li class="<%= 'uk-active' if controller_name == 'feature_flags' %>">
+              <%= link_to '機能フラグ', ruler_area_tenant_feature_flags_path(@tenant) %>
             </li>
           </ul>
 

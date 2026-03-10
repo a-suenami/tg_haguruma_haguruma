@@ -1,57 +1,10 @@
 <%= form_with model: @site_setting, url: ruler_area_tenant_site_setting_path(@tenant), method: :patch, local: true, scope: :site_setting do |form| %>
-  <div class="uk-card uk-card-default uk-card-body uk-margin">
-    <h4 class="uk-card-title">認証ボタンラベル</h4>
+  <%= render 'ruler_area/shared/form_error', target: @site_setting %>
 
-    <div class="uk-margin">
-      <%= form.label :login_label, 'ログインボタン', class: 'uk-form-label' %>
-      <div class="uk-form-controls">
-        <%= form.text_field :login_label, class: 'uk-input', placeholder: 'ログイン' %>
-      </div>
-    </div>
-
-    <div class="uk-margin">
-      <%= form.label :signup_label, '新規登録ボタン', class: 'uk-form-label' %>
-      <div class="uk-form-controls">
-        <%= form.text_field :signup_label, class: 'uk-input', placeholder: '新規会員登録' %>
-      </div>
-    </div>
-  </div>
-
-  <div class="uk-card uk-card-default uk-card-body uk-margin">
-    <h4 class="uk-card-title">機能設定</h4>
-
-    <% TenantSiteSettings::DEFAULT_FEATURES.each do |key, defaults| %>
-      <% feature = @site_setting.send(:merged_features)[key] %>
-      <div class="uk-card uk-card-secondary uk-card-body uk-margin-small">
-        <h5><%= key.upcase %></h5>
-
-        <div class="uk-grid-small uk-child-width-1-3@m" uk-grid>
-          <div>
-            <label class="uk-form-label">
-              <%= form.check_box "features[#{key}][enabled]",
-                  { checked: feature['enabled'] },
-                  'true', 'false' %>
-              有効
-            </label>
-          </div>
-          <div>
-            <%= form.label "features[#{key}][label]", 'ラベル', class: 'uk-form-label' %>
-            <%= form.text_field "features[#{key}][label]",
-                value: feature['label'],
-                class: 'uk-input uk-form-small',
-                placeholder: defaults['label'] %>
-          </div>
-          <div>
-            <%= form.label "features[#{key}][menu_label]", 'メニューラベル', class: 'uk-form-label' %>
-            <%= form.text_field "features[#{key}][menu_label]",
-                value: feature['menu_label'],
-                class: 'uk-input uk-form-small',
-                placeholder: defaults['menu_label'] %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
+  <%= render 'form_auth_labels', form: form %>
+  <%= render 'form_pc_features' %>
+  <%= render 'form_sp_menu' %>
+  <%= render 'form_footer_links' %>
 
   <div class="uk-margin">
     <%= form.submit '保存', class: 'uk-button uk-button-primary' %>

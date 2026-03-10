@@ -6,7 +6,7 @@
 
 require_relative '../../tenant_domain_helper'
 
-tenant_id = 'yokikotokiku'
+tenant_id = TenantDomainHelper.tenant_id_for('yokikotokiku')
 
 if Tenant.exists?(id: tenant_id)
   puts "  Tenant: #{tenant_id} (already exists, skipping)"

@@ -8,76 +8,154 @@
 <main class="main">
   <section cog-landing-hero-image-section>
     <div cog-landing-hero-image>
-      <% if @kv_image_url %>
-        <img src="<%= @kv_image_url %>" alt="<%= current_tenant&.name || '' %>">
+      <% if @kv_pc_image_url || @kv_sp_image_url %>
+        <picture>
+          <% if @kv_sp_image_url %>
+            <%# FIXME(#14): width/heightを動的に設定 %>
+            <source media="(max-width: 767px)" srcset="<%= @kv_sp_image_url %>" width=390 height=420>
+          <% end %>
+          <img src="<%= @kv_pc_image_url || @kv_sp_image_url %>" alt="<%= current_tenant&.name || '' %>" width=1440 height=600>
+        </picture>
       <% else %>
         <img src="https://placehold.co/1920x1080/333333/666666?text=Hero+Image" alt="Hero Image">
       <% end %>
     </div>
   </section>
 
+  <% unless user_signed_in? %>
+    <section cog-landing-introduction>
+      <div class="introduction-content">
+        <a href="<%= user_area_privilege_path %>" class="primary-action">
+          <span class="action-text">入会のご案内</span>
+          <span class="action-icon"><%= icon_svg('right-arrow') %></span>
+        </a>
+        <% if custom_variables.enabled?('signup_flow') %>
+          <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
+            既にご入会済みの方はこちら
+          </a>
+        <% else %>
+          <p class="pre-open-notice">
+            2026/2/12 12:00より受付を開始いたします。<br/>
+            受付開始までお待ちください
+          </p>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
   <div class="main-content">
-    <% unless user_signed_in? %>
+
+    <% if @news_entries.present? %>
       <section cog-landing-section>
+        <div cog-landing-section-title>
+          <div cog-feature-title-image feature="news">
+            <div class="title-image"><%= feature_label(:news) %></div>
+          </div>
+        </div>
         <div cog-landing-section-content>
-          <div cog-landing-section-actions>
-            <a href="<%= user_area_auth_start_path %>" cog-button filled class="action-button">
-              <span><%= login_label %></span>
-            </a>
-            <a href="<%= user_area_auth_start_path %>" cog-button outlined class="action-button">
-              <span><%= signup_label %></span>
-            </a>
+          <div cog-news-list overview>
+            <div class="list">
+              <% @news_entries.each_with_index do |entry, i| %>
+                <% version = published_version(entry) %>
+                <% next if version.nil? %>
+                <a href="<%= user_area_news_path(entry) %>" cog-news-item>
+                <div class="header">
+                  <div class="date">
+                    <span cog-date-label><%= format_content_date(entry.display_publication_date) %></span>
+                  </div>
+                  <% category_field = field_by_identifier(version, 'category') %>
+                  <% category_option = selected_option(category_field) %>
+                  <div class="category">
+                    <% if version.visibility != 'public' %>
+                      <span cog-category-label color-primary>会員限定</span>
+                    <% end %>
+                    <% if category_option.present? %>
+                      <span cog-category-label color-secondary><%= category_option.display_name %></span>
+                    <% end %>
+                  </div>
+                </div>
+                  <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
+                </a>
+                <% unless i == @news_entries.length - 1 %>
+                  <div class="divider"></div>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="overview-page-indicator">
+              <a href="<%= user_area_news_index_path %>" cog-button primary outlined>全ての記事を見る</a>
+            </div>
           </div>
         </div>
       </section>
     <% end %>
 
-    <section cog-landing-section class="banners">
-      <div cog-landing-section-content>
-        <div cog-swiper-container class="banner-swiper">
-          <div class="swiper-inner">
-            <% 5.times do |i| %>
-              <div cog-swiper-slide>
-                <a href="#" cog-landing-banner>
-                  <img src="https://placehold.co/800x400/e8e8e8/999999?text=Banner+<%= i + 1 %>" alt="Banner <%= i + 1 %>">
-                </a>
+    <% if @blog_categories.present? || @blog_entries.present? %>
+      <section cog-landing-section>
+        <div cog-landing-section-title>
+          <div cog-feature-title-image feature="blog">
+            <div class="title-image"><%= feature_label(:blog) %></div>
+          </div>
+        </div>
+        <% if @blog_categories.present? %>
+          <div cog-landing-section-actions>
+            <%= render 'user_area/alpha/shared/content/category_tabs',
+                      categories: @blog_categories,
+                      current_category: current_blog_category,
+                      path_helper: ->(cat) { user_area_root_path(blog_category: cat) },
+                      frame_id: "blog-section" %>
+          </div>
+        <% end %>
+        <%= turbo_frame_tag "blog-section" do %>
+          <div cog-landing-section-content>
+            <% if @blog_entries.present? %>
+              <div cog-blog-list>
+                <div class="list">
+                  <% @blog_entries.each do |entry| %>
+                    <% version = published_version(entry) %>
+                    <% next if version.nil? %>
+                    <a href="<%= user_area_blog_path(entry) %>" cog-blog-item data-turbo-frame="_top">
+                      <div class="thumbnail">
+                        <% if version.visibility != 'public' %>
+                          <span class="member-only">会員限定</span>
+                        <% end %>
+                        <% thumbnail_url = media_asset_url(field: field_by_identifier(version, 'thumbnail')) %>
+                        <img draggable="false" src="<%= thumbnail_url || '/images/yokikotokiku/noimage.svg' %>" alt="Blog Thumbnail">
+                        <% category_field = field_by_identifier(version, 'category') %>
+                          <% category_option = selected_option(category_field) %>
+                          <% if category_option.present? %>
+                            <div class="label"><%= category_option.display_name %></div>
+                          <% end %>
+                      </div>
+                      <div class="title"><%= render_text_field(field_by_identifier(version, 'title')) %></div>
+                      <div class="date">
+                        <span cog-date-label><%= format_content_date(entry.display_publication_date) %></span>
+                      </div>
+                    </a>
+                  <% end %>
+                </div>
+                <% if @blog_entries.length >= 6 %>
+                  <div class="overview-page-indicator">
+                    <a href="<%= user_area_blog_index_path(category: current_blog_category) %>" cog-button primary outlined data-turbo-frame="_top">全ての記事を見る</a>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <div cog-blog-list>
+                <div class="empty-state">
+                  <% if current_blog_category.present? %>
+                    <% category_display_name = @blog_categories.find { |c| c.unique_name == current_blog_category }&.display_name %>
+                    <p><%= category_display_name %>の<%= feature_label(:blog) %>はありません</p>
+                  <% else %>
+                    <p><%= feature_label(:blog) %>はありません</p>
+                  <% end %>
+                </div>
               </div>
             <% end %>
           </div>
-        </div>
-      </div>
-    </section>
+        <% end %>
+      </section>
+    <% end %>
 
-    <section cog-landing-section>
-      <div cog-landing-section-title>
-        <div cog-feature-title-image feature="news">
-          <div class="title-image"><%= feature_label(:news) %></div>
-        </div>
-      </div>
-      <div cog-landing-section-content>
-        <div cog-news-list overview>
-          <div class="list">
-            <% 3.times do |i| %>
-              <a href="<%= user_area_news_path(i + 1) %>" cog-news-item>
-                <div class="category">
-                  <span cog-category-label>ニュース</span>
-                </div>
-                <div class="date">
-                  <span cog-date-label>2024.12.<%= 15 - i %></span>
-                </div>
-                <div class="title">サンプルニュースタイトル <%= i + 1 %></div>
-              </a>
-              <% unless i == 2 %>
-                <div class="divider"></div>
-              <% end %>
-            <% end %>
-          </div>
-          <div class="overview-page-indicator">
-            <a href="<%= user_area_news_index_path %>" cog-button primary outlined>VIEW ALL</a>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 </main>
 

@@ -24,6 +24,7 @@
             <h2><%= @content_type.display_name %>一覧</h2>
             <% if @content_type.is_collection %>
                 <%= link_to new_admin_area_contents_collection_entry_path(content_type_id: @content_type.id), class: 'btn btn-primary new-entry-btn' do %>
+                  <i class="fas fa-plus icon-prefix"></i>
                   新規作成
                 <% end %>
             <% end %>
@@ -46,15 +47,7 @@
                             <div class="card-header">
                                 <div class="card-header-top">
                                     <span class="card-content-type"><%= entry.content_type.display_name %></span>
-                                    <div class="status-tags">
-                                        <% if latest_version.published? %>
-                                            <span class="status-tag status-tag-published">公開中</span>
-                                        <% elsif latest_version.draft? %>
-                                            <span class="status-tag status-tag-draft">編集中</span>
-                                        <% elsif latest_version.preview? %>
-                                            <span class="status-tag status-tag-preview">プレビュー</span>
-                                        <% end %>
-                                    </div>
+                                    <%= render 'admin_area/contents/status_badges', entry: entry %>
                                 </div>
                                 <h3 class="card-title">
                                     <% title_field = ContentEntry::Field.joins(:content_type_field).find_by(
@@ -83,7 +76,9 @@
                                         <% end %>
                                     </div>
                                 </div>
-                                <span class="card-updated"><%= latest_version.created_at.strftime('%Y-%m-%d %H:%M') %></span>
+                                <span class="card-updated"
+                                      data-controller="datetime-local"
+                                      data-datetime-local-utc-value="<%= latest_version.created_at.utc.iso8601 %>"><%= latest_version.created_at.strftime('%Y/%m/%d %H:%M') %></span>
                             </div>
                         </div>
                     <% end %>

@@ -7,7 +7,7 @@ module AdminArea
 
     sig { void }
     def index
-      @authorization_tags = ContentAuthorizationTag.order(:name)
+      @authorization_tags = ContentAuthorizationTag.searchable.order(:name)
     end
   end
 end

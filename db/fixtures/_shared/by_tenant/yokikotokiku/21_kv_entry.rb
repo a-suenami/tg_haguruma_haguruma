@@ -2,9 +2,11 @@
 # frozen_string_literal: true
 
 # 斧琴菊テナントのキービジュアル（KV）コンテンツエントリ作成（初期データ）
-# kv.svg を S3 にアップロードし、ContentEntry を作成
+# kv.svg を S3 にアップロードし、ContentEntry を作成（PC/SP両方）
 
-tenant_id = 'yokikotokiku'
+require_relative '../../tenant_domain_helper'
+
+tenant_id = TenantDomainHelper.tenant_id_for('yokikotokiku')
 kv_path = File.join(__dir__, 'kv.svg')
 
 content_type = ContentType.find_by(tenant_id: tenant_id, unique_name: 'kv')
@@ -17,24 +19,42 @@ if ContentEntry.exists?(tenant_id: tenant_id, content_type_id: content_type.id)
   return
 end
 
-# KV画像を S3 にアップロード
 s3_client = MediaAsset::S3Client.new
-s3_object_path = "#{tenant_id}/content/kv/image.svg"
 
+# PC用KV画像を S3 にアップロード
+s3_object_path_pc = "#{tenant_id}/content/kv/image_pc.svg"
 s3_client.upload(
-  key: s3_object_path,
+  key: s3_object_path_pc,
   body: File.read(kv_path),
   content_type: 'image/svg+xml',
 )
 
-# MediaAsset を作成
-kv_asset = MediaAsset.create!(
+# SP用KV画像を S3 にアップロード（同じファイルを使用）
+s3_object_path_sp = "#{tenant_id}/content/kv/image_sp.svg"
+s3_client.upload(
+  key: s3_object_path_sp,
+  body: File.read(kv_path),
+  content_type: 'image/svg+xml',
+)
+
+# PC用 MediaAsset を作成
+kv_asset_pc = MediaAsset.create!(
   tenant_id: tenant_id,
   mime_type: 'image/svg+xml',
   media_type: :image,
   file_size_bytes: File.size(kv_path),
-  s3_object_path: s3_object_path,
-  metadata: { original_filename: 'kv.svg' },
+  s3_object_path: s3_object_path_pc,
+  metadata: { original_filename: 'kv_pc.svg' },
+)
+
+# SP用 MediaAsset を作成
+kv_asset_sp = MediaAsset.create!(
+  tenant_id: tenant_id,
+  mime_type: 'image/svg+xml',
+  media_type: :image,
+  file_size_bytes: File.size(kv_path),
+  s3_object_path: s3_object_path_sp,
+  metadata: { original_filename: 'kv_sp.svg' },
 )
 
 # ContentEntry を作成
@@ -55,23 +75,42 @@ version = ContentEntry::Version.create!(
   published_at: Time.current,
 )
 
-# ContentEntry::FieldMediaAsset を作成
-field_media_asset = ContentEntry::FieldMediaAsset.create!(
+# PC用 ContentEntry::FieldMediaAsset を作成
+field_media_asset_pc = ContentEntry::FieldMediaAsset.create!(
   tenant_id: tenant_id,
-  media_asset: kv_asset,
+  media_asset: kv_asset_pc,
   media_type: :image,
 )
 
-# ContentEntry::Field を作成（画像フィールド）
-image_field = content_type.fields.find_by(api_identifier: 'image')
+# SP用 ContentEntry::FieldMediaAsset を作成
+field_media_asset_sp = ContentEntry::FieldMediaAsset.create!(
+  tenant_id: tenant_id,
+  media_asset: kv_asset_sp,
+  media_type: :image,
+)
+
+# PC用 ContentEntry::Field を作成
+image_pc_field = content_type.fields.find_by(api_identifier: 'image_pc')
 ContentEntry::Field.create!(
   tenant_id: tenant_id,
   content_type_id: content_type.id,
   content_entry_id: entry.id,
   version: 1,
-  content_type_field_id: image_field.id,
+  content_type_field_id: image_pc_field.id,
   field_type: :media_asset,
-  media_asset: field_media_asset,
+  media_asset: field_media_asset_pc,
+)
+
+# SP用 ContentEntry::Field を作成
+image_sp_field = content_type.fields.find_by(api_identifier: 'image_sp')
+ContentEntry::Field.create!(
+  tenant_id: tenant_id,
+  content_type_id: content_type.id,
+  content_entry_id: entry.id,
+  version: 1,
+  content_type_field_id: image_sp_field.id,
+  field_type: :media_asset,
+  media_asset: field_media_asset_sp,
 )
 
 puts "  Created KV entry for tenant: #{tenant_id}"

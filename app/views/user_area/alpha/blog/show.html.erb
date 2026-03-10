@@ -1,5 +1,8 @@
+<% version = published_version(@entry) %>
+<% title_text = render_text_field(field_by_identifier(version, 'title')) %>
+
 <% content_for :title do %>
-  <%= feature_label(:blog) %> - <%= current_tenant&.name || 'Fan Club' %>
+  <%= title_text.presence || feature_label(:blog) %> - <%= current_tenant&.name || 'Fan Club' %>
 <% end %>
 
 <%= render 'user_area/alpha/shared/page_header' %>
@@ -9,33 +12,37 @@
     <article cog-detail-fragment>
       <header cog-detail-fragment-header>
         <div cog-detail-fragment-toolbar>
-          <h1 cog-detail-fragment-title>ブログ</h1>
+          <% category_field = field_by_identifier(version, 'category') %>
+          <% category_option = selected_option(category_field) %>
+          <span cog-date-label><%= format_content_date(@entry.display_publication_date) %></span>
+          <div class="categories">
+            <% if version.visibility != 'public' %>
+              <span cog-category-label color-primary>会員限定</span>
+            <% end %>
+            <% if category_option.present? %>
+              <span cog-category-label color-secondary><%= category_option.display_name %></span>
+            <% end %>
+          </div>
         </div>
         <div cog-detail-fragment-toolbar>
-          <span cog-category-label>ファッション</span>
-          <span cog-date-label>2024.12.15</span>
+          <h1 cog-detail-fragment-title><%= title_text %></h1>
         </div>
+        <% thumbnail_url = media_asset_url(field: field_by_identifier(version, 'thumbnail')) %>
+        <% if thumbnail_url.present? %>
+        <div cog-detail-fragment-toolbar>
+          <img class="thumbnail" src="<%= thumbnail_url %>" alt="<%= title_text %>">
+        </div>
+        <% end %>
       </header>
 
       <div cog-detail-fragment-content>
-        <div cog-rich-content-viewer>
-          <h2>サンプルブログタイトル</h2>
-          <p>
-            こんにちは！今日は最近のお気に入りのファッションについてお話しします。
-          </p>
-          <p>
-            最近は秋冬の新作がたくさん出ていて、ショッピングが楽しい季節ですね。
-            特に今年はオーバーサイズのアウターがトレンドで、私もいくつか新調しました。
-          </p>
-          <figure>
-            <img src="/assets/images/dummy-blog-content.jpg" alt="Blog Content Image">
-            <figcaption>お気に入りのコーディネート</figcaption>
-          </figure>
-          <p>
-            皆さんもぜひ今年のトレンドを取り入れてみてくださいね！
-            質問があればコメントで教えてください。
-          </p>
-        </div>
+        <% if content_authorized? %>
+          <div cog-rich-content-viewer>
+            <%= raw render_richtext_field(field: field_by_identifier(version, 'body')) %>
+          </div>
+        <% else %>
+          <%= render 'user_area/alpha/shared/content/membership_prompt' %>
+        <% end %>
       </div>
 
       <footer cog-detail-fragment-actions>

@@ -21,6 +21,7 @@
 @use './components/footer/footer-menu/footer-menu.component';
 @use './components/footer/footer-menu-item/footer-menu-item.component';
 
+@use './components/layout/layout.component';
 @use './components/logo/logo/logo.component';
 @use './components/copyright/copyright/copyright.component';
 
@@ -28,6 +29,9 @@
 @use './components/common/fab-button/fab-button.component';
 @use './components/common/loading/loading.component';
 @use './components/common/divider/divider.component';
+@use './components/common/link';
+
+@use './components/prompts/membership-prompt/membership-prompt.component';
 
 @use './components/menu/menu-items/menu-items.component';
 @use './components/menu/menu-item/menu-item.component';
@@ -56,6 +60,8 @@
 
 @use './components/labels/category-label/category-label.component';
 @use './components/labels/date-label/date-label.component';
+
+@use './components/pagination/pagination';
 
 // Haguruma Shared Components
 @use './haguruma/layouts/page-header/page-header.component';
@@ -97,3 +103,10 @@
 @use './features/schedule/components/daily-schedule-item/daily-schedule-item.component';
 @use './features/schedule/components/inline-calendar/inline-calendar.component';
 @use './features/schedule/components/date-picker/date-picker.component';
+
+@use './features/biography/components/biography-list/biography-list.component';
+@use './features/biography/components/biography-item/biography-item.component';
+
+@use './features/privilege/pages/privilege/privilege.page';
+
+@use './haguruma/components/rich-content-viewer/rich-content-viewer.component.scss';

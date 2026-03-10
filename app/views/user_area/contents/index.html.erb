@@ -13,13 +13,13 @@
   <% if @content_entries.any? %>
     <div style="display: grid; gap: 1rem;">
       <% @content_entries.each do |entry| %>
-        <% published_version = entry.versions.find(&:published?) %>
+        <% published_version = entry.latest_published_version %>
         <% first_text_field = published_version&.fields&.find { |f| f.field_type == 'text' } %>
         <%= link_to user_area_content_path(entry), style: 'text-decoration: none; color: inherit;' do %>
           <div class="card" style="cursor: pointer;">
             <h3><%= first_text_field&.text&.value || 'Untitled' %></h3>
             <p style="color: var(--text-muted); font-size: 0.875rem;">
-              <%= entry.content_type.display_name %> / <%= published_version&.published_at&.strftime('%Y/%m/%d') %>
+              <%= entry.content_type.display_name %> / <%= entry.display_publication_date&.strftime('%Y/%m/%d') %>
             </p>
           </div>
         <% end %>

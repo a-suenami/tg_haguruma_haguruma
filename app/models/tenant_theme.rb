@@ -78,7 +78,7 @@ class TenantTheme < ApplicationRecord
 
   sig { returns(String) }
   def logo_url
-    T.must(logo_media_asset).url.to_s
+    logo_media_asset&.public_url.to_s || ''
   end
 
   # Returns all CSS custom properties as a hash
@@ -149,6 +149,12 @@ class TenantTheme < ApplicationRecord
     }
   end
 
+  # Returns CSS style string for inline styles
+  sig { returns(String) }
+  def to_css_style
+    css_custom_properties.map { |k, v| "#{k}: #{v}" }.join('; ')
+  end
+
   private
 
   # Convert hex color to RGB string for CSS rgba() usage
@@ -160,11 +166,5 @@ class TenantTheme < ApplicationRecord
     g = T.must(hex[3..4]).to_i(16)
     b = T.must(hex[5..6]).to_i(16)
     "#{r}, #{g}, #{b}"
-  end
-
-  # Returns CSS style string for inline styles
-  sig { returns(String) }
-  def to_css_style
-    css_custom_properties.map { |k, v| "#{k}: #{v}" }.join('; ')
   end
 end

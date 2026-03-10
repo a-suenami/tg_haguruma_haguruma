@@ -71,6 +71,9 @@ gem 'aws-sdk-sqs', '~> 1.70'
 gem 'sorbet-runtime', '~> 0.5.11048'
 gem 'mangrove', '~> 0.29.0'
 
+# Pagination
+gem 'pagy', '~> 6.4'
+
 # Utilities
 gem 'pry', '~> 0.14.2'
 gem 'config', '~> 5.0.0'
@@ -96,7 +99,7 @@ gem 'phonelib', '~> 0.10.6'
 gem 'json-schema', '~> 4.3.1'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem 'bcrypt', '~> 3.1.7'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[windows jruby]
@@ -181,3 +184,8 @@ end
 # OpenAPI / Swagger
 gem 'rswag-api'
 gem 'rswag-ui'
+
+# Feature Flags
+gem 'flipper', '~> 1.3'
+gem 'flipper-redis', '~> 1.3'
+gem 'flipper-ui', '~> 1.3'

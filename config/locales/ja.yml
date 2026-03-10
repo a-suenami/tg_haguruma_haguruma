@@ -36,6 +36,14 @@ ja:
           attributes:
             base:
               reserved_id_error: このIDは予約されているため使用できません
+        content_type:
+          attributes:
+            preview_url:
+              must_start_with_slash: は/から始まる必要があります
+        site_custom_variable:
+          attributes:
+            unique_name:
+              invalid: は小文字英字・数字・アンダースコアのみ使用可能です
         tenant_theme:
           attributes:
             page_background_color:
@@ -103,6 +111,17 @@ ja:
       errors:
         unique_name_taken: "この識別子は既に使用されています："
         field_api_identifier_taken: "この識別子は既に使用されています："
+    basic_auths:
+      updated: Basic認証設定を更新しました
+    basic_auth_credentials:
+      created: 認証情報を作成しました
+      updated: 認証情報を更新しました
+      destroyed: 認証情報を削除しました
+    custom_variables:
+      created: カスタム変数を作成しました
+      updated: カスタム変数を更新しました
+      archived: カスタム変数をアーカイブしました
+      value_updated: 値を更新しました
     admins:
       title: 管理者管理
       list: 管理者一覧
@@ -160,6 +179,7 @@ ja:
       destroyed: 認可タグを削除しました
       not_found: 認可タグが見つかりません
       cannot_delete_external: 外部連携で登録されたタグは削除できません
+      cannot_delete_system: システムタグは削除できません
     users:
       created: ユーザーを作成しました
       destroyed: ユーザーを削除しました
@@ -175,6 +195,9 @@ ja:
       revoked: トークンを無効化しました
       not_found: トークンが見つかりません
   user_area:
+    alpha:
+      categories:
+        all: すべて
     sessions:
       oauth_provider_not_configured: このテナントにはOAuthプロバイダが設定されていません
       invalid_state_parameter: 無効なstateパラメータです
@@ -262,6 +285,9 @@ ja:
   date:
     formats:
       default: "%Y/%m/%d"
+  feature_flags:
+    errors:
+      not_available: この機能は現在利用できません
   errors:
     messages:
       not_found: リソースが見つかりません

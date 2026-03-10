@@ -4,7 +4,9 @@
 # 斧琴菊テナントのコンテンツタイプ作成（初期データ）
 # 既に存在する場合はスキップ
 
-tenant_id = 'yokikotokiku'
+require_relative '../../tenant_domain_helper'
+
+tenant_id = TenantDomainHelper.tenant_id_for('yokikotokiku')
 
 # =============================================================================
 # ヘルパーメソッド

@@ -56,6 +56,7 @@ class RulerArea::ContentTypesController < RulerArea::ApplicationController
       :display_name,
       :unique_name,
       :description,
+      :preview_url,
       :is_collection,
       :tenant_id,
       fields_attributes: [
@@ -73,7 +74,7 @@ class RulerArea::ContentTypesController < RulerArea::ApplicationController
             :id,
             :display_format,
             :_destroy,
-            { options_attributes: %i[id display_name unique_name position _destroy] },
+            { options_attributes: %i[id display_name unique_name position status _destroy] },
           ],
         },
       ],

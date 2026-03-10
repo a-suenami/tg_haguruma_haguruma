@@ -30,26 +30,72 @@ create-deploy-merge-request:
   stage: prepare
   cache: {}
   only:
-    - master
+    - main
   except:
     - schedules
   variables:
     GITLAB_API_ENDPOINT: https://git.l.twogate.net/api/v4
-    GITLAB_API_PRIVATE_TOKEN: $GITLAB_API_PRIVATE_TOKEN
+    GITLAB_API_PRIVATE_TOKEN: $CI_JOB_TOKEN
   script:
     - gem install gitlab
-    - >
-      gitlab create_merge_request $CI_PROJECT_ID "" '{
-        "title": "Build staging",
-        "source_branch": "master",
-        "target_branch": "deploy-staging"
-      }' || true
+    # - >
+    #   gitlab create_merge_request $CI_PROJECT_ID "" '{
+    #     "title": "Build staging",
+    #     "source_branch": "main",
+    #     "target_branch": "deploy-staging"
+    #   }' || true
     - >
       gitlab create_merge_request $CI_PROJECT_ID "" '{
         "title": "Draft: Build production",
-        "source_branch": "master",
+        "source_branch": "main",
         "target_branch": "deploy-production"
       }' || true
+
+generate-deploy-checklist:
+  stage: prepare
+  image: node:24-alpine3.21
+  cache: {}
+  allow_failure: true
+  id_tokens:
+    AWS_ID_TOKEN:
+      aud: https://git.l.twogate.net
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "deploy-production"'
+  variables:
+    CLAUDE_CODE_USE_BEDROCK: "1"
+    GITLAB_API_ENDPOINT: https://git.l.twogate.net/api/v4
+    GITLAB_API_PRIVATE_TOKEN: $CI_JOB_TOKEN
+  before_script:
+    # System dependencies
+    - apk add --no-cache bash curl jq git python3 py3-pip
+    - pip install --break-system-packages --no-cache-dir awscli
+    # Claude Code CLI
+    - npm install -g @anthropic-ai/claude-code
+    # Fetch deploy-production branch for diff
+    - git fetch origin deploy-production
+    # AWS OIDC authentication
+    - printf "%s" "$AWS_ID_TOKEN" > /tmp/oidc_token
+    - >
+      aws sts assume-role-with-web-identity
+      --role-arn "$AWS_ROLE_TO_ASSUME"
+      --role-session-name "gitlab-claude-$(date +%s)"
+      --web-identity-token "file:///tmp/oidc_token"
+      --duration-seconds 3600 > /tmp/aws_creds.json
+    - export AWS_ACCESS_KEY_ID="$(jq -r .Credentials.AccessKeyId /tmp/aws_creds.json)"
+    - export AWS_SECRET_ACCESS_KEY="$(jq -r .Credentials.SecretAccessKey /tmp/aws_creds.json)"
+    - export AWS_SESSION_TOKEN="$(jq -r .Credentials.SessionToken /tmp/aws_creds.json)"
+  script:
+    # Generate checklist with Claude Code
+    - |
+      claude -p "$(cat ci/prompts/deploy-checklist.md)" \
+        --output-format text \
+        --permission-mode acceptEdits \
+        --allowedTools "Bash(git*)" \
+        --verbose \
+        > /tmp/checklist.md
+    # Update MR description
+    - chmod +x ci/scripts/update-mr-description.sh
+    - ci/scripts/update-mr-description.sh /tmp/checklist.md
 
 bundle-package:
   image: ${RUBY_IMAGE}
@@ -281,6 +327,7 @@ assets:precompile:
       - public/vite
       - public/assets
   only:
+    - main
     - /^deploy-.*$/
   except:
     - schedules
@@ -292,7 +339,8 @@ build:app:staging:
     <<: *cache
     policy: pull
   services:
-    - docker:dind
+    - name: docker:dind
+      alias: docker
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
@@ -310,7 +358,7 @@ build:app:staging:
     - docker
     - x86_64-linux
   only:
-    - deploy-staging
+    - main
   except:
     - schedules
 
@@ -321,7 +369,8 @@ build:app:production:
     <<: *cache
     policy: pull
   services:
-    - docker:dind
+    - name: docker:dind
+      alias: docker
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
@@ -354,7 +403,7 @@ build:app:production:
   before_script:
     - STS=`aws sts assume-role --role-arn $AWS_ASSUME_ROLE_ARN --role-session-name ecspresso-$CI_PROJECT_ID-$CI_JOB_ID`;export AWS_ACCESS_KEY_ID=`echo "${STS}" | jq -r '.Credentials.AccessKeyId'`;export AWS_SECRET_ACCESS_KEY=`echo "${STS}" | jq -r '.Credentials.SecretAccessKey'`;export AWS_SESSION_TOKEN=`echo "${STS}" | jq -r '.Credentials.SessionToken'`
   only:
-    - deploy-staging
+    - main
   except:
     - schedules
 
@@ -369,7 +418,6 @@ build:app:production:
   stage: pre-deploy
   script:
     - ecspresso deploy --dry-run --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/app/config.yaml
-  when: manual
 
 🔧 deploy:migration:staging:
   <<: *deploy-staging-base
@@ -396,6 +444,17 @@ build:app:production:
   stage: deploy
   script:
     - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/worker/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:staging
+      artifacts: false
+    - job: 🔧 deploy:migration:staging
+      artifacts: false
+
+🚀 deploy:eventbridge-poller:staging:
+  <<: *deploy-staging-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/stg/services/eventbridge_poller/config.yaml
   needs:
     - job: 👍 pre-deploy:approval:staging
       artifacts: false
@@ -455,6 +514,17 @@ build:app:production:
   stage: deploy
   script:
     - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/services/worker/config.yaml
+  needs:
+    - job: 👍 pre-deploy:approval:production
+      artifacts: false
+    - job: 🔧 deploy:migration:production
+      artifacts: false
+
+🚀 deploy:eventbridge-poller:production:
+  <<: *deploy-production-base
+  stage: deploy
+  script:
+    - ecspresso deploy --ext-str APP_IMAGE_TAG=$CI_COMMIT_SHA --config ecspresso/prod/services/eventbridge_poller/config.yaml
   needs:
     - job: 👍 pre-deploy:approval:production
       artifacts: false

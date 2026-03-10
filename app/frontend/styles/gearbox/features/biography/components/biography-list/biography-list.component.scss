@@ -1,0 +1,11 @@
+@use 'shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-biography-list] {
+  display: grid;
+  gap: 64px;
+  width: 100%;
+
+  @include breakpoints.media-down(sm) {
+    gap: 48px;
+  }
+}

@@ -5,10 +5,10 @@
 #
 # Table name: content_type_field_selects
 #
-#  id                :bigint           not null, primary key
-#  display_format    :integer          default(1), not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id             :bigint           not null, primary key
+#  display_format :integer          default("dropdown"), not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 class ContentType::FieldSelect < ApplicationRecord
   DISPLAY_FORMATS = {
@@ -20,6 +20,11 @@ class ContentType::FieldSelect < ApplicationRecord
   has_many :options,
            class_name: 'ContentType::FieldSelectOption',
            dependent: :destroy,
+           inverse_of: :field_select
+
+  has_many :available_options,
+           -> { enabled.order(:position) },
+           class_name: 'ContentType::FieldSelectOption',
            inverse_of: :field_select
 
   enum :display_format, DISPLAY_FORMATS

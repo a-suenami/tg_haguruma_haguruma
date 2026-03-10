@@ -1,0 +1,33 @@
+<%# Preview buttons partial for content entries %>
+<%# Required locals: content_type, content_entry, draft_version (optional), published_version (optional) %>
+<%# mode: :edit (default) shows draft + published, :show only shows published %>
+
+<% mode ||= :edit %>
+
+<div class="action-section">
+  <h4 class="action-section-title">PREVIEW</h4>
+  <div class="action-buttons">
+    <% if content_type.preview_url.present? %>
+      <% if mode == :edit && defined?(draft_version) && draft_version %>
+        <%= link_to generate_draft_preview_url(content_type, content_entry, draft_version),
+                    class: 'btn btn-secondary action-btn',
+                    target: '_blank' do %>
+          <i class="fas fa-eye icon-prefix"></i>下書きプレビュー
+        <% end %>
+      <% end %>
+      <% if defined?(published_version) && published_version %>
+        <% btn_class = mode == :edit ? 'btn-outline-secondary' : 'btn-secondary' %>
+        <%= link_to generate_published_preview_url(content_type, content_entry),
+                    class: "btn #{btn_class} action-btn",
+                    target: '_blank' do %>
+          <i class="fas fa-globe icon-prefix"></i>公開ページ
+        <% end %>
+      <% end %>
+    <% else %>
+      <span class="btn btn-secondary action-btn disabled" title="プレビューURLが設定されていません">
+        <i class="fas fa-eye icon-prefix"></i>
+        プレビュー
+      </span>
+    <% end %>
+  </div>
+</div>

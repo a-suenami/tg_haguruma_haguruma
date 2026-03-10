@@ -65,6 +65,10 @@ en:
           attributes:
             base:
               reserved_id_error: This ID is reserved and cannot be used
+        content_type:
+          attributes:
+            preview_url:
+              must_start_with_slash: must start with /
   ruler_area:
     auth0:
       already_logged_in: Already logged in
@@ -145,6 +149,7 @@ en:
       destroyed: Authorization tag deleted successfully
       not_found: Authorization tag not found
       cannot_delete_external: Cannot delete externally registered tags
+      cannot_delete_system: Cannot delete system tags
     users:
       created: User created successfully
       destroyed: User deleted successfully
@@ -160,6 +165,9 @@ en:
       revoked: Token revoked successfully
       not_found: Token not found
   user_area:
+    alpha:
+      categories:
+        all: All
     sessions:
       oauth_provider_not_configured: OAuth provider is not configured for this tenant
       invalid_state_parameter: Invalid state parameter

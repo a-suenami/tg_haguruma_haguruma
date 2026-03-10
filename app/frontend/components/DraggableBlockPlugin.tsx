@@ -5,6 +5,7 @@ import {
   $getNearestNodeFromDOMNode,
 } from 'lexical';
 import { useRef, useState } from 'react';
+import { Grip } from "lucide-react";
 
 function isOnMenu(element: HTMLElement): boolean {
   return (
@@ -32,14 +33,14 @@ export default function DraggableBlockPlugin({
       const node = $getNearestNodeFromDOMNode(isDraggableElement);
       if (node) {
         const newParagraph = $createParagraphNode();
-        
+
         // Alt/Ctrl + Click で上に挿入、通常クリックで下に挿入
         if (event.altKey || event.ctrlKey) {
           node.insertBefore(newParagraph);
         } else {
           node.insertAfter(newParagraph);
         }
-        
+
         // 新しい段落にフォーカスを移動
         newParagraph.select();
       }
@@ -52,8 +53,8 @@ export default function DraggableBlockPlugin({
       menuRef={menuRef}
       targetLineRef={targetLineRef}
       menuComponent={
-        <div 
-          ref={menuRef} 
+        <div
+          ref={menuRef}
           className="draggable-block-menu"
           draggable="true"
         >
@@ -63,29 +64,13 @@ export default function DraggableBlockPlugin({
             onClick={insertBlock}
             draggable="true"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="drag-handle-icon"
-            >
-              <circle cx="3" cy="4" r="1"/>
-              <circle cx="7" cy="4" r="1"/>
-              <circle cx="11" cy="4" r="1"/>
-              <circle cx="3" cy="8" r="1"/>
-              <circle cx="7" cy="8" r="1"/>
-              <circle cx="11" cy="8" r="1"/>
-              <circle cx="3" cy="12" r="1"/>
-              <circle cx="7" cy="12" r="1"/>
-              <circle cx="11" cy="12" r="1"/>
-            </svg>
+            <Grip absoluteStrokeWidth size={16} />
           </div>
         </div>
       }
       targetLineComponent={
-        <div 
-          ref={targetLineRef} 
+        <div
+          ref={targetLineRef}
           className="draggable-block-target-line"
         />
       }

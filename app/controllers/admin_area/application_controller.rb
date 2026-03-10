@@ -3,12 +3,14 @@
 
 class AdminArea::ApplicationController < ApplicationController
   extend T::Sig
+  include FeatureFlaggable
 
   layout 'admin_area/application'
 
   before_action :authenticate!
   before_action :set_tenant
 
+  helper AdminArea::PreviewHelper
   helper_method :current_admin, :signed_in?
 
   sig { void }

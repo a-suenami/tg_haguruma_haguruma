@@ -6,7 +6,7 @@
 
 <%
   tags_json = authorization_tags.map { |t| { id: t.id, name: t.name } }.to_json
-  selected_json = (selected_tag_id || '').to_json
+  selected_json = selected_tag_id || ''
 %>
 
 <div class="action-section"

@@ -1,0 +1,38 @@
+<%# PC Header Features - uses 'features' JSONB column %>
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">機能設定・PCヘッダー</h4>
+  <p class="uk-text-muted uk-text-small uk-margin-bottom">PCヘッダーに表示する機能の設定です。</p>
+  <table class="uk-table uk-table-divider uk-table-small">
+    <thead>
+      <tr>
+        <th>順序</th>
+        <th>機能</th>
+        <th>有効</th>
+        <th>ラベル</th>
+        <th>メニューラベル</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% # Sort features by menu_order for display %>
+      <% sorted_features = TenantSiteSettings::DEFAULT_FEATURES.map do |key, defaults|
+           feature = @site_setting.send(:merged_features)[key]
+           [key, defaults, feature, feature['menu_order'] || defaults['landing_order'] || 999]
+         end.sort_by(&:last) %>
+      <% sorted_features.each_with_index do |(key, defaults, feature, _order), index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><span class="uk-label"><%= key.upcase %></span></td>
+          <td>
+            <% if feature['enabled'] %>
+              <span class="uk-label uk-label-success">有効</span>
+            <% else %>
+              <span class="uk-label">無効</span>
+            <% end %>
+          </td>
+          <td><%= feature['label'].presence || defaults['label'] %></td>
+          <td><%= feature['menu_label'].presence || defaults['menu_label'] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

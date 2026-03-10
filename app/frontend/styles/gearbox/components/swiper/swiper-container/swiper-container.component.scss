@@ -18,9 +18,115 @@
   .swiper-inner {
     display: flex;
     justify-content: center;
-    gap: var(--gearbox-spacing-16);
-    padding: var(--gearbox-spacing-8) 0;
+    gap: 16px;
+    padding: 8px 0;
     width: max-content;
     min-width: 100%;
+  }
+}
+
+// Wrapper with navigation buttons - horizontal flexbox layout
+.swiper-nav-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+
+  [cog-swiper-container] {
+    flex: 1;
+    min-width: 0; // Allow shrinking
+  }
+
+  .swiper-nav-button {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--theme-border-color, #e5e5e5);
+    border-radius: 50%;
+    background-color: var(--theme-page-background-color, #fff);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    .icon {
+      font-size: 24px;
+      line-height: 1;
+      color: var(--theme-general-text-color, #333);
+    }
+  }
+}
+
+// Swiper.js integration styles
+.swiper {
+  width: 100%;
+  overflow: hidden;
+
+  // FOUC対策: 初期化完了までフェードアウト
+  opacity: 0;
+  transition: opacity 0.15s ease;
+
+  &.swiper-initialized {
+    opacity: 1;
+  }
+
+  .swiper-wrapper {
+    display: flex;
+  }
+
+  .swiper-slide {
+    flex-shrink: 0;
+    width: auto;
+  }
+
+  // Styles for when all slides fit within the container (Swiper disabled)
+  &.swiper--fits {
+    .swiper-wrapper {
+      display: flex !important;
+      justify-content: center;
+      transform: none !important;
+    }
+
+    .swiper-slide {
+      flex-shrink: 0;
+    }
+
+    .swiper-slide:last-child {
+      margin-right: 0 !important;
+    }
+  }
+
+  // Pagination dots styling for swiper.js
+  .swiper-pagination {
+    --swiper-pagination-bullet-size: 12px;
+    position: relative;
+    margin-top: 16px;
+    height: calc(var(--swiper-pagination-bullet-size) * 2);
+  }
+
+  .swiper-pagination-bullet {
+    width: var(--swiper-pagination-bullet-size);
+    height: var(--swiper-pagination-bullet-size);
+    background-color: var(--theme-tab-inactive-underline-color);
+    opacity: 1;
+    transition: background-color 0.2s, transform 0.2s;
+
+    &:hover {
+      background-color: var(--theme-tab-active-underline-color);
+      transform: scale(1.1);
+    }
+
+    &-active {
+      background-color: var(--theme-tab-active-underline-color);
+    }
   }
 }

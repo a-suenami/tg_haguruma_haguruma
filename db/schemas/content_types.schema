@@ -5,6 +5,7 @@ create_table :content_types, force: :cascade, id: :uuid do |t|
   t.text :display_name
   t.text :unique_name
   t.text :description
+  t.text :preview_url # URL pattern for preview, e.g., "/news/:content_entry_id"
 
   t.timestamps null: false
 end

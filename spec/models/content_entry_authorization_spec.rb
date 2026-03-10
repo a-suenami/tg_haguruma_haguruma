@@ -112,6 +112,8 @@ describe ContentEntryAuthorization do
         content_type:,
         content_entry:,
         version: 2,
+        status: :published,
+        published_at: Time.current,
       )
       create(
         :content_entry_authorization,

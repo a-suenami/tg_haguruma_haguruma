@@ -107,7 +107,7 @@ module AdminArea
         # Transforms S3 paths to signed URLs for editor display
         sig { params(field: ContentEntry::Field).returns(T.untyped) }
         def extract_richtext_value(field)
-          RichtextUrlTransformer.transform(field.richtext&.value)
+          RichtextUrlTransformer.transform(value: field.richtext&.value)
         end
 
         # Override this method if @content_entry can be nil
@@ -124,7 +124,7 @@ module AdminArea
         sig { void }
         def load_authorization_tags
           @authorization_tags = T.let(
-            ContentAuthorizationTag.all.to_a,
+            ContentAuthorizationTag.searchable.to_a,
             T.nilable(T::Array[ContentAuthorizationTag]),
           )
         end
@@ -174,6 +174,15 @@ module AdminArea
         sig { returns(String) }
         def visibility_param
           params[:visibility] || 'public'
+        end
+
+        sig { returns(T.nilable(Time)) }
+        def custom_published_at_param
+          return nil if params[:custom_published_at].blank?
+
+          Time.zone.parse(params[:custom_published_at])
+        rescue ArgumentError
+          nil
         end
       end
     end

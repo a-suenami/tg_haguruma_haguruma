@@ -4,7 +4,7 @@
   justify-content: center;
   flex-direction: column;
   width: 60px;
-  height: auto;
+  height: 100%;
   background: transparent;
   outline: none;
   border: none;
@@ -30,14 +30,26 @@
   }
 
   .icon {
-    color: var(--gearbox-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    aspect-ratio: 1;
+    color: var(--theme-button-primary-background-color);
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .text {
-    font-family: var(--gearbox-font-family-primary);
+    font-family: var(--theme-title-font-family, var(--gearbox-font-family-heading));
     font-weight: var(--gearbox-font-weight-semibold);
-    font-size: var(--gearbox-font-size-caption-medium);
-    line-height: var(--gearbox-line-height-relaxed);
-    color: var(--gearbox-primary);
+    font-size: 14px;
+    line-height: 1;
+    color: var(--theme-button-primary-background-color);
+    // FIXME: bodyの指定を打ち消す。応急処置なので、もう少しちゃんとしたい
+    overflow-wrap: normal;
   }
 }

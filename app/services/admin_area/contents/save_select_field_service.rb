@@ -18,8 +18,8 @@ module AdminArea
         # value can be a single ID (dropdown/radio) or array of IDs (checkbox)
         option_ids = Array(@value).compact_blank.map(&:to_i)
 
-        # Validate options belong to this select field
-        valid_option_ids = @content_type_field.select&.options&.pluck(:id) || []
+        # Validate options belong to this select field (only enabled options are valid)
+        valid_option_ids = @content_type_field.select&.available_options&.pluck(:id) || []
         option_ids &= valid_option_ids
 
         if field.select

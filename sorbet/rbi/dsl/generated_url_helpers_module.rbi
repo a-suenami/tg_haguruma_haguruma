@@ -55,10 +55,16 @@ module GeneratedUrlHelpersModule
   def admin_area_contents_collection_entry_media_asset_field_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_publication_date_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_publication_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_richtext_field_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_scheduled_publication_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_select_field_url(*args); end
@@ -82,7 +88,13 @@ module GeneratedUrlHelpersModule
   def admin_area_contents_singleton_entry_authorization_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_publication_date_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_singleton_entry_publication_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_scheduled_publication_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_singleton_entry_url(*args); end
@@ -127,6 +139,9 @@ module GeneratedUrlHelpersModule
   def api_v1_me_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def api_v1_site_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_category_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -160,10 +175,19 @@ module GeneratedUrlHelpersModule
   def edit_ruler_area_tenant_authorization_tag_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_basic_auth_credential_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_custom_variable_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_oauth_provider_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_site_setting_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_tag_setting_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_theme_url(*args); end
@@ -173,6 +197,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def edit_user_area_profile_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_value_ruler_area_tenant_custom_variable_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_admin_area_category_url(*args); end
@@ -205,7 +232,13 @@ module GeneratedUrlHelpersModule
   def new_ruler_area_tenant_authorization_tag_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_tenant_basic_auth_credential_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_content_type_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_tenant_custom_variable_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_oauth_provider_url(*args); end
@@ -310,6 +343,9 @@ module GeneratedUrlHelpersModule
   def ruler_area_auth_failure_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_global_feature_flags_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_login_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -340,10 +376,28 @@ module GeneratedUrlHelpersModule
   def ruler_area_tenant_authorization_tags_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_basic_auth_credential_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_basic_auth_credentials_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_basic_auth_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_content_type_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_content_types_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_custom_variable_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_custom_variables_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_feature_flags_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_provider_url(*args); end
@@ -356,6 +410,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_site_setting_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_tag_setting_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_theme_url(*args); end
@@ -391,6 +448,12 @@ module GeneratedUrlHelpersModule
   def test_auth_bypass_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def toggle_ruler_area_global_feature_flag_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def toggle_ruler_area_tenant_feature_flag_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def turbo_recede_historical_location_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -403,7 +466,13 @@ module GeneratedUrlHelpersModule
   def update_rails_disk_service_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def update_value_ruler_area_tenant_custom_variable_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def upload_admin_area_media_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_auth_error_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def user_area_auth_failure_url(*args); end
@@ -445,6 +514,12 @@ module GeneratedUrlHelpersModule
   def user_area_news_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def user_area_preview_content_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_privilege_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def user_area_profile_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -461,4 +536,7 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def user_area_tickets_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_url(*args); end
 end

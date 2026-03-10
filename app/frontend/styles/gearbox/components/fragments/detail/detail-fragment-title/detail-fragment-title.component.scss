@@ -1,7 +1,7 @@
 [cog-detail-fragment-title] {
-  font-size: var(--gearbox-font-size-heading-miniature);
+  font-size: var(--gearbox-font-size-title-large);
   font-weight: var(--gearbox-font-weight-semibold);
   line-height: var(--gearbox-line-height-normal);
-  font-family: var(--gearbox-font-family-primary);
-  color: var(--gearbox-secondary);
+  font-family: var(--theme-title-font-family);
+  color: var(--theme-title-text-color);
 }

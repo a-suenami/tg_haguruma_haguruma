@@ -34,7 +34,12 @@ class MediaAsset::Uploader
       s3_object_path:,
     )
 
-    # CloudFront URLを生成
+    # 動画の場合はCloudflare Streamへの同期Jobをエンキュー
+    if media_asset.video? && Flipper.enabled?(:cloudflare_stream_sync)
+      enqueue_cloudflare_sync(media_asset)
+    end
+
+    # CloudFront URLを生成 (always signed for private storage)
     url = @cloudfront_signer.signed_url(s3_object_path)
 
     {
@@ -44,26 +49,30 @@ class MediaAsset::Uploader
     }
   end
 
-  sig do
-    params(
-      s3_object_path: String,
-      purpose: MediaAsset::CloudFrontSigner::Purpose,
-      media_type: T.nilable(Symbol),
-    ).returns(String)
+  sig { params(s3_object_path: String, media_type: T.nilable(Symbol)).returns(String) }
+  def url_for(s3_object_path, media_type: nil)
+    @cloudfront_signer.signed_url(s3_object_path, media_type:)
   end
-  def url_for(s3_object_path, purpose: :admin, media_type: nil)
-    @cloudfront_signer.signed_url(s3_object_path, purpose:, media_type:)
+
+  # Generate public URL for a given S3 path
+  def public_url_for(s3_object_path)
+    @cloudfront_signer.public_url(s3_object_path)
   end
 
   private
 
-  sig { params(file: ActionDispatch::Http::UploadedFile, tenant_id: String).returns(String) }
+  sig do
+    params(
+      file: ActionDispatch::Http::UploadedFile,
+      tenant_id: String,
+    ).returns(String)
+  end
   def generate_s3_path(file:, tenant_id:)
     timestamp = Time.current.strftime('%Y/%m/%d')
     uuid = SecureRandom.uuid
     extension = File.extname(file.original_filename)
 
-    "#{tenant_id}/#{timestamp}/#{uuid}#{extension}"
+    "private/#{tenant_id}/#{timestamp}/#{uuid}#{extension}"
   end
 
   sig do
@@ -74,15 +83,32 @@ class MediaAsset::Uploader
     ).returns(MediaAsset)
   end
   def create_media_asset(file:, tenant_id:, s3_object_path:)
+    media_type = MediaAsset.detect_media_type(file.content_type)
+
+    metadata = {
+      original_filename: file.original_filename,
+    }
+
+    # 動画の場合はCloudflare同期ステータスを追加
+    if media_type == :video && Flipper.enabled?(:cloudflare_stream_sync)
+      metadata[:cloudflare_sync_status] = CloudflareStream::SyncStatus::PENDING
+    end
+
     MediaAsset.create!(
       tenant_id:,
       mime_type: file.content_type,
-      media_type: MediaAsset.detect_media_type(file.content_type),
+      media_type:,
       file_size_bytes: file.size,
       s3_object_path:,
-      metadata: {
-        original_filename: file.original_filename,
-      },
+      metadata:,
+    )
+  end
+
+  sig { params(media_asset: MediaAsset).void }
+  def enqueue_cloudflare_sync(media_asset)
+    CloudflareStream::SyncVideoJob.perform_later(media_asset.id)
+    Rails.logger.info(
+      "[MediaAsset::Uploader] Enqueued Cloudflare sync job for media_asset_id=#{media_asset.id}",
     )
   end
 end

@@ -1,9 +1,7 @@
 [cog-header-menu-overlay] {
-  --gearbox-header-height: 76px;
-  background-color: var(--gearbox-surface-scrim);
   display: block;
   position: fixed;
-  top: var(--gearbox-header-height);
+  top: 56px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -18,6 +16,7 @@
       opacity var(--exit-animation-duration) cubic-bezier(0.4, 0, 0.2, 1),
       transform var(--exit-animation-duration) linear;
     pointer-events: none;
+    visibility: hidden;
   }
 
   &.show {
@@ -25,17 +24,22 @@
     --gearbox-header-menu-overlay-z-index: 1000;
     transform: scale(1);
     opacity: 1;
+    visibility: visible;
     transition:
       opacity var(--enter-animation-duration) cubic-bezier(0.4, 0, 0.2, 1),
-      transform var(--enter-animation-duration) linear;
+      transform var(--enter-animation-duration) linear,
+      visibility 0s;
   }
 
   .inner {
-    background-color: var(--gearbox-background);
+    padding: var(--gearbox-spacing-32) 0;
+    // FIXME: Resolve hardcoded color
+    background-color: #ffffff;
     width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    gap: var(--gearbox-spacing-48);
     height: 100%;
     overflow-y: auto;
   }

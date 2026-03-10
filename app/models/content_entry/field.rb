@@ -14,6 +14,7 @@
 #  content_type_id       :uuid             not null
 #  media_asset_id        :integer
 #  richtext_id           :integer
+#  select_id             :bigint
 #  tenant_id             :citext           not null
 #  text_id               :integer
 #
@@ -22,6 +23,7 @@
 #  fk_content_entry_fields_content_entry_versions  ([tenant_id, content_type_id, content_entry_id, version] => content_entry_versions[tenant_id, content_type_id, content_entry_id, version])
 #  fk_content_entry_fields_content_type_fields     ([tenant_id, content_type_id, content_type_field_id, field_type] => content_type_fields[tenant_id, content_type_id, id, field_type])
 #  fk_content_entry_fields_media_assets            ([tenant_id, media_asset_id] => content_entry_field_media_assets[tenant_id, id])
+#  fk_content_entry_fields_selects                 ([tenant_id, select_id] => content_entry_field_selects[tenant_id, id])
 #  fk_rails_...                                    (richtext_id => content_entry_field_richtexts.id)
 #  fk_rails_...                                    (text_id => content_entry_field_texts.id)
 #

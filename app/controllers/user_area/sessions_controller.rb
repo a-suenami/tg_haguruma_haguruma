@@ -5,6 +5,10 @@ module UserArea
   class SessionsController < ApplicationController
     extend T::Sig
 
+    layout 'user_area/alpha/application'
+
+    before_action :require_tenant_theme!, only: [:new]
+
     # GET /login
     sig { void }
     def new
@@ -21,17 +25,29 @@ module UserArea
         return
       end
 
+      # Store return URL for post-login redirect
+      session[:return_to] = request.referer if request.referer.present? && request.referer.start_with?(request.base_url)
+
       # Generate and store state for CSRF protection
       state = SecureRandom.urlsafe_base64(32)
       session[:oauth_state] = state
 
       # Redirect to OAuth authorization endpoint
-      redirect_to oauth_authorization_url(oauth_provider, state:), allow_other_host: true
+      signup = params[:signup].present?
+      redirect_to oauth_authorization_url(oauth_provider, state:, signup:), allow_other_host: true
     end
 
     # GET /auth/callback - OAuth callback
     sig { void }
     def callback
+      # Check for OAuth error response (user cancelled, access denied, etc.)
+      if params[:error].present?
+        Rails.logger.info("OAuth callback error: #{params[:error]} - #{params[:error_description]}")
+        session.delete(:oauth_state)
+        redirect_to user_area_auth_error_path
+        return
+      end
+
       # Verify state parameter for CSRF protection
       unless valid_oauth_state?
         redirect_to user_area_login_path, alert: t('user_area.sessions.invalid_state_parameter')
@@ -40,7 +56,8 @@ module UserArea
 
       code = params[:code]
       if code.blank?
-        redirect_to user_area_login_path, alert: t('user_area.sessions.authorization_code_not_provided')
+        session.delete(:oauth_state)
+        redirect_to user_area_auth_error_path
         return
       end
 
@@ -81,12 +98,18 @@ module UserArea
 
         user.update!(last_authenticated_at: Time.current)
 
+        # Sync IDP tags from ID token
+        idp_tags = payload.dig('user', 'tags') || []
+        Rails.logger.info("SessionsController#callback: idp_tags=#{idp_tags.inspect} user=#{user.id}")
+        Users::SyncIdpTagsService.new(user:, tags: idp_tags).execute if idp_tags.present?
+
         # Create session
         session[:user_id] = user.id
         session[:tenant_id] = current_tenant&.id
         session.delete(:oauth_state)
 
-        redirect_to user_area_root_path, notice: t('user_area.sessions.logged_in_successfully')
+        return_to = session.delete(:return_to) || user_area_root_path
+        redirect_to return_to, notice: t('user_area.sessions.logged_in_successfully')
       rescue Auth::IdPlatform::ExchangeCodeService::Error => e
         Rails.logger.error("OAuth code exchange failed: #{e.message}")
         redirect_to user_area_login_path, alert: t('user_area.sessions.exchange_code_failed')
@@ -99,8 +122,19 @@ module UserArea
     # DELETE /logout
     sig { void }
     def destroy
+      oauth_provider = current_tenant&.oauth_provider
+
+      # Clear local session first
       reset_session
-      redirect_to user_area_login_path, notice: t('user_area.sessions.logged_out_successfully')
+
+      # Redirect to IDP logout to clear IDP session
+      if oauth_provider.present?
+        redirect_to idp_logout_url(oauth_provider), allow_other_host: true
+        return
+      end
+
+      # Fallback: no OAuth provider configured
+      redirect_to user_area_root_path, notice: t('user_area.sessions.logged_out_successfully')
     end
 
     # GET /auth/failure
@@ -134,6 +168,13 @@ module UserArea
 
     private
 
+    sig { void }
+    def require_tenant_theme!
+      return if current_tenant&.theme.present?
+
+      render 'user_area/errors/tenant_not_configured', layout: false, status: :not_found
+    end
+
     sig { returns(T::Boolean) }
     def valid_oauth_state?
       state_param = params[:state]
@@ -141,19 +182,35 @@ module UserArea
       state_param.present? && stored_state.present? && ActiveSupport::SecurityUtils.secure_compare(state_param.to_s, stored_state.to_s)
     end
 
-    sig { params(oauth_provider: OauthProvider, state: String).returns(String) }
-    def oauth_authorization_url(oauth_provider, state:)
+    sig { params(oauth_provider: OauthProvider, state: String, signup: T::Boolean).returns(String) }
+    def oauth_authorization_url(oauth_provider, state:, signup: false)
       endpoint_base = oauth_provider.endpoint_base.chomp('/')
       client_id = oauth_provider.client_id
       redirect_uri = CGI.escape(user_area_callback_url)
       scopes = oauth_provider.scopes.presence || 'openid profile email'
 
-      "#{endpoint_base}/oauth/authorize?client_id=#{client_id}&redirect_uri=#{redirect_uri}&response_type=code&scope=#{CGI.escape(scopes)}&state=#{state}"
+      url = "#{endpoint_base}/oauth/authorize?client_id=#{client_id}&redirect_uri=#{redirect_uri}&response_type=code&scope=#{CGI.escape(scopes)}&state=#{state}"
+      url += '&on_no_session=sign_up' if signup
+      url
     end
 
     sig { returns(String) }
     def user_area_callback_url
       url_for(action: :callback, controller: 'user_area/sessions', only_path: false)
+    end
+
+    sig { params(oauth_provider: OauthProvider).returns(String) }
+    def idp_logout_url(oauth_provider)
+      endpoint_base = oauth_provider.endpoint_base.chomp('/')
+      client_id = oauth_provider.client_id
+      return_to = CGI.escape(user_area_root_url)
+
+      "#{endpoint_base}/logout?client_id=#{client_id}&returnTo=#{return_to}"
+    end
+
+    sig { returns(String) }
+    def user_area_root_url
+      url_for(action: :index, controller: 'user_area/alpha/root', only_path: false)
     end
   end
 end

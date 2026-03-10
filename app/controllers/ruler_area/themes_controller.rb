@@ -8,7 +8,9 @@ module RulerArea
     before_action :set_tenant
     before_action :set_theme
 
-    def show; end
+    def show
+      redirect_to edit_ruler_area_tenant_theme_path(@tenant) unless @theme.persisted?
+    end
 
     def edit; end
 
@@ -32,12 +34,14 @@ module RulerArea
       logo_file = params.dig(:theme, :logo_file)
       return if logo_file.blank?
 
-      uploader = MediaAsset::Uploader.new
-      result = uploader.upload(
-        file: logo_file,
-        tenant_id: @tenant.id,
-      )
-      @theme.logo_media_asset = result[:media_asset]
+      service = RulerArea::Themes::UploadLogoService.new(tenant_id: @tenant.id)
+      result = service.upload_new(file: logo_file)
+
+      if result.success
+        @theme.logo_media_asset = result.media_asset
+      else
+        flash[:alert] = result.error
+      end
     end
 
     def theme_params

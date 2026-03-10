@@ -1,14 +1,30 @@
 @use '../../../shared/theme/breakpoints/breakpoints' as breakpoints;
 
 [cog-category-label] {
+  // CSS Variables
+  --cog-category-label-color: var(--theme-label-text-color);
+  --cog-category-label-background-color: var(--theme-label-background-color);
+
+  // Base styles
   display: inline-flex;
   align-items: center;
-  background-color: var(--theme-label-background-color, var(--gearbox-primary));
-  color: var(--theme-label-text-color, var(--gearbox-on-primary));
-  padding: var(--gearbox-spacing-2) var(--gearbox-spacing-6);
-  border-radius: 3px;
+  background-color: var(--cog-category-label-background-color);
+  color: var(--cog-category-label-color);
+  padding: 2px 10px;
+  border-radius: 2px;
   font-family: var(--theme-label-font-family, var(--gearbox-font-family-primary));
-  font-size: var(--gearbox-font-size-caption-large);
-  font-weight: var(--gearbox-font-weight-semibold);
-  line-height: var(--gearbox-line-height-loose);
+  font-size: 13px;
+  font-weight: var(--gearbox-font-weight-regular);
+}
+
+// Primary color
+[cog-category-label][color-primary] {
+  --cog-category-label-color: var(--theme-button-primary-text-color);
+  --cog-category-label-background-color: var(--theme-button-primary-background-color);
+}
+
+// Secondary color
+[cog-category-label][color-secondary] {
+  --cog-category-label-color: var(--theme-button-secondary-text-color);
+  --cog-category-label-background-color: var(--theme-button-secondary-background-color);
 }

@@ -1,0 +1,57 @@
+<%# PC Header Features - uses 'features' JSONB column %>
+<div class="uk-card uk-card-default uk-card-body uk-margin" data-controller="pc-features">
+  <h4 class="uk-card-title">機能設定・PCヘッダー</h4>
+  <p class="uk-text-muted uk-text-small uk-margin-bottom">PCヘッダーに表示する機能を設定します。ドラッグ&ドロップで順序を変更できます。</p>
+
+  <div uk-sortable="handle: .sortable-handle" data-pc-features-target="container">
+    <% # Sort features by menu_order for display in form %>
+    <% sorted_features = TenantSiteSettings::DEFAULT_FEATURES.map do |key, defaults|
+         feature = @site_setting.send(:merged_features)[key]
+         [key, defaults, feature, feature['menu_order'] || defaults['landing_order'] || 999]
+       end.sort_by(&:last) %>
+
+    <% sorted_features.each_with_index do |(key, defaults, feature, _order), index| %>
+      <div class="uk-card uk-card-secondary uk-card-body uk-margin-small"
+           data-pc-features-target="item">
+        <div class="uk-grid-small uk-flex-middle" uk-grid>
+          <div class="uk-width-auto">
+            <span class="sortable-handle" uk-icon="icon: menu" style="cursor: grab;"></span>
+          </div>
+          <div class="uk-width-auto">
+            <label class="uk-form-label uk-margin-remove">
+              <%= hidden_field_tag "site_setting[features][#{key}][enabled]", 'false' %>
+              <%= check_box_tag "site_setting[features][#{key}][enabled]",
+                  'true',
+                  feature['enabled'] == true %>
+              有効
+            </label>
+          </div>
+          <div class="uk-width-small">
+            <span class="uk-label <%= feature['enabled'] ? 'uk-label-success' : '' %>">
+              <%= key.upcase %>
+            </span>
+          </div>
+          <div class="uk-width-expand">
+            <%= label_tag "site_setting_features_#{key}_label", 'ラベル', class: 'uk-form-label' %>
+            <%= text_field_tag "site_setting[features][#{key}][label]",
+                feature['label'],
+                id: "site_setting_features_#{key}_label",
+                class: 'uk-input uk-form-small',
+                placeholder: defaults['label'] %>
+          </div>
+          <div class="uk-width-expand">
+            <%= label_tag "site_setting_features_#{key}_menu_label", 'メニューラベル', class: 'uk-form-label' %>
+            <%= text_field_tag "site_setting[features][#{key}][menu_label]",
+                feature['menu_label'],
+                id: "site_setting_features_#{key}_menu_label",
+                class: 'uk-input uk-form-small',
+                placeholder: defaults['menu_label'] %>
+          </div>
+          <%= hidden_field_tag "site_setting[features][#{key}][menu_order]",
+              index + 1,
+              data: { menu_order_input: true } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

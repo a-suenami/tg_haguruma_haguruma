@@ -8,11 +8,12 @@
 #
 # Table name: content_entries
 #
-#  id              :uuid             not null, primary key
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  content_type_id :uuid             not null
-#  tenant_id       :citext           not null
+#  id               :uuid             not null, primary key
+#  publication_date :datetime         not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  content_type_id  :uuid             not null
+#  tenant_id        :citext           not null
 #
 # Indexes
 #
@@ -29,7 +30,7 @@ class ContentEntrySerializer < ApplicationSerializer
   sig { override.params(_options: T::Hash[T.untyped, T.untyped]).returns(T::Hash[Symbol, T.untyped]) }
   def as_json(_options = {})
     content_entry = T.cast(@resource, ContentEntry)
-    published_version = T.must(content_entry.versions.find(&:published?))
+    published_version = T.must(content_entry.latest_published_version)
 
     {
       data: {
@@ -76,7 +77,7 @@ class ContentEntrySerializer < ApplicationSerializer
     when 'text'
       base.merge(text: { value: field.text&.value })
     when 'richtext'
-      base.merge(richtext: { json_value: RichtextUrlTransformer.transform(field.richtext&.value) })
+      base.merge(richtext: { json_value: RichtextUrlTransformer.transform(value: field.richtext&.value) })
     when 'media_asset'
       base.merge(media_asset: media_asset_hash(field.media_asset))
     when 'select_field'
@@ -113,16 +114,12 @@ class ContentEntrySerializer < ApplicationSerializer
   def media_asset_hash(field_media_asset)
     return nil if field_media_asset.nil?
 
-    uploader = MediaAsset::Uploader.new
-    url = uploader.url_for(
-      field_media_asset.s3_object_path,
-      purpose: :public,
-      media_type: field_media_asset.media_type.to_sym,
-    )
+    media_asset = field_media_asset.media_asset
+    return nil if media_asset.nil?
 
     {
       media_type: field_media_asset.media_type,
-      url:,
+      url: media_asset.resolved_url,
     }
   end
 end

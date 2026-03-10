@@ -1,7 +1,7 @@
-\restrict UvzJbNGwbvp5U0Zx7kURKR2piGLZVWAXapgt2KvEvbDTVbEaeTTbxtjH3Tr3DAJ
+\restrict QyTcg9b78hUvRd8lO1ppSdDByC1Te54ZjGNbDL52DvA6xTrYekydtKDqqyyavvX
 
 -- Dumped from database version 16.11
--- Dumped by pg_dump version 16.11
+-- Dumped by pg_dump version 16.10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -94,9 +94,12 @@ CREATE TABLE public.content_authorization_tags (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id public.citext NOT NULL,
     remote_id uuid,
+    provider character varying,
+    unique_id character varying,
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT chk_content_authorization_tags_provider CHECK (((provider)::text = ANY ((ARRAY['system'::character varying, 'idp'::character varying, 'ruler'::character varying])::text[])))
 );
 
 
@@ -104,7 +107,21 @@ CREATE TABLE public.content_authorization_tags (
 -- Name: COLUMN content_authorization_tags.remote_id; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN public.content_authorization_tags.remote_id IS 'External system ID for synchronization';
+COMMENT ON COLUMN public.content_authorization_tags.remote_id IS 'DEPRECATED: External system ID for synchronization';
+
+
+--
+-- Name: COLUMN content_authorization_tags.provider; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.content_authorization_tags.provider IS 'Tag provider: system, idp, ruler, or NULL for custom';
+
+
+--
+-- Name: COLUMN content_authorization_tags.unique_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.content_authorization_tags.unique_id IS 'Unique identifier within provider scope';
 
 
 --
@@ -115,6 +132,7 @@ CREATE TABLE public.content_entries (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     tenant_id public.citext NOT NULL,
     content_type_id uuid NOT NULL,
+    publication_date timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -198,6 +216,69 @@ ALTER SEQUENCE public.content_entry_field_richtexts_id_seq OWNED BY public.conte
 
 
 --
+-- Name: content_entry_field_select_selections; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_entry_field_select_selections (
+    id bigint NOT NULL,
+    content_entry_field_select_id bigint NOT NULL,
+    option_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_entry_field_select_selections_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_entry_field_select_selections_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_entry_field_select_selections_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_entry_field_select_selections_id_seq OWNED BY public.content_entry_field_select_selections.id;
+
+
+--
+-- Name: content_entry_field_selects; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_entry_field_selects (
+    id bigint NOT NULL,
+    tenant_id public.citext NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_entry_field_selects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_entry_field_selects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_entry_field_selects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_entry_field_selects_id_seq OWNED BY public.content_entry_field_selects.id;
+
+
+--
 -- Name: content_entry_field_texts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -241,6 +322,7 @@ CREATE TABLE public.content_entry_fields (
     text_id integer,
     richtext_id integer,
     media_asset_id integer,
+    select_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -280,7 +362,11 @@ CREATE TABLE public.content_entry_versions (
     visibility integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     published_at timestamp(6) without time zone,
-    unpublished_at timestamp(6) without time zone
+    unpublished_at timestamp(6) without time zone,
+    preview_token character varying,
+    preview_token_expires_at timestamp(6) without time zone,
+    scheduled_publish_at timestamp(6) without time zone,
+    scheduled_job_id character varying
 );
 
 
@@ -360,6 +446,79 @@ ALTER SEQUENCE public.content_type_field_richtexts_id_seq OWNED BY public.conten
 
 
 --
+-- Name: content_type_field_select_options; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_type_field_select_options (
+    id bigint NOT NULL,
+    field_select_id bigint NOT NULL,
+    unique_name character varying NOT NULL,
+    display_name text NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL,
+    status smallint DEFAULT 1 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN content_type_field_select_options.status; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.content_type_field_select_options.status IS '0: disabled, 1: enabled';
+
+
+--
+-- Name: content_type_field_select_options_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_type_field_select_options_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_type_field_select_options_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_type_field_select_options_id_seq OWNED BY public.content_type_field_select_options.id;
+
+
+--
+-- Name: content_type_field_selects; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_type_field_selects (
+    id bigint NOT NULL,
+    display_format integer DEFAULT 1 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_type_field_selects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_type_field_selects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_type_field_selects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_type_field_selects_id_seq OWNED BY public.content_type_field_selects.id;
+
+
+--
 -- Name: content_type_field_texts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -401,6 +560,7 @@ CREATE TABLE public.content_type_fields (
     text_id integer,
     richtext_id integer,
     media_asset_id integer,
+    select_id bigint,
     description text DEFAULT ''::text NOT NULL,
     required boolean DEFAULT false NOT NULL,
     "position" integer DEFAULT 0 NOT NULL,
@@ -439,6 +599,7 @@ CREATE TABLE public.content_types (
     display_name text,
     unique_name text,
     description text,
+    preview_url text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -541,6 +702,64 @@ CREATE TABLE public.session_tokens (
 
 
 --
+-- Name: site_custom_variables; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.site_custom_variables (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id character varying NOT NULL,
+    unique_name character varying NOT NULL,
+    variable_type smallint NOT NULL,
+    description text DEFAULT ''::text NOT NULL,
+    boolean_value boolean,
+    datetime_value timestamp(6) without time zone,
+    text_value text,
+    archived_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT chk_site_custom_variables_boolean_consistency CHECK (((variable_type <> 1) OR ((boolean_value IS NOT NULL) AND (datetime_value IS NULL) AND (text_value IS NULL)))),
+    CONSTRAINT chk_site_custom_variables_datetime_consistency CHECK (((variable_type <> 2) OR ((datetime_value IS NOT NULL) AND (boolean_value IS NULL) AND (text_value IS NULL)))),
+    CONSTRAINT chk_site_custom_variables_text_consistency CHECK (((variable_type <> 3) OR ((text_value IS NOT NULL) AND (boolean_value IS NULL) AND (datetime_value IS NULL)))),
+    CONSTRAINT chk_site_custom_variables_variable_type CHECK ((variable_type = ANY (ARRAY[1, 2, 3])))
+);
+
+
+--
+-- Name: COLUMN site_custom_variables.variable_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.site_custom_variables.variable_type IS '1: boolean, 2: datetime, 3: text';
+
+
+--
+-- Name: tenant_basic_auth_credentials; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tenant_basic_auth_credentials (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_basic_auth_id uuid NOT NULL,
+    username character varying NOT NULL,
+    password_digest character varying NOT NULL,
+    description character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: tenant_basic_auths; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tenant_basic_auths (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_id character varying NOT NULL,
+    enabled boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: tenant_site_settings; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -549,6 +768,9 @@ CREATE TABLE public.tenant_site_settings (
     tenant_id character varying NOT NULL,
     features jsonb DEFAULT '{}'::jsonb NOT NULL,
     landing jsonb DEFAULT '{}'::jsonb NOT NULL,
+    footer_main_links jsonb DEFAULT '[]'::jsonb NOT NULL,
+    footer_sub_links jsonb DEFAULT '[]'::jsonb NOT NULL,
+    menu_items jsonb DEFAULT '[]'::jsonb NOT NULL,
     login_label character varying DEFAULT 'ログイン'::character varying NOT NULL,
     signup_label character varying DEFAULT '新規会員登録'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -677,6 +899,20 @@ ALTER TABLE ONLY public.content_entry_field_richtexts ALTER COLUMN id SET DEFAUL
 
 
 --
+-- Name: content_entry_field_select_selections id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_select_selections ALTER COLUMN id SET DEFAULT nextval('public.content_entry_field_select_selections_id_seq'::regclass);
+
+
+--
+-- Name: content_entry_field_selects id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_selects ALTER COLUMN id SET DEFAULT nextval('public.content_entry_field_selects_id_seq'::regclass);
+
+
+--
 -- Name: content_entry_field_texts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -709,6 +945,20 @@ ALTER TABLE ONLY public.content_type_field_media_assets ALTER COLUMN id SET DEFA
 --
 
 ALTER TABLE ONLY public.content_type_field_richtexts ALTER COLUMN id SET DEFAULT nextval('public.content_type_field_richtexts_id_seq'::regclass);
+
+
+--
+-- Name: content_type_field_select_options id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_select_options ALTER COLUMN id SET DEFAULT nextval('public.content_type_field_select_options_id_seq'::regclass);
+
+
+--
+-- Name: content_type_field_selects id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_selects ALTER COLUMN id SET DEFAULT nextval('public.content_type_field_selects_id_seq'::regclass);
 
 
 --
@@ -790,6 +1040,22 @@ ALTER TABLE ONLY public.content_entry_field_richtexts
 
 
 --
+-- Name: content_entry_field_select_selections content_entry_field_select_selections_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_select_selections
+    ADD CONSTRAINT content_entry_field_select_selections_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_entry_field_selects content_entry_field_selects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_selects
+    ADD CONSTRAINT content_entry_field_selects_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: content_entry_field_texts content_entry_field_texts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -827,6 +1093,22 @@ ALTER TABLE ONLY public.content_type_field_media_assets
 
 ALTER TABLE ONLY public.content_type_field_richtexts
     ADD CONSTRAINT content_type_field_richtexts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_type_field_select_options content_type_field_select_options_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_select_options
+    ADD CONSTRAINT content_type_field_select_options_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_type_field_selects content_type_field_selects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_selects
+    ADD CONSTRAINT content_type_field_selects_pkey PRIMARY KEY (id);
 
 
 --
@@ -891,6 +1173,30 @@ ALTER TABLE ONLY public.rulers
 
 ALTER TABLE ONLY public.session_tokens
     ADD CONSTRAINT session_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: site_custom_variables site_custom_variables_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.site_custom_variables
+    ADD CONSTRAINT site_custom_variables_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenant_basic_auth_credentials tenant_basic_auth_credentials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_basic_auth_credentials
+    ADD CONSTRAINT tenant_basic_auth_credentials_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenant_basic_auths tenant_basic_auths_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_basic_auths
+    ADD CONSTRAINT tenant_basic_auths_pkey PRIMARY KEY (id);
 
 
 --
@@ -969,10 +1275,38 @@ CREATE UNIQUE INDEX idx_auth0_accounts_uid_uniq ON public.auth0_accounts USING b
 
 
 --
+-- Name: idx_field_select_selections_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_field_select_selections_unique ON public.content_entry_field_select_selections USING btree (content_entry_field_select_id, option_id);
+
+
+--
 -- Name: idx_on_content_type_id_api_identifier_0e95c10a8a; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX idx_on_content_type_id_api_identifier_0e95c10a8a ON public.content_type_fields USING btree (content_type_id, api_identifier);
+
+
+--
+-- Name: idx_on_field_select_id_position_9d0ef88527; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_field_select_id_position_9d0ef88527 ON public.content_type_field_select_options USING btree (field_select_id, "position");
+
+
+--
+-- Name: idx_on_field_select_id_unique_name_47572cb0f7; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_field_select_id_unique_name_47572cb0f7 ON public.content_type_field_select_options USING btree (field_select_id, unique_name);
+
+
+--
+-- Name: idx_on_tenant_basic_auth_id_username_dcd4020202; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_tenant_basic_auth_id_username_dcd4020202 ON public.tenant_basic_auth_credentials USING btree (tenant_basic_auth_id, username);
 
 
 --
@@ -1025,10 +1359,31 @@ CREATE INDEX idx_session_tokens_user_id ON public.session_tokens USING btree (us
 
 
 --
+-- Name: idx_site_custom_variables_tenant_archived; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_site_custom_variables_tenant_archived ON public.site_custom_variables USING btree (tenant_id, archived_at);
+
+
+--
+-- Name: idx_site_custom_variables_unique_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_site_custom_variables_unique_name ON public.site_custom_variables USING btree (tenant_id, unique_name) WHERE (archived_at IS NULL);
+
+
+--
 -- Name: index_admin_auth0_accounts_on_auth0_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_admin_auth0_accounts_on_auth0_account_id ON public.admin_auth0_accounts USING btree (auth0_account_id);
+
+
+--
+-- Name: index_content_authorization_tags_on_provider_unique_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_authorization_tags_on_provider_unique_id ON public.content_authorization_tags USING btree (tenant_id, provider, unique_id) WHERE (provider IS NOT NULL);
 
 
 --
@@ -1095,10 +1450,31 @@ CREATE UNIQUE INDEX index_content_entry_field_media_assets_on_tenant_id_and_id O
 
 
 --
+-- Name: index_content_entry_field_selects_on_tenant_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_field_selects_on_tenant_id_and_id ON public.content_entry_field_selects USING btree (tenant_id, id);
+
+
+--
 -- Name: index_content_entry_versions_on_entry_version; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_content_entry_versions_on_entry_version ON public.content_entry_versions USING btree (content_entry_id, version);
+
+
+--
+-- Name: index_content_entry_versions_on_preview_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_versions_on_preview_token ON public.content_entry_versions USING btree (preview_token) WHERE (preview_token IS NOT NULL);
+
+
+--
+-- Name: index_content_entry_versions_on_scheduled_publish; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_entry_versions_on_scheduled_publish ON public.content_entry_versions USING btree (scheduled_publish_at) WHERE ((scheduled_publish_at IS NOT NULL) AND (status = 1));
 
 
 --
@@ -1120,6 +1496,27 @@ CREATE UNIQUE INDEX index_content_entry_versions_on_tenant_type_entry_version ON
 --
 
 CREATE INDEX index_content_entry_versions_on_tenant_visibility ON public.content_entry_versions USING btree (tenant_id, visibility);
+
+
+--
+-- Name: index_content_entry_versions_on_token_expires_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_entry_versions_on_token_expires_at ON public.content_entry_versions USING btree (preview_token_expires_at) WHERE (preview_token IS NOT NULL);
+
+
+--
+-- Name: index_content_entry_versions_unique_draft_per_entry; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_versions_unique_draft_per_entry ON public.content_entry_versions USING btree (content_entry_id) WHERE (status = 1);
+
+
+--
+-- Name: index_content_entry_versions_unique_published_per_entry; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_content_entry_versions_unique_published_per_entry ON public.content_entry_versions USING btree (content_entry_id) WHERE (status = 3);
 
 
 --
@@ -1190,6 +1587,20 @@ CREATE INDEX index_ruler_auth0_accounts_on_auth0_account_id ON public.ruler_auth
 --
 
 CREATE INDEX index_session_tokens_on_user_id ON public.session_tokens USING btree (user_id);
+
+
+--
+-- Name: index_tenant_basic_auth_credentials_on_tenant_basic_auth_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tenant_basic_auth_credentials_on_tenant_basic_auth_id ON public.tenant_basic_auth_credentials USING btree (tenant_basic_auth_id);
+
+
+--
+-- Name: index_tenant_basic_auths_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tenant_basic_auths_on_tenant_id ON public.tenant_basic_auths USING btree (tenant_id);
 
 
 --
@@ -1321,6 +1732,14 @@ ALTER TABLE ONLY public.content_entry_fields
 
 
 --
+-- Name: content_entry_fields fk_content_entry_fields_selects; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_fields
+    ADD CONSTRAINT fk_content_entry_fields_selects FOREIGN KEY (tenant_id, select_id) REFERENCES public.content_entry_field_selects(tenant_id, id);
+
+
+--
 -- Name: content_entry_versions fk_content_entry_versions_content_entries; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1334,6 +1753,14 @@ ALTER TABLE ONLY public.content_entry_versions
 
 ALTER TABLE ONLY public.oauth_providers
     ADD CONSTRAINT fk_rails_024daef17e FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
+-- Name: content_entry_field_select_selections fk_rails_078150e814; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_select_selections
+    ADD CONSTRAINT fk_rails_078150e814 FOREIGN KEY (option_id) REFERENCES public.content_type_field_select_options(id);
 
 
 --
@@ -1353,11 +1780,43 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: content_type_field_select_options fk_rails_25b1496600; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_field_select_options
+    ADD CONSTRAINT fk_rails_25b1496600 FOREIGN KEY (field_select_id) REFERENCES public.content_type_field_selects(id);
+
+
+--
+-- Name: site_custom_variables fk_rails_28fd5e0209; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.site_custom_variables
+    ADD CONSTRAINT fk_rails_28fd5e0209 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: user_tags fk_rails_2f428c3efb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.user_tags
     ADD CONSTRAINT fk_rails_2f428c3efb FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
+-- Name: content_type_fields fk_rails_32a2d977e0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_type_fields
+    ADD CONSTRAINT fk_rails_32a2d977e0 FOREIGN KEY (select_id) REFERENCES public.content_type_field_selects(id);
+
+
+--
+-- Name: tenant_basic_auths fk_rails_3857992ef6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_basic_auths
+    ADD CONSTRAINT fk_rails_3857992ef6 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
 
 
 --
@@ -1374,6 +1833,14 @@ ALTER TABLE ONLY public.tenant_site_settings
 
 ALTER TABLE ONLY public.content_type_fields
     ADD CONSTRAINT fk_rails_56320489b5 FOREIGN KEY (richtext_id) REFERENCES public.content_type_field_richtexts(id);
+
+
+--
+-- Name: content_entry_field_select_selections fk_rails_5b17e34e84; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_select_selections
+    ADD CONSTRAINT fk_rails_5b17e34e84 FOREIGN KEY (content_entry_field_select_id) REFERENCES public.content_entry_field_selects(id);
 
 
 --
@@ -1406,6 +1873,14 @@ ALTER TABLE ONLY public.session_tokens
 
 ALTER TABLE ONLY public.session_tokens
     ADD CONSTRAINT fk_rails_6ef0c8cde9 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: tenant_basic_auth_credentials fk_rails_72def37092; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenant_basic_auth_credentials
+    ADD CONSTRAINT fk_rails_72def37092 FOREIGN KEY (tenant_basic_auth_id) REFERENCES public.tenant_basic_auths(id);
 
 
 --
@@ -1489,6 +1964,14 @@ ALTER TABLE ONLY public.user_tags
 
 
 --
+-- Name: content_entry_field_selects fk_rails_dad78d0427; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_entry_field_selects
+    ADD CONSTRAINT fk_rails_dad78d0427 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: tenant_themes fk_rails_ff24ac10ab; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1524,7 +2007,7 @@ ALTER TABLE ONLY public.user_tags
 -- PostgreSQL database dump complete
 --
 
-\unrestrict UvzJbNGwbvp5U0Zx7kURKR2piGLZVWAXapgt2KvEvbDTVbEaeTTbxtjH3Tr3DAJ
+\unrestrict QyTcg9b78hUvRd8lO1ppSdDByC1Te54ZjGNbDL52DvA6xTrYekydtKDqqyyavvX
 
 SET search_path TO "$user", public;
 

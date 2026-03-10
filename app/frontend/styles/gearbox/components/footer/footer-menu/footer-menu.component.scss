@@ -2,11 +2,13 @@
 
 [cog-footer-menu] {
   display: flex;
+  width: 100%;
+  margin-bottom: 6px;
 }
 
 @include breakpoints.media-up(lg) {
   [cog-footer-menu] {
-    gap: var(--gearbox-spacing-32);
+    gap: 32px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -15,9 +17,10 @@
 
 @include breakpoints.media-down(lg) {
   [cog-footer-menu] {
-    gap: var(--cog-spacing-4);
+    gap: 15px;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    margin-bottom: 16px;
   }
 }

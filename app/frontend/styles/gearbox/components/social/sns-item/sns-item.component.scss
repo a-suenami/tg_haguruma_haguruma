@@ -1,5 +1,8 @@
+@use '../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
 [cog-sns-item] {
-  --cog-sns-item-size: 48px;
+  --cog-sns-item-size: 40px;
+  --cog-sns-icon-color: var(--theme-button-primary-background-color, #004678);
 
   display: inline-flex;
   align-items: center;
@@ -7,11 +10,13 @@
   width: var(--cog-sns-item-size);
   height: var(--cog-sns-item-size);
   text-decoration: none;
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
-  border-radius: 50%;
-  overflow: hidden;
+  color: var(--cog-sns-icon-color);
+  padding: var(--gearbox-spacing-8);
+  svg {
+    width: 24px;
+    height: 24px;
+    transition: fill .2s ease-out;
+  }
 
   &:active {
     transform: scale(0.95);
@@ -23,26 +28,8 @@
   }
 
   @media (pointer: fine) {
-    &:hover {
-      transform: scale(1.1);
-      opacity: 0.9;
+    &:hover svg {
+      fill: var(--theme-button-secondary-background-color);
     }
-  }
-
-  &.youtube {
-    --youtube-brand-color: #ff0033;
-    background-color: var(--youtube-brand-color);
-    padding: 8px;
-  }
-
-  &.instagram {
-    padding: 10px;
-    background: linear-gradient(45deg, #fcb045, #fd1d1d, #833ab4);
-  }
-
-  .sns-icon {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
   }
 }

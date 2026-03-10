@@ -22,15 +22,24 @@ class AdminArea::ApplicationController
     include ::ActionText::TagHelper
     include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
+    include ::Pagy::UrlHelpers
+    include ::Pagy::Frontend
     include ::ApplicationHelper
+    include ::AdminArea::PreviewHelper
     include ::LexicalHelper
     include ::RulerArea::ApplicationHelper
     include ::SvgHelper
+    include ::UserArea::ContentFieldHelper
+    include ::UserArea::CustomVariablesHelper
+    include ::UserArea::ExternalUrlsHelper
     include ::UserArea::SiteSettingsHelper
     include ::ApplicationController::HelperMethods
 
     sig { returns(T.nilable(::Admin)) }
     def current_admin; end
+
+    sig { params(flag_name: T.untyped).returns(T.untyped) }
+    def feature_enabled?(flag_name); end
 
     sig { returns(T::Boolean) }
     def signed_in?; end

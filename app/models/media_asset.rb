@@ -4,15 +4,16 @@
 #
 # Table name: media_assets
 #
-#  id              :uuid             not null, primary key
-#  file_size_bytes :bigint           not null
-#  media_type      :integer          not null
-#  metadata        :jsonb            not null
-#  mime_type       :string           not null
-#  s3_object_path  :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  tenant_id       :citext           not null
+#  id                    :uuid             not null, primary key
+#  file_size_bytes       :bigint           not null
+#  media_type            :integer          not null
+#  metadata              :jsonb            not null
+#  mime_type             :string           not null
+#  public_s3_object_path :string
+#  s3_object_path        :string           not null
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  tenant_id             :citext           not null
 #
 # Indexes
 #
@@ -53,7 +54,27 @@ class MediaAsset < ApplicationRecord
     return nil if s3_object_path.blank?
 
     uploader = MediaAsset::Uploader.new
-    uploader.url_for(s3_object_path)
+    uploader.url_for(s3_object_path, media_type: media_type&.to_sym)
+  end
+
+  def public_url
+    return nil if public_s3_object_path.blank?
+
+    uploader = MediaAsset::Uploader.new
+    uploader.public_url_for(public_s3_object_path)
+  end
+
+  # Check if this asset has a public copy
+  def public?
+    public_s3_object_path.present?
+  end
+
+  def resolved_url
+    if public?
+      public_url
+    else
+      url
+    end
   end
 
   def self.detect_media_type(mime_type)

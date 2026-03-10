@@ -2,9 +2,16 @@
   display: block;
   width: 100%;
 
-  > img {
+  > img,
+  > picture {
     display: block;
     width: 100%;
     height: auto;
+
+    > img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
   }
 }

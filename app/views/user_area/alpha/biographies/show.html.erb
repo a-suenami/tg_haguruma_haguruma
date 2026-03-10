@@ -13,11 +13,13 @@
     </div>
 
     <div cog-list-fragment-content>
-      <div cog-biography>
-        <div class="content">
-          <p>プロフィールコンテンツがここに表示されます。</p>
+      <% @entries.each do |entry| %>
+        <% version = published_version(entry) %>
+        <% next if version.nil? %>
+        <div cog-rich-content-viewer>
+          <%= raw render_richtext_field(field: field_by_identifier(version, 'body')) %>
         </div>
-      </div>
+      <% end %>
     </div>
   </section>
 </main>

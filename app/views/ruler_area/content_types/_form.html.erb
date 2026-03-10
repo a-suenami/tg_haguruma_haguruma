@@ -37,6 +37,16 @@
   </div>
 
   <div class="uk-margin">
+    <%= f.label :preview_url, 'プレビューURL', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= f.text_field :preview_url, class: 'uk-input', placeholder: '/news/:content_entry_id' %>
+      <small class="uk-text-muted">
+        ユーザー向け画面に表示するドメイン以降のURLを入力してください。IDは「<code>:content_entry_id</code>」を指定してください。
+      </small>
+    </div>
+  </div>
+
+  <div class="uk-margin">
     <%= f.label :multilingual_enabled, '多言語有効化', class: 'uk-form-label' %>
     <div class="uk-form-controls">
       <label>
@@ -69,8 +79,9 @@
             <%= select_form.fields_for :options do |option_form| %>
               <%= option_form.hidden_field :id %>
               <%= option_form.hidden_field :display_name %>
-              <%= option_form.hidden_field :identifier %>
+              <%= option_form.hidden_field :unique_name %>
               <%= option_form.hidden_field :position %>
+              <%= option_form.hidden_field :status %>
             <% end %>
           <% end %>
         <% end %>
@@ -98,7 +109,7 @@
               {
                 display_format: field.select.display_format,
                 options: field.select.options.order(:position).map { |o|
-                  { id: o.id, display_name: o.display_name, unique_name: o.unique_name }
+                  { id: o.id, display_name: o.display_name, unique_name: o.unique_name, status: o.status, deletable: o.deletable? }
                 }
               }.to_json
             else

@@ -1,78 +1,53 @@
-<% content_for :title do %>
-  <%= feature_label(:blog) %> - <%= current_tenant&.name || 'Fan Club' %>
-<% end %>
+<div class="layout-list-page">
+  <% content_for :title do %>
+    <%= feature_label(:blog) %> - <%= current_tenant&.name || 'Fan Club' %>
+  <% end %>
 
-<%= render 'user_area/alpha/shared/page_header' %>
+  <%= render 'user_area/alpha/shared/page_header' %>
 
-<main class="main">
-  <section cog-list-fragment>
-    <div cog-list-fragment-title>
-      <div cog-feature-title-image feature="blog">
-        <div class="title-image"><%= feature_label(:blog) %></div>
-      </div>
-    </div>
-
-    <div cog-list-fragment-actions>
-      <nav cog-tabs-bar>
-        <div cog-tabs>
-          <button cog-tab class="active">
-            <div class="text">すべて</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">ファッション</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">音楽</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">グルメ</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">旅行</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">アート</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">ライフスタイル</div>
-            <div class="current-line"></div>
-          </button>
-          <button cog-tab>
-            <div class="text">スペシャル</div>
-            <div class="current-line"></div>
-          </button>
+  <main class="main">
+    <section cog-list-fragment>
+      <div cog-list-fragment-title>
+        <div cog-feature-title-image feature="blog">
+          <div class="title-image"><%= feature_label(:blog) %></div>
         </div>
-      </nav>
-    </div>
+      </div>
 
-    <div cog-list-fragment-content>
-      <div cog-blog-list>
-        <div class="list">
-          <% 10.times do |i| %>
-            <a href="<%= user_area_blog_path(i + 1) %>" cog-blog-item>
-              <div class="thumbnail">
-                <img draggable="false" src="https://placehold.co/600x400/e8e8e8/999999?text=Blog+<%= i + 1 %>" alt="Blog Thumbnail">
-                <div class="label">
-                  <span cog-category-label>ファッション</span>
-                </div>
+      <% if categories.present? %>
+        <div cog-list-fragment-actions>
+          <%= render 'user_area/alpha/shared/content/category_tabs',
+                     categories: categories,
+                     current_category: current_category,
+                     path_helper: ->(cat) { user_area_blog_index_path(category: cat) } %>
+        </div>
+      <% end %>
+
+      <%= turbo_frame_tag "content-list" do %>
+        <div cog-list-fragment-content>
+          <div cog-blog-list>
+            <% if @entries.empty? %>
+              <div class="empty-state">
+                <% if current_category.present? %>
+                  <% category_display_name = categories.find { |c| c.unique_name == current_category }&.display_name %>
+                  <p><%= category_display_name %>の<%= feature_label(:blog) %>はありません</p>
+                <% else %>
+                  <p><%= feature_label(:blog) %>がありません</p>
+                <% end %>
               </div>
-              <div class="title">サンプルブログタイトル <%= i + 1 %></div>
-            </a>
-          <% end %>
-        </div>
+            <% else %>
+              <div class="list">
+                <% @entries.each do |entry| %>
+                  <%= render 'blog_item', entry: entry %>
+                <% end %>
+              </div>
 
-        <div class="pagination-button-container">
-          <button cog-button primary outlined>VIEW MORE</button>
+              <%= render 'user_area/alpha/shared/pagination' %>
+            <% end %>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
-</main>
+      <% end %>
+    </section>
+  </main>
 
-<%= render 'user_area/alpha/shared/page_footer' %>
+  <%= render 'user_area/alpha/shared/page_footer' %>
+</div>

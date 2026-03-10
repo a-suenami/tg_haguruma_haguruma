@@ -4,12 +4,17 @@
 module UserArea
   class ApplicationController < ::ApplicationController
     extend T::Sig
+    include Pagy::Backend
 
     layout 'user_area/application'
 
+    rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+
     before_action :set_tenant
+    before_action :authenticate_with_basic_auth
 
     helper UserArea::SiteSettingsHelper
+    helper UserArea::CustomVariablesHelper
     helper_method :current_user, :user_signed_in?, :current_tenant
 
     sig { void }
@@ -56,6 +61,21 @@ module UserArea
 
       Tenant.current_id = tenant.id
       tenant
+    end
+
+    sig { void }
+    def authenticate_with_basic_auth
+      basic_auth = current_tenant&.basic_auth
+      return unless basic_auth&.enabled?
+
+      authenticate_or_request_with_http_basic do |username, password|
+        basic_auth.authenticate_credentials(username, password)
+      end
+    end
+
+    sig { void }
+    def render_not_found
+      render 'user_area/errors/404', layout: false, status: :not_found
     end
   end
 end

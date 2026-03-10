@@ -58,10 +58,16 @@ module GeneratedPathHelpersModule
   def admin_area_contents_collection_entry_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_publication_date_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_publication_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_richtext_field_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_collection_entry_scheduled_publication_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_collection_entry_select_field_path(*args); end
@@ -85,7 +91,13 @@ module GeneratedPathHelpersModule
   def admin_area_contents_singleton_entry_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_publication_date_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def admin_area_contents_singleton_entry_publication_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def admin_area_contents_singleton_entry_scheduled_publication_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def admin_area_login_path(*args); end
@@ -127,6 +139,9 @@ module GeneratedPathHelpersModule
   def api_v1_me_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def api_v1_site_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_admin_area_category_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -160,6 +175,12 @@ module GeneratedPathHelpersModule
   def edit_ruler_area_tenant_authorization_tag_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_basic_auth_credential_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_custom_variable_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_oauth_provider_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -169,10 +190,16 @@ module GeneratedPathHelpersModule
   def edit_ruler_area_tenant_site_setting_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def edit_ruler_area_tenant_tag_setting_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def edit_ruler_area_tenant_theme_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_user_area_profile_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def edit_value_ruler_area_tenant_custom_variable_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_admin_area_category_path(*args); end
@@ -205,7 +232,13 @@ module GeneratedPathHelpersModule
   def new_ruler_area_tenant_authorization_tag_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_tenant_basic_auth_credential_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_content_type_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def new_ruler_area_tenant_custom_variable_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_ruler_area_tenant_oauth_provider_path(*args); end
@@ -310,6 +343,9 @@ module GeneratedPathHelpersModule
   def ruler_area_auth_failure_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_global_feature_flags_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_login_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -340,10 +376,28 @@ module GeneratedPathHelpersModule
   def ruler_area_tenant_authorization_tags_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_basic_auth_credential_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_basic_auth_credentials_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_basic_auth_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_content_type_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_content_types_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_custom_variable_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_custom_variables_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_feature_flags_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_oauth_provider_path(*args); end
@@ -359,6 +413,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_site_setting_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def ruler_area_tenant_tag_setting_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def ruler_area_tenant_theme_path(*args); end
@@ -391,6 +448,12 @@ module GeneratedPathHelpersModule
   def test_auth_bypass_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def toggle_ruler_area_global_feature_flag_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def toggle_ruler_area_tenant_feature_flag_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def turbo_recede_historical_location_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -403,7 +466,13 @@ module GeneratedPathHelpersModule
   def update_rails_disk_service_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def update_value_ruler_area_tenant_custom_variable_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def upload_admin_area_media_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_auth_error_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def user_area_auth_failure_path(*args); end
@@ -443,6 +512,15 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def user_area_news_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_preview_content_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def user_area_privilege_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def user_area_profile_path(*args); end

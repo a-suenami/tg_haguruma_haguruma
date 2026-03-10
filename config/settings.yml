@@ -70,6 +70,11 @@ blastengine:
   rate_limit: <%= ENV['BLASTENGINE_RATE_LIMIT'] %>
 checkpoint:
   jwt_secret: <%= ENV['CHECKPOINT_JWT_SECRET'] %>
+cloudflare:
+  stream:
+    account_id: <%= ENV['CLOUDFLARE_STREAM_ACCOUNT_ID'] %>
+    api_token: <%= ENV['CLOUDFLARE_STREAM_API_TOKEN'] %>
+    customer_subdomain: <%= ENV['CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN'] %>
 datadog:
   enabled: <%= ENV['DATADOG_ENABLED'] %>
 domains:

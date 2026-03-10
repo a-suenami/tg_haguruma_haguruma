@@ -8,13 +8,48 @@ create_table :content_entry_versions, force: :cascade do |t|
   t.integer :visibility, null: false, default: 0
   t.datetime :created_at, null: false
   t.datetime :published_at
+  t.datetime :custom_published_at
   t.datetime :unpublished_at
+  t.string :preview_token # Token for preview access (draft content)
+  t.datetime :preview_token_expires_at
+  t.datetime :scheduled_publish_at # When content should be auto-published
+  t.string :scheduled_job_id # Solid Queue job ID for cancellation
 end
 
 add_index :content_entry_versions, [:tenant_id, :content_type_id, :content_entry_id, :version], unique: true, name: 'index_content_entry_versions_on_tenant_type_entry_version'
 add_index :content_entry_versions, [:content_entry_id, :version], unique: true, name: 'index_content_entry_versions_on_entry_version'
 add_index :content_entry_versions, [:tenant_id, :is_public], name: 'index_content_entry_versions_on_tenant_is_public'
 add_index :content_entry_versions, [:tenant_id, :visibility], name: 'index_content_entry_versions_on_tenant_visibility'
+
+# Only one draft version per content_entry
+add_index :content_entry_versions, [:content_entry_id], unique: true, where: 'status = 1', name: 'index_content_entry_versions_unique_draft_per_entry'
+# Only one published version per content_entry
+add_index :content_entry_versions, [:content_entry_id], unique: true, where: 'status = 3', name: 'index_content_entry_versions_unique_published_per_entry'
+
+# Index for preview token lookup
+add_index :content_entry_versions, [:preview_token], unique: true, where: 'preview_token IS NOT NULL', name: 'index_content_entry_versions_on_preview_token'
+
+# Index for expired token cleanup queries
+add_index :content_entry_versions, [:preview_token_expires_at], where: 'preview_token IS NOT NULL', name: 'index_content_entry_versions_on_token_expires_at'
+
+# Index for scheduled publish queries (only drafts with scheduled time)
+add_index :content_entry_versions, [:scheduled_publish_at], where: 'scheduled_publish_at IS NOT NULL AND status = 1', name: 'index_content_entry_versions_on_scheduled_publish'
+
+# draft: published_at and unpublished_at must be NULL
+# custom_published_at is allowed (admin can set display date before publish)
+add_check_constraint :content_entry_versions,
+  'status != 1 OR (published_at IS NULL AND unpublished_at IS NULL)',
+  name: 'chk_content_entry_versions_draft_nulls'
+
+# published: published_at and custom_published_at must be present
+add_check_constraint :content_entry_versions,
+  'status != 3 OR (published_at IS NOT NULL AND custom_published_at IS NOT NULL AND unpublished_at IS NULL)',
+  name: 'chk_content_entry_versions_published_required'
+
+# unpublished: published_at, custom_published_at, and unpublished_at must be present
+add_check_constraint :content_entry_versions,
+  'status != 4 OR (published_at IS NOT NULL AND custom_published_at IS NOT NULL AND unpublished_at IS NOT NULL)',
+  name: 'chk_content_entry_versions_unpublished_required'
 
 add_foreign_key :content_entry_versions, :content_entries, column: [:tenant_id, :content_type_id, :content_entry_id], primary_key: [:tenant_id, :content_type_id, :id],
 name: 'fk_content_entry_versions_content_entries'

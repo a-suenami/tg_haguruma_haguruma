@@ -1,0 +1,24 @@
+<div cog-membership-prompt>
+  <div class="content">
+    <div class="prompt-icon">
+      <%= icon_svg('sign-up-indicator') %>
+    </div>
+    <p class="prompt-message">
+      ファンクラブ会員登録で<br>ご覧いただけます
+    </p>
+    <a href="<%= user_area_privilege_path %>" class="prompt-action">
+      <span class="action-text">入会のご案内</span>
+      <span class="action-icon"><%= icon_svg('right-arrow') %></span>
+    </a>
+    <% if custom_variables.enabled?('signup_flow') %>
+      <a href="<%= user_area_auth_start_path %>" cog-link variant-underline>
+        既にご入会済みの方はこちら
+      </a>
+    <% else %>
+      <p class="pre-open-notice">
+        2026/2/12 12:00より受付を開始いたします。<br/>
+        受付開始までお待ちください
+      </p>
+    <% end %>
+  </div>
+</div>

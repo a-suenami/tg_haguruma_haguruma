@@ -49,7 +49,7 @@ export type SerializedAutoEmbedNode = Spread<
 >;
 
 export class AutoEmbedNode extends DecoratorNode<JSX.Element> {
-  __type: string;
+  __embedType: string;
   __url: string;
   __id: string;
   __data?: any;
@@ -60,7 +60,7 @@ export class AutoEmbedNode extends DecoratorNode<JSX.Element> {
 
   static clone(node: AutoEmbedNode): AutoEmbedNode {
     return new AutoEmbedNode({
-      type: node.__type,
+      type: node.__embedType,
       url: node.__url,
       id: node.__id,
       data: node.__data,
@@ -75,12 +75,12 @@ export class AutoEmbedNode extends DecoratorNode<JSX.Element> {
 
   exportDOM(): DOMExportOutput {
     const div = document.createElement('div');
-    div.setAttribute('data-embed-type', this.__type);
+    div.setAttribute('data-embed-type', this.__embedType);
     div.setAttribute('data-embed-url', this.__url);
     div.setAttribute('data-embed-id', this.__id);
-    
+
     // Embed specific content
-    if (this.__type === 'youtube') {
+    if (this.__embedType === 'youtube') {
       const iframe = document.createElement('iframe');
       iframe.src = `https://www.youtube.com/embed/${this.__id}`;
       iframe.frameBorder = '0';
@@ -89,7 +89,7 @@ export class AutoEmbedNode extends DecoratorNode<JSX.Element> {
       iframe.style.height = '315px';
       div.appendChild(iframe);
     }
-    
+
     return { element: div };
   }
 
@@ -104,7 +104,7 @@ export class AutoEmbedNode extends DecoratorNode<JSX.Element> {
 
   constructor(payload: AutoEmbedPayload, key?: NodeKey) {
     super(key);
-    this.__type = payload.type;
+    this.__embedType = payload.type;
     this.__url = payload.url;
     this.__id = payload.id;
     this.__data = payload.data;
@@ -114,7 +114,7 @@ export class AutoEmbedNode extends DecoratorNode<JSX.Element> {
     return {
       type: 'auto-embed',
       version: 1,
-      embedType: this.__type,
+      embedType: this.__embedType,
       url: this.__url,
       id: this.__id,
       data: this.__data,
@@ -136,7 +136,7 @@ export class AutoEmbedNode extends DecoratorNode<JSX.Element> {
   }
 
   getEmbedType(): string {
-    return this.__type;
+    return this.__embedType;
   }
 
   getUrl(): string {
@@ -155,7 +155,7 @@ export class AutoEmbedNode extends DecoratorNode<JSX.Element> {
     return (
       <Suspense fallback={<div>Loading embed...</div>}>
         <AutoEmbedComponent
-          type={this.__type}
+          type={this.__embedType}
           url={this.__url}
           id={this.__id}
           data={this.__data}

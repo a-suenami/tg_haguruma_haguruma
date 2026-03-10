@@ -46,13 +46,17 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   create_table "content_authorization_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
-    t.uuid "remote_id", comment: "External system ID for synchronization"
+    t.uuid "remote_id", comment: "DEPRECATED: External system ID for synchronization"
+    t.string "provider", comment: "Tag provider: system, idp, ruler, or NULL for custom"
+    t.string "unique_id", comment: "Unique identifier within provider scope"
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenant_id", "id"], name: "index_content_authorization_tags_on_tenant_id_and_id", unique: true
     t.index ["tenant_id", "name"], name: "index_content_authorization_tags_on_tenant_id_and_name", unique: true
+    t.index ["tenant_id", "provider", "unique_id"], name: "index_content_authorization_tags_on_provider_unique_id", unique: true, where: "(provider IS NOT NULL)"
     t.index ["tenant_id", "remote_id"], name: "index_content_authorization_tags_on_tenant_id_and_remote_id", unique: true, where: "(remote_id IS NOT NULL)"
+    t.check_constraint "provider::text = ANY (ARRAY['system'::character varying, 'idp'::character varying, 'ruler'::character varying]::text[])", name: "chk_content_authorization_tags_provider"
   end
 
   create_table "content_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -133,11 +137,24 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.integer "visibility", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "published_at"
+    t.datetime "custom_published_at"
     t.datetime "unpublished_at"
+    t.string "preview_token"
+    t.datetime "preview_token_expires_at"
+    t.datetime "scheduled_publish_at"
+    t.string "scheduled_job_id"
     t.index ["content_entry_id", "version"], name: "index_content_entry_versions_on_entry_version", unique: true
+    t.index ["content_entry_id"], name: "index_content_entry_versions_unique_draft_per_entry", unique: true, where: "(status = 1)"
+    t.index ["content_entry_id"], name: "index_content_entry_versions_unique_published_per_entry", unique: true, where: "(status = 3)"
+    t.index ["preview_token"], name: "index_content_entry_versions_on_preview_token", unique: true, where: "(preview_token IS NOT NULL)"
+    t.index ["preview_token_expires_at"], name: "index_content_entry_versions_on_token_expires_at", where: "(preview_token IS NOT NULL)"
+    t.index ["scheduled_publish_at"], name: "index_content_entry_versions_on_scheduled_publish", where: "((scheduled_publish_at IS NOT NULL) AND (status = 1))"
     t.index ["tenant_id", "content_type_id", "content_entry_id", "version"], name: "index_content_entry_versions_on_tenant_type_entry_version", unique: true
     t.index ["tenant_id", "is_public"], name: "index_content_entry_versions_on_tenant_is_public"
     t.index ["tenant_id", "visibility"], name: "index_content_entry_versions_on_tenant_visibility"
+    t.check_constraint "status <> 1 OR published_at IS NULL AND unpublished_at IS NULL", name: "chk_content_entry_versions_draft_nulls"
+    t.check_constraint "status <> 3 OR published_at IS NOT NULL AND custom_published_at IS NOT NULL AND unpublished_at IS NULL", name: "chk_content_entry_versions_published_required"
+    t.check_constraint "status <> 4 OR published_at IS NOT NULL AND custom_published_at IS NOT NULL AND unpublished_at IS NOT NULL", name: "chk_content_entry_versions_unpublished_required"
   end
 
   create_table "content_type_field_media_assets", force: :cascade do |t|
@@ -151,6 +168,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.string "unique_name", null: false
     t.text "display_name", null: false
     t.integer "position", default: 0, null: false
+    t.integer "status", limit: 2, default: 1, null: false, comment: "0: disabled, 1: enabled"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["field_select_id", "position"], name: "idx_on_field_select_id_position_9d0ef88527"
@@ -193,6 +211,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.text "display_name"
     t.text "unique_name"
     t.text "description"
+    t.text "preview_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id", "tenant_id"], name: "index_content_types_on_id_and_tenant_id", unique: true
@@ -206,6 +225,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.bigint "file_size_bytes", null: false
     t.string "s3_object_path", null: false
     t.jsonb "metadata", null: false
+    t.string "public_s3_object_path"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id", "media_type"], name: "index_media_assets_on_id_and_media_type", unique: true
@@ -256,15 +276,65 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["user_id"], name: "index_session_tokens_on_user_id"
   end
 
+  create_table "site_custom_variables", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.string "unique_name", null: false
+    t.integer "variable_type", limit: 2, null: false, comment: "1: boolean, 2: datetime, 3: text"
+    t.text "description", default: "", null: false
+    t.boolean "boolean_value"
+    t.datetime "datetime_value"
+    t.text "text_value"
+    t.datetime "archived_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "archived_at"], name: "idx_site_custom_variables_tenant_archived"
+    t.index ["tenant_id", "unique_name"], name: "idx_site_custom_variables_unique_name", unique: true, where: "(archived_at IS NULL)"
+    t.check_constraint "variable_type <> 1 OR boolean_value IS NOT NULL AND datetime_value IS NULL AND text_value IS NULL", name: "chk_site_custom_variables_boolean_consistency"
+    t.check_constraint "variable_type <> 2 OR datetime_value IS NOT NULL AND boolean_value IS NULL AND text_value IS NULL", name: "chk_site_custom_variables_datetime_consistency"
+    t.check_constraint "variable_type <> 3 OR text_value IS NOT NULL AND boolean_value IS NULL AND datetime_value IS NULL", name: "chk_site_custom_variables_text_consistency"
+    t.check_constraint "variable_type = ANY (ARRAY[1, 2, 3])", name: "chk_site_custom_variables_variable_type"
+  end
+
+  create_table "tenant_basic_auth_credentials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tenant_basic_auth_id", null: false
+    t.string "username", null: false
+    t.string "password_digest", null: false
+    t.string "description", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_basic_auth_id", "username"], name: "idx_on_tenant_basic_auth_id_username_dcd4020202", unique: true
+    t.index ["tenant_basic_auth_id"], name: "index_tenant_basic_auth_credentials_on_tenant_basic_auth_id"
+  end
+
+  create_table "tenant_basic_auths", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_basic_auths_on_tenant_id", unique: true
+  end
+
   create_table "tenant_site_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "tenant_id", null: false
     t.jsonb "features", default: {}, null: false
     t.jsonb "landing", default: {}, null: false
+    t.jsonb "footer_main_links", default: [], null: false
+    t.jsonb "footer_sub_links", default: [], null: false
+    t.jsonb "menu_items", default: [], null: false
     t.string "login_label", default: "ログイン", null: false
     t.string "signup_label", default: "新規会員登録", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenant_id"], name: "index_tenant_site_settings_on_tenant_id", unique: true
+  end
+
+  create_table "tenant_tag_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.text "head_code"
+    t.text "body_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_tag_settings_on_tenant_id", unique: true
   end
 
   create_table "tenant_themes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -381,7 +451,11 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "ruler_auth0_accounts", "rulers", name: "fk_ruler_auth0_accounts_rulers"
   add_foreign_key "session_tokens", "tenants"
   add_foreign_key "session_tokens", "users"
+  add_foreign_key "site_custom_variables", "tenants"
+  add_foreign_key "tenant_basic_auth_credentials", "tenant_basic_auths"
+  add_foreign_key "tenant_basic_auths", "tenants"
   add_foreign_key "tenant_site_settings", "tenants"
+  add_foreign_key "tenant_tag_settings", "tenants"
   add_foreign_key "tenant_themes", "media_assets", column: "logo_media_asset_id"
   add_foreign_key "tenant_themes", "tenants"
   add_foreign_key "user_tags", "content_authorization_tags"
