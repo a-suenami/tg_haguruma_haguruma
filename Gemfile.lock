@@ -225,13 +225,14 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faraday (2.7.12)
-      base64
-      faraday-net_http (>= 2.0, < 3.1)
-      ruby2_keywords (>= 0.0.4)
+    faraday (2.14.1)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
     faraday-follow_redirects (0.3.0)
       faraday (>= 1, < 3)
-    faraday-net_http (3.0.2)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
     faraday-retry (2.2.1)
       faraday (~> 2.0)
     ffaker (2.23.0)
@@ -334,6 +335,8 @@ GEM
     multi_xml (0.7.2)
       bigdecimal (~> 3.1)
     mutex_m (0.3.0)
+    net-http (0.9.1)
+      uri (>= 0.11.1)
     net-imap (0.5.9)
       date
       net-protocol
@@ -584,7 +587,6 @@ GEM
       rbs (>= 3, < 5)
       sorbet-runtime (>= 0.5.10782)
     ruby-progressbar (1.13.0)
-    ruby2_keywords (0.0.5)
     rubyzip (2.4.1)
     sanitize (7.0.0)
       crass (~> 1.0.2)
@@ -759,7 +761,7 @@ DEPENDENCIES
   debug
   enumerize (~> 2.7.0)
   factory_bot_rails (~> 6.2.0)
-  faraday (~> 2.7.11)
+  faraday (~> 2.14.1)
   faraday-follow_redirects (~> 0.3.0)
   faraday-retry (~> 2.2.0)
   ffaker (~> 2.23.0)
