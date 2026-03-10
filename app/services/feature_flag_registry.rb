@@ -15,6 +15,11 @@ class FeatureFlagRegistry
       description: '管理画面の新しいUIを有効にする',
       scope: :tenant,
     },
+    cloudflare_stream_sync: {
+      name: 'Cloudflare Stream 動画同期',
+      description: '動画アップロード時にCloudflare Streamへ非同期で同期する',
+      scope: :global,
+    },
   }.freeze, T::Hash[Symbol, T::Hash[Symbol, T.untyped]],)
 
   class << self

@@ -35,7 +35,7 @@ class MediaAsset::Uploader
     )
 
     # 動画の場合はCloudflare Streamへの同期Jobをエンキュー
-    if media_asset.video?
+    if media_asset.video? && Flipper.enabled?(:cloudflare_stream_sync)
       enqueue_cloudflare_sync(media_asset)
     end
 
@@ -90,7 +90,7 @@ class MediaAsset::Uploader
     }
 
     # 動画の場合はCloudflare同期ステータスを追加
-    if media_type == :video
+    if media_type == :video && Flipper.enabled?(:cloudflare_stream_sync)
       metadata[:cloudflare_sync_status] = CloudflareStream::SyncStatus::PENDING
     end
 
