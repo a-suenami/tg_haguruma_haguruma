@@ -17,7 +17,6 @@ class ApplicationSerializer
     {
       data: {
         id: @resource.id.to_s,
-        type: T.must(self.class.name).demodulize.underscore.gsub(/_serializer$/, ''),
         attributes: serializable_hash,
       },
     }

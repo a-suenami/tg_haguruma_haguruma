@@ -1,0 +1,165 @@
+<style>
+  /* Sortable options styling */
+  [data-content-type-field-target="selectOptionsContainer"] .uk-sortable-drag {
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    border-radius: 4px;
+    padding: 5px;
+  }
+  [data-content-type-field-target="selectOptionsContainer"] .uk-sortable-placeholder {
+    opacity: 0.3;
+  }
+
+  /* Toggle switch styling */
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+  }
+  .toggle-switch-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .toggle-switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 22px;
+  }
+  .toggle-switch-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+  }
+  .toggle-switch-input:checked + .toggle-switch-slider {
+    background-color: #1e87f0;
+  }
+  .toggle-switch-input:checked + .toggle-switch-slider:before {
+    transform: translateX(18px);
+  }
+</style>
+
+<div id="field-metadata-modal"
+     uk-modal="container: false"
+     data-content-type-field-target="fieldMetadataModal">
+  <div class="uk-modal-dialog">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+
+    <div class="uk-modal-header">
+      <h2 class="uk-modal-title">
+        <a href="#"
+           data-content-type-field-target="backButton"
+           data-action="click->content-type-field#backToFieldTypeSelection"
+           class="uk-margin-small-right">←</a>
+        <span data-content-type-field-target="modalTitle">フィールドメタデータの設定</span>
+      </h2>
+    </div>
+
+    <div class="uk-modal-body">
+      <div class="uk-margin">
+        <div class="uk-card uk-card-default uk-card-body uk-card-small">
+          <div style="margin-bottom: 10px;">
+            <span data-content-type-field-target="selectedFieldTypeIcon"
+                  uk-icon="icon: pencil; ratio: 1.5"></span>
+            <span data-content-type-field-target="selectedFieldTypeLabel"
+                  style="margin-left: 10px; font-weight: 600;">ショートテキスト</span>
+          </div>
+          <p class="uk-text-small uk-text-muted"
+             data-content-type-field-target="selectedFieldTypeDesc">タイトルや名前などの短いテキスト</p>
+        </div>
+      </div>
+
+      <h4>メタデータ設定</h4>
+
+      <div class="uk-margin">
+        <label class="uk-form-label">識別子</label>
+        <div class="uk-form-controls">
+          <input type="text"
+                 data-content-type-field-target="fieldIdentifier"
+                 class="uk-input"
+                 placeholder="例: title">
+        </div>
+      </div>
+
+      <div class="uk-margin">
+        <label class="uk-form-label">名前</label>
+        <div class="uk-form-controls">
+          <input type="text"
+                 data-content-type-field-target="fieldName"
+                 class="uk-input"
+                 placeholder="例: タイトル">
+        </div>
+      </div>
+
+      <div class="uk-margin">
+        <label class="uk-form-label">説明</label>
+        <div class="uk-form-controls">
+          <textarea data-content-type-field-target="fieldDescription"
+                    class="uk-textarea"
+                    rows="3"
+                    placeholder="このフィールドの説明を入力してください"></textarea>
+        </div>
+      </div>
+
+      <div class="uk-margin">
+        <label class="uk-form-label">必須</label>
+        <div class="uk-form-controls">
+          <label>
+            <input type="checkbox"
+                   data-content-type-field-target="fieldRequired"
+                   class="uk-checkbox">
+            必須の項目にする
+          </label>
+        </div>
+      </div>
+
+      <!-- Select field specific settings -->
+      <div data-content-type-field-target="selectFieldSettings" style="display: none;">
+        <h4>セレクトフィールドの設定</h4>
+
+        <div class="uk-margin">
+          <label class="uk-form-label">表示形式</label>
+          <div class="uk-form-controls">
+            <select data-content-type-field-target="selectDisplayFormat" class="uk-select">
+              <option value="dropdown">ドロップダウン</option>
+              <option value="checkbox">チェックボックス（複数選択可）</option>
+              <option value="radio">ラジオボタン</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="uk-margin">
+          <label class="uk-form-label">選択肢</label>
+          <div data-content-type-field-target="selectOptionsContainer"
+               uk-sortable="handle: .option-drag-handle">
+            <!-- Options will be added here dynamically -->
+          </div>
+          <button type="button"
+                  class="uk-button uk-button-default uk-button-small uk-margin-small-top"
+                  data-action="click->content-type-field#addSelectOption">
+            + 選択肢を追加
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+      <button data-content-type-field-target="submitButton"
+              class="uk-button uk-button-primary"
+              data-action="click->content-type-field#confirmAddOrUpdateField">フィールドを追加する</button>
+    </div>
+  </div>
+</div>

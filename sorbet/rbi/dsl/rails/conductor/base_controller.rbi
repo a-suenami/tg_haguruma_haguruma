@@ -25,8 +25,17 @@ class Rails::Conductor::BaseController
     include ::ActionText::TagHelper
     include ::ViteRails::TagHelpers
     include ::ActionController::Base::HelperMethods
+    include ::AdminArea::PreviewHelper
+    include ::Pagy::UrlHelpers
+    include ::Pagy::Frontend
     include ::ApplicationHelper
+    include ::LexicalHelper
     include ::RulerArea::ApplicationHelper
+    include ::SvgHelper
+    include ::UserArea::ContentFieldHelper
+    include ::UserArea::CustomVariablesHelper
+    include ::UserArea::ExternalUrlsHelper
+    include ::UserArea::SiteSettingsHelper
   end
 
   class HelperProxy < ::ActionView::Base

@@ -2,7 +2,7 @@ export interface MediaUploadResponse {
   id: string;
   url: string;
   s3_object_path: string;
-  filename: string;
+  original_filename: string;
   media_type: 'image' | 'video' | 'audio' | 'document';
 }
 

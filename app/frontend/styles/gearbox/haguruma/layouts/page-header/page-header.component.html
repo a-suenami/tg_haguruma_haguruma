@@ -1,0 +1,121 @@
+<header cog-header>
+  <cog-header-logo-button>
+    <cog-logo></cog-logo>
+  </cog-header-logo-button>
+
+  <cog-header-menu>
+    @if (features | hagurumaHasFeature: 'news'; as newsFeature) {
+      <a routerLink="/news/list" cog-header-menu-item>{{
+        newsFeature.label
+      }}</a>
+    }
+    @if (features | hagurumaHasFeature: 'blog'; as blogFeature) {
+      <a routerLink="/blog/list" cog-header-menu-item>{{
+        blogFeature.label
+      }}</a>
+    }
+    @if (features | hagurumaHasFeature: 'schedule'; as scheduleFeature) {
+      <a routerLink="/schedule/list" cog-header-menu-item>{{
+        scheduleFeature.label
+      }}</a>
+    }
+    @if (features | hagurumaHasFeature: 'ticket'; as ticketFeature) {
+      <a cog-header-menu-item (click)="openMembership()">{{
+        ticketFeature.label
+      }}</a>
+    }
+    <a cog-header-menu-item (click)="openMyPage()">
+      {{ features.mypage.label }}
+    </a>
+  </cog-header-menu>
+
+  <button
+    type="button"
+    cog-header-menu-button
+    (present)="presentOverlay()"
+    (dismiss)="dismissOverlay()"
+  ></button>
+
+  <cog-header-menu-overlay #overlay>
+    <cog-header-menu-overlay-head>
+      <cog-header-menu-overlay-actions>
+        <button
+          cog-button
+          filled
+          class="action-button"
+          (click)="openAuthentication('auth/sign_in')"
+        >
+          <span>ログイン</span>
+          <cog-icon-sign-in-indicator />
+        </button>
+        <button
+          cog-button
+          outlined
+          class="action-button"
+          (click)="openAuthentication('auth/register')"
+        >
+          <span>新規会員登録</span>
+          <cog-icon-sign-up-indicator />
+        </button>
+      </cog-header-menu-overlay-actions>
+    </cog-header-menu-overlay-head>
+
+    <cog-header-menu-overlay-content>
+      <cog-menu-items>
+        <a cog-menu-item routerLink="/landing">TOP</a>
+        @if (features | hagurumaHasFeature: 'news'; as newsFeature) {
+          <a cog-menu-item routerLink="/news/list">{{ newsFeature.label }}</a>
+        }
+        @if (features | hagurumaHasFeature: 'ticket'; as ticketFeature) {
+          <a cog-menu-item (click)="openMembership()">{{
+            ticketFeature.label
+          }}</a>
+        }
+        @if (features | hagurumaHasFeature: 'blog'; as blogFeature) {
+          <a cog-menu-item routerLink="/blog/list">{{ blogFeature.label }}</a>
+        }
+        @if (features | hagurumaHasFeature: 'schedule'; as scheduleFeature) {
+          <a cog-menu-item routerLink="/schedule/list">{{
+            scheduleFeature.label
+          }}</a>
+        }
+        <a cog-menu-item (click)="openMyPage()">{{ features.mypage.label }}</a>
+      </cog-menu-items>
+
+      <cog-sns-items>
+        @for (link of snsLinks; track link.name) {
+          <a
+            cog-sns-item
+            [type]="link.name"
+            [href]="link.link"
+            target="_blank"
+            rel="noopener"
+          ></a>
+        }
+      </cog-sns-items>
+    </cog-header-menu-overlay-content>
+
+    <cog-header-menu-overlay-footer>
+      <cog-header-menu-banners>
+        <a cog-header-menu-banner href="#">
+          <img
+            src="assets/images/dummy-banner-1.png"
+            alt="Header Menu Banner 1"
+          />
+        </a>
+        <a cog-header-menu-banner href="#">
+          <img
+            src="assets/images/dummy-banner-2.png"
+            alt="Header Menu Banner 2"
+          />
+        </a>
+        <a cog-header-menu-banner href="#">
+          <img
+            src="assets/images/dummy-banner-3.png"
+            alt="Header Menu Banner 3"
+          />
+        </a>
+      </cog-header-menu-banners>
+    </cog-header-menu-overlay-footer>
+  </cog-header-menu-overlay>
+</header>

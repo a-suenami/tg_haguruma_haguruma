@@ -1,0 +1,119 @@
+<% version = published_version(@entry) %>
+<% title_text = render_text_field(field_by_identifier(version, 'title')) %>
+
+<% content_for :title do %>
+  <%= title_text.presence || feature_label(:schedule) %> - <%= current_tenant&.name || 'Fan Club' %>
+<% end %>
+
+<%= render 'user_area/alpha/shared/page_header' %>
+
+<main class="main">
+  <div class="inner">
+    <article cog-detail-fragment>
+      <header cog-detail-fragment-header>
+        <div cog-detail-fragment-toolbar>
+          <% category_field = field_by_identifier(version, 'category') %>
+          <% category_option = selected_option(category_field) %>
+          <span cog-date-label><%= format_content_date(@entry.display_publication_date) %></span>
+          <div class="categories">
+            <% if version.visibility != 'public' %>
+              <span cog-category-label color-primary>会員限定</span>
+            <% end %>
+            <% if category_option.present? %>
+              <span cog-category-label color-secondary><%= category_option.display_name %></span>
+            <% end %>
+          </div>
+        </div>
+        <div cog-detail-fragment-toolbar>
+          <h1 cog-detail-fragment-title><%= title_text %></h1>
+        </div>
+      </header>
+
+      <div cog-detail-fragment-content>
+        <% if content_authorized? %>
+          <div cog-rich-content-viewer>
+            <%= raw render_richtext_field(field: field_by_identifier(version, 'body')) %>
+          </div>
+        <% else %>
+          <%= render 'user_area/alpha/shared/content/membership_prompt' %>
+        <% end %>
+      </div>
+
+      <footer cog-detail-fragment-actions>
+        <a href="<%= user_area_schedules_path %>" cog-button outlined class="action-button">
+          一覧に戻る
+        </a>
+      </footer>
+    </article>
+  </div>
+</main>
+
+<%= render 'user_area/alpha/shared/page_footer' %>
+
+<%
+=begin
+%>
+
+<% content_for :title do %>
+  <%= feature_label(:schedule) %> - <%= current_tenant&.name || 'Fan Club' %>
+<% end %>
+
+<%= render 'user_area/alpha/shared/page_header' %>
+
+<main class="main">
+  <div class="inner">
+    <article cog-detail-fragment>
+      <header cog-detail-fragment-header>
+        <div cog-detail-fragment-toolbar>
+          <h1 cog-detail-fragment-title>スケジュール</h1>
+        </div>
+        <div cog-detail-fragment-toolbar>
+          <span cog-category-label color-secondary>EVENT</span>
+          <span cog-date-label>2024.12.25</span>
+        </div>
+      </header>
+
+      <div cog-detail-fragment-content>
+        <div cog-rich-content-viewer>
+          <h2>クリスマスライブ 2024</h2>
+          <p>
+            今年もクリスマスライブを開催します！
+            ファンクラブ会員限定の特別なイベントです。
+          </p>
+          <h3>イベント詳細</h3>
+          <dl>
+            <dt>日時</dt>
+            <dd>2024年12月25日（水）18:00開場 / 19:00開演</dd>
+            <dt>会場</dt>
+            <dd>東京ドームシティホール</dd>
+            <dt>チケット</dt>
+            <dd>ファンクラブ先行受付：12月1日〜12月10日</dd>
+          </dl>
+          <h3>注意事項</h3>
+          <ul>
+            <li>会員証を必ずご持参ください</li>
+            <li>転売・譲渡は禁止です</li>
+            <li>会場内での録音・録画は禁止です</li>
+          </ul>
+          <p>
+            皆様のご来場をお待ちしております！
+          </p>
+        </div>
+      </div>
+
+      <footer cog-detail-fragment-actions>
+        <a href="<%= user_area_schedules_path %>" cog-button outlined class="action-button">
+          タイムラインに戻る
+        </a>
+      </footer>
+    </article>
+  </div>
+</main>
+
+<%= render 'user_area/alpha/shared/page_footer' %>
+
+================================================================================
+%>
+<%
+=end
+%>

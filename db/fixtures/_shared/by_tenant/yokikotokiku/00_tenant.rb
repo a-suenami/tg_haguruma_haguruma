@@ -1,0 +1,22 @@
+# typed: false
+# frozen_string_literal: true
+
+# 斧琴菊テナント作成（初期データ）
+# 既に存在する場合はスキップ
+
+require_relative '../../tenant_domain_helper'
+
+tenant_id = TenantDomainHelper.tenant_id_for('yokikotokiku')
+
+if Tenant.exists?(id: tenant_id)
+  puts "  Tenant: #{tenant_id} (already exists, skipping)"
+else
+  Tenant.create!(
+    id: tenant_id,
+    name: '斧琴菊',
+    user_page_domain: TenantDomainHelper.user_page_domain_for(tenant_id),
+  )
+  puts "  Created tenant: #{tenant_id}"
+end
+
+Tenant.current_id = tenant_id

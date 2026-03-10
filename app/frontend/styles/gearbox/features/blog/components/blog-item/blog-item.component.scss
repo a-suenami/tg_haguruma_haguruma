@@ -1,0 +1,111 @@
+@use 'shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-blog-item] {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  cursor: pointer;
+  align-items: start;
+
+  &:hover {
+    opacity: 1;
+    .thumbnail img {
+      transform: scale(1.15);
+    }
+    .title {
+      color: var(--theme-button-secondary-background-color);
+    }
+  }
+
+
+  .thumbnail {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 5 / 3;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s ease-out;
+    }
+  }
+
+  .member-only {
+    color: var(--theme-button-primary-text-color);
+    background-color: rgb(from var(--theme-button-primary-background-color) r g b / 0.9);
+    padding: 5px 12px 6px 13px;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    font-size: 14px;
+    border-radius: 0px;
+    font-family: var(--theme-caption-font-family);
+    font-weight: var(--gearbox-font-weight-regular);
+    line-height: 1.5;
+
+    @include breakpoints.media-down(sm) {
+      padding: 3px 9px 4px 11px;
+    }
+  }
+
+  .label {
+    font-size: 0;
+    position: absolute;
+    z-index: 2;
+    color: var(--theme-button-secondary-text-color);
+    background-color: rgb(from var(--theme-button-secondary-background-color) r g b / 0.95);
+    padding: 2px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 2px 10px 4px
+  }
+
+  .title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    font-family: var(--theme-title-font-family, sans-serif);
+    font-size: var(--gearbox-font-size-title-small);
+    color: var(--theme-title-text-color, #000000);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    transition: color 0.2s ease-out;
+    margin-top: 10px;
+  }
+
+  .date {
+    font-size: 0.75rem;
+    font-family: var(--theme-caption-font-family, sans-serif);
+    color: var(--theme-caption-text-color, #666666);
+    margin-top: 4px;
+  }
+
+  @include breakpoints.media-up(sm) {
+    .thumbnail {
+      border-radius: 10px;
+    }
+    .label {
+      bottom: 11px;
+      right: 11px;
+    }
+  }
+
+  @include breakpoints.media-down(sm) {
+    .thumbnail {
+      border-radius: 7px;
+    }
+    .label {
+      bottom: 7px;
+      right: 7px;
+    }
+  }
+}

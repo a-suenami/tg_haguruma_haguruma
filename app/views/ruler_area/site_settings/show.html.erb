@@ -1,0 +1,17 @@
+<ul class="uk-breadcrumb">
+  <li><%= link_to 'テナント', ruler_area_tenants_path %></li>
+  <li><%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %></li>
+  <li><span>サイト設定</span></li>
+</ul>
+
+<div class="am-page-header">
+  <h3>サイト設定</h3>
+  <div>
+    <%= link_to '編集', edit_ruler_area_tenant_site_setting_path(@tenant), class: 'uk-button uk-button-primary' %>
+  </div>
+</div>
+
+<%= render 'show_auth_labels' %>
+<%= render 'show_pc_features' %>
+<%= render 'show_sp_menu' %>
+<%= render 'show_footer_links' %>

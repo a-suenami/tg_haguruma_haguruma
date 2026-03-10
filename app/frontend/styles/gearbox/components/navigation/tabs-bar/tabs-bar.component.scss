@@ -1,0 +1,62 @@
+[cog-tabs-bar] {
+  display: block;
+  position: relative;
+  overflow-x: auto;
+  scrollbar-color: transparent transparent;
+  scrollbar-width: none;
+  max-width: 612px;
+  box-sizing: border-box;
+  -ms-overflow-style: none;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::after {
+    right: -1rem;
+    background: linear-gradient(
+      to left,
+      var(--gearbox-surface) 60%,
+      transparent 100%
+    );
+  }
+
+  &::before {
+    left: -1rem;
+    background: linear-gradient(
+      to right,
+      var(--gearbox-surface) 60%,
+      transparent 100%
+    );
+  }
+
+  &::after,
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 2rem;
+    height: 100%;
+    transition: all 450ms ease-in-out;
+  }
+
+  &.is-scrolling::after,
+  &.is-scrolling::before {
+    z-index: 1;
+    opacity: 1;
+  }
+
+  &:not(.is-scrolling)::after,
+  &:not(.is-scrolling)::before {
+    opacity: 0;
+    z-index: -1;
+  }
+
+  .inner {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+}

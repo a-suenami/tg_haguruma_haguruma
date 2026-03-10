@@ -1,4 +1,4 @@
-# typed: strict
+# typed: true
 # frozen_string_literal: true
 
 # ==============================================================================
@@ -19,15 +19,17 @@ class ApplicationQuery
     extend T::Sig
 
     # Enable class method chaining by delegating to a new instance
+    # rubocop:disable Style/ArgumentsForwarding
     sig { params(method_name: Symbol, args: T.untyped, block: T.nilable(T.proc.void)).returns(T.untyped) }
-    def method_missing(method_name, *, &)
+    def method_missing(method_name, *args, &block)
       instance = new
       if instance.respond_to?(method_name)
-        instance.public_send(method_name, *, &)
+        T.unsafe(instance).public_send(method_name, *args, &block)
       else
         super
       end
     end
+    # rubocop:enable Style/ArgumentsForwarding
 
     sig { params(method_name: Symbol, include_private: T::Boolean).returns(T::Boolean) }
     def respond_to_missing?(method_name, include_private = false)
@@ -67,7 +69,7 @@ class ApplicationQuery
   # Finds entity by id, returns nil if not found
   sig { params(id: T.untyped).returns(T.nilable(EntityType)) }
   def resolve_find_by_id(id)
-    T.unsafe(call.find_by(id: id))
+    T.unsafe(call.find_by(id:))
   end
 
   private

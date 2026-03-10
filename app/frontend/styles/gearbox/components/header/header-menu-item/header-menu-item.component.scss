@@ -1,0 +1,58 @@
+[cog-header-menu-item] {
+  display: inline-block;
+  color: var(--theme-navigation-text-color);
+  font-family: var(--theme-navigation-font-family, var(--gearbox-font-family-heading));
+  font-size: 16px;
+  font-weight: var(--gearbox-font-weight-bold);
+  justify-content: center;
+  line-height: 1.6;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform .2s ease-out, color .2s ease-out;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 2px;
+    background-color: var(--theme-button-secondary-background-color);
+    transition: width .2s ease-out, opacity .2s ease-out;
+    width: 0;
+    opacity: 0;
+  }
+
+  // Only apply hover on devices with hover capability (non-touch devices)
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 1;
+      color: var(--theme-button-secondary-background-color);
+      &:after {
+        width: 110%;
+        opacity: 1;
+      }
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gearbox-primary);
+    outline-offset: 2px;
+  }
+}
+
+[cog-header-menu-item].active {
+  color: var(--theme-button-primary-background-color);
+  &::after {
+    background-color: var(--theme-button-primary-background-color);
+    width: 110%;
+    opacity: 1;
+  }
+}

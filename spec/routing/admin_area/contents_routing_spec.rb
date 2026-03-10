@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'AdminArea::Contents routing' do
+  before do
+    allow_any_instance_of(Constraints::AdminDomainConstraint).to receive(:matches?).and_return(true)
+  end
+
   describe 'root and mobile routes' do
     it 'routes GET /admin/contents to contents/root#index' do
       expect(get: '/admin/contents').to route_to(

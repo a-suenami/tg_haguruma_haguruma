@@ -349,8 +349,32 @@ class Tenant
     sig { params(value: T::Enumerable[::Admin]).void }
     def admins=(value); end
 
+    sig { returns(T.nilable(::TenantBasicAuth)) }
+    def basic_auth; end
+
+    sig { params(value: T.nilable(::TenantBasicAuth)).void }
+    def basic_auth=(value); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantBasicAuth) }
+    def build_basic_auth(*args, &blk); end
+
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def build_oauth_provider(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantSiteSettings) }
+    def build_site_settings(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTagSettings) }
+    def build_tag_settings(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTheme) }
+    def build_theme(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantBasicAuth) }
+    def create_basic_auth(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantBasicAuth) }
+    def create_basic_auth!(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def create_oauth_provider(*args, &blk); end
@@ -358,17 +382,77 @@ class Tenant
     sig { params(args: T.untyped, blk: T.untyped).returns(::OauthProvider) }
     def create_oauth_provider!(*args, &blk); end
 
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantSiteSettings) }
+    def create_site_settings(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantSiteSettings) }
+    def create_site_settings!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTagSettings) }
+    def create_tag_settings(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTagSettings) }
+    def create_tag_settings!(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTheme) }
+    def create_theme(*args, &blk); end
+
+    sig { params(args: T.untyped, blk: T.untyped).returns(::TenantTheme) }
+    def create_theme!(*args, &blk); end
+
     sig { returns(T.nilable(::OauthProvider)) }
     def oauth_provider; end
 
     sig { params(value: T.nilable(::OauthProvider)).void }
     def oauth_provider=(value); end
 
+    sig { returns(T.nilable(::TenantBasicAuth)) }
+    def reload_basic_auth; end
+
     sig { returns(T.nilable(::OauthProvider)) }
     def reload_oauth_provider; end
 
+    sig { returns(T.nilable(::TenantSiteSettings)) }
+    def reload_site_settings; end
+
+    sig { returns(T.nilable(::TenantTagSettings)) }
+    def reload_tag_settings; end
+
+    sig { returns(T.nilable(::TenantTheme)) }
+    def reload_theme; end
+
+    sig { void }
+    def reset_basic_auth; end
+
     sig { void }
     def reset_oauth_provider; end
+
+    sig { void }
+    def reset_site_settings; end
+
+    sig { void }
+    def reset_tag_settings; end
+
+    sig { void }
+    def reset_theme; end
+
+    sig { returns(T.nilable(::TenantSiteSettings)) }
+    def site_settings; end
+
+    sig { params(value: T.nilable(::TenantSiteSettings)).void }
+    def site_settings=(value); end
+
+    sig { returns(T.nilable(::TenantTagSettings)) }
+    def tag_settings; end
+
+    sig { params(value: T.nilable(::TenantTagSettings)).void }
+    def tag_settings=(value); end
+
+    sig { returns(T.nilable(::TenantTheme)) }
+    def theme; end
+
+    sig { params(value: T.nilable(::TenantTheme)).void }
+    def theme=(value); end
   end
 
   module GeneratedAssociationRelationMethods

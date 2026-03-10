@@ -1,18 +1,23 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { LexicalEditor, $getSelection, $setSelection, RangeSelection } from 'lexical';
+import { $patchStyleText } from '@lexical/selection';
+import { Palette } from 'lucide-react';
 
 interface InlineColorPickerProps {
-  onColorSelect: (color: string) => void;
+  editor: LexicalEditor;
 }
 
-export default function InlineColorPicker({ onColorSelect }: InlineColorPickerProps) {
+export default function InlineColorPicker({ editor }: InlineColorPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState('#FF0000');
+  const [selectedColor, setSelectedColor] = useState('#000000');
+  const [savedSelection, setSavedSelection] = useState<RangeSelection | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        setSavedSelection(null);
       }
     }
 
@@ -20,13 +25,54 @@ export default function InlineColorPicker({ onColorSelect }: InlineColorPickerPr
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleColorClick = (color: string) => {
-    setSelectedColor(color);
-    onColorSelect(color);
-    setIsOpen(false);
-  };
+  const handleOpenPicker = useCallback(() => {
+    // Save current selection before opening
+    editor.getEditorState().read(() => {
+      const selection = $getSelection();
+      if (selection && selection.isCollapsed !== undefined) {
+        setSavedSelection(selection.clone() as RangeSelection);
+      }
+    });
+    setIsOpen(!isOpen);
+  }, [editor, isOpen]);
 
-  // より豊富なカラーパレット
+  const handleColorClick = useCallback((color: string) => {
+    setSelectedColor(color);
+
+    editor.update(() => {
+      // Restore saved selection
+      if (savedSelection) {
+        $setSelection(savedSelection.clone());
+      }
+
+      const selection = $getSelection();
+      if (selection && !selection.isCollapsed()) {
+        $patchStyleText(selection, {
+          color: color,
+        });
+      }
+    });
+
+    setIsOpen(false);
+    setSavedSelection(null);
+
+    // Return focus to editor
+    editor.focus();
+  }, [editor, savedSelection]);
+
+  const handleHexInput = useCallback((value: string) => {
+    if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
+      setSelectedColor(value);
+    }
+  }, []);
+
+  const handleHexSubmit = useCallback(() => {
+    if (/^#[0-9A-Fa-f]{6}$/.test(selectedColor)) {
+      handleColorClick(selectedColor);
+    }
+  }, [selectedColor, handleColorClick]);
+
+  // Color palette
   const colorSections = [
     // 基本色
     {
@@ -75,14 +121,18 @@ export default function InlineColorPicker({ onColorSelect }: InlineColorPickerPr
   return (
     <div className="inline-color-picker" ref={dropdownRef}>
       <button
-        className="color-picker-trigger"
-        onClick={() => setIsOpen(!isOpen)}
-        style={{ backgroundColor: selectedColor }}
-        title="More colors..."
+        type="button"
+        className="toolbar-item color-picker-trigger"
+        onClick={handleOpenPicker}
+        title="Text color"
       >
-        <span className="color-picker-arrow">▼</span>
+        <Palette size={16} />
+        <span
+          className="color-indicator"
+          style={{ backgroundColor: selectedColor }}
+        />
       </button>
-      
+
       {isOpen && (
         <div className="color-picker-dropdown">
           {colorSections.map((section, sectionIndex) => (
@@ -92,6 +142,7 @@ export default function InlineColorPicker({ onColorSelect }: InlineColorPickerPr
                 {section.colors.map((color, colorIndex) => (
                   <button
                     key={colorIndex}
+                    type="button"
                     className="dropdown-color-button"
                     style={{ backgroundColor: color }}
                     onClick={() => handleColorClick(color)}
@@ -101,30 +152,22 @@ export default function InlineColorPicker({ onColorSelect }: InlineColorPickerPr
               </div>
             </div>
           ))}
-          
-          {/* Hex入力 */}
+
+          {/* Hex input */}
           <div className="color-input-section">
             <label className="hex-input-label">
-              Hex: 
+              Hex:
               <input
                 type="text"
                 className="hex-input"
                 value={selectedColor}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (/^#[0-9A-F]{6}$/i.test(value)) {
-                    setSelectedColor(value);
-                  }
-                }}
+                onChange={(e) => handleHexInput(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    if (/^#[0-9A-F]{6}$/i.test(selectedColor)) {
-                      onColorSelect(selectedColor);
-                      setIsOpen(false);
-                    }
+                    handleHexSubmit();
                   }
                 }}
-                placeholder="#FF0000"
+                placeholder="#000000"
               />
             </label>
           </div>

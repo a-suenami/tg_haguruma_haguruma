@@ -1,0 +1,165 @@
+<% content_for :title do %>
+  入会特典 | <%= current_tenant&.name || 'Fan Club' %>
+<% end %>
+
+<div cog-privilege>
+<%= render 'user_area/alpha/shared/page_header' %>
+
+<main class="main">
+  <div class="main-content">
+    <section class="introduction-container">
+      <div class="introduction">
+        <img class="introduction-logo" src="<%= current_theme.logo_url %>" alt="<%= current_tenant&.name || '' %>" width="196" height="100">
+
+        <picture class="introduction-kv">
+          <source media="(max-width: 767px)" srcset="/images/yokikotokiku/kv_sp.png" width="328" height="353">
+          <img src="/images/yokikotokiku/kv_pc.png" alt="<%= current_tenant&.name || '' %>" width="700" height="291">
+        </picture>
+
+        <div class="introduction-description">
+          <p>
+            八代目 尾上菊五郎・六代目 尾上菊之助のファンクラブ『斧琴菊（よきこときく）』です。<br>
+            八代目菊五郎・六代目菊之助を応援することを目的として発足いたしました。
+          </p>
+          <p>
+            「斧琴菊」とは江戸時代に流行した判じ物の文様で、「斧」と「琴」と「菊」で「良きこと聞く」という縁起の良い意味になり、三代目菊五郎が愛用したとも言われています。音羽屋の柄として代々大切にされてきました。<br>
+            会員の皆さまへも「良きこと」をお届けできますよう、吉祥の思いを込めてファンクラブの名称とさせていただきました。
+          </p>
+          <p>
+            会員になられた方には、会員限定特典がございます。<br>
+            ご入会いただき、益々お引き立て賜りますようお願い申し上げます。
+          </p>
+        </div>
+
+        <% if custom_variables.enabled?('signup_flow') %>
+          <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
+            <span class="action-text">ご入会手続きに進む</span>
+            <span class="action-icon"><%= icon_svg('external-link') %></span>
+          </a>
+        <% else %>
+          <div class="pre-open">
+            <div class="action">
+              <span class="action-text">ご入会手続きに進む</span>
+              <span class="action-icon"><%= icon_svg('external-link') %></span>
+            </div>
+            <p class="notice">
+              2026/2/12 12:00より受付を開始いたします。<br/>
+              受付開始までお待ちください
+            </p>
+          </div>
+        <% end %>
+      </div>
+    </section>
+
+    <section class="privilege-details-container">
+      <div class="privilege-details">
+        <h2 class="title">会員特典</h2>
+
+        <picture class="card">
+          <source media="(max-width: 767px)" srcset="/images/yokikotokiku/privilege_detail_sp.png" width="358" height="462">
+          <img src="/images/yokikotokiku/privilege_detail_pc.png" width="900" height="440">
+        </picture>
+
+        <% if custom_variables.enabled?('signup_flow') %>
+          <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
+            <span class="action-text">ご入会手続きに進む</span>
+            <span class="action-icon"><%= icon_svg('external-link') %></span>
+          </a>
+        <% else %>
+          <div class="pre-open">
+            <div class="action">
+              <span class="action-text">ご入会手続きに進む</span>
+              <span class="action-icon"><%= icon_svg('external-link') %></span>
+            </div>
+            <p class="notice">
+              2026/2/12 12:00より受付を開始いたします。<br/>
+              受付開始までお待ちください
+            </p>
+          </div>
+        <% end %>
+      </div>
+    </section>
+
+    <section class="fees-container">
+      <div class="fees">
+        <h2 class="title">年会費</h2>
+
+        <picture class="card">
+          <source media="(max-width: 767px)" srcset="/images/yokikotokiku/fees_sp.png" width="358" height="1337">
+          <img src="/images/yokikotokiku/fees_pc.png" width="900" height="658">
+        </picture>
+
+
+        <% # FIXME(#14): URLを動的に設定%>
+        <a href="https://form.run/@fansupport" cog-button primary outlined class="sub-action">
+          <span class="action-text">お問い合わせはこちら</span>
+          <span class="action-icon"><%= icon_svg('chevron') %></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="howto-container">
+      <div class="howto">
+        <h2 class="title">入会方法</h2>
+
+          <picture class="card">
+            <source media="(max-width: 767px)" srcset="/images/yokikotokiku/howto_sp.png" width="358" height="788">
+            <img src="/images/yokikotokiku/howto_pc.png" width="900" height="372">
+          </picture>
+
+          <% if custom_variables.enabled?('signup_flow') %>
+            <a href="<%= user_area_auth_start_path(signup: true) %>" class="action">
+              <span class="action-text">ご入会手続きに進む</span>
+              <span class="action-icon"><%= icon_svg('external-link') %></span>
+            </a>
+          <% else %>
+            <div class="pre-open">
+              <div class="action">
+                <span class="action-text">ご入会手続きに進む</span>
+                <span class="action-icon"><%= icon_svg('external-link') %></span>
+              </div>
+              <p class="notice">
+                2026/2/12 12:00より受付を開始いたします。<br/>
+                受付開始までお待ちください
+              </p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq-container">
+      <div class="faq">
+        <h2 class="title">よくある質問</h2>
+
+        <div class="faq-list" data-controller="accordion">
+          <% @faq_entries.each do |entry| %>
+            <% version = published_version(entry) %>
+            <% next if version.nil? %>
+            <% question = render_text_field(field_by_identifier(version, 'title')) %>
+            <% answer = render_richtext_field(field: field_by_identifier(version, 'answer')) %>
+            <details class="faq-item" data-accordion-target="item">
+              <summary>
+                <span class="question">
+                  <span class="label">Q.</span>
+                  <%= question %>
+                </span>
+                <span class="toggle-icon"></span>
+              </summary>
+              <div class="answer">
+                <div class="answer-content">
+                  <div cog-rich-content-viewer>
+                    <%= raw answer %>
+                  </div>
+                </div>
+              </div>
+            </details>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<%= render 'user_area/alpha/shared/page_footer' %>
+</div>

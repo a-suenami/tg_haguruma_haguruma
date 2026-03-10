@@ -32,7 +32,7 @@ export default class extends Controller {
   declare readonly hasStatusTarget: boolean;
 
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
-  private lastSavedValue: string = '';
+  private lastSavedValue: string | string[] = '';
   private status: AutosaveStatus = 'idle';
   private isDirty: boolean = false;
 
@@ -103,7 +103,26 @@ export default class extends Controller {
     }
   }
 
-  private getCurrentValue(): string {
+  private getCurrentValue(): string | string[] {
+    // Check for checkboxes (multi-select)
+    const checkboxes = this.element.querySelectorAll(
+      'input[type="checkbox"]',
+    ) as NodeListOf<HTMLInputElement>;
+    if (checkboxes.length > 0) {
+      return Array.from(checkboxes)
+        .filter((cb) => cb.checked)
+        .map((cb) => cb.value);
+    }
+
+    // Check for radio buttons (single select)
+    const radios = this.element.querySelectorAll(
+      'input[type="radio"]',
+    ) as NodeListOf<HTMLInputElement>;
+    if (radios.length > 0) {
+      const checked = Array.from(radios).find((r) => r.checked);
+      return checked?.value || '';
+    }
+
     if (this.hasInputTarget) {
       return this.inputTarget.value;
     }
@@ -120,7 +139,7 @@ export default class extends Controller {
     const currentValue = this.getCurrentValue();
 
     // Skip if value hasn't changed
-    if (currentValue === this.lastSavedValue) {
+    if (this.valuesEqual(currentValue, this.lastSavedValue)) {
       this.isDirty = false;
       return;
     }
@@ -188,6 +207,13 @@ export default class extends Controller {
   private formatTime(isoString: string): string {
     const date = new Date(isoString);
     return date.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  private valuesEqual(a: string | string[], b: string | string[]): boolean {
+    if (Array.isArray(a) && Array.isArray(b)) {
+      return JSON.stringify(a.sort()) === JSON.stringify(b.sort());
+    }
+    return a === b;
   }
 
   // Public method to trigger save manually

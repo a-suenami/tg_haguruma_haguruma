@@ -13,24 +13,25 @@ module AdminArea
         @field = T.must(@content_type).fields.build
       end
 
+      def edit; end
+
       def create
         @field = T.must(@content_type).fields.build(field_params)
-        @field.tenant_id = Tenant.current_id
+        @field.tenant_id = T.must(Tenant.current_id)
 
         if @field.save
           redirect_to admin_area_content_type_path(@content_type),
-                      notice: 'フィールドを追加しました'
+                      notice: t('admin_area.content_types.fields.created')
         else
           render :new, status: :unprocessable_entity
         end
       end
 
-      def edit; end
 
       def update
         if T.must(@field).update(field_params)
           redirect_to admin_area_content_type_path(@content_type),
-                      notice: 'フィールドを更新しました'
+                      notice: t('admin_area.content_types.fields.updated')
         else
           render :edit, status: :unprocessable_entity
         end
@@ -39,12 +40,12 @@ module AdminArea
       def destroy
         T.must(@field).destroy
         redirect_to admin_area_content_type_path(@content_type),
-                    notice: 'フィールドを削除しました'
+                    notice: t('admin_area.content_types.fields.destroyed')
       end
 
       def sort
         params[:field_ids].each_with_index do |id, index|
-          ContentType::Field.where(id: id, content_type_id: T.must(@content_type).id)
+          ContentType::Field.where(id:, content_type_id: T.must(@content_type).id)
                             .update_all(position: index)
         end
 

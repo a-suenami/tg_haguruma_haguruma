@@ -1,0 +1,53 @@
+<div class="uk-card uk-card-default uk-card-body uk-margin-bottom">
+  <h4 class="uk-card-title">認可タグ</h4>
+
+  <% if @user.content_authorization_tags.any? %>
+    <table class="uk-table uk-table-small uk-table-divider">
+      <thead>
+        <tr>
+          <th>タグ名</th>
+          <th>付与日時</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @user.user_tags.includes(:content_authorization_tag).each do |user_tag| %>
+          <tr>
+            <td><%= user_tag.content_authorization_tag.name %></td>
+            <td><%= user_tag.created_at.strftime('%Y/%m/%d %H:%M') %></td>
+            <td>
+              <div class="uk-text-right">
+                <%= link_to '削除', ruler_area_tenant_user_user_tag_path(@tenant, @user, user_tag), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'このタグを削除しますか？' }, class: 'uk-button uk-button-small uk-button-danger' %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="uk-text-muted">認可タグが付与されていません</p>
+  <% end %>
+
+  <% if @available_tags.any? %>
+    <hr class="uk-divider-icon">
+    <h5>タグを追加</h5>
+    <%= form_with(url: ruler_area_tenant_user_user_tags_path(@tenant, @user), method: :post, local: true, class: 'uk-form-horizontal') do |form| %>
+      <div class="uk-margin">
+        <label class="uk-form-label">認可タグ</label>
+        <div class="uk-form-controls uk-flex uk-flex-middle">
+          <%= select_tag :content_authorization_tag_id, options_from_collection_for_select(@available_tags, :id, :name), class: 'uk-select uk-form-width-medium', include_blank: '選択してください' %>
+          <%= form.submit '追加', class: 'uk-button uk-button-primary uk-margin-small-left' %>
+        </div>
+      </div>
+    <% end %>
+  <% elsif @authorization_tags.empty? %>
+    <hr class="uk-divider-icon">
+    <p class="uk-text-muted">
+      認可タグが登録されていません。
+      <%= link_to '認可タグを作成', ruler_area_tenant_authorization_tags_path(@tenant), class: 'uk-link' %>してください。
+    </p>
+  <% else %>
+    <hr class="uk-divider-icon">
+    <p class="uk-text-muted">すべての認可タグが付与済みです</p>
+  <% end %>
+</div>

@@ -1,0 +1,90 @@
+<cog-page-header></cog-page-header>
+
+<main class="main">
+  <cog-landing-hero-image></cog-landing-hero-image>
+  <div class="main-content">
+    <cog-landing-section>
+      <cog-landing-section-content>
+        <cog-landing-section-actions>
+          <button
+            cog-button
+            filled
+            class="action-button"
+            (click)="openAuthenticationPage('auth/sign_in')"
+          >
+            <span>ログイン</span>
+            <cog-icon-sign-in-indicator />
+          </button>
+          <button
+            cog-button
+            outlined
+            class="action-button"
+            (click)="openMembershipPage('membership-plan/select')"
+          >
+            <span>新規会員登録</span>
+            <cog-icon-sign-up-indicator />
+          </button>
+        </cog-landing-section-actions>
+      </cog-landing-section-content>
+    </cog-landing-section>
+
+    <cog-landing-section class="banners">
+      <cog-landing-section-content>
+        <swiper-container
+          [options]="{
+            slidesPerView: 'auto',
+            spaceBetween: 16,
+            pagination: {
+              enabled: true,
+              type: 'bullets',
+            },
+            centeredSlides: true,
+            breakpoints: {
+              '576': {
+                centeredSlides: false,
+              },
+            },
+          }"
+        >
+          <swiper-slide>
+            <a
+              href="#"
+              cog-landing-banner
+              [src]="'assets/images/dummy-banner-1.png'"
+              [alt]="'Banner 1'"
+            ></a>
+          </swiper-slide>
+          <swiper-slide>
+            <a
+              href="#"
+              cog-landing-banner
+              [src]="'assets/images/dummy-banner-2.png'"
+              [alt]="'Banner 2'"
+            ></a>
+          </swiper-slide>
+          <swiper-slide>
+            <a
+              href="#"
+              cog-landing-banner
+              [src]="'assets/images/dummy-banner-3.png'"
+              [alt]="'Banner 3'"
+            ></a>
+          </swiper-slide>
+        </swiper-container>
+      </cog-landing-section-content>
+    </cog-landing-section>
+
+    @if (features | hagurumaHasFeature: 'news') {
+      <cog-landing-section>
+        <cog-landing-section-title>
+          <cog-feature-title-image [feature]="'news'"></cog-feature-title-image>
+        </cog-landing-section-title>
+        <cog-landing-section-content>
+          <cog-news-list overview></cog-news-list>
+        </cog-landing-section-content>
+      </cog-landing-section>
+    }
+  </div>
+</main>
+
+<cog-page-footer></cog-page-footer>

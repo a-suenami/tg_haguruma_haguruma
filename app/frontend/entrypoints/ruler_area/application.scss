@@ -1,15 +1,425 @@
 // Ruler Area Styles
+// Merged from Propshaft (app/assets/stylesheets/ruler_area/application.css) and Vite
 
-// Variables
+// =============================================================================
+// CSS Variables (from Propshaft)
+// =============================================================================
+:root {
+  --color-white: white;
+  --color-black: black;
+  --color-primary: #4c6ef5;
+  --color-dark: #1a3a52;
+  --color-text: #333;
+  --color-text-gray: #6b7280;
+  --color-icon-gray: #9ca3af;
+  --color-bg: white;
+  --color-bg-comp: #f5f5f5;
+  --color-sidebar: #f0f0f0;
+  --color-border: #e5e5e5;
+  --color-link: #666;
+  --color-success: #00c853;
+  --color-attention: #f23325;
+  --color-navbar-bg: #e8f0e8;
+  --color-navbar-text: #333;
+}
+
+// =============================================================================
+// Base styles
+// =============================================================================
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body.ruler-body {
+  background-color: var(--color-bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// =============================================================================
+// Navbar styles
+// =============================================================================
+.ruler-navbar {
+  background-color: var(--color-navbar-bg);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: none;
+  padding: 0;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+
+  .uk-navbar-left,
+  .uk-navbar-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .uk-navbar-nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      display: flex;
+
+      > a {
+        color: var(--color-navbar-text);
+        font-weight: normal;
+        padding: 0 15px;
+        min-height: 80px;
+        text-transform: none;
+        display: flex;
+        align-items: center;
+      }
+
+      &.uk-active > a,
+      > a:hover {
+        color: var(--color-navbar-text);
+        background-color: transparent;
+      }
+    }
+  }
+
+  .uk-logo {
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--color-navbar-text);
+    padding: 0 20px 0 0;
+    display: flex;
+    align-items: center;
+    min-height: 80px;
+  }
+}
+
+.navbar-inner {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+// =============================================================================
+// Main content area
+// =============================================================================
+.ruler-main {
+  padding: 30px 0;
+  min-height: calc(100vh - 80px);
+  background-color: white;
+}
+
+.main-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+
+// =============================================================================
+// Page header
+// =============================================================================
+.am-page-header {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1, h2, h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: normal;
+    color: var(--color-text);
+  }
+}
+
+// =============================================================================
+// Table styles (UIKit overrides)
+// =============================================================================
+.uk-table {
+  background: white;
+  margin-top: 0;
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    font-weight: normal;
+    color: #999;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--color-border);
+    text-align: left;
+    background: white;
+  }
+
+  td {
+    vertical-align: middle;
+    padding: 12px 16px;
+    color: var(--color-text);
+    background: white;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--color-border);
+
+    &:hover {
+      background-color: #fafafa;
+    }
+  }
+}
+
+// =============================================================================
+// Button styles (UIKit overrides)
+// =============================================================================
+.uk-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  text-transform: none;
+  font-weight: normal;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:disabled,
+  &[disabled] {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.uk-button-small {
+  padding: 4px 12px;
+  font-size: 0.875rem;
+}
+
+.uk-button-primary {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: #3d5ef5;
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.uk-button-default {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #90caf9;
+
+  &:hover {
+    background-color: #bbdefb;
+    color: #0d47a1;
+    text-decoration: none;
+  }
+}
+
+// =============================================================================
+// Sidebar layout
+// =============================================================================
+.rl-body {
+  display: flex;
+  min-height: calc(100vh - 80px);
+}
+
+.rl-sidebar-left {
+  width: 250px;
+  background-color: #f8f8f8;
+  border-right: 1px solid var(--color-border);
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.rl-current-tenant {
+  padding: 15px 0;
+}
+
+.rl-tenant-title-container {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.rl-tenant-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  a {
+    color: var(--color-text);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.rl-nav {
+  padding: 0;
+  margin-top: 20px;
+
+  .uk-nav-header {
+    padding: 10px 0 5px 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: normal;
+  }
+
+  .uk-nav-divider {
+    margin: 5px 0 10px 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  li {
+    margin: 0;
+
+    a {
+      padding: 8px 15px;
+      color: var(--color-text);
+      text-decoration: none;
+      display: block;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #e8e8e8;
+        text-decoration: none;
+      }
+    }
+
+    &.uk-active a {
+      background-color: var(--color-primary);
+      color: white;
+    }
+  }
+}
+
+.rl-main {
+  flex: 1;
+  background-color: white;
+  min-width: 0;
+
+  &.uk-section {
+    padding: 20px 0;
+  }
+
+  .uk-container {
+    max-width: none;
+  }
+}
+
+// =============================================================================
+// Form styles (UIKit overrides)
+// =============================================================================
+.uk-form-label {
+  color: var(--color-text);
+  font-weight: normal;
+  margin-bottom: 5px;
+}
+
+.uk-input,
+.uk-select,
+.uk-textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: white;
+
+  &:focus {
+    border-color: var(--color-primary);
+    outline: none;
+  }
+}
+
+.form-stacked-text {
+  max-width: 600px;
+}
+
+// =============================================================================
+// Utility classes
+// =============================================================================
+.uk-margin-small-right {
+  margin-right: 10px;
+}
+
+.uk-align-right {
+  text-align: right;
+}
+
+.uk-text-middle {
+  vertical-align: middle;
+}
+
+.uk-container-large {
+  max-width: 1400px;
+}
+
+.uk-section {
+  padding: 0;
+}
+
+// =============================================================================
+// Dropdown nav styles
+// =============================================================================
+.uk-dropdown-nav {
+  li > a {
+    color: var(--color-text);
+
+    &:hover {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+  }
+}
+
+// =============================================================================
+// Pagination styles
+// =============================================================================
+.uk-pagination {
+  margin-top: 30px;
+
+  > * {
+    padding: 5px 10px;
+    color: var(--color-link);
+  }
+
+  > .uk-active {
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 3px;
+  }
+}
+
+// =============================================================================
+// Ruler area specific styles (from original Vite SCSS)
+// =============================================================================
 $primary-color: #6366f1;
 $secondary-color: #8b5cf6;
 $border-radius: 8px;
 $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
 $shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-// Ruler area specific styles
 .ruler-area {
-  // Table styles
   .table {
     width: 100%;
     background: white;
@@ -50,7 +460,6 @@ $shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
   }
 
-  // Search and filter styles
   .search-input {
     padding: 8px 12px;
     border: 1px solid #e2e8f0;
@@ -79,7 +488,6 @@ $shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
   }
 
-  // Card styles
   .tenant-card {
     background: white;
     padding: 20px;

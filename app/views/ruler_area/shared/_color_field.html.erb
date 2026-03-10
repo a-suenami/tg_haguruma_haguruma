@@ -1,0 +1,5 @@
+<%= form.label field, label, class: 'uk-form-label' %>
+<div class="uk-form-controls uk-flex uk-flex-middle" data-controller="color-picker">
+  <%= form.color_field field, data: { color_picker_target: 'color', action: 'input->color-picker#syncToText' }, class: 'uk-margin-small-right', style: 'width: 50px; height: 38px;' %>
+  <%= form.text_field field, data: { color_picker_target: 'text', action: 'input->color-picker#syncToColor blur->color-picker#restoreOnBlur' }, class: 'uk-input uk-form-small', style: 'width: 100px;' %>
+</div>

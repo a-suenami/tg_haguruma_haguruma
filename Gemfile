@@ -4,8 +4,8 @@ ruby '~> 3.3.0'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 8.0.2'
-# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem 'propshaft'
+# Note: Using Vite instead of Propshaft for asset pipeline
+# gem 'propshaft'  # Removed - using vite_rails only
 # Use PostgreSQL as the database for Active Record
 gem 'pg', '~> 1.5.4'
 # Use the Puma web server [https://github.com/puma/puma]
@@ -71,6 +71,9 @@ gem 'aws-sdk-sqs', '~> 1.70'
 gem 'sorbet-runtime', '~> 0.5.11048'
 gem 'mangrove', '~> 0.29.0'
 
+# Pagination
+gem 'pagy', '~> 6.4'
+
 # Utilities
 gem 'pry', '~> 0.14.2'
 gem 'config', '~> 5.0.0'
@@ -92,8 +95,11 @@ gem 'datadog', '~> 2.18.0'
 gem 'phonelib', '~> 0.10.6'
 # gem 'ruby-jq', '~> 0.2.1' # Complex build dependencies, optional gem
 
+# JSON Schema validation
+gem 'json-schema', '~> 4.3.1'
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem 'bcrypt', '~> 3.1.7'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[windows jruby]
@@ -142,8 +148,7 @@ group :development, :test do
   # Development tools
   gem 'pry-rails', '~> 0.3.9'
   gem 'pry-byebug', '~> 3.10.1'
-  # gem "annotate", "~> 3.2.0" # Not compatible with Rails 8.0 yet
-  # Alternative: gem "annotaterb" # Rails 8 compatible fork
+  gem 'annotaterb'
 
   # Additional testing tools
   gem 'spring-commands-rspec', '~> 1.0.4'
@@ -152,6 +157,9 @@ group :development, :test do
   gem 'parallel_tests', '~> 4.3.0'
   gem 'bundler-audit', '~> 0.9.1'
   gem 'knapsack_pro', '~> 5.7.0'
+
+  # OpenAPI / Swagger specs
+  gem 'rswag-specs'
 end
 
 group :development do
@@ -177,6 +185,7 @@ end
 gem 'rswag-api'
 gem 'rswag-ui'
 
-group :development, :test do
-  gem 'rswag-specs'
-end
+# Feature Flags
+gem 'flipper', '~> 1.3'
+gem 'flipper-redis', '~> 1.3'
+gem 'flipper-ui', '~> 1.3'

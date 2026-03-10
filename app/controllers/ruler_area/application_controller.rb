@@ -27,7 +27,6 @@ module RulerArea
       current_ruler.present?
     end
 
-    private
 
     # TODO: Add activity logging when ActivityLog model is available
     # def log_activity

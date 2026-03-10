@@ -44,6 +44,21 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["uid"], name: "idx_auth0_accounts_uid_uniq", unique: true
   end
 
+  create_table "content_authorization_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.citext "tenant_id", null: false
+    t.uuid "remote_id", comment: "DEPRECATED: External system ID for synchronization"
+    t.string "provider", comment: "Tag provider: system, idp, ruler, or NULL for custom"
+    t.string "unique_id", comment: "Unique identifier within provider scope"
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "id"], name: "index_content_authorization_tags_on_tenant_id_and_id", unique: true
+    t.index ["tenant_id", "name"], name: "index_content_authorization_tags_on_tenant_id_and_name", unique: true
+    t.index ["tenant_id", "provider", "unique_id"], name: "index_content_authorization_tags_on_provider_unique_id", unique: true, where: "(provider IS NOT NULL)"
+    t.index ["tenant_id", "remote_id"], name: "index_content_authorization_tags_on_tenant_id_and_remote_id", unique: true, where: "(remote_id IS NOT NULL)"
+    t.check_constraint "provider::text = ANY (ARRAY['system'::character varying, 'idp'::character varying, 'ruler'::character varying]::text[])", name: "chk_content_authorization_tags_provider"
+  end
+
   create_table "content_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
     t.uuid "content_type_id", null: false
@@ -51,6 +66,18 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.datetime "updated_at", null: false
     t.index ["tenant_id", "content_type_id", "id"], name: "index_content_entries_on_tenant_id_and_content_type_id_and_id", unique: true
     t.index ["tenant_id", "id"], name: "index_content_entries_on_tenant_id_and_id", unique: true
+  end
+
+  create_table "content_entry_authorizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.citext "tenant_id", null: false
+    t.uuid "content_entry_id", null: false
+    t.integer "version", null: false
+    t.uuid "content_authorization_tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_authorization_tag_id"], name: "index_content_entry_authorizations_on_tag"
+    t.index ["tenant_id", "content_entry_id", "version", "content_authorization_tag_id"], name: "index_content_entry_authorizations_unique", unique: true
+    t.index ["tenant_id", "id"], name: "index_content_entry_authorizations_on_tenant_id_and_id", unique: true
   end
 
   create_table "content_entry_field_media_assets", force: :cascade do |t|
@@ -64,6 +91,21 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   create_table "content_entry_field_richtexts", force: :cascade do |t|
     t.jsonb "value", null: false
+  end
+
+  create_table "content_entry_field_select_selections", force: :cascade do |t|
+    t.bigint "content_entry_field_select_id", null: false
+    t.bigint "option_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_entry_field_select_id", "option_id"], name: "idx_field_select_selections_unique", unique: true
+  end
+
+  create_table "content_entry_field_selects", force: :cascade do |t|
+    t.citext "tenant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "id"], name: "index_content_entry_field_selects_on_tenant_id_and_id", unique: true
   end
 
   create_table "content_entry_field_texts", force: :cascade do |t|
@@ -80,6 +122,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.integer "text_id"
     t.integer "richtext_id"
     t.integer "media_asset_id"
+    t.bigint "select_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -90,16 +133,52 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.uuid "content_entry_id", null: false
     t.integer "version", default: 1, null: false
     t.integer "status", null: false
+    t.boolean "is_public", default: false, null: false
+    t.integer "visibility", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "published_at"
+    t.datetime "custom_published_at"
     t.datetime "unpublished_at"
+    t.string "preview_token"
+    t.datetime "preview_token_expires_at"
+    t.datetime "scheduled_publish_at"
+    t.string "scheduled_job_id"
+    t.index ["content_entry_id", "version"], name: "index_content_entry_versions_on_entry_version", unique: true
+    t.index ["content_entry_id"], name: "index_content_entry_versions_unique_draft_per_entry", unique: true, where: "(status = 1)"
+    t.index ["content_entry_id"], name: "index_content_entry_versions_unique_published_per_entry", unique: true, where: "(status = 3)"
+    t.index ["preview_token"], name: "index_content_entry_versions_on_preview_token", unique: true, where: "(preview_token IS NOT NULL)"
+    t.index ["preview_token_expires_at"], name: "index_content_entry_versions_on_token_expires_at", where: "(preview_token IS NOT NULL)"
+    t.index ["scheduled_publish_at"], name: "index_content_entry_versions_on_scheduled_publish", where: "((scheduled_publish_at IS NOT NULL) AND (status = 1))"
     t.index ["tenant_id", "content_type_id", "content_entry_id", "version"], name: "index_content_entry_versions_on_tenant_type_entry_version", unique: true
+    t.index ["tenant_id", "is_public"], name: "index_content_entry_versions_on_tenant_is_public"
+    t.index ["tenant_id", "visibility"], name: "index_content_entry_versions_on_tenant_visibility"
+    t.check_constraint "status <> 1 OR published_at IS NULL AND unpublished_at IS NULL", name: "chk_content_entry_versions_draft_nulls"
+    t.check_constraint "status <> 3 OR published_at IS NOT NULL AND custom_published_at IS NOT NULL AND unpublished_at IS NULL", name: "chk_content_entry_versions_published_required"
+    t.check_constraint "status <> 4 OR published_at IS NOT NULL AND custom_published_at IS NOT NULL AND unpublished_at IS NOT NULL", name: "chk_content_entry_versions_unpublished_required"
   end
 
   create_table "content_type_field_media_assets", force: :cascade do |t|
   end
 
   create_table "content_type_field_richtexts", force: :cascade do |t|
+  end
+
+  create_table "content_type_field_select_options", force: :cascade do |t|
+    t.bigint "field_select_id", null: false
+    t.string "unique_name", null: false
+    t.text "display_name", null: false
+    t.integer "position", default: 0, null: false
+    t.integer "status", limit: 2, default: 1, null: false, comment: "0: disabled, 1: enabled"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_select_id", "position"], name: "idx_on_field_select_id_position_9d0ef88527"
+    t.index ["field_select_id", "unique_name"], name: "idx_on_field_select_id_unique_name_47572cb0f7", unique: true
+  end
+
+  create_table "content_type_field_selects", force: :cascade do |t|
+    t.integer "display_format", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "content_type_field_texts", force: :cascade do |t|
@@ -114,9 +193,10 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.integer "text_id"
     t.integer "richtext_id"
     t.integer "media_asset_id"
+    t.bigint "select_id"
     t.text "description", default: "", null: false
     t.boolean "required", default: false, null: false
-    t.integer "position", null: false
+    t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_type_id", "api_identifier"], name: "idx_on_content_type_id_api_identifier_0e95c10a8a", unique: true
@@ -128,21 +208,24 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   create_table "content_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
     t.boolean "is_collection", default: true, null: false
-    t.text "display_name", null: false
-    t.text "unique_name", default: "", null: false
-    t.text "description", default: "", null: false
+    t.text "display_name"
+    t.text "unique_name"
+    t.text "description"
+    t.text "preview_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id", "tenant_id"], name: "index_content_types_on_id_and_tenant_id", unique: true
     t.index ["tenant_id", "id"], name: "index_content_types_on_tenant_id_and_id", unique: true
-    t.index ["tenant_id", "unique_name"], name: "index_content_types_on_tenant_id_and_unique_name", unique: true
   end
 
   create_table "media_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "tenant_id", null: false
     t.integer "media_type", null: false
     t.string "mime_type", null: false
+    t.bigint "file_size_bytes", null: false
+    t.string "s3_object_path", null: false
     t.jsonb "metadata", null: false
+    t.string "public_s3_object_path"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id", "media_type"], name: "index_media_assets_on_id_and_media_type", unique: true
@@ -193,11 +276,135 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["user_id"], name: "index_session_tokens_on_user_id"
   end
 
+  create_table "site_custom_variables", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.string "unique_name", null: false
+    t.integer "variable_type", limit: 2, null: false, comment: "1: boolean, 2: datetime, 3: text"
+    t.text "description", default: "", null: false
+    t.boolean "boolean_value"
+    t.datetime "datetime_value"
+    t.text "text_value"
+    t.datetime "archived_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "archived_at"], name: "idx_site_custom_variables_tenant_archived"
+    t.index ["tenant_id", "unique_name"], name: "idx_site_custom_variables_unique_name", unique: true, where: "(archived_at IS NULL)"
+    t.check_constraint "variable_type <> 1 OR boolean_value IS NOT NULL AND datetime_value IS NULL AND text_value IS NULL", name: "chk_site_custom_variables_boolean_consistency"
+    t.check_constraint "variable_type <> 2 OR datetime_value IS NOT NULL AND boolean_value IS NULL AND text_value IS NULL", name: "chk_site_custom_variables_datetime_consistency"
+    t.check_constraint "variable_type <> 3 OR text_value IS NOT NULL AND boolean_value IS NULL AND datetime_value IS NULL", name: "chk_site_custom_variables_text_consistency"
+    t.check_constraint "variable_type = ANY (ARRAY[1, 2, 3])", name: "chk_site_custom_variables_variable_type"
+  end
+
+  create_table "tenant_basic_auth_credentials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tenant_basic_auth_id", null: false
+    t.string "username", null: false
+    t.string "password_digest", null: false
+    t.string "description", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_basic_auth_id", "username"], name: "idx_on_tenant_basic_auth_id_username_dcd4020202", unique: true
+    t.index ["tenant_basic_auth_id"], name: "index_tenant_basic_auth_credentials_on_tenant_basic_auth_id"
+  end
+
+  create_table "tenant_basic_auths", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_basic_auths_on_tenant_id", unique: true
+  end
+
+  create_table "tenant_site_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.jsonb "features", default: {}, null: false
+    t.jsonb "landing", default: {}, null: false
+    t.jsonb "footer_main_links", default: [], null: false
+    t.jsonb "footer_sub_links", default: [], null: false
+    t.jsonb "menu_items", default: [], null: false
+    t.string "login_label", default: "ログイン", null: false
+    t.string "signup_label", default: "新規会員登録", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_site_settings_on_tenant_id", unique: true
+  end
+
+  create_table "tenant_tag_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.text "head_code"
+    t.text "body_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_tag_settings_on_tenant_id", unique: true
+  end
+
+  create_table "tenant_themes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tenant_id", null: false
+    t.uuid "logo_media_asset_id", null: false
+    t.string "page_background_color", default: "#FFFFFF", null: false
+    t.string "general_text_color", default: "#000000", null: false
+    t.string "general_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "border_color", default: "#E5E5E5", null: false
+    t.string "title_text_color", default: "#000000", null: false
+    t.string "title_font_family", default: "\"Noto Serif JP\", serif", null: false
+    t.string "navigation_text_color", default: "#000000", null: false
+    t.string "navigation_font_family", default: "\"Noto Serif JP\", serif", null: false
+    t.string "link_text_color", default: "#0000FF", null: false
+    t.boolean "link_underline", default: true, null: false
+    t.string "tab_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "tab_active_text_color", default: "#0000FF", null: false
+    t.string "tab_active_underline_color", default: "#0000FF", null: false
+    t.string "tab_inactive_text_color", default: "#666666", null: false
+    t.string "tab_inactive_underline_color", default: "#FFFFFF", null: false
+    t.string "caption_text_color", default: "#666666", null: false
+    t.string "caption_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "label_background_color", default: "#0000FF", null: false
+    t.string "label_text_color", default: "#FFFFFF", null: false
+    t.string "label_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "button_font_family", default: "\"Noto Sans JP\", sans-serif", null: false
+    t.string "button_primary_background_color", default: "#0000FF", null: false
+    t.string "button_primary_text_color", default: "#FFFFFF", null: false
+    t.string "button_secondary_border_color", default: "#0000FF", null: false
+    t.string "button_secondary_background_color", default: "#FFFFFF", null: false
+    t.string "button_secondary_text_color", default: "#0000FF", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_tenant_themes_on_tenant_id", unique: true
+    t.check_constraint "border_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_border_color_format"
+    t.check_constraint "button_primary_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_primary_background_color_format"
+    t.check_constraint "button_primary_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_primary_text_color_format"
+    t.check_constraint "button_secondary_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_secondary_background_color_format"
+    t.check_constraint "button_secondary_border_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_secondary_border_color_format"
+    t.check_constraint "button_secondary_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_button_secondary_text_color_format"
+    t.check_constraint "caption_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_caption_text_color_format"
+    t.check_constraint "general_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_general_text_color_format"
+    t.check_constraint "label_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_label_background_color_format"
+    t.check_constraint "label_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_label_text_color_format"
+    t.check_constraint "link_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_link_text_color_format"
+    t.check_constraint "navigation_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_navigation_text_color_format"
+    t.check_constraint "page_background_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_page_background_color_format"
+    t.check_constraint "tab_active_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_active_text_color_format"
+    t.check_constraint "tab_active_underline_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_active_underline_color_format"
+    t.check_constraint "tab_inactive_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_inactive_text_color_format"
+    t.check_constraint "tab_inactive_underline_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_tab_inactive_underline_color_format"
+    t.check_constraint "title_text_color::text ~ '^#[0-9A-Fa-f]{6}$'::text", name: "chk_tenant_themes_title_text_color_format"
+  end
+
   create_table "tenants", id: :string, force: :cascade do |t|
     t.string "name"
     t.string "user_page_domain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.citext "tenant_id", null: false
+    t.uuid "user_id", null: false
+    t.uuid "content_authorization_tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_authorization_tag_id"], name: "index_user_tags_on_tag"
+    t.index ["tenant_id", "id"], name: "index_user_tags_on_tenant_id_and_id", unique: true
+    t.index ["tenant_id", "user_id", "content_authorization_tag_id"], name: "index_user_tags_unique", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -216,16 +423,26 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "admin_auth0_accounts", "auth0_accounts", name: "fk_admin_auth0_accounts_auth0_accounts"
   add_foreign_key "admin_auth0_accounts", "tenants", name: "fk_admin_auth0_accounts_tenants"
   add_foreign_key "admins", "tenants", name: "fk_admins_tenants"
+  add_foreign_key "content_authorization_tags", "tenants"
   add_foreign_key "content_entries", "content_types", column: ["tenant_id", "content_type_id"], primary_key: ["tenant_id", "id"]
+  add_foreign_key "content_entry_authorizations", "content_authorization_tags"
+  add_foreign_key "content_entry_authorizations", "content_entry_versions", column: ["content_entry_id", "version"], primary_key: ["content_entry_id", "version"], name: "fk_content_entry_authorizations_versions"
+  add_foreign_key "content_entry_authorizations", "tenants"
   add_foreign_key "content_entry_field_media_assets", "media_assets", column: ["tenant_id", "media_type", "media_asset_id"], primary_key: ["tenant_id", "media_type", "id"], name: "fk_content_entry_field_media_assets_media_assets"
+  add_foreign_key "content_entry_field_select_selections", "content_entry_field_selects"
+  add_foreign_key "content_entry_field_select_selections", "content_type_field_select_options", column: "option_id"
+  add_foreign_key "content_entry_field_selects", "tenants"
   add_foreign_key "content_entry_fields", "content_entry_field_media_assets", column: ["tenant_id", "media_asset_id"], primary_key: ["tenant_id", "id"], name: "fk_content_entry_fields_media_assets"
   add_foreign_key "content_entry_fields", "content_entry_field_richtexts", column: "richtext_id"
+  add_foreign_key "content_entry_fields", "content_entry_field_selects", column: ["tenant_id", "select_id"], primary_key: ["tenant_id", "id"], name: "fk_content_entry_fields_selects"
   add_foreign_key "content_entry_fields", "content_entry_field_texts", column: "text_id"
   add_foreign_key "content_entry_fields", "content_entry_versions", column: ["tenant_id", "content_type_id", "content_entry_id", "version"], primary_key: ["tenant_id", "content_type_id", "content_entry_id", "version"], name: "fk_content_entry_fields_content_entry_versions"
   add_foreign_key "content_entry_fields", "content_type_fields", column: ["tenant_id", "content_type_id", "content_type_field_id", "field_type"], primary_key: ["tenant_id", "content_type_id", "id", "field_type"], name: "fk_content_entry_fields_content_type_fields"
   add_foreign_key "content_entry_versions", "content_entries", column: ["tenant_id", "content_type_id", "content_entry_id"], primary_key: ["tenant_id", "content_type_id", "id"], name: "fk_content_entry_versions_content_entries"
+  add_foreign_key "content_type_field_select_options", "content_type_field_selects", column: "field_select_id"
   add_foreign_key "content_type_fields", "content_type_field_media_assets", column: "media_asset_id"
   add_foreign_key "content_type_fields", "content_type_field_richtexts", column: "richtext_id"
+  add_foreign_key "content_type_fields", "content_type_field_selects", column: "select_id"
   add_foreign_key "content_type_fields", "content_type_field_texts", column: "text_id"
   add_foreign_key "content_type_fields", "content_types", column: ["tenant_id", "content_type_id"], primary_key: ["tenant_id", "id"]
   add_foreign_key "content_types", "tenants"
@@ -234,6 +451,16 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "ruler_auth0_accounts", "rulers", name: "fk_ruler_auth0_accounts_rulers"
   add_foreign_key "session_tokens", "tenants"
   add_foreign_key "session_tokens", "users"
+  add_foreign_key "site_custom_variables", "tenants"
+  add_foreign_key "tenant_basic_auth_credentials", "tenant_basic_auths"
+  add_foreign_key "tenant_basic_auths", "tenants"
+  add_foreign_key "tenant_site_settings", "tenants"
+  add_foreign_key "tenant_tag_settings", "tenants"
+  add_foreign_key "tenant_themes", "media_assets", column: "logo_media_asset_id"
+  add_foreign_key "tenant_themes", "tenants"
+  add_foreign_key "user_tags", "content_authorization_tags"
+  add_foreign_key "user_tags", "tenants"
+  add_foreign_key "user_tags", "users", column: ["tenant_id", "user_id"], primary_key: ["tenant_id", "id"], name: "fk_user_tags_users"
   add_foreign_key "users", "oauth_providers"
   add_foreign_key "users", "tenants"
 end

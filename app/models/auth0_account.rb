@@ -1,5 +1,20 @@
 # typed: strict
 
+# == Schema Information
+#
+# Table name: auth0_accounts
+#
+#  id         :uuid             not null, primary key
+#  email      :string           not null
+#  uid        :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  idx_auth0_accounts_email_uniq  (email) UNIQUE
+#  idx_auth0_accounts_uid_uniq    (uid) UNIQUE
+#
 class Auth0Account < ApplicationRecord
   extend T::Sig
 

@@ -31,11 +31,32 @@ en:
   activerecord:
     models:
       tenant: Tenant
+      content_type: Content Type
+      content_type/field: Field
     attributes:
       tenant:
         id: ID
         name: Name
         user_page_domain: User page domain
+        created_at: Created at
+        updated_at: Updated at
+      content_type:
+        tenant_id: Tenant
+        unique_name: Identifier
+        display_name: Name
+        description: Description
+        is_collection: Type
+        created_at: Created at
+        updated_at: Updated at
+      content_type/field:
+        tenant_id: Tenant
+        content_type_id: Content Type
+        api_identifier: Identifier
+        label: Name
+        description: Description
+        field_type: Type
+        required: Required
+        position: Position
         created_at: Created at
         updated_at: Updated at
     errors:
@@ -44,6 +65,10 @@ en:
           attributes:
             base:
               reserved_id_error: This ID is reserved and cannot be used
+        content_type:
+          attributes:
+            preview_url:
+              must_start_with_slash: must start with /
   ruler_area:
     auth0:
       already_logged_in: Already logged in
@@ -52,6 +77,27 @@ en:
       no_ruler_access: You do not have Ruler access rights. Logged out from Auth0.
       logged_in: Successfully logged in
       authentication_failed: "Authentication failed: %{error}"
+    content_types:
+      created: Content type created successfully
+      updated: Content type updated successfully
+      content_type_identifier_label: "Content Type Identifier"
+      field_identifier_label: "Field Identifier"
+      field_label_prefix: "Name"
+      type_labels:
+        collection: Collection
+        singleton: Singleton
+      field_types:
+        text: Short Text
+        richtext: Rich Text
+        media_asset: Media
+        select_field: Select
+      select_display_formats:
+        dropdown: Dropdown
+        checkbox: Checkbox
+        radio: Radio Button
+      errors:
+        unique_name_taken: "This identifier is already in use by:"
+        field_api_identifier_taken: "This identifier is already in use by:"
     admins:
       title: Admin Management
       list: Admin List
@@ -69,6 +115,23 @@ en:
       not_found: Admin not found
       errors:
         email_already_exists_in_tenant: An admin with this email address already exists in this tenant
+    rulers:
+      title: Ruler Management
+      list: Ruler List
+      new: Create New Ruler
+      edit: Edit Ruler
+      show: Ruler Details
+      email: Email Address
+      name: Name
+      actions: Actions
+      created_at: Created At
+      confirm_delete: Are you sure you want to delete this ruler?
+      created: Ruler created successfully
+      updated: Ruler updated successfully
+      destroyed: Ruler deleted successfully
+      not_found: Ruler not found
+      errors:
+        email_already_exists: A ruler with this email address already exists
     profiles:
       edit:
         title: Edit Profile
@@ -80,6 +143,46 @@ en:
         password_hint: Leave blank if you don't want to change your password
       errors:
         email_already_exists: This email address is already in use
+    authorization_tags:
+      created: Authorization tag created successfully
+      updated: Authorization tag updated successfully
+      destroyed: Authorization tag deleted successfully
+      not_found: Authorization tag not found
+      cannot_delete_external: Cannot delete externally registered tags
+      cannot_delete_system: Cannot delete system tags
+    users:
+      created: User created successfully
+      destroyed: User deleted successfully
+      not_found: User not found
+      cannot_delete_authenticated: Authenticated users cannot be deleted
+    user_tags:
+      added: Authorization tag assigned successfully
+      removed: Authorization tag removed successfully
+      not_found: Authorization tag assignment not found
+    session_tokens:
+      created: Token created successfully
+      create_failed: Failed to create token
+      revoked: Token revoked successfully
+      not_found: Token not found
+  user_area:
+    alpha:
+      categories:
+        all: All
+    sessions:
+      oauth_provider_not_configured: OAuth provider is not configured for this tenant
+      invalid_state_parameter: Invalid state parameter
+      authorization_code_not_provided: Authorization code not provided
+      oauth_provider_not_found: OAuth provider not found
+      invalid_id_token_missing_subject: "Invalid ID token: missing subject"
+      logged_in_successfully: Logged in successfully
+      exchange_code_failed: "Authentication failed: could not exchange authorization code"
+      invalid_id_token: "Authentication failed: invalid ID token"
+      logged_out_successfully: Logged out successfully
+      oauth_provider_not_configured_short: OAuth provider not configured
+      logged_in_as_dev_user: Logged in as dev user
+      authentication_failed: "Authentication failed: %{error}"
+    profiles:
+      updated_successfully: Profile updated successfully
   admin_area:
     auth0:
       already_logged_in: You are already logged in
@@ -97,6 +200,10 @@ en:
       not_found: Admin not found
       errors:
         email_already_exists: This email address is already in use
+    authorization_tags:
+      created: Authorization tag created successfully
+      updated: Authorization tag updated successfully
+      destroyed: Authorization tag deleted successfully
     profiles:
       edit:
         title: Profile Settings

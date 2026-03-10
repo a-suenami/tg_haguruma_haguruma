@@ -12,5 +12,6 @@ add_index :content_entry_authorizations, [:tenant_id, :content_entry_id, :versio
 add_index :content_entry_authorizations, [:content_authorization_tag_id], name: 'index_content_entry_authorizations_on_tag'
 
 add_foreign_key :content_entry_authorizations, :tenants, column: :tenant_id, primary_key: :id
-add_foreign_key :content_entry_authorizations, :content_entry_versions, column: [:content_entry_id, :version], primary_key: [:content_entry_id, :version], name: 'fk_content_entry_authorizations_versions'
+add_foreign_key :content_entry_authorizations, :content_entry_versions, column: [:content_entry_id, :version], primary_key: [:content_entry_id, :version],
+name: 'fk_content_entry_authorizations_versions'
 add_foreign_key :content_entry_authorizations, :content_authorization_tags, column: :content_authorization_tag_id

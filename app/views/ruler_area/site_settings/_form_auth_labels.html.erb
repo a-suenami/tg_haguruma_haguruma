@@ -1,0 +1,17 @@
+<div class="uk-card uk-card-default uk-card-body uk-margin">
+  <h4 class="uk-card-title">認証ボタンラベル</h4>
+
+  <div class="uk-margin">
+    <%= form.label :login_label, 'ログインボタン', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.text_field :login_label, class: 'uk-input', placeholder: 'ログイン' %>
+    </div>
+  </div>
+
+  <div class="uk-margin">
+    <%= form.label :signup_label, '新規登録ボタン', class: 'uk-form-label' %>
+    <div class="uk-form-controls">
+      <%= form.text_field :signup_label, class: 'uk-input', placeholder: '新規会員登録' %>
+    </div>
+  </div>
+</div>

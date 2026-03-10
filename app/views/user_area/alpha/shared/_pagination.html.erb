@@ -1,0 +1,67 @@
+<%# Pagination with page numbers [1, 2, ..., n] %>
+<% pagy = pagy_metadata %>
+<% if pagy && pagy.pages > 1 %>
+  <nav class="pagination" aria-label="ページナビゲーション">
+    <ul class="pagination__list">
+      <%# Previous button %>
+      <% if pagy.prev %>
+        <li class="pagination__item">
+          <a href="<%= url_for(page: pagy.prev, category: params[:category]) %>"
+             class="pagination__link pagination__link--prev"
+             data-turbo-frame="content-list">
+            <span class="pagination__arrow">&lt;</span>
+          </a>
+        </li>
+      <% else %>
+        <li class="pagination__item">
+          <span class="pagination__link pagination__link--prev pagination__link--disabled">
+            <span class="pagination__arrow">&lt;</span>
+          </span>
+        </li>
+      <% end %>
+
+      <%# Page numbers %>
+      <% pagy.series.each do |item| %>
+        <% if item == :gap %>
+          <%# Ellipsis for gaps between page ranges %>
+          <li class="pagination__item">
+            <span class="pagination__link pagination__link--gap">...</span>
+          </li>
+        <% elsif item.is_a?(Integer) %>
+          <%# Other page numbers - clickable %>
+          <li class="pagination__item">
+            <a href="<%= url_for(page: item, category: params[:category]) %>"
+               class="pagination__link"
+               data-turbo-frame="content-list">
+              <%= item %>
+            </a>
+          </li>
+        <% elsif item.is_a?(String) %>
+          <%# Current page - highlighted, not clickable %>
+          <li class="pagination__item">
+            <span class="pagination__link pagination__link--active">
+              <%= item %>
+            </span>
+          </li>
+        <% end %>
+      <% end %>
+
+      <%# Next button %>
+      <% if pagy.next %>
+        <li class="pagination__item">
+          <a href="<%= url_for(page: pagy.next, category: params[:category]) %>"
+             class="pagination__link pagination__link--next"
+             data-turbo-frame="content-list">
+            <span class="pagination__arrow">&gt;</span>
+          </a>
+        </li>
+      <% else %>
+        <li class="pagination__item">
+          <span class="pagination__link pagination__link--next pagination__link--disabled">
+            <span class="pagination__arrow">&gt;</span>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+<% end %>

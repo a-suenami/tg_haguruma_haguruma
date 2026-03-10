@@ -1,0 +1,28 @@
+<cog-page-header></cog-page-header>
+
+<main class="main">
+  <cog-list-fragment>
+    <cog-list-fragment-title>
+      <cog-feature-title-image [feature]="'blog'"></cog-feature-title-image>
+    </cog-list-fragment-title>
+    <cog-list-fragment-actions>
+      <cog-tabs-bar>
+        <cog-tabs>
+          <button cog-tab tab="all">すべて</button>
+          <button cog-tab tab="fashion">ファッション</button>
+          <button cog-tab tab="music">音楽</button>
+          <button cog-tab tab="food">グルメ</button>
+          <button cog-tab tab="travel">旅行</button>
+          <button cog-tab tab="art">アート</button>
+          <button cog-tab tab="life">ライフスタイル</button>
+          <button cog-tab tab="special">スペシャル</button>
+        </cog-tabs>
+      </cog-tabs-bar>
+    </cog-list-fragment-actions>
+    <cog-list-fragment-content>
+      <cog-blog-list></cog-blog-list>
+    </cog-list-fragment-content>
+  </cog-list-fragment>
+</main>
+
+<cog-page-footer></cog-page-footer>

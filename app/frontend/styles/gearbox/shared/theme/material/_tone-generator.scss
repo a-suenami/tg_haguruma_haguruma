@@ -1,0 +1,112 @@
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+
+/// Default Material tone stops (0-100) used for palette generation.
+/// Matches the tone sequence produced by the Angular Material CLI schematics.
+$material-tone-stops: (
+  0,
+  10,
+  20,
+  30,
+  40,
+  50,
+  60,
+  70,
+  80,
+  90,
+  95,
+  98,
+  99,
+  100
+) !default;
+
+/// Additional stops for neutral palettes (Material adds custom hues for elevation).
+$material-neutral-extra-stops: (4, 6, 12, 17, 22, 24, 87, 92, 94, 96) !default;
+
+/// Internal helper to clamp tone to the 0-100 range.
+@function _clamp-tone($tone) {
+  @if $tone < 0 {
+    @return 0;
+  } @else if $tone > 100 {
+    @return 100;
+  }
+
+  @return $tone;
+}
+
+/// Approximates Material tonal palettes using only Sass color mixing.
+/// NOTE: This is a simplified mimic of the Material color utilities and will
+/// not perfectly match HCT-derived palettes, but it is often "good enough"
+/// when running without the TypeScript helpers.
+@function material-tone-color($color, $tone) {
+  $tone: _clamp-tone($tone);
+
+  @if $tone == 50 {
+    @return $color;
+  }
+
+  $ratio: math.abs($tone - 50) / 50 * 100%;
+
+  @if $tone < 50 {
+    // Darker tones: move toward black.
+    @return color.mix(#000000, $color, $ratio);
+  }
+
+  // Lighter tones: move toward white.
+  @return color.mix(#ffffff, $color, $ratio);
+}
+
+@function _merge-tone-stops($base, $extra) {
+  $merged: $base;
+
+  @each $tone in $extra {
+    @if list.index($merged, $tone) == null {
+      $merged: append($merged, $tone);
+    }
+  }
+
+  @return $merged;
+}
+
+/// Generates a map of tone -> color pairs for use in Angular Material palettes.
+@function generate-palette(
+  $color,
+  $tones: $material-tone-stops,
+  $extra-tones: ()
+) {
+  $palette: ();
+
+  $tone-steps: _merge-tone-stops($tones, $extra-tones);
+
+  @each $tone in $tone-steps {
+    $palette: map.set($palette, $tone, material-tone-color($color, $tone));
+  }
+
+  @return $palette;
+}
+
+/// Convenience helper for neutral palettes.
+@function generate-neutral-palette($color) {
+  @return generate-palette(
+    $color,
+    $material-tone-stops,
+    $material-neutral-extra-stops
+  );
+}
+
+/// Generates a v19-compatible palette, which includes the intermediate stops 25 and 35.
+@function generate-v19-palette($color) {
+  @return generate-palette($color, $material-tone-stops, (25, 35));
+}
+
+/// Generates a v19-compatible neutral palette. It includes both the v19 tone stops
+/// and the extra neutral stops used by Material for elevation.
+@function generate-v19-neutral-palette($color) {
+  @return generate-palette(
+    $color,
+    $material-tone-stops,
+    _merge-tone-stops($material-neutral-extra-stops, (25, 35))
+  );
+}

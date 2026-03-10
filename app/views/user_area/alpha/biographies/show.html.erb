@@ -1,0 +1,27 @@
+<% content_for :title do %>
+  <%= feature_label(:biography) %> - <%= current_tenant&.name || 'Fan Club' %>
+<% end %>
+
+<%= render 'user_area/alpha/shared/page_header' %>
+
+<main class="main">
+  <section cog-list-fragment>
+    <div cog-list-fragment-title>
+      <div cog-feature-title-image feature="biography">
+        <div class="title-image"><%= feature_label(:biography) %></div>
+      </div>
+    </div>
+
+    <div cog-list-fragment-content>
+      <% @entries.each do |entry| %>
+        <% version = published_version(entry) %>
+        <% next if version.nil? %>
+        <div cog-rich-content-viewer>
+          <%= raw render_richtext_field(field: field_by_identifier(version, 'body')) %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+</main>
+
+<%= render 'user_area/alpha/shared/page_footer' %>

@@ -1,0 +1,36 @@
+@use '../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-footer-menu-item] {
+  display: inline-block;
+  color: var(--theme-navigation-text-color, #0a0804);
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 900;
+  transition: color .2s ease-out;
+}
+
+[cog-footer-menu-item]:focus-visible {
+  outline: 2px solid var(--theme-button-secondary-border-color);
+  outline-offset: 2px;
+}
+
+@media (pointer: fine) {
+  [cog-footer-menu-item]:hover {
+    color: var(--theme-button-secondary-background-color);
+  }
+}
+
+@include breakpoints.media-up(lg) {
+  [cog-footer-menu-item] {
+    font-family: var(--theme-title-font-family, var(--gearbox-font-family-heading));
+    font-size: 19px;
+    line-height: 1.8;
+  }
+}
+
+@include breakpoints.media-down(lg) {
+  [cog-footer-menu-item] {
+    font-family: var(--theme-title-font-family, var(--gearbox-font-family-heading));
+    font-size: 24px;
+  }
+}

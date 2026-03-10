@@ -1,0 +1,53 @@
+<div class="layout-list-page">
+  <% content_for :title do %>
+    <%= feature_label(:blog) %> - <%= current_tenant&.name || 'Fan Club' %>
+  <% end %>
+
+  <%= render 'user_area/alpha/shared/page_header' %>
+
+  <main class="main">
+    <section cog-list-fragment>
+      <div cog-list-fragment-title>
+        <div cog-feature-title-image feature="blog">
+          <div class="title-image"><%= feature_label(:blog) %></div>
+        </div>
+      </div>
+
+      <% if categories.present? %>
+        <div cog-list-fragment-actions>
+          <%= render 'user_area/alpha/shared/content/category_tabs',
+                     categories: categories,
+                     current_category: current_category,
+                     path_helper: ->(cat) { user_area_blog_index_path(category: cat) } %>
+        </div>
+      <% end %>
+
+      <%= turbo_frame_tag "content-list" do %>
+        <div cog-list-fragment-content>
+          <div cog-blog-list>
+            <% if @entries.empty? %>
+              <div class="empty-state">
+                <% if current_category.present? %>
+                  <% category_display_name = categories.find { |c| c.unique_name == current_category }&.display_name %>
+                  <p><%= category_display_name %>の<%= feature_label(:blog) %>はありません</p>
+                <% else %>
+                  <p><%= feature_label(:blog) %>がありません</p>
+                <% end %>
+              </div>
+            <% else %>
+              <div class="list">
+                <% @entries.each do |entry| %>
+                  <%= render 'blog_item', entry: entry %>
+                <% end %>
+              </div>
+
+              <%= render 'user_area/alpha/shared/pagination' %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </section>
+  </main>
+
+  <%= render 'user_area/alpha/shared/page_footer' %>
+</div>

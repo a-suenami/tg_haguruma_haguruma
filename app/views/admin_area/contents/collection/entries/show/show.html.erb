@@ -41,15 +41,11 @@
       </div>
     </header>
 
-    <!-- バージョンタブ -->
-    <div class="version-tabs">
-      <%= link_to edit_admin_area_contents_collection_entry_path(content_type_id: @content_type.id, id: @content_entry.id), class: "version-tab #{'disabled' unless @draft_version}" do %>
-        編集中
-      <% end %>
-      <%= link_to admin_area_contents_collection_entry_path(content_type_id: @content_type.id, id: @content_entry.id), class: 'version-tab active' do %>
-        公開中
-      <% end %>
-    </div>
+    <%= render 'admin_area/contents/version_tabs',
+      show_path: admin_area_contents_collection_entry_path(content_type_id: @content_type.id, id: @content_entry.id),
+      edit_path: edit_admin_area_contents_collection_entry_path(content_type_id: @content_type.id, id: @content_entry.id),
+      active_tab: :show,
+      published_version: @published_version %>
 
     <% if flash[:notice].present? %>
       <div class="alert alert-success">
@@ -104,16 +100,18 @@
             </div>
           </div>
 
-          <div class="action-section">
-            <h4 class="action-section-title">PREVIEW</h4>
-            <div class="action-buttons">
-              <%= link_to '#', class: 'btn btn-secondary action-btn', target: '_blank' do %>
-                <i class="fas fa-globe icon-prefix"></i>
-                公開ページ
-                <i class="fas fa-external-link-alt icon-suffix"></i>
-              <% end %>
-            </div>
-          </div>
+          <%= render 'admin_area/contents/preview_buttons',
+                     content_type: @content_type,
+                     content_entry: @content_entry,
+                     published_version: @published_version,
+                     mode: :show %>
+
+          <%= render 'admin_area/contents/publication_date_display',
+                     version: @published_version %>
+
+          <%= render 'admin_area/contents/authorization_tags_display',
+                     selected_tags: @selected_authorization_tags,
+                     visibility: @visibility %>
 
           <div class="action-section">
             <h4 class="action-section-title">META</h4>
@@ -125,17 +123,28 @@
               <% if @published_version&.published_at %>
                 <div class="meta-item">
                   <span class="meta-key">公開日:</span>
-                  <span class="action-panel-meta-value">
-                    <%= @published_version.published_at.strftime('%Y-%m-%d %H:%M') %>
+                  <span class="action-panel-meta-value"
+                        data-controller="datetime-local"
+                        data-datetime-local-utc-value="<%= @published_version.published_at.utc.iso8601 %>">
+                    <%= @published_version.published_at.strftime('%Y/%m/%d %H:%M') %>
                   </span>
                 </div>
               <% end %>
-              <div class="meta-item">
-                <span class="meta-key">作成日:</span>
-                <span class="action-panel-meta-value">
-                  <%= @content_entry.created_at&.strftime('%Y-%m-%d %H:%M') || '-' %>
-                </span>
-              </div>
+              <% if @content_entry.created_at %>
+                <div class="meta-item">
+                  <span class="meta-key">作成日:</span>
+                  <span class="action-panel-meta-value"
+                        data-controller="datetime-local"
+                        data-datetime-local-utc-value="<%= @content_entry.created_at.utc.iso8601 %>">
+                    <%= @content_entry.created_at.strftime('%Y/%m/%d %H:%M') %>
+                  </span>
+                </div>
+              <% else %>
+                <div class="meta-item">
+                  <span class="meta-key">作成日:</span>
+                  <span class="action-panel-meta-value">-</span>
+                </div>
+              <% end %>
               <div class="meta-item">
                 <span class="meta-key">コンテンツタイプ:</span>
                 <span class="action-panel-meta-value"><%= @content_type.display_name %></span>

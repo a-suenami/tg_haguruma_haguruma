@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useState } from "react";
-import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND, $insertNodes } from "lexical";
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND, $insertNodes, $getRoot, $createParagraphNode, $createTextNode } from "lexical";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $setBlocksType } from "@lexical/selection";
 import { $createHeadingNode, $createQuoteNode } from "@lexical/rich-text";
@@ -9,9 +9,22 @@ import { $createCodeNode } from "@lexical/code";
 import { $createImageNode } from "./ImageNode";
 import { $createVideoNode } from "./VideoNode";
 import { parseAnyEmbedUrl } from "./EmbedConfigs";
-import { $patchStyleText } from "@lexical/selection";
 import InlineColorPicker from "./InlineColorPicker";
+import { TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { uploadMedia, isImageFile, isVideoFile, isSupportedMediaFile } from "../utils/mediaUpload";
+import {
+  Bold,
+  Italic,
+  Underline,
+  Strikethrough,
+  Upload,
+  Loader2,
+  Link,
+  Unlink,
+  FileVideo,
+  List,
+  ListOrdered,
+} from "lucide-react";
 
 const ToolbarPlugin: FC = () => {
   const [editor] = useLexicalComposerContext();
@@ -42,9 +55,46 @@ const ToolbarPlugin: FC = () => {
   const formatCodeBlock = () => {
     editor.update(() => {
       const selection = $getSelection();
-      if ($isRangeSelection(selection)) {
-        $setBlocksType(selection, () => $createCodeNode());
+      if (!$isRangeSelection(selection)) return;
+
+      // Collect unique top-level elements (paragraphs) in selection order
+      const nodes = selection.getNodes();
+      const seenKeys = new Set<string>();
+      const topLevelElements: ReturnType<typeof nodes[0]['getTopLevelElement']>[] = [];
+
+      nodes.forEach((node) => {
+        const topLevel = node.getTopLevelElement();
+        if (topLevel && !seenKeys.has(topLevel.getKey())) {
+          seenKeys.add(topLevel.getKey());
+          topLevelElements.push(topLevel);
+        }
+      });
+
+      if (topLevelElements.length === 0) return;
+
+      // Collect text content from all paragraphs
+      const textLines = topLevelElements.map((el) => el?.getTextContent() || '');
+      const codeContent = textLines.join('\n');
+
+      // Create a single code node with the combined content
+      const codeNode = $createCodeNode();
+      codeNode.append($createTextNode(codeContent));
+
+      // Insert code node before the first paragraph
+      const firstElement = topLevelElements[0];
+      if (firstElement) {
+        firstElement.insertBefore(codeNode);
       }
+
+      // Remove all original paragraphs
+      topLevelElements.forEach((el) => {
+        if (el) {
+          el.remove();
+        }
+      });
+
+      // Select the end of the code node
+      codeNode.selectEnd();
     });
   };
 
@@ -74,20 +124,34 @@ const ToolbarPlugin: FC = () => {
       const result = await uploadMedia(file);
 
       editor.update(() => {
-        const selection = $getSelection();
-        if ($isRangeSelection(selection)) {
-          if (isImageFile(file)) {
-            const imageNode = $createImageNode({
-              src: result.url,
-              altText: file.name,
-              maxWidth: 500,
-            });
-            $insertNodes([imageNode]);
-          } else if (isVideoFile(file)) {
-            const videoNode = $createVideoNode({
-              src: result.url,
-            });
-            $insertNodes([videoNode]);
+        // 挿入するノードを作成
+        let nodeToInsert;
+        if (isImageFile(file)) {
+          nodeToInsert = $createImageNode({
+            src: result.url,
+            altText: file.name,
+            maxWidth: 500,
+            mediaAssetId: result.id,
+          });
+        } else if (isVideoFile(file)) {
+          nodeToInsert = $createVideoNode({
+            src: result.url,
+          });
+        }
+
+        if (nodeToInsert) {
+          // 有効なセレクションがあればそこに挿入、なければ末尾に追加
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            $insertNodes([nodeToInsert]);
+          } else {
+            // セレクションがない場合、ドキュメント末尾に挿入
+            const root = $getRoot();
+            root.append(nodeToInsert);
+            // 画像/動画の後に空のパラグラフを追加してカーソル位置を確保
+            const paragraph = $createParagraphNode();
+            root.append(paragraph);
+            paragraph.select();
           }
         }
       });
@@ -99,17 +163,6 @@ const ToolbarPlugin: FC = () => {
       // Reset input
       event.target.value = '';
     }
-  };
-
-  const applyTextColor = (color: string) => {
-    editor.update(() => {
-      const selection = $getSelection();
-      if ($isRangeSelection(selection)) {
-        $patchStyleText(selection, {
-          color: color,
-        });
-      }
-    });
   };
 
   const insertEmbed = () => {
@@ -124,53 +177,77 @@ const ToolbarPlugin: FC = () => {
     }
   };
 
+  const insertLink = () => {
+    const url = prompt('Enter link URL:');
+    if (url) {
+      editor.dispatchCommand(TOGGLE_LINK_COMMAND, url);
+    }
+  };
+
+  const removeLink = () => {
+    editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+  };
+
   return (
     <div className="toolbar">
       <button
         type="button"
         onClick={() => formatText('bold')}
         className="toolbar-item"
+        title="Bold"
       >
-        <b>B</b>
+        <Bold size={16} />
       </button>
       <button
         type="button"
         onClick={() => formatText('italic')}
         className="toolbar-item"
+        title="Italic"
       >
-        <i>I</i>
+        <Italic size={16} />
       </button>
       <button
         type="button"
         onClick={() => formatText('underline')}
         className="toolbar-item"
+        title="Underline"
       >
-        <u>U</u>
+        <Underline size={16} />
       </button>
       <button
         type="button"
         onClick={() => formatText('strikethrough')}
         className="toolbar-item"
+        title="Strikethrough"
       >
-        <s>S</s>
+        <Strikethrough size={16} />
+      </button>
+
+      <div className="toolbar-divider" />
+
+      <button
+        type="button"
+        onClick={insertLink}
+        className="toolbar-item"
+        title="Insert link"
+      >
+        <Link size={16} />
       </button>
       <button
         type="button"
-        onClick={() => formatText('code')}
+        onClick={removeLink}
         className="toolbar-item"
+        title="Remove link"
       >
-        {'</>'}
+        <Unlink size={16} />
       </button>
 
       <div className="toolbar-divider" />
 
-      <div className="color-picker-container">
-        <span style={{ fontSize: '12px', marginRight: '8px' }}>Text Color:</span>
-        <InlineColorPicker onColorSelect={applyTextColor} />
-      </div>
-      
+      <InlineColorPicker editor={editor} />
+
       <div className="toolbar-divider" />
-      
+
       <select
         onChange={(e) => {
           const value = e.target.value;
@@ -199,22 +276,29 @@ const ToolbarPlugin: FC = () => {
       <div className="toolbar-divider" />
 
       <button
+        type="button"
         onClick={() => formatList('bullet')}
         className="toolbar-item"
+        title="Bullet List"
       >
-        • List
+        <List size={16} />
       </button>
       <button
+        type="button"
         onClick={() => formatList('number')}
         className="toolbar-item"
+        title="Numbered List"
       >
-        1. List
+        <ListOrdered size={16} />
       </button>
 
       <div className="toolbar-divider" />
 
-      <label className={`toolbar-item file-upload-button ${isUploading ? 'uploading' : ''}`}>
-        {isUploading ? '⏳ Uploading...' : '📁 Upload'}
+      <label
+        className={`toolbar-item file-upload-button ${isUploading ? 'uploading' : ''}`}
+        title="Upload image or video"
+      >
+        {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
         <input
           type="file"
           accept="image/*,video/*"
@@ -227,11 +311,12 @@ const ToolbarPlugin: FC = () => {
       <div className="toolbar-divider" />
 
       <button
+        type="button"
         onClick={insertEmbed}
         className="toolbar-item"
         title="Insert embed (YouTube, Twitter, etc.)"
       >
-        🔗 Embed
+        <FileVideo size={16} />
       </button>
     </div>
   );

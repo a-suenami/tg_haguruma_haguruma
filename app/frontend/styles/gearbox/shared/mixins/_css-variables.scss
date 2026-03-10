@@ -1,0 +1,36 @@
+// CSS Variables Mixin
+// Converts SCSS maps to CSS variables with gearbox prefix
+
+@use 'sass:meta';
+
+// Main mixin to convert SCSS map to CSS variables
+@mixin convert-sass-to-css-variables($map, $prefix: 'gearbox') {
+  @each $key, $value in $map {
+    @if meta.type-of($value) == 'map' {
+      // Handle nested maps
+      @include convert-sass-to-css-variables($value, '#{$prefix}-#{$key}');
+    } @else {
+      // Create CSS variable with gearbox prefix
+      --#{$prefix}-#{$key}: #{$value};
+    }
+  }
+}
+
+// Mixin to generate CSS variables in :root
+@mixin generate-css-variables($maps...) {
+  :root {
+    @each $map in $maps {
+      @include convert-sass-to-css-variables($map);
+    }
+  }
+}
+
+// Function to get CSS variable
+@function css-var($name, $prefix: 'gearbox') {
+  @return var(--#{$prefix}-#{$name});
+}
+
+// Function to get CSS variable with fallback
+@function css-var-fallback($name, $fallback, $prefix: 'gearbox') {
+  @return var(--#{$prefix}-#{$name}, $fallback);
+}

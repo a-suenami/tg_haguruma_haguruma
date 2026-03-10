@@ -1,0 +1,29 @@
+@use "sass:map";
+@use '../../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-detail-fragment] {
+  height: 100%;
+  max-width: 700px;
+  box-sizing: content-box;
+  margin: 0 auto;
+}
+
+[cog-detail-fragment-content] {
+  margin-top: 24px;
+}
+
+[cog-detail-fragment-actions]{
+  margin-top: 48px;
+}
+
+@include breakpoints.media-up(sm) {
+  [cog-detail-fragment] {
+    padding: 56px 56px 96px;
+  }
+}
+
+@include breakpoints.media-down(sm) {
+  [cog-detail-fragment] {
+    padding: 40px 16px;
+  }
+}

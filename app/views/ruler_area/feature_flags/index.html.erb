@@ -1,0 +1,59 @@
+<ul class="uk-breadcrumb">
+  <li>
+    <%= link_to 'テナント', ruler_area_tenants_path %>
+  </li>
+  <li>
+    <%= link_to @tenant.name, ruler_area_tenant_path(@tenant) %>
+  </li>
+  <li>
+    <span>機能フラグ</span>
+  </li>
+</ul>
+
+<div class="am-page-header">
+  <h3>機能フラグ</h3>
+</div>
+
+<table class="uk-table uk-table-striped">
+  <thead>
+    <tr>
+      <th>機能名</th>
+      <th>説明</th>
+      <th>ステータス</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @features.empty? %>
+      <tr>
+        <td colspan="4" class="uk-text-center uk-text-muted">
+          機能フラグが登録されていません
+        </td>
+      </tr>
+    <% else %>
+      <% @features.each do |feature| %>
+        <tr>
+          <td><%= feature[:name] %></td>
+          <td class="uk-text-muted"><%= feature[:description] %></td>
+          <td>
+            <% if feature[:globally_enabled] %>
+              <span class="uk-label uk-label-success">グローバル有効</span>
+            <% elsif feature[:enabled] %>
+              <span class="uk-label uk-label-primary">有効</span>
+            <% else %>
+              <span class="uk-label">無効</span>
+            <% end %>
+          </td>
+          <td class="uk-text-right">
+            <% unless feature[:globally_enabled] %>
+              <%= button_to feature[:enabled] ? '無効にする' : '有効にする',
+                  toggle_ruler_area_tenant_feature_flag_path(@tenant, feature[:key]),
+                  method: :post,
+                  class: "uk-button uk-button-small #{feature[:enabled] ? 'uk-button-danger' : 'uk-button-primary'}" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

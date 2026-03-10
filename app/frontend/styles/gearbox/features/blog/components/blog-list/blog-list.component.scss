@@ -1,0 +1,65 @@
+@use 'shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-blog-list] {
+  display: grid;
+  grid-template-rows: auto auto;
+  row-gap: 32px;
+  width: 100%;
+
+  .list {
+    display: grid;
+    align-items: start;
+    width: 100%;
+    justify-content: space-between;
+
+    @include breakpoints.media-up(md) {
+      gap: 40px 24px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include breakpoints.media-down(md) {
+      gap: 24px 20px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include breakpoints.media-down(sm) {
+      gap: 16px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .overview-page-indicator,
+  .pagination-button-container {
+    display: flex;
+    justify-content: center;
+
+    button, a {
+      width: 100%;
+      max-width: 180px;
+    }
+  }
+
+  .loading,
+  .error {
+    padding: 24px;
+    text-align: center;
+    color: var(--theme-caption-text-color, #666666);
+  }
+
+  .error {
+    color: #dc3545;
+  }
+
+  // Landing page variant - 4 columns
+  &[landing] {
+    .list {
+      @include breakpoints.media-up(md) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      @include breakpoints.media-down(md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+}

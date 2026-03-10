@@ -49,7 +49,7 @@ module RulerArea
     end
 
     def oauth_provider_params
-      params.require(:oauth_provider).permit(
+      permitted = params.require(:oauth_provider).permit(
         :kind,
         :client_id,
         :client_secret,
@@ -58,6 +58,8 @@ module RulerArea
         :keypath_uid,
         :session_expires_in,
       )
+      permitted.delete(:client_secret) if permitted[:client_secret].blank?
+      permitted
     end
   end
 end

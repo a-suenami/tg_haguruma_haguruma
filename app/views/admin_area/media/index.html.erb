@@ -1,8 +1,6 @@
 <% content_for :title, 'メディアライブラリ' %>
 
-<div class="custom-container">
-  <%= render 'admin_area/contents/sidebar' %>
-
+<div class="custom-container custom-container-no-sidebar">
   <main class="custom-main">
     <div class="breadcrumb">
       <%= link_to 'コンテンツ', admin_area_contents_all_path, class: 'breadcrumb-link' %>
@@ -27,7 +25,7 @@
     <% end %>
 
     <!-- フィルター -->
-    <%= form_with url: admin_area_media_index_path, method: :get, local: true, class: 'content-filters' do %>
+    <%= form_with url: admin_area_media_path, method: :get, local: true, class: 'content-filters' do %>
       <input type="search" name="q" placeholder="ファイル名で検索..." class="search-input" value="<%= params[:q] %>">
       <select name="type" class="filter-select" onchange="this.form.submit()">
         <option value="">すべて</option>
@@ -46,8 +44,8 @@
         <% @media_assets.each do |media| %>
           <div class="media-card">
             <div class="media-preview">
-              <% if media.image? && media.file.attached? %>
-                <%= image_tag media.file, class: 'media-thumbnail' %>
+              <% if media.image? && media.s3_object_path.present? %>
+                <%= image_tag media.url, class: 'media-thumbnail' %>
               <% elsif media.video? %>
                 <div class="media-icon"><i class="fas fa-video fa-3x"></i></div>
               <% elsif media.audio? %>
@@ -57,21 +55,24 @@
               <% end %>
             </div>
             <div class="media-info">
-              <p class="media-filename" title="<%= media.filename %>">
-                <%= truncate(media.filename, length: 25) %>
+              <p class="media-filename" title="<%= media.original_filename %>">
+                <%= truncate(media.original_filename, length: 25) %>
               </p>
               <p class="media-meta">
                 <span class="media-type-badge media-type-<%= media.media_type %>">
                   <%= media.media_type %>
                 </span>
+                <% if media.public? %>
+                  <span class="media-type-badge media-type-public">public</span>
+                <% end %>
                 <span class="media-size">
-                  <%= number_to_human_size(media.file_size) rescue '-' %>
+                  <%= number_to_human_size(media.file_size_bytes) rescue '-' %>
                 </span>
               </p>
             </div>
             <div class="media-actions">
-              <% if media.file.attached? %>
-                <%= link_to rails_blob_path(media.file, disposition: 'attachment'), class: 'btn btn-xs btn-secondary', download: true do %>
+              <% if media.s3_object_path.present? %>
+                <%= link_to media.url, class: 'btn btn-xs btn-secondary', download: media.original_filename, target: '_blank' do %>
                   <i class="fas fa-download"></i>
                 <% end %>
               <% end %>
@@ -175,6 +176,7 @@
 .media-type-video { background: #fce7f3; color: #be185d; }
 .media-type-audio { background: #fef3c7; color: #b45309; }
 .media-type-document { background: #e0e7ff; color: #4338ca; }
+.media-type-public { background: #d1fae5; color: #065f46; }
 
 .media-actions {
   padding: 0.5rem 0.75rem;

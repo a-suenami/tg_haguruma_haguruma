@@ -24,6 +24,7 @@
             <h2><%= @content_type.display_name %>一覧</h2>
             <% if @content_type.is_collection %>
                 <%= link_to new_admin_area_contents_collection_entry_path(content_type_id: @content_type.id), class: 'btn btn-primary new-entry-btn' do %>
+                  <i class="fas fa-plus icon-prefix"></i>
                   新規作成
                 <% end %>
             <% end %>
@@ -36,56 +37,61 @@
 
         <!-- コレクション用カードリスト -->
         <div class="content-list">
-            <% @content_entries.each do |entry| %>
-                <% latest_version = entry.versions.order(version: :desc).first %>
-                <% next unless latest_version %>
+            <% entries_with_versions = @content_entries.select { |e| e.versions.any? } %>
+            <% if entries_with_versions.any? %>
+                <% entries_with_versions.each do |entry| %>
+                    <% latest_version = entry.versions.order(version: :desc).first %>
 
-                <%= link_to admin_area_contents_collection_entry_path(content_type_id: entry.content_type_id, id: entry.id), class: 'content-card-link' do %>
-                    <div class="content-card">
-                        <div class="card-header">
-                            <div class="card-header-top">
-                                <span class="card-content-type"><%= entry.content_type.display_name %></span>
-                                <div class="status-tags">
-                                    <% if latest_version.published? %>
-                                        <span class="status-tag status-tag-published">公開中</span>
-                                    <% elsif latest_version.draft? %>
-                                        <span class="status-tag status-tag-draft">編集中</span>
-                                    <% elsif latest_version.preview? %>
-                                        <span class="status-tag status-tag-preview">プレビュー</span>
-                                    <% end %>
+                    <%= link_to admin_area_contents_collection_entry_path(content_type_id: entry.content_type_id, id: entry.id), class: 'content-card-link' do %>
+                        <div class="content-card">
+                            <div class="card-header">
+                                <div class="card-header-top">
+                                    <span class="card-content-type"><%= entry.content_type.display_name %></span>
+                                    <%= render 'admin_area/contents/status_badges', entry: entry %>
                                 </div>
-                            </div>
-                            <h3 class="card-title">
-                                <% title_field = ContentEntry::Field.joins(:content_type_field).find_by(
-                                    tenant_id: entry.tenant_id,
-                                    content_type_id: entry.content_type_id,
-                                    content_entry_id: entry.id,
-                                    version: latest_version.version,
-                                    content_type_fields: { api_identifier: 'title' }
-                                ) %>
-                                <% if title_field&.text %>
-                                    <%= title_field.text.value %>
-                                <% else %>
-                                    無題
-                                <% end %>
-                            </h3>
-                        </div>
-                        <div class="card-meta">
-                            <div class="card-meta-left">
-                                <div class="card-action-buttons">
-                                    <% if latest_version.draft? %>
-                                        <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>編集</span>
-                                        <span class="btn btn-xs btn-preview"><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i></span>
-                                    <% elsif latest_version.published? %>
-                                        <span class="btn btn-xs btn-external"><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i></span>
-                                        <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>新しいバージョンを作成して編集</span>
+                                <h3 class="card-title">
+                                    <% title_field = ContentEntry::Field.joins(:content_type_field).find_by(
+                                        tenant_id: entry.tenant_id,
+                                        content_type_id: entry.content_type_id,
+                                        content_entry_id: entry.id,
+                                        version: latest_version.version,
+                                        content_type_fields: { api_identifier: 'title' }
+                                    ) %>
+                                    <% if title_field&.text %>
+                                        <%= title_field.text.value %>
+                                    <% else %>
+                                        無題
                                     <% end %>
-                                </div>
+                                </h3>
                             </div>
-                            <span class="card-updated"><%= latest_version.created_at.strftime('%Y-%m-%d %H:%M') %></span>
+                            <div class="card-meta">
+                                <div class="card-meta-left">
+                                    <div class="card-action-buttons">
+                                        <% if latest_version.draft? %>
+                                            <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>編集</span>
+                                            <span class="btn btn-xs btn-preview"><i class="fas fa-check-double icon-prefix"></i>プレビュー<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                                        <% elsif latest_version.published? %>
+                                            <span class="btn btn-xs btn-external"><i class="fas fa-globe icon-prefix"></i>公開ページ<i class="fas fa-external-link-alt icon-suffix"></i></span>
+                                            <span class="btn btn-xs btn-edit"><i class="fas fa-edit icon-prefix"></i>新しいバージョンを作成して編集</span>
+                                        <% end %>
+                                    </div>
+                                </div>
+                                <span class="card-updated"
+                                      data-controller="datetime-local"
+                                      data-datetime-local-utc-value="<%= latest_version.created_at.utc.iso8601 %>"><%= latest_version.created_at.strftime('%Y/%m/%d %H:%M') %></span>
+                            </div>
                         </div>
-                    </div>
+                    <% end %>
                 <% end %>
+            <% else %>
+                <div class="empty-state">
+                    <i class="fas fa-inbox fa-4x" style="color: #94a3b8; margin-bottom: 1rem;"></i>
+                    <p><%= @content_type.display_name %>がまだ作成されていません。</p>
+                    <%= link_to new_admin_area_contents_collection_entry_path(content_type_id: @content_type.id), class: 'btn btn-primary' do %>
+                        <i class="fas fa-plus icon-prefix"></i>
+                        最初の<%= @content_type.display_name %>を作成
+                    <% end %>
+                </div>
             <% end %>
         </div>
     </main>

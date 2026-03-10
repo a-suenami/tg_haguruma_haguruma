@@ -1,0 +1,35 @@
+@use '../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-sns-item] {
+  --cog-sns-item-size: 40px;
+  --cog-sns-icon-color: var(--theme-button-primary-background-color, #004678);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cog-sns-item-size);
+  height: var(--cog-sns-item-size);
+  text-decoration: none;
+  color: var(--cog-sns-icon-color);
+  padding: var(--gearbox-spacing-8);
+  svg {
+    width: 24px;
+    height: 24px;
+    transition: fill .2s ease-out;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gearbox-primary);
+    outline-offset: 2px;
+  }
+
+  @media (pointer: fine) {
+    &:hover svg {
+      fill: var(--theme-button-secondary-background-color);
+    }
+  }
+}

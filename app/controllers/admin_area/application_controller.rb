@@ -3,12 +3,14 @@
 
 class AdminArea::ApplicationController < ApplicationController
   extend T::Sig
+  include FeatureFlaggable
 
   layout 'admin_area/application'
 
   before_action :authenticate!
   before_action :set_tenant
 
+  helper AdminArea::PreviewHelper
   helper_method :current_admin, :signed_in?
 
   sig { void }
@@ -19,7 +21,7 @@ class AdminArea::ApplicationController < ApplicationController
   sig { returns(T.nilable(Admin)) }
   def current_admin
     @current_admin ||= T.let(
-      Admin.includes(:auth0_accounts).find_by(id: session[:admin_id]),
+      Admin.includes(:auth0_account).find_by(id: session[:admin_id]),
       T.nilable(Admin),
     )
   end
@@ -40,5 +42,10 @@ class AdminArea::ApplicationController < ApplicationController
   sig { returns(T::Boolean) }
   def mobile_request?
     request.user_agent&.match?(/Mobile|Android|iPhone|iPad/i) || false
+  end
+
+  sig { void }
+  def render_not_found
+    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
   end
 end

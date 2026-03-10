@@ -8,6 +8,7 @@ create_table :content_entry_fields, force: :cascade do |t|
   t.integer :text_id
   t.integer :richtext_id
   t.integer :media_asset_id
+  t.bigint :select_id
 
   t.timestamps null: false
 end
@@ -21,3 +22,4 @@ add_foreign_key :content_entry_fields, :content_entry_versions,
 add_foreign_key :content_entry_fields, :content_entry_field_texts, column: :text_id
 add_foreign_key :content_entry_fields, :content_entry_field_richtexts, column: :richtext_id
 add_foreign_key :content_entry_fields, :content_entry_field_media_assets, column: [:tenant_id, :media_asset_id], primary_key: [:tenant_id, :id], name: 'fk_content_entry_fields_media_assets'
+add_foreign_key :content_entry_fields, :content_entry_field_selects, column: [:tenant_id, :select_id], primary_key: [:tenant_id, :id], name: 'fk_content_entry_fields_selects'

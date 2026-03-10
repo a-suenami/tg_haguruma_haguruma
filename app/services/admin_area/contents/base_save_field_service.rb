@@ -34,14 +34,14 @@ module AdminArea
       sig { returns(Result) }
       def call
         ActiveRecord::Base.transaction do
-          version = find_or_create_draft_version
-          field = save_field(version)
-
-          if @errors.empty?
-            Result.new(success: true, field: field, errors: [])
-          else
+          version = find_draft_version
+          unless version
+            @errors << '保存対象の下書きが見つかりません'
             raise ActiveRecord::Rollback
           end
+
+          save_field(version)
+          raise ActiveRecord::Rollback if @errors.any?
         end
 
         if @errors.any?
@@ -53,36 +53,14 @@ module AdminArea
 
       private
 
-      sig { returns(ContentEntry::Version) }
-      def find_or_create_draft_version
-        existing_draft = ContentEntry::Version.find_by(
+      sig { returns(T.nilable(ContentEntry::Version)) }
+      def find_draft_version
+        ContentEntry::Version.find_by(
           tenant_id: Tenant.current_id,
           content_type_id: @content_type.id,
           content_entry_id: @content_entry.id,
           status: ContentEntry::Version::STATUSES[:draft],
         )
-
-        return existing_draft if existing_draft
-
-        max_version = ContentEntry::Version.where(
-          tenant_id: Tenant.current_id,
-          content_type_id: @content_type.id,
-          content_entry_id: @content_entry.id,
-        ).maximum(:version) || 0
-
-        version = ContentEntry::Version.new(
-          tenant_id: Tenant.current_id,
-          content_type_id: @content_type.id,
-          content_entry_id: @content_entry.id,
-          version: max_version + 1,
-          status: :draft,
-        )
-
-        unless version.save
-          @errors.concat(version.errors.full_messages)
-        end
-
-        version
       end
 
       sig { params(version: ContentEntry::Version).returns(T.nilable(ContentEntry::Field)) }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
@@ -21,6 +22,7 @@ import FileDragDropPlugin from "./FileDragDropPlugin";
 import AutoEmbedPluginComponent from "./AutoEmbedPluginComponent";
 import DraggableBlockPlugin from "./DraggableBlockPlugin";
 import HiddenFieldSyncPlugin from "./HiddenFieldSyncPlugin";
+import InitialContentPlugin from "./InitialContentPlugin";
 
 // Markdown transformers
 import {
@@ -31,6 +33,7 @@ export interface LexicalEditorProps {
   initialContent?: string;
   placeholder?: string;
   hiddenFieldId?: string;
+  editable?: boolean;
 }
 
 const theme = {
@@ -61,6 +64,7 @@ const theme = {
   code: "editor-code",
   image: "editor-image",
   video: "editor-video",
+  link: "editor-link",
 };
 
 const nodes = [
@@ -80,41 +84,58 @@ export default function LexicalEditor({
   initialContent,
   placeholder = "Enter some rich text...",
   hiddenFieldId,
+  editable = true,
 }: LexicalEditorProps) {
+  const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
+
+  const onRef = (elem: HTMLDivElement | null) => {
+    if (elem !== null) {
+      setFloatingAnchorElem(elem);
+    }
+  };
+
   const initialConfig = {
     namespace: "RichTextEditor",
     theme,
     nodes,
+    editable,
     onError: (error: Error) => {
       console.error(error);
     },
   };
 
   return (
-    <div className="editor-container">
+    <div className={`editor-container${editable ? '' : ' editor-readonly'}`}>
       <LexicalComposer initialConfig={initialConfig}>
-        <ToolbarPlugin />
-        <div className="editor-content">
+        {editable && <ToolbarPlugin />}
+        <div className="editor-content" ref={onRef}>
           <RichTextPlugin
             contentEditable={
               <ContentEditable className="editor-input" />
             }
             placeholder={
-              <div className="editor-placeholder">
-                {placeholder}
-              </div>
+              editable ? (
+                <div className="editor-placeholder">
+                  {placeholder}
+                </div>
+              ) : null
             }
             ErrorBoundary={LexicalErrorBoundary}
           />
-          <HistoryPlugin />
+          {editable && <HistoryPlugin />}
           <ListPlugin />
           <LinkPlugin />
-          <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-          <FileDragDropPlugin />
-          <AutoEmbedPluginComponent />
-          <DraggableBlockPlugin />
-          {hiddenFieldId && (
+          {editable && <MarkdownShortcutPlugin transformers={TRANSFORMERS} />}
+          {editable && <FileDragDropPlugin />}
+          {editable && <AutoEmbedPluginComponent />}
+          {editable && floatingAnchorElem && (
+            <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+          )}
+          {editable && hiddenFieldId && (
             <HiddenFieldSyncPlugin hiddenFieldId={hiddenFieldId} />
+          )}
+          {initialContent && (
+            <InitialContentPlugin content={initialContent} />
           )}
         </div>
       </LexicalComposer>

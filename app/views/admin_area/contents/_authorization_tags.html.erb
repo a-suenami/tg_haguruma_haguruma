@@ -1,0 +1,100 @@
+<% authorization_tags ||= ContentAuthorizationTag.all %>
+<% selected_tag_id ||= nil %>
+<% visibility = local_assigns.fetch(:visibility, 'public') %>
+<% save_url = local_assigns[:save_url] %>
+<% standalone_mode = save_url.present? %>
+
+<%
+  tags_json = authorization_tags.map { |t| { id: t.id, name: t.name } }.to_json
+  selected_json = selected_tag_id || ''
+%>
+
+<div class="action-section"
+     data-controller="authorization-tags"
+     data-authorization-tags-tags-value="<%= tags_json %>"
+     data-authorization-tags-selected-value="<%= selected_json %>"
+     data-authorization-tags-save-url-value="<%= save_url %>"
+     data-authorization-tags-standalone-value="<%= standalone_mode %>"
+     data-authorization-tags-visibility-value="<%= visibility %>">
+  <h4 class="action-section-title">ACCESS CONTROL</h4>
+  <div class="authorization-tags-container">
+    <div class="visibility-options">
+      <label class="visibility-option">
+        <input type="radio"
+               name="visibility"
+               value="public"
+               <%= 'checked' if visibility == 'public' %>
+               data-authorization-tags-target="visibilityRadio"
+               data-action="change->authorization-tags#onVisibilityChange">
+        <span class="visibility-label">
+          <i class="fas fa-globe"></i>
+          全公開
+        </span>
+        <small class="visibility-description">誰でもアクセス可能</small>
+      </label>
+
+      <label class="visibility-option">
+        <input type="radio"
+               name="visibility"
+               value="authenticated"
+               <%= 'checked' if visibility == 'authenticated' %>
+               data-authorization-tags-target="visibilityRadio"
+               data-action="change->authorization-tags#onVisibilityChange">
+        <span class="visibility-label">
+          <i class="fas fa-user"></i>
+          認証済みユーザーのみ
+        </span>
+        <small class="visibility-description">ログインしているユーザーのみ</small>
+      </label>
+
+      <label class="visibility-option">
+        <input type="radio"
+               name="visibility"
+               value="restricted"
+               <%= 'checked' if visibility == 'restricted' %>
+               data-authorization-tags-target="visibilityRadio"
+               data-action="change->authorization-tags#onVisibilityChange">
+        <span class="visibility-label">
+          <i class="fas fa-lock"></i>
+          タグ制限
+        </span>
+        <small class="visibility-description">指定したタグを持つユーザーのみ</small>
+      </label>
+    </div>
+
+    <div class="authorization-tag-selector" data-authorization-tags-target="tagSelector" style="<%= 'display: none;' unless visibility == 'restricted' %>">
+      <% if authorization_tags.any? %>
+        <div class="authorization-tag-input-wrapper"
+             data-authorization-tags-target="inputWrapper"
+             data-action="click->authorization-tags#onWrapperClick">
+          <div class="authorization-tag-selected" data-authorization-tags-target="selectedTags"></div>
+          <input type="text"
+                 class="authorization-tag-input"
+                 placeholder="タグを検索..."
+                 autocomplete="off"
+                 data-authorization-tags-target="input"
+                 data-action="input->authorization-tags#onInput focus->authorization-tags#onFocus blur->authorization-tags#onBlur">
+          <div class="authorization-tag-dropdown" data-authorization-tags-target="dropdown"></div>
+        </div>
+      <% else %>
+        <p class="authorization-tags-empty">
+          <small>認可タグが設定されていません。</small>
+        </p>
+      <% end %>
+
+      <input type="hidden" name="authorization_tag_ids[]" data-authorization-tags-target="hiddenInput" value="<%= selected_tag_id %>">
+    </div>
+
+    <% if standalone_mode %>
+      <div class="authorization-save-button-wrapper">
+        <button type="button"
+                class="btn btn-sm btn-secondary authorization-save-btn"
+                disabled
+                data-authorization-tags-target="saveButton"
+                data-action="click->authorization-tags#save">
+          保存
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>

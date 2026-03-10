@@ -1,0 +1,30 @@
+@use '../../../shared/theme/breakpoints/breakpoints' as breakpoints;
+
+[cog-legal-link] {
+  font-family: var(--gearbox-font-family-system);
+  text-decoration: none;
+  color: var(--theme-navigation-text-color, #0a0804);
+  cursor: pointer;
+}
+
+@include breakpoints.media-up(lg) {
+  [cog-legal-link] {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+}
+
+@include breakpoints.media-down(lg) {
+  [cog-legal-link] {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.8;
+  }
+}
+
+@media (pointer: fine) {
+  [cog-legal-link]:hover {
+    text-decoration: underline;
+  }
+}

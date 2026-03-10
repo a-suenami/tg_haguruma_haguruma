@@ -1,0 +1,6 @@
+[cog-swiper-slide] {
+  display: block;
+  flex: 0 0 auto;
+  width: var(--cog-swiper-slide-width, 300px);
+  scroll-snap-align: start;
+}

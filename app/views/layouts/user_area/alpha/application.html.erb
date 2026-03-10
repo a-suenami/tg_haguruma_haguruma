@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>八代目 尾上菊五郎・六代目 尾上菊之助のファンクラブ『斧琴菊（よきこときく）』</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%# Favicon %>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+
+  <%# OGP %>
+  <meta property="og:title" content="八代目 尾上菊五郎・六代目 尾上菊之助のファンクラブ『斧琴菊（よきこときく）』">
+  <meta property="og:description" content="八代目 尾上菊五郎・六代目 尾上菊之助のファンクラブ『斧琴菊（よきこときく）』です。八代目菊五郎・六代目菊之助を応援することを目的として発足いたしました。「斧琴菊」とは江戸時代に流行した判じ物の文様で、「斧」と「琴」と「菊」で「良きこと聞く」という縁起の良い意味になり、三代目菊五郎が愛用したとも言われています。音羽屋の柄として代々大切にされてきました。会員の皆さまへも「良きこと」をお届けできますよう、吉祥の思いを込めてファンクラブの名称とさせていただきました。">
+  <meta property="og:image" content="<%= request.base_url %>/ogp.png">
+  <meta property="og:url" content="<%= request.original_url %>">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <%# NOTE: Google fontデフォルトの読み込み方法を改変（参考：https://www.tak-dcxi.com/article/optimization-of-google-font-loading/） %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Zen+Old+Mincho:wght@400;500;600;700;900&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Zen+Old+Mincho:wght@400;500;600;700;900&display=swap" media="print" onload='this.media="all"' />
+
+  <%= vite_client_tag %>
+  <%= vite_typescript_tag 'entrypoints/user_area/application' %>
+  <%= vite_stylesheet_tag 'entrypoints/user_area/application.scss', skip_preload_tags: true %>
+
+  <%# Tenant theme CSS variables - must come AFTER Vite CSS to override defaults %>
+  <style>
+    <%= theme_css_style_tag %>
+  </style>
+  <%= yield(:head) %>
+  <%= current_tag_settings.head_code_html %>
+</head>
+<body cog-layout data-controller="image-protection">
+  <%= current_tag_settings.body_code_html %>
+  <%= yield %>
+</body>
+</html>

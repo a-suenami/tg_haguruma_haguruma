@@ -1,10 +1,24 @@
 # typed: strict
 
+# == Schema Information
+#
+# Table name: tenants
+#
+#  id               :string           not null, primary key
+#  name             :string
+#  user_page_domain :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
 class Tenant < ApplicationRecord
   extend T::Sig
 
   has_many :admins, dependent: :destroy
   has_one :oauth_provider
+  has_one :theme, class_name: 'TenantTheme', dependent: :destroy
+  has_one :site_settings, class_name: 'TenantSiteSettings', dependent: :destroy
+  has_one :tag_settings, class_name: 'TenantTagSettings', dependent: :destroy
+  has_one :basic_auth, class_name: 'TenantBasicAuth', dependent: :destroy
 
   validates :id, :name, presence: true
   validates :id, uniqueness: { case_sensitive: false }
@@ -56,15 +70,50 @@ class Tenant < ApplicationRecord
 
   # path: `/` から始まる必要あり（`/my-page` など）
   # params: `[[key, value], [key, value]]` の形式
-  sig { params(path: String, params: T::Array[[String, String]]).returns(String) }
-  def user_page_path(path = '/', params: [])
-    uri = URI::HTTPS.build(
-      host: T.must(self.user_page_domain),
-      path:,
-      query: params.to_h.to_query.presence,
-    )
+  sig { params(path: String, params: T::Array[[String, String]], port: T.nilable(Integer)).returns(String) }
+  def user_page_path(path = '/', params: [], port: nil)
+    uri = if Rails.env.local?
+      # Development: use HTTP with custom port
+      URI::HTTP.build(
+        host: T.must(self.user_page_domain),
+        port: port || 3001,
+        path:,
+        query: params.to_h.to_query.presence,
+      )
+    else
+      # Production: use HTTPS, standard port
+      URI::HTTPS.build(
+        host: T.must(self.user_page_domain),
+        path:,
+        query: params.to_h.to_query.presence,
+      )
+    end
 
     uri.to_s
+  end
+
+  # Returns theme or a null object with defaults
+  sig { returns(TenantTheme) }
+  def theme_or_default
+    theme || TenantTheme.new
+  end
+
+  # Returns site settings or a null object with defaults
+  sig { returns(TenantSiteSettings) }
+  def site_settings_or_default
+    site_settings || TenantSiteSettings.new
+  end
+
+  # Returns tag settings or a null object with defaults
+  sig { returns(TenantTagSettings) }
+  def tag_settings_or_default
+    tag_settings || TenantTagSettings.new
+  end
+
+  # Flipper actor support for feature flags
+  sig { returns(String) }
+  def flipper_id
+    "Tenant:#{id}"
   end
 
   # TODO: Add these methods when config model is ported

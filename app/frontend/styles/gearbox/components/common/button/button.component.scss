@@ -1,0 +1,101 @@
+@use '../button-animations/button-animations' as animations;
+
+[cog-button] {
+  // CSS Variables
+  --cog-button-radius: 100px;
+  --cog-button-width: auto;
+  --cog-button-align: center;
+
+  // Filled variant (default: Primary button - navy bg, white text)
+  --cog-button-filled-color: var(--theme-button-primary-text-color, #FFFFFF);
+  --cog-button-filled-background-color: var(--theme-button-primary-background-color, #1E3A5F);
+  --cog-button-filled-outline-color: var(--theme-button-primary-background-color, #1E3A5F);
+
+  // Outlined variant (default: Secondary button - white bg, navy border/text)
+  --cog-button-outlined-color: var(--theme-button-primary-background-color, #1E3A5F);
+  --cog-button-outlined-background-color: var(--theme-button-primary-text-color, #1E3A5F);
+  --cog-button-outlined-outline-color: var(--theme-button-primary-border-color, #1E3A5F);
+
+  // Base styles
+  display: inline-flex;
+  align-items: center;
+  justify-content: var(--cog-button-align, center);
+  gap: var(--gearbox-spacing-4);
+  padding: 4px 32px;
+  border-radius: var(--cog-button-radius);
+  border: 2px solid transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  font-family: var(--theme-button-font-family, var(--gearbox-font-family-primary));
+  font-size: 17px;
+  font-weight: var(--gearbox-font-weight-semibold);
+  line-height: var(--gearbox-line-height-loose);
+  letter-spacing: 0.04em; // Better than fixed px for letter spacing
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+
+  // Default styles (filled)
+  background-color: var(--cog-button-filled-background-color);
+  color: var(--cog-button-filled-color);
+  border-color: var(--cog-button-filled-outline-color);
+
+  // Disabled state
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // Remove default button styles
+  &:focus {
+    outline: none;
+  }
+
+  transition: box-shadow .2s ease-out, transform .2s ease-out;
+  &:hover {
+    box-shadow: none;
+    transform: translateY(2px);
+    opacity: 1;
+  }
+}
+
+// Filled variant (explicit)
+[cog-button][filled] {
+  background-color: var(--cog-button-filled-background-color);
+  color: var(--cog-button-filled-color);
+  border-color: var(--cog-button-filled-outline-color);
+}
+
+// Outlined variant
+[cog-button][outlined] {
+  background-color: var(--cog-button-outlined-background-color);
+  color: var(--cog-button-outlined-color);
+  border-color: var(--cog-button-outlined-outline-color);
+}
+
+// Primary color (uses new theme variables)
+[cog-button][primary] {
+  // Filled: Primary button (navy bg, white text)
+  --cog-button-filled-color: var(--theme-button-primary-text-color, var(--gearbox-on-primary));
+  --cog-button-filled-background-color: var(--theme-button-primary-background-color, var(--gearbox-primary));
+  --cog-button-filled-outline-color: var(--theme-button-primary-background-color, var(--gearbox-primary));
+
+  // Outlined: Secondary button (white bg, navy border/text)
+  --cog-button-outlined-color: var(--theme-button-primary-background-color, var(--gearbox-primary));
+  --cog-button-outlined-background-color: #fff;
+  --cog-button-outlined-outline-color: var(--theme-button-primary-background-color, var(--gearbox-primary));
+}
+
+// Secondary color (uses new theme variables)
+[cog-button][secondary] {
+  // Filled: Primary button (navy bg, white text)
+  --cog-button-filled-color: var(--theme-button-secondary-text-color, var(--gearbox-on-secondary));
+  --cog-button-filled-background-color: var(--theme-button-secondary-background-color, var(--gearbox-secondary));
+  --cog-button-filled-outline-color: var(--theme-button-secondary-background-color, var(--gearbox-secondary));
+
+  // Outlined: Secondary button (white bg, navy border/text)
+  --cog-button-outlined-color: var(--theme-button-secondary-text-color, var(--gearbox-on-secondary-container));
+  --cog-button-outlined-background-color: var(--theme-button-secondary-background-color, var(--gearbox-surface-bright));
+  --cog-button-outlined-outline-color: var(--theme-button-secondary-border-color, var(--gearbox-secondary));
+}

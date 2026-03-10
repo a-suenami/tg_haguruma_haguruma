@@ -1,0 +1,49 @@
+<cog-page-header></cog-page-header>
+
+<main class="main">
+  <div class="inner">
+    <cog-detail-fragment>
+      <cog-detail-fragment-header>
+        <cog-detail-fragment-toolbar>
+          <cog-detail-fragment-title>スケジュール</cog-detail-fragment-title>
+        </cog-detail-fragment-toolbar>
+        <cog-detail-fragment-toolbar>
+          <cog-category-label>ライブ</cog-category-label>
+          <cog-date-label>2024.12.25</cog-date-label>
+        </cog-detail-fragment-toolbar>
+      </cog-detail-fragment-header>
+
+      <cog-detail-fragment-content>
+        @if (lexicalContent.isLoading()) {
+          <div class="loading-state">
+            <cog-loading [size]="60"></cog-loading>
+          </div>
+        }
+        @if (lexicalContent.error()) {
+          <div class="error-state">コンテンツの読み込みに失敗しました</div>
+          <button
+            cog-button
+            outlined
+            class="action-button"
+            (click)="lexicalContent.reload()"
+          >
+            再読み込み
+          </button>
+        }
+        @if (lexicalContent.value()) {
+          <cog-rich-content-viewer
+            [lexicalJson]="lexicalContent.value()!"
+          ></cog-rich-content-viewer>
+        }
+      </cog-detail-fragment-content>
+
+      <cog-detail-fragment-actions>
+        <button cog-button primary outlined class="action-button in-content">
+          タイムラインに戻る
+        </button>
+      </cog-detail-fragment-actions>
+    </cog-detail-fragment>
+  </div>
+</main>
+
+<cog-page-footer></cog-page-footer>

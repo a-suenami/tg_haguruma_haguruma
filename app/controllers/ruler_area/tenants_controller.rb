@@ -43,8 +43,7 @@ module RulerArea
     end
 
     def admin_area
-      # TODO: Enable when Admin model is available
-      # Admin.find_or_create_by(tenant_id: @tenant.id, auth0_account_id: current_ruler.auth0_account_id)
+      Ruler::EnsureAdminService.new(ruler: current_ruler, tenant: @tenant).execute
 
       url = if Rails.env.development?
         "http://#{@tenant.id}.#{request.host}:#{request.port}/admin"

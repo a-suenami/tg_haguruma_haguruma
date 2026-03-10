@@ -32,14 +32,14 @@ export default function DraggableBlockPlugin({
       const node = $getNearestNodeFromDOMNode(isDraggableElement);
       if (node) {
         const newParagraph = $createParagraphNode();
-        
+
         // Alt/Ctrl + Click で上に挿入、通常クリックで下に挿入
         if (event.altKey || event.ctrlKey) {
           node.insertBefore(newParagraph);
         } else {
           node.insertAfter(newParagraph);
         }
-        
+
         // 新しい段落にフォーカスを移動
         newParagraph.select();
       }
@@ -52,8 +52,8 @@ export default function DraggableBlockPlugin({
       menuRef={menuRef}
       targetLineRef={targetLineRef}
       menuComponent={
-        <div 
-          ref={menuRef} 
+        <div
+          ref={menuRef}
           className="draggable-block-menu"
           draggable="true"
         >
@@ -84,8 +84,8 @@ export default function DraggableBlockPlugin({
         </div>
       }
       targetLineComponent={
-        <div 
-          ref={targetLineRef} 
+        <div
+          ref={targetLineRef}
           className="draggable-block-target-line"
         />
       }

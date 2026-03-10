@@ -1,0 +1,61 @@
+// Page header component styles
+// This component wraps the header UI components from @gearbox/ui
+
+.auth-action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--gearbox-spacing-32);
+  flex: 1;
+  align-items: center;
+}
+
+.auth-action-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--theme-navigation-text-color, #333333);
+  font-size: var(--gearbox-font-size-caption-small);
+  font-weight: var(--gearbox-font-weight-semibold);
+  font-family: var(--theme-navigation-font-family, var(--gearbox-font-family-primary));
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+
+  .auth-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.overlay-action-button {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+
+  .mypage-text {
+    padding-left: 28px;
+    flex: 1;
+    text-align: center;
+  }
+
+  .overlay-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.overlay-action-button.in-vertical {
+  width: 100%;
+}

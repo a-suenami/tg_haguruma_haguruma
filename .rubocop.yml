@@ -191,6 +191,9 @@ Rails/FindEach:
 RSpec/ImplicitSubject:
   Exclude:
     - 'spec/requests/**/*'
+RSpec/VariableName:
+  Exclude:
+    - 'spec/requests/**/*'
 RSpec/ContextWording:
   Enabled: true
 RSpec/ExampleLength:
@@ -706,8 +709,11 @@ Naming/AccessorMethodName:
   Enabled: false
 Naming/FileName:
   Enabled: false
+# Naming/BlockForwarding: anonymous block forwarding (`&`) is not supported by Sorbet.
+# Sorbet requires named block parameters for type signatures.
+# See: https://github.com/sorbet/sorbet/issues/XXX (Sorbet doesn't support Ruby 3.1 anonymous block forwarding)
 Naming/BlockForwarding: # new in 1.24
-  Enabled: true
+  Enabled: false
 
 Gemspec/DeprecatedAttributeAssignment: # new in 1.30
   Enabled: true

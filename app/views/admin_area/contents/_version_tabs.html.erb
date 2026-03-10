@@ -1,0 +1,18 @@
+<%# locals: (show_path:, edit_path:, active_tab:, published_version: nil) %>
+<!-- バージョンタブ -->
+<div class="version-tabs">
+  <%
+    show_class = "version-tab"
+    show_class += " active" if active_tab == :show
+    show_class += " disabled" if active_tab == :edit && !published_version
+
+    edit_class = "version-tab"
+    edit_class += " active" if active_tab == :edit
+  %>
+  <%= link_to show_path, class: show_class do %>
+    公開中
+  <% end %>
+  <%= link_to edit_path, class: edit_class do %>
+    下書き
+  <% end %>
+</div>

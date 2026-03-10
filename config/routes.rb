@@ -1,48 +1,40 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  # Swagger UI and API docs
-  mount Rswag::Ui::Engine => '/api-docs'
-  mount Rswag::Api::Engine => '/api-docs'
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /health_check that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # ============================================================================
+  # Common routes (all domains)
+  # ============================================================================
   get 'health_check' => 'rails/health#show', as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
-
-  # Ruler Area routes
-  namespace :ruler_area, path: :ruler do
-    # Auth0 Authentication routes
-    get 'login', to: 'auth0#login', as: :login
-    get 'logout', to: 'auth0#logout', as: :logout
-    get '/auth/auth0/callback', to: 'auth0#callback'
-    get '/auth/failure', to: 'auth0#failure'
-
-    root to: 'tenants#index', as: :root
-
-    # Profile management
-    resource :profiles, only: [:edit, :update]
-
-    resources :tenants do
-      member do
-        get :admin_area
-      end
-
-      resources :admins, except: [:show]
-      resources :oauth_providers, except: [:show]
-    end
-  end
-
-  # Admin Area routes
-  draw :admin
 
   # API routes
   draw :'api/v1/auth'
   draw :api
+
+  # Test routes (only available in test environment or when ALLOW_AUTH_BYPASS is enabled)
+  if Rails.env.test? || Rails.env.development? || ENV['ALLOW_AUTH_BYPASS'] == 'true'
+    namespace :test do
+      get 'auth/bypass', to: 'auth#bypass'
+    end
+  end
+
+  # ============================================================================
+  # Ruler Area (ruler domain only)
+  # ============================================================================
+  constraints Constraints::RulerDomainConstraint.new do
+    draw :ruler
+  end
+
+  # ============================================================================
+  # Admin Area ({tenant_id}.admin.{base} domain only)
+  # ============================================================================
+  constraints Constraints::AdminDomainConstraint.new do
+    draw :admin
+  end
+
+  # ============================================================================
+  # User Area (tenant's user_page_domain only)
+  # ============================================================================
+  constraints Constraints::UserAreaDomainConstraint.new do
+    draw :user_area
+  end
 end

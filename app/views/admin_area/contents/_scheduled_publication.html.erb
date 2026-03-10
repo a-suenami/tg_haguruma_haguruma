@@ -1,0 +1,53 @@
+<%# Scheduled publication inline UI for content entries %>
+<%# Renders inside ENTRY section, right below publish button %>
+<%# Required locals: draft_version, schedule_url, cancel_url %>
+
+<% if defined?(draft_version) && draft_version %>
+  <div class="scheduled-publication-inline"
+       data-controller="scheduled-publication"
+       data-scheduled-publication-datetime-local-outlet=".schedule-datetime-input">
+    <% if draft_version.scheduled? %>
+      <!-- Currently scheduled -->
+      <div class="scheduled-info-inline" data-scheduled-publication-target="scheduledInfo">
+        <div class="scheduled-badge-inline">
+          <i class="fas fa-clock"></i>
+          <span>公開予約中</span>
+        </div>
+        <div class="scheduled-datetime-inline"
+             data-scheduled-publication-target="scheduledDatetime"
+             data-controller="datetime-local"
+             data-datetime-local-utc-value="<%= draft_version.scheduled_publish_at.utc.iso8601 %>"
+             data-datetime-local-format-value="datetime">
+          <%= draft_version.scheduled_publish_at.strftime('%Y/%m/%d %H:%M') %>
+        </div>
+        <button type="button"
+                class="btn btn-outline-danger btn-sm schedule-cancel-btn"
+                data-action="scheduled-publication#cancel"
+                data-scheduled-publication-url-value="<%= cancel_url %>">
+          <i class="fas fa-times"></i>
+          予約解除
+        </button>
+      </div>
+    <% else %>
+      <!-- Schedule form -->
+      <div class="schedule-form-inline" data-scheduled-publication-target="scheduleForm">
+        <label class="schedule-label">公開予約</label>
+        <input type="datetime-local"
+               class="schedule-datetime-input"
+               data-controller="datetime-local"
+               data-datetime-local-format-value="input"
+               data-scheduled-publication-target="datetimeInput">
+        <button type="button"
+                class="btn btn-outline-secondary schedule-btn"
+                data-action="scheduled-publication#schedule"
+                data-scheduled-publication-url-value="<%= schedule_url %>">
+          <i class="fas fa-calendar-check"></i>
+          予約設定
+        </button>
+      </div>
+    <% end %>
+
+    <!-- Status messages -->
+    <div class="schedule-message-inline" data-scheduled-publication-target="message" style="display: none;"></div>
+  </div>
+<% end %>
