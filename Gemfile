@@ -172,7 +172,7 @@ group :development do
 
   # Development tools
   gem 'rails-erd', '~> 1.7.2'
-  gem 'ruby-lsp', '~> 0.23.20'
+  gem 'ruby-lsp', '~> 0.26.9'
 end
 
 group :test do
