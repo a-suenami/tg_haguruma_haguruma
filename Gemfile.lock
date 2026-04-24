@@ -218,7 +218,7 @@ GEM
     ed25519 (1.4.0)
     enumerize (2.7.0)
       activesupport (>= 3.2)
-    erb (5.0.2)
+    erb (6.0.1.1)
     erubi (1.13.1)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
