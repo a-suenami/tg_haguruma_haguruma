@@ -275,7 +275,8 @@ GEM
     json (2.13.0)
     json-schema (4.3.1)
       addressable (>= 2.8)
-    jwt (2.7.1)
+    jwt (2.10.3)
+      base64
     kamal (2.7.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -769,7 +770,7 @@ DEPENDENCIES
   jbuilder
   jp_prefecture (~> 1.1.1)
   json-schema (~> 4.3.1)
-  jwt (~> 2.7.1)
+  jwt (~> 2.10.3)
   kamal
   knapsack_pro (~> 5.7.0)
   liquid (~> 5.4.0)
